@@ -5,11 +5,35 @@ use Admin\Campaign;
 interface CampaignInterface
 {
     /**
+     * Get total status campaigns.
+     *
+     * @param string $status
+     * @return Campaign
+     */
+    public function getCount($status = 'Live');
+
+    /**
      * Get All Campaign.
      *
      * @return Admin
      */
     public function getAll();
+
+    /**
+     * Get all SnapShot this week.
+     *
+     * @param array $attributes
+     * @return Campaign
+     */
+    public function getAllThisWeek(array $attributes);
+
+    /**
+     * Get all Campaign last week.
+     *
+     * @param array $attributes
+     * @return Campaign
+     */
+    public function getAllLastWeek(array $attributes);
 
     /**
      * Get Campaign by id.

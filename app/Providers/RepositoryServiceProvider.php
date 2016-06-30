@@ -25,6 +25,8 @@ use Admin\Repositories\Eloquent\NotificationEloquent;
 use Admin\Repositories\Interfaces\NotificationInterface;
 use Admin\Repositories\Eloquent\FeaturedSectionEloquent;
 use Admin\Repositories\Interfaces\FeaturedSectionInterface;
+use Admin\Repositories\Eloquent\MerchantEloquent;
+use Admin\Repositories\Interfaces\MerchantInterface;
 
 class RepositoryServiceProvider extends ServiceProvider
 {
@@ -56,5 +58,6 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(PageInterface::class, PageEloquent::class);
         $this->app->bind(NotificationInterface::class, NotificationEloquent::class);
         $this->app->bind(FeaturedSectionInterface::class, FeaturedSectionEloquent::class);
+        $this->app->bind(MerchantInterface::class, MerchantEloquent::class);
     }
 }

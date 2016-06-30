@@ -10,6 +10,7 @@ use Admin\Repositories\Interfaces\RestaurantInterface;
 use Auth;
 use Admin\Repositories\Interfaces\CampaignInterface;
 use Admin\Repositories\Interfaces\SnapShotInterface;
+use Admin\Repositories\Interfaces\MerchantInterface;
 
 class DashboardController extends Controller
 {
@@ -29,17 +30,25 @@ class DashboardController extends Controller
     protected $snapShot;
 
     /**
+     * @var MerchantInterface
+     */
+    protected $merchant;
+
+    /**
      * Create a new controller instance.
      *
      * @param CampaignInterface $campaign
-
+     * @param RestaurantInterface $restaurant
+     * @param SnapShotInterface $snapShot
+     * @param MerchantInterface $merchant
      * @return void
      */
-    public function __construct(CampaignInterface $campaign, RestaurantInterface $restaurant, SnapShotInterface $snapShot)
+    public function __construct(CampaignInterface $campaign, RestaurantInterface $restaurant, SnapShotInterface $snapShot, MerchantInterface $merchant)
     {
         $this->campaign = $campaign;
         $this->restaurant = $restaurant;
         $this->snapShot = $snapShot;
+        $this->merchant = $merchant;
     }
 
     /**
@@ -53,15 +62,19 @@ class DashboardController extends Controller
         $data = array(
             'restaurant' => $this->restaurant->getByAttributes(['merchant_id' => Auth::user()->id], false),
             'campaigns' => $this->campaign->getAllByAttributesWithRelations(['merchant_id' => Auth::user()->id, 'cam_status' => 'Live'], ['restaurant', 'blurb'], 'created_at', 'DESC'),
-            'snapShotLikes' => $this->snapShot->getByAttributesWithSum(['merchant_id' => Auth::user()->id], 'snapshot_likes'),
-            'uniqueViews' => $this->snapShot->getByAttributesWithSum(['merchant_id' => Auth::user()->id], 'snapshot_uviews'),
-            'blurbsUsage' => $this->snapShot->getByAttributesWithSum(['merchant_id' => Auth::user()->id], 'snapshot_usage'),
-            'thisWeekLikes' => $this->snapShot->getByAttributesThisWeek(['merchant_id' => Auth::user()->id], 'snapshot_likes'),
-            'thisWeekViews' => $this->snapShot->getByAttributesThisWeek(['merchant_id' => Auth::user()->id], 'snapshot_uviews'),
-            'thisWeekUsage' => $this->snapShot->getByAttributesThisWeek(['merchant_id' => Auth::user()->id], 'snapshot_usage'),
-            'lastWeekLikes' => $this->snapShot->getByAttributesLastWeek(['merchant_id' => Auth::user()->id], 'snapshot_likes'),
-            'lastWeekViews' => $this->snapShot->getByAttributesLastWeek(['merchant_id' => Auth::user()->id], 'snapshot_uviews'),
-            'lastWeekUsage' => $this->snapShot->getByAttributesLastWeek(['merchant_id' => Auth::user()->id], 'snapshot_usage'),
+            'totalSnapShotLikes' => $this->snapShot->getAllWithSum('snapshot_likes'),
+            'uniqueViews' => $this->snapShot->getAllWithSum('snapshot_uviews'),
+            'blurbsUsage' => $this->snapShot->getAllWithSum('snapshot_usage'),
+            'thisWeekTotalLikes' => $this->snapShot->getAllThisWeek('snapshot_likes'),
+            'thisWeekTotalViews' => $this->snapShot->getAllThisWeek('snapshot_uviews'),
+            'thisWeekTotalUsage' => $this->snapShot->getAllThisWeek('snapshot_usage'),
+            'lastWeekTotalLikes' => $this->snapShot->getAllLastWeek('snapshot_likes'),
+            'lastWeekTotalViews' => $this->snapShot->getAllLastWeek('snapshot_uviews'),
+            'lastWeekTotalUsage' => $this->snapShot->getAllLastWeek('snapshot_usage'),
+            'totalLiveCampaigns' => $this->campaign->getCount(),
+            'thisWeekTotalLiveCampaignLikes' => $this->campaign->getAllThisWeek(['cam_status' => 'Live']),
+            'lastWeekTotalLiveCampaignLikes' => $this->campaign->getAllLastWeek(['cam_status' => 'Live']),
+
         );
         
         return view('dashboard.index', $data);

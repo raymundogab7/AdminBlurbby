@@ -1,15 +1,15 @@
 <?php namespace Admin\Repositories\Interfaces;
 
-use Admin\Admin;
+use Admin\Merchant;
 
-interface AdminInterface
+interface MerchantInterface
 {
     /**
      * Get merchant by id.
      *
      * @param integer $id
      *
-     * @return Admin
+     * @return Merchant
      */
     public function getById($id);
 
@@ -38,7 +38,7 @@ interface AdminInterface
      *
      * @param array $payload
      *
-     * @return Admin
+     * @return Merchant
      */
     public function create(array $payload);
 }

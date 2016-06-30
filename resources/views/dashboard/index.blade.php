@@ -38,17 +38,17 @@
                                     <div class="panel-icon"><i class="fa fa-heart"></i></div>
                                     <div class="media-body">
                                         <h5 class="md-title nomargin">Total Blurbs Likes</h5>
-                                        <h1 class="mt5">1,420</h1>
+                                        <h1 class="mt5">{{number_format($totalSnapShotLikes, 0)}}</h1>
                                     </div><!-- media-body -->
                                     <hr>
                                     <div class="clearfix mt20">
                                         <div class="pull-left">
                                             <h5 class="md-title nomargin">Last Week</h5>
-                                            <h4 class="nomargin">25</h4>
+                                            <h4 class="nomargin">{{number_format($lastWeekTotalLikes, 0)}}</h4>
                                         </div>
                                         <div class="pull-right">
                                             <h5 class="md-title nomargin">This Week</h5>
-                                            <h4 class="nomargin">104</h4>
+                                            <h4 class="nomargin">{{number_format($thisWeekTotalLikes, 0)}}</h4>
                                         </div>
                                     </div>
                                     
@@ -62,17 +62,17 @@
                                     <div class="panel-icon"><i class="fa fa-users"></i></div>
                                     <div class="media-body">
                                         <h5 class="md-title nomargin">Unique Views</h5>
-                                        <h1 class="mt5">3,210</h1>
+                                        <h1 class="mt5">{{number_format($uniqueViews, 0)}}</h1>
                                     </div><!-- media-body -->
                                     <hr>
                                     <div class="clearfix mt20">
                                         <div class="pull-left">
                                             <h5 class="md-title nomargin">Last Week</h5>
-                                            <h4 class="nomargin">164</h4>
+                                            <h4 class="nomargin">{{number_format($lastWeekTotalViews, 0)}}</h4>
                                         </div>
                                         <div class="pull-right">
                                             <h5 class="md-title nomargin">This Week</h5>
-                                            <h4 class="nomargin">204</h4>
+                                            <h4 class="nomargin">{{number_format($thisWeekTotalViews, 0)}}</h4>
                                         </div>
                                     </div>
                                     
@@ -86,17 +86,17 @@
                                     <div class="panel-icon"><i class="fa fa-check"></i></div>
                                     <div class="media-body">
                                         <h5 class="md-title nomargin">Total Blurbs Usage</h5>
-                                        <h1 class="mt5">2,435</h1>
+                                        <h1 class="mt5">{{number_format($blurbsUsage, 0)}}</h1>
                                     </div><!-- media-body -->
                                     <hr>
                                     <div class="clearfix mt20">
                                         <div class="pull-left">
                                             <h5 class="md-title nomargin">Last Week</h5>
-                                            <h4 class="nomargin">58</h4>
+                                            <h4 class="nomargin">{{number_format($lastWeekTotalUsage, 0)}}</h4>
                                         </div>
                                         <div class="pull-right">
                                             <h5 class="md-title nomargin">This Week</h5>
-                                            <h4 class="nomargin">102</h4>
+                                            <h4 class="nomargin">{{number_format($thisWeekTotalUsage, 0)}}</h4>
                                         </div>
                                     </div>
                                     
@@ -160,17 +160,17 @@
                                     <div class="panel-icon"><i class="fa fa-tags"></i></div>
                                     <div class="media-body">
                                         <h5 class="md-title nomargin">Current Live Campaigns</h5>
-                                        <h1 class="mt5">2,435</h1>
+                                        <h1 class="mt5">{{number_format($totalLiveCampaigns, 0)}}</h1>
                                     </div><!-- media-body -->
                                     <hr>
                                     <div class="clearfix mt20">
                                         <div class="pull-left">
                                             <h5 class="md-title nomargin">Last Week</h5>
-                                            <h4 class="nomargin">58</h4>
+                                            <h4 class="nomargin">{{number_format($lastWeekTotalLiveCampaignLikes, 0)}}</h4>
                                         </div>
                                         <div class="pull-right">
                                             <h5 class="md-title nomargin">This Week</h5>
-                                            <h4 class="nomargin">102</h4>
+                                            <h4 class="nomargin">{{number_format($thisWeekTotalLiveCampaignLikes, 0)}}</h4>
                                         </div>
                                     </div>
                                     

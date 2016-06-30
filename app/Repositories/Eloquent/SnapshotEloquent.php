@@ -38,6 +38,17 @@ class SnapShotEloquent implements SnapShotInterface
     }
 
     /**
+     * Get all SnapShot with sum.
+     *
+     * @param string $field
+     * @return SnapShot
+     */
+    public function getAllWithSum($field = '')
+    {
+        return $this->snapshot->sum($field);
+    }
+
+    /**
      * Get SnapShot by attributes with sum.
      *
      * @param array $attributes
@@ -49,7 +60,40 @@ class SnapShotEloquent implements SnapShotInterface
         return $this->snapshot->where($attributes)->sum($field);
     }
 
-     /**
+    /**
+     * Get all SnapShot this week.
+     *
+     * @param string $field
+     * @return SnapShot
+     */
+    public function getAllThisWeek($field = '')
+    {
+        $now = Carbon::today();
+        $today = $now->toDateString();
+        $last_sun = new Carbon('last sunday');
+        $last_sunday = $last_sun->toDateString();
+
+        return $this->snapshot->whereBetween('snapshot_date', array($last_sunday, $today))->sum($field);
+    }
+
+    /**
+     * Get all SnapShot last week.
+     *
+     * @param string $field
+     * @return SnapShot
+     */
+    public function getAllLastWeek($field = '')
+    {
+        $last_sat = new Carbon('last saturday');
+        $last_saturday = $last_sat->toDateString();
+        
+        $last_sun = new Carbon('last sunday');
+        $last_last_sunday = $last_sun->subWeek()->toDateString();
+
+        return $this->snapshot->whereBetween('snapshot_date', array($last_last_sunday, $last_saturday))->sum($field);
+    }
+
+    /**
      * Get SnapShot by attributes this week.
      *
      * @param array $attributes

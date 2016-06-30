@@ -1,22 +1,22 @@
 <?php namespace Admin\Repositories\Eloquent;
 
-use Admin\Admin;
-use Admin\Repositories\Interfaces\AdminInterface;
+use Admin\Merchant;
+use Admin\Repositories\Interfaces\MerchantInterface;
 
-class AdminEloquent implements AdminInterface
+class MerchantEloquent implements MerchantInterface
 {
     /**
-     * @var Admin
+     * @var Merchant
      */
     private $merchant;
 
     /**
-     * Create a new Admin Eloquent instance.
+     * Create a new Merchant Eloquent instance.
      *
-     * @param Admin $merchant
+     * @param Merchant $merchant
      * @return void
      */
-    public function __construct(Admin $merchant)
+    public function __construct(Merchant $merchant)
     {
         $this->merchant = $merchant;
     }
@@ -26,13 +26,46 @@ class AdminEloquent implements AdminInterface
      *
      * @param integer $id
      *
-     * @return Admin
+     * @return Merchant
      */
     public function getById($id)
     {
         return $this->merchant->find($id);
     }
 
+    /**
+     * Get all Merchant this week.
+     *
+     * @param array $attributes
+     * @return Merchant
+     */
+    public function getAllThisWeek(array $attributes)
+    {
+        $now = Carbon::today();
+        $today = $now->toDateString();
+        $last_sun = new Carbon('last sunday');
+        $last_sunday = $last_sun->toDateString();
+
+        return $this->merchant->where($attributes)->whereBetween('date_created', array($last_sunday, $today))->count();
+    }
+
+    /**
+     * Get all Merchant last week.
+     *
+     * @param array $attributes
+     * @return Merchant
+     */
+    public function getAllLastWeek(array $attributes)
+    {
+        $last_sat = new Carbon('last saturday');
+        $last_saturday = $last_sat->toDateString();
+        
+        $last_sun = new Carbon('last sunday');
+        $last_last_sunday = $last_sun->subWeek()->toDateString();
+
+        return $this->merchant->where($attributes)->whereBetween('date_created', array($last_last_sunday, $last_saturday))->count();
+    }
+    
     /**
      * Update a merchant by id.
      *
@@ -63,7 +96,7 @@ class AdminEloquent implements AdminInterface
      *
      * @param array $payload
      *
-     * @return Admin
+     * @return Merchant
      */
     public function create(array $payload)
     {

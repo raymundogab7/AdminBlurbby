@@ -2,6 +2,7 @@
 
 use Admin\Campaign;
 use Admin\Repositories\Interfaces\CampaignInterface;
+use Carbon\Carbon;
 
 class CampaignEloquent implements CampaignInterface
 {
@@ -21,9 +22,20 @@ class CampaignEloquent implements CampaignInterface
     }
 
     /**
+     * Get total status campaigns.
+     *
+     * @param string $status
+     * @return Campaign
+     */
+    public function getCount($status = 'Live')
+    {
+        return $this->campaign->where('cam_status', $status)->count();
+    }
+
+    /**
      * Get All Campaign.
      *
-     * @return Admin
+     * @return Campaign
      */
     public function getAll()
     {
@@ -31,11 +43,44 @@ class CampaignEloquent implements CampaignInterface
     }
 
     /**
+     * Get all Campaign this week.
+     *
+     * @param array $attributes
+     * @return Campaign
+     */
+    public function getAllThisWeek(array $attributes)
+    {
+        $now = Carbon::today();
+        $today = $now->toDateString();
+        $last_sun = new Carbon('last sunday');
+        $last_sunday = $last_sun->toDateString();
+
+        return $this->campaign->where($attributes)->whereBetween('date_created', array($last_sunday, $today))->count();
+    }
+
+    /**
+     * Get all Campaign last week.
+     *
+     * @param array $attributes
+     * @return Campaign
+     */
+    public function getAllLastWeek(array $attributes)
+    {
+        $last_sat = new Carbon('last saturday');
+        $last_saturday = $last_sat->toDateString();
+        
+        $last_sun = new Carbon('last sunday');
+        $last_last_sunday = $last_sun->subWeek()->toDateString();
+
+        return $this->campaign->where($attributes)->whereBetween('date_created', array($last_last_sunday, $last_saturday))->count();
+    }
+
+    /**
      * Get Campaign by id.
      *
      * @param integer $id
      *
-     * @return Admin
+     * @return Campaign
      */
     public function getById($id)
     {
@@ -47,7 +92,7 @@ class CampaignEloquent implements CampaignInterface
      *
      * @param integer $id
      * @param array $attributes
-     * @return Admin
+     * @return Campaign
      */
     public function getByIdAndAttiributes($id, array $attributes)
     {

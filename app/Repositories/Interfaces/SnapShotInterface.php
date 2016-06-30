@@ -14,6 +14,14 @@ interface SnapShotInterface
     public function getByAttributes(array $attributes, $toArray = true);
 
     /**
+     * Get all SnapShot with sum.
+     *
+     * @param string $field
+     * @return SnapShot
+     */
+    public function getAllWithSum($field = '');
+
+    /**
      * Get SnapShot by attributes with sum.
      *
      * @param array $attributes
@@ -21,6 +29,22 @@ interface SnapShotInterface
      * @return SnapShot
      */
     public function getByAttributesWithSum(array $attributes, $field = '');
+
+    /**
+     * Get all SnapShot this week.
+     *
+     * @param string $field
+     * @return SnapShot
+     */
+    public function getAllThisWeek($field = '');
+
+    /**
+     * Get all SnapShot last week.
+     *
+     * @param string $field
+     * @return SnapShot
+     */
+    public function getAllLastWeek($field = '');
 
     /**
      * Get SnapShot by attributes this week.
