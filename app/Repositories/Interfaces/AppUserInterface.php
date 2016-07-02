@@ -1,48 +1,41 @@
 <?php namespace Admin\Repositories\Interfaces;
 
-use Admin\Merchant;
+use Admin\AppUser;
 
-interface MerchantInterface
+interface AppUserInterface
 {
     /**
-     * Get all merchant.
-     *
-     * @return Merchant
-     */
-    public function getAll();
-
-    /**
-     * Get merchant by id.
+     * Get appUser by id.
      *
      * @param integer $id
      *
-     * @return Merchant
+     * @return AppUser
      */
     public function getById($id);
 
     /**
-     * Get all Merchant this week.
+     * Get all AppUser this week.
      *
-     * @return Merchant
+     * @return AppUser
      */
     public function getAllThisWeek();
 
     /**
-     * Get all Merchant last week.
+     * Get all AppUser last week.
      *
-     * @return Merchant
+     * @return AppUser
      */
     public function getAllLastWeek();
 
     /**
-     * Get count of Merchant.
+     * Get count of AppUser.
      *
      * @return integer
      */
     public function getCount();
 
     /**
-     * Update a merchant by id.
+     * Update a appUser by id.
      *
      * @param integer $id
      * @param array $payload
@@ -52,7 +45,7 @@ interface MerchantInterface
     public function updateById($id, array $payload);
 
     /**
-     * Update a merchant by attributes.
+     * Update a appUser by attributes.
      *
      * @param array $attributes
      * @param array $payload
@@ -62,11 +55,11 @@ interface MerchantInterface
     public function updateByAttributes(array $attributes, array $payload);
 
     /**
-     * Create new merchant.
+     * Create new appUser.
      *
      * @param array $payload
      *
-     * @return Merchant
+     * @return AppUser
      */
     public function create(array $payload);
 }

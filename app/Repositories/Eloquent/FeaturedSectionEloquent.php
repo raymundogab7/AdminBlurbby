@@ -21,6 +21,19 @@ class FeaturedSectionEloquent implements FeaturedSectionInterface
     }
 
     /**
+     * Get all FeaturedSection by attributes
+     *
+     * @param array $relations
+     * @param string $orderBy
+     * @param string $sort
+     * @return FeaturedSection
+     */
+    public function getAll(array $relations, $orderBy = '', $sort = 'ASC')
+    {
+        return $this->featuredSection->with($relations)->orderBy($orderBy, $sort)->get()->toArray();
+    }
+
+    /**
      * Get FeaturedSection by id.
      *
      * @param integer $id

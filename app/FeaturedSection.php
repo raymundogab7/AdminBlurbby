@@ -16,4 +16,9 @@ class FeaturedSection extends Model
     protected $fillable = [
         'merchant_id', 'position', 'slide_image', 'status'
     ];
+
+    public function merchant()
+    {
+    	return $this->belongsTo('Admin\Merchant', 'merchant_id', 'id');
+    }
 }

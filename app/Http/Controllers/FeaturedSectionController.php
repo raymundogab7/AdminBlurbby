@@ -3,8 +3,9 @@
 namespace Admin\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Admin\Http\Requests\BlurbRequest;
+use Admin\Http\Requests\FeaturedSectionRequest;
 use Admin\Repositories\Interfaces\CampaignInterface;
+use Admin\Repositories\Interfaces\MerchantInterface;
 use Admin\Repositories\Interfaces\RestaurantInterface;
 use Admin\Repositories\Interfaces\BlurbInterface;
 use Admin\Http\Requests;
@@ -44,38 +45,88 @@ class FeaturedSectionController extends Controller
     protected $featuredSection;
 
     /**
+     * @var MerchantInterface
+     */
+    protected $merchant;
+
+    /**
      * Create a new controller instance.
      *
      * @param CampaignInterface $campaign
 	 * @param RestaurantInterface $restaurant
      * @param BlurbInterface $blurb
      * @param SnapShotInterface $snapShot
+     * @param FeaturedSectionInterface $featuredSection
+     * @param MerchantInterface $merchant
      * @return void
      */
-    public function __construct(CampaignInterface $campaign, RestaurantInterface $restaurant, BlurbInterface $blurb, SnapShotInterface $snapShot, FeaturedSectionInterface $featuredSection)
+    public function __construct(CampaignInterface $campaign, RestaurantInterface $restaurant, BlurbInterface $blurb, SnapShotInterface $snapShot, FeaturedSectionInterface $featuredSection, MerchantInterface $merchant)
     {
         $this->campaign = $campaign;
         $this->restaurant = $restaurant;
         $this->blurb = $blurb;
         $this->snapShot = $snapShot;
         $this->featuredSection = $featuredSection;
+        $this->merchant = $merchant;
     }
 
     /**
-     * Display blurb page.
+     * Display featured section index page.
      *
      * @return View
      */
     public function index()
     {
-    	/*$data = array(
-    			'featured_section' => $this->featuredSection->
-    		);*/
-        return view('featured_section.index');
+    	$data = array(
+			'featured_section' => $this->featuredSection->getAll(['merchant'], 'position')
+		);
+
+        return view('featured_section.index', $data);
     }
 
     /**
-     * Display blurb page.
+     * Display featured section create page.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function create()
+    {
+        $data = array(
+            'merchant' => $this->merchant->getAll()
+        );
+
+        return view('featured_section.create', $data);
+    }
+
+    /**
+     * Create a featured request.
+     *
+     * @param FeaturedRequest $request
+     * @return Redirect
+     */
+    public function store(FeaturedSectionRequest $request, ImageUploader $imageUploader)
+    {
+        $file = $request->file('slide_image');
+        
+        if ($this->featuredSection->updateByAttributes(['position' => $request->position], $request->except('_token'))) {
+
+            if (!in_array($file->getClientOriginalExtension(), array('gif', 'png', 'jpg', 'jpeg', 'PNG', 'JPG'))) {
+                return Response::json(array(
+                    'code' => 404,
+                    'message' => 'Invalid format',
+                ), 404);
+            }
+
+            $imageUploader->upload($file, $request->position, 500, 500, 'image_slides/', '/'.$request->position.'.jpg');
+
+            return redirect('featured-section/create');
+        }
+
+        return redirect('featured-section/create')->withInput();
+    }
+
+    /**
+     * Display featured section page.
      *
      * @return View
      */
@@ -85,7 +136,8 @@ class FeaturedSectionController extends Controller
         $data = array(
             'restaurant' => $this->restaurant->getByAttributes(['merchant_id' => Auth::user()->id], false),
             'campaign' => $campaign,
-            'blurbs' => $this->blurb->getAllByAttributes(['merchant_id' => Auth::user()->id, 'campaign_id' => $campaign->id, 'blurb_status' => ucfirst($cam_status)], 'created_at', 'DESC')
+            'blurbs' => $this->blurb->getAllByAttributes(['merchant_id' => Auth::user()->id, 'campaign_id' => $campaign->id, 'blurb_status' => ucfirst($cam_status)], 'created_at', 'DESC'),
+            'featured_section' => $this->featuredSection->getAll('position')
         );
 
         return view('blurb.view_blurbs', $data);

@@ -11,6 +11,7 @@ use Auth;
 use Admin\Repositories\Interfaces\CampaignInterface;
 use Admin\Repositories\Interfaces\SnapShotInterface;
 use Admin\Repositories\Interfaces\MerchantInterface;
+use Admin\Repositories\Interfaces\AppUserInterface;
 
 class DashboardController extends Controller
 {
@@ -35,20 +36,27 @@ class DashboardController extends Controller
     protected $merchant;
 
     /**
+     * @var AppUserInterface
+     */
+    protected $appUser;
+
+    /**
      * Create a new controller instance.
      *
      * @param CampaignInterface $campaign
      * @param RestaurantInterface $restaurant
      * @param SnapShotInterface $snapShot
      * @param MerchantInterface $merchant
+     * @param AppUserInterface $appUser
      * @return void
      */
-    public function __construct(CampaignInterface $campaign, RestaurantInterface $restaurant, SnapShotInterface $snapShot, MerchantInterface $merchant)
+    public function __construct(CampaignInterface $campaign, RestaurantInterface $restaurant, SnapShotInterface $snapShot, MerchantInterface $merchant, AppUserInterface $appUser)
     {
         $this->campaign = $campaign;
         $this->restaurant = $restaurant;
         $this->snapShot = $snapShot;
         $this->merchant = $merchant;
+        $this->appUser = $appUser;
     }
 
     /**
@@ -74,6 +82,12 @@ class DashboardController extends Controller
             'totalLiveCampaigns' => $this->campaign->getCount(),
             'thisWeekTotalLiveCampaignLikes' => $this->campaign->getAllThisWeek(['cam_status' => 'Live']),
             'lastWeekTotalLiveCampaignLikes' => $this->campaign->getAllLastWeek(['cam_status' => 'Live']),
+            'totalMerchants' => $this->merchant->getCount(),
+            'lastWeekMerchants' => $this->merchant->getAllLastWeek(),
+            'thisWeekMerchants' => $this->merchant->getAllThisWeek(),
+            'totalAppUser' => $this->appUser->getCount(),
+            'lastWeekAppUser' => $this->appUser->getAllLastWeek(),
+            'thisWeekAppUser' => $this->appUser->getAllThisWeek(),
 
         );
         

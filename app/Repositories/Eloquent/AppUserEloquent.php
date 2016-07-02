@@ -1,53 +1,43 @@
 <?php namespace Admin\Repositories\Eloquent;
 
-use Admin\Merchant;
-use Admin\Repositories\Interfaces\MerchantInterface;
+use Admin\AppUser;
+use Admin\Repositories\Interfaces\AppUserInterface;
 use Carbon\Carbon;
 
-class MerchantEloquent implements MerchantInterface
+class AppUserEloquent implements AppUserInterface
 {
     /**
-     * @var Merchant
+     * @var AppUser
      */
-    private $merchant;
+    private $appUser;
 
     /**
-     * Create a new Merchant Eloquent instance.
+     * Create a new AppUser Eloquent instance.
      *
-     * @param Merchant $merchant
+     * @param AppUser $appUser
      * @return void
      */
-    public function __construct(Merchant $merchant)
+    public function __construct(AppUser $appUser)
     {
-        $this->merchant = $merchant;
+        $this->appUser = $appUser;
     }
 
     /**
-     * Get all merchant.
-     *
-     * @return Merchant
-     */
-    public function getAll()
-    {
-        return $this->merchant->select('id', 'first_name','last_name','coy_name')->get()->toArray();
-    }
-
-    /**
-     * Get merchant by id.
+     * Get appUser by id.
      *
      * @param integer $id
      *
-     * @return Merchant
+     * @return AppUser
      */
     public function getById($id)
     {
-        return $this->merchant->find($id);
+        return $this->appUser->find($id);
     }
 
     /**
-     * Get all Merchant this week.
+     * Get all AppUser this week.
      *
-     * @return Merchant
+     * @return AppUser
      */
     public function getAllThisWeek()
     {
@@ -56,13 +46,13 @@ class MerchantEloquent implements MerchantInterface
         $last_sun = new Carbon('last sunday');
         $last_sunday = $last_sun->toDateString();
 
-        return $this->merchant->whereBetween('date_created', array($last_sunday, $today))->count();
+        return $this->appUser->whereBetween('date_created', array($last_sunday, $today))->count();
     }
 
     /**
-     * Get all Merchant last week.
+     * Get all AppUser last week.
      *
-     * @return Merchant
+     * @return AppUser
      */
     public function getAllLastWeek()
     {
@@ -72,21 +62,21 @@ class MerchantEloquent implements MerchantInterface
         $last_sun = new Carbon('last sunday');
         $last_last_sunday = $last_sun->subWeek()->toDateString();
 
-        return $this->merchant->whereBetween('date_created', array($last_last_sunday, $last_saturday))->count();
+        return $this->appUser->whereBetween('date_created', array($last_last_sunday, $last_saturday))->count();
     }
 
     /**
-     * Get count of Merchant.
+     * Get count of AppUser.
      *
      * @return integer
      */
     public function getCount()
     {
-        return $this->merchant->count();
+        return $this->appUser->count();
     }
     
     /**
-     * Update a merchant by id.
+     * Update a appUser by id.
      *
      * @param integer $id
      * @param array $payload
@@ -95,11 +85,11 @@ class MerchantEloquent implements MerchantInterface
      */
     public function updateById($id, array $payload)
     {
-        return $this->merchant->find($id)->update($payload);
+        return $this->appUser->find($id)->update($payload);
     }
 
     /**
-     * Update a merchant by attributes.
+     * Update a appUser by attributes.
      *
      * @param array $attributes
      * @param array $payload
@@ -108,17 +98,17 @@ class MerchantEloquent implements MerchantInterface
      */
     public function updateByAttributes(array $attributes, array $payload)
     {
-        return $this->merchant->where($attributes)->update($payload);
+        return $this->appUser->where($attributes)->update($payload);
     }
     /**
-     * Create new merchant.
+     * Create new appUser.
      *
      * @param array $payload
      *
-     * @return Merchant
+     * @return AppUser
      */
     public function create(array $payload)
     {
-        return $this->merchant->create($payload);
+        return $this->appUser->create($payload);
     }
 }

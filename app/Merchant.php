@@ -12,7 +12,7 @@ class Merchant extends Model
      * @var array
      */
     protected $fillable = [
-        'email', 'password', 'first_name', 'last_name', 'status', 'last_online', 'coy_name', 'coy_country', 'coy_add', 'coy_zip', 'coy_phone', 'coy_url',
+        'email', 'password', 'first_name', 'last_name', 'status', 'last_online', 'coy_name', 'coy_country', 'coy_add', 'coy_zip', 'coy_phone', 'coy_url', 'date_created',
     ];
 
     /**

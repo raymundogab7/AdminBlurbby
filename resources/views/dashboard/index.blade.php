@@ -112,17 +112,17 @@
                                     <div class="panel-icon"><i class="fa fa-cutlery"></i></div>
                                     <div class="media-body">
                                         <h5 class="md-title nomargin">Total Merchants</h5>
-                                        <h1 class="mt5">1,420</h1>
+                                        <h1 class="mt5">{{number_format($totalMerchants, 0)}}</h1>
                                     </div><!-- media-body -->
                                     <hr>
                                     <div class="clearfix mt20">
                                         <div class="pull-left">
                                             <h5 class="md-title nomargin">Last Week</h5>
-                                            <h4 class="nomargin">25</h4>
+                                            <h4 class="nomargin">{{number_format($lastWeekMerchants, 0)}}</h4>
                                         </div>
                                         <div class="pull-right">
                                             <h5 class="md-title nomargin">This Week</h5>
-                                            <h4 class="nomargin">104</h4>
+                                            <h4 class="nomargin">{{number_format($thisWeekMerchants, 0)}}</h4>
                                         </div>
                                     </div>
                                     
@@ -136,17 +136,17 @@
                                     <div class="panel-icon"><i class="fa fa-user"></i></div>
                                     <div class="media-body">
                                         <h5 class="md-title nomargin">Total App Users</h5>
-                                        <h1 class="mt5">3,210</h1>
+                                        <h1 class="mt5">{{number_format($totalAppUser, 0)}}</h1>
                                     </div><!-- media-body -->
                                     <hr>
                                     <div class="clearfix mt20">
                                         <div class="pull-left">
                                             <h5 class="md-title nomargin">Last Week</h5>
-                                            <h4 class="nomargin">164</h4>
+                                            <h4 class="nomargin">{{number_format($lastWeekAppUser, 0)}}</h4>
                                         </div>
                                         <div class="pull-right">
                                             <h5 class="md-title nomargin">This Week</h5>
-                                            <h4 class="nomargin">204</h4>
+                                            <h4 class="nomargin">{{number_format($thisWeekAppUser, 0)}}</h4>
                                         </div>
                                     </div>
                                     
@@ -184,7 +184,7 @@
 							<h2>Live Campaigns</h2>								
                             <div class="table-responsive">
                                 <table class="table table-primary" id="live_campaigns_table">
-                                    <thead class=""  style="background-color:#00B0ED">
+                                    <thead class="" style="background-color:#00B0ED">
                                         <tr>
                                         	<th>Restaurant Name</th>
                                             <th>Campaign Name</th>
