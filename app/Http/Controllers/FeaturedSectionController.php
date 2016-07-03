@@ -101,7 +101,7 @@ class FeaturedSectionController extends Controller
     /**
      * Create a featured request.
      *
-     * @param FeaturedRequest $request
+     * @param FeaturedSectionRequest $request
      * @return Redirect
      */
     public function store(FeaturedSectionRequest $request, ImageUploader $imageUploader)
@@ -119,7 +119,7 @@ class FeaturedSectionController extends Controller
 
             $imageUploader->upload($file, $request->position, 500, 500, 'image_slides/', '/'.$request->position.'.jpg');
 
-            return redirect('featured-section/create');
+            return redirect('featured-section/create')->with('message', 'Created Successfully.');
         }
 
         return redirect('featured-section/create')->withInput();
@@ -128,18 +128,88 @@ class FeaturedSectionController extends Controller
     /**
      * Display featured section page.
      *
+     * @param integer $id
      * @return View
      */
-    public function view($control_no, $cam_status)
+    public function edit($id)
     {
-        $campaign = $this->campaign->getByAttributes(['control_no' => $control_no], false);
         $data = array(
-            'restaurant' => $this->restaurant->getByAttributes(['merchant_id' => Auth::user()->id], false),
-            'campaign' => $campaign,
-            'blurbs' => $this->blurb->getAllByAttributes(['merchant_id' => Auth::user()->id, 'campaign_id' => $campaign->id, 'blurb_status' => ucfirst($cam_status)], 'created_at', 'DESC'),
-            'featured_section' => $this->featuredSection->getAll('position')
+            'featured_section' => $this->featuredSection->getByIdWithRelations($id, ['merchant']),
+            'merchant' => $this->merchant->getAll(),
         );
 
-        return view('blurb.view_blurbs', $data);
+        return view('featured_section.edit', $data);
+    }
+
+    /**
+     * Update a certain featured section.
+     *
+     * @param integer $id
+     * @param FeaturedSectionRequest $request
+     * @param ImageUploader $imageUploader
+     * @return View
+     */
+    public function update($id, FeaturedSectionRequest $request, ImageUploader $imageUploader)
+    {
+        $file = $request->file('slide_image');
+        
+        if($file != null)   
+        {
+            if (!in_array($file->getClientOriginalExtension(), array('gif', 'png', 'jpg', 'jpeg', 'PNG', 'JPG'))) {
+                return redirect('featured-section/'.$id.'/edit/')->with('error', 'Uploaded image is not valid.');
+            }
+
+            $imageUploader->upload($file, $request->position, 500, 500, 'image_slides/', '/'.$request->position.'.jpg');
+        }
+        
+        $to_update = $this->featuredSection->getByAttributes(['position' => $request->position], false);
+
+        $findSelected = $this->featuredSection->getById($id);
+
+        if ($this->featuredSection->updateByAttributes(['id' => $id], $request->except(['_token', '_method', 'featured_section_id']))) {
+
+            $this->featuredSection->updateById($to_update->id, ['position' => $findSelected->position]);
+
+            return redirect('featured-section/'.$id.'/edit/')->with('message', 'Updated Successfully.');
+        }
+
+        return redirect('featured-section/'.$id.'/edit/')->withInput();
+    }
+
+    /**
+     * Update positing of image slide
+     *
+     * @param integer $id
+     * @return View
+     */
+    public function move($id, $direction)
+    {
+        if($direction == 'down') {
+
+            if($id == 1) {
+                $findById = $this->featuredSection->getById($id);
+                $to_update = $this->featuredSection->updateByAttributes(['id' => 1], ['position' => "2"], false);
+                $to_update = $this->featuredSection->updateByAttributes(['id' => 2], ['position' => "1"], false);
+            }
+            
+            if($id == 2) {
+                $to_update = $this->featuredSection->updateByAttributes(['id' => 2], ['position' => "3"], false);    
+                $to_update = $this->featuredSection->updateByAttributes(['id' => 3], ['position' => "2"], false);
+            }
+        }
+        
+        else {
+            if($id == 2) {
+                $to_update = $this->featuredSection->updateByAttributes(['id' => 2], ['position' => "1"], false);    
+                $to_update = $this->featuredSection->updateByAttributes(['id' => 1], ['position' => "2"], false);
+            }
+
+            if($id == 3) {
+                $to_update = $this->featuredSection->updateByAttributes(['id' => 3], ['position' => "2"], false);    
+                $to_update = $this->featuredSection->updateByAttributes(['id' => 2], ['position' => "3"], false);
+            }
+        }
+
+        return redirect('featured-section')->withInput();
     }
 }

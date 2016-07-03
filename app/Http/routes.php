@@ -42,6 +42,7 @@ Route::group(['middleware' => ['auth']], function () {
     |--------------------------------------------------------------------------
      */
     Route::resource('featured-section', 'FeaturedSectionController', ['except' => ['show']]);
+    Route::get('featured-section/move/{featured_section_id}/{direction}', 'FeaturedSectionController@move');
 
     /*
     |--------------------------------------------------------------------------

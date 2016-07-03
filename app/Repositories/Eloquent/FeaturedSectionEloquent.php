@@ -46,6 +46,19 @@ class FeaturedSectionEloquent implements FeaturedSectionInterface
     }
 
     /**
+     * Get FeaturedSection by id.
+     *
+     * @param integer $id
+     * @param array $relations
+     *
+     * @return Admin
+     */
+    public function getByIdWithRelations($id, array $relations)
+    {
+        return $this->featuredSection->with($relations)->find($id);
+    }
+
+    /**
      * Get FeaturedSection by id and attributes.
      *
      * @param integer $id

@@ -23,10 +23,17 @@ class FeaturedSectionRequest extends Request
      */
     public function rules()
     {
+        if(is_null($this->featured_section_id)) {
+            return [
+                'position' => 'required',
+                'merchant_id' => 'required',
+                'slide_image' => 'required',
+                'status' => 'required',
+            ];    
+        }
         return [
             'position' => 'required',
             'merchant_id' => 'required',
-            'slide_image' => 'required',
             'status' => 'required',
         ];
     }

@@ -24,6 +24,16 @@ interface FeaturedSectionInterface
     public function getById($id);
 
     /**
+     * Get FeaturedSection by id.
+     *
+     * @param integer $id
+     * @param array $relations
+     *
+     * @return Admin
+     */
+    public function getByIdWithRelations($id, array $relations);
+
+    /**
      * Get FeaturedSection by attributes.
      *
      * @param array $attributes
