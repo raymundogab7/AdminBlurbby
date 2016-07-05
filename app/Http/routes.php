@@ -62,4 +62,8 @@ Route::group(['middleware' => ['auth']], function () {
     Route::post('campaigns/report/generate/{campaigns_id}', 'CampaignController@generateCampaignReport');
 
     Route::get('campaigns/getLastSevenDays/{campaigns_id}/{field}', 'CampaignController@getLastSevenDays');
+
+    Route::get('campaigns/search/{search_word}/{search_type}', 'CampaignController@getSearchResult');
+    Route::get('campaigns/search/show/{search_word}/{search_type}', 'CampaignController@getSearchResult');
 });
+

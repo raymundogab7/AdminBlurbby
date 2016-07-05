@@ -33,13 +33,62 @@ class CampaignEloquent implements CampaignInterface
     }
 
     /**
+     * Get total status campaigns.
+     *
+     * @return integer
+     */
+    public function getTotalCount()
+    {
+        return $this->campaign->count();
+    }
+
+    /**
+     * Get total campaigns in last 30 days.
+     *
+     * @return integer
+     */
+    public function getTotalMonth()
+    {
+        $today = Carbon::now('Asia/Singapore')->toDateString();
+        $timezone = new Carbon('Asia/Singapore');
+        $last_thirty_days = $timezone->subDays(30);
+
+        return $this->campaign->whereBetween('date_created', array($last_thirty_days, $today))->count();
+    }
+
+    /**
      * Get All Campaign.
      *
+     * @param boolean $paginate 
      * @return Campaign
      */
-    public function getAll()
+    public function getAll($paginate = false)
     {
-        return $this->campaign->with('restaurant')->orderBy('campaign_name')->get()->toArray();
+        if(!$paginate) {
+
+            return $this->campaign->with('restaurant')->get()->toArray();
+
+        }
+
+        return $this->campaign->with('restaurant')->orderBy('campaign_name')->paginate(10);
+    }
+
+    /**
+     * Get All Campaign by attributes.
+     *
+     * @param array $attributes
+     * @param boolean $paginate
+     * @return Campaign
+     */
+    public function getAllWithAttributes(array $attributes, $paginate = false)
+    {
+        if(!$paginate) {
+
+            return $this->campaign->where($attributes)->with('restaurant')->get()->toArray();
+
+        }
+
+        return $this->campaign->with('restaurant')->where($attributes)->orderBy('campaign_name')->paginate(10);
     }
 
     /**

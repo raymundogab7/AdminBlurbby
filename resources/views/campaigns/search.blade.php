@@ -94,7 +94,7 @@
 	                        <div class="well mt10">
 	                            <div class="row">
 	                                <div class="col-sm-9">
-	                                    <input type="text" id="input" placeholder="Which campaign are you looking for?" class="form-control">
+	                                    <input type="text" placeholder="Which campaign are you looking for?" class="form-control">
 	                                </div>
 	                                <div class="col-sm-3">
 	                                    <select id="search-type" class="width100p" data-placeholder="Search Type">
@@ -186,15 +186,6 @@
 	jQuery('#search-type').select2({
         minimumResultsForSearch: -1
     });
-	$('#search-type').change(function(){
-		$.ajax({
-			url: '/campaigns/search/'+ $('#input').val() + '/'+ $(this).val(),
-			success:function(data){
-				console.log(data);
-			}
-		});
-	})
-		
     jQuery(document).ready(function(){
 
         jQuery('#live_campaigns_table').DataTable({

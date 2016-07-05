@@ -28,6 +28,21 @@
                 </div><!-- pageheader -->
                 <div class="contentpanel">
                     <div class="row">
+                        @if(session('message'))
+
+                        <div class="alert alert-success">
+                            <strong>{{session('message')}}</strong>
+                        </div>
+
+                        @endif
+
+                        @if(session('error'))
+
+                        <div class="alert alert-danger">
+                           <strong>{{session('error')}}</strong>
+                        </div>
+
+                        @endif
                         {!! Form::open(array('url' => 'featured-section', 'class' => 'form-horizontal form-bordered', 'files' => true, 'enctype' => 'multipart/form-data')) !!}
                             <div class="form-group">
                                 <label class="col-sm-2 control-label" style="text-align:left;">Position *</label>
@@ -66,9 +81,9 @@
                                 <label class="col-sm-2 control-label" style="text-align:left;">Status *</label>
                                 <div class="col-sm-8">
                                     <select id="status" name="status" required="required" data-placeholder="Choose One" class="width300">
-                                        <option value="">Choose One</option>
+                                        <option value="" selected="selected">Choose One</option>
                                         <option value="Published">Published</option>
-                                        <option value="Unpublished" selected="selected">Unpublished</option>
+                                        <option value="Unpublished">Unpublished</option>
                                     </select>
                                 </div>
                             </div><!-- form-group -->

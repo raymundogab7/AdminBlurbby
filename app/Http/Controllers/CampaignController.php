@@ -72,9 +72,68 @@ class CampaignController extends Controller
 
         $data = array(
             'restaurant' => $this->restaurant->getByAttributes(['merchant_id' => Auth::user()->id], false),
-            'campaigns' => $this->campaign->getAll()
+            'campaigns' => $this->campaign->getAll(true),
+            'total_campaigns' => $this->campaign->getTotalCount(),
+            'total_last_thirty_days' => $this->campaign->getTotalMonth(),
+            'total_live_campaigns' => $this->campaign->getCount(),
+            'total_approved_campaigns' => $this->campaign->getCount('Approved'),
+            'total_rejected_campaigns' => $this->campaign->getCount('Rejected'),
+            'total_pending_approval_campaigns' => $this->campaign->getCount('Pending Approval'),
+            'total_draft_campaigns' => $this->campaign->getCount('Draft'),
+            'total_expired_campaigns' => $this->campaign->getCount('Expired'),
         );
+        return view('campaigns.index', $data);
+    }
 
+    /**
+     * Get search result page.
+     *
+     * @return View
+     */
+    public function getSearchResult($search_word, $search_type)
+    {
+        
+        
+        $this->blurb->deleteByAttributes(['merchant_id' => Auth::user()->id, 'blurb_name' => null]);
+
+        $data = array(
+            'restaurant' => $this->restaurant->getByAttributes(['merchant_id' => Auth::user()->id], false),
+            'campaigns' => $this->campaign->getAllWithAttributes(true),
+            'total_campaigns' => $this->campaign->getTotalCount(),
+            'total_last_thirty_days' => $this->campaign->getTotalMonth(),
+            'total_live_campaigns' => $this->campaign->getCount(),
+            'total_approved_campaigns' => $this->campaign->getCount('Approved'),
+            'total_rejected_campaigns' => $this->campaign->getCount('Rejected'),
+            'total_pending_approval_campaigns' => $this->campaign->getCount('Pending Approval'),
+            'total_draft_campaigns' => $this->campaign->getCount('Draft'),
+            'total_expired_campaigns' => $this->campaign->getCount('Expired'),
+        );
+        return view('campaigns.index', $data);
+    }
+
+    /**
+     * Display search result page.
+     *
+     * @return View
+     */
+    public function showSearchResult($search_word, $search_type)
+    {
+        
+        
+        $this->blurb->deleteByAttributes(['merchant_id' => Auth::user()->id, 'blurb_name' => null]);
+
+        $data = array(
+            'restaurant' => $this->restaurant->getByAttributes(['merchant_id' => Auth::user()->id], false),
+            'campaigns' => $this->campaign->getAll(true),
+            'total_campaigns' => $this->campaign->getTotalCount(),
+            'total_last_thirty_days' => $this->campaign->getTotalMonth(),
+            'total_live_campaigns' => $this->campaign->getCount(),
+            'total_approved_campaigns' => $this->campaign->getCount('Approved'),
+            'total_rejected_campaigns' => $this->campaign->getCount('Rejected'),
+            'total_pending_approval_campaigns' => $this->campaign->getCount('Pending Approval'),
+            'total_draft_campaigns' => $this->campaign->getCount('Draft'),
+            'total_expired_campaigns' => $this->campaign->getCount('Expired'),
+        );
         return view('campaigns.index', $data);
     }
 

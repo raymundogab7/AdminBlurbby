@@ -7,6 +7,20 @@ interface CampaignInterface
     /**
      * Get total status campaigns.
      *
+     * @return integer
+     */
+    public function getTotalCount();
+
+    /**
+     * Get total campaigns in last 30 days.
+     *
+     * @return integer
+     */
+    public function getTotalMonth();
+
+    /**
+     * Get total status campaigns.
+     *
      * @param string $status
      * @return Campaign
      */
@@ -18,6 +32,15 @@ interface CampaignInterface
      * @return Admin
      */
     public function getAll();
+
+    /**
+     * Get All Campaign by attributes.
+     *
+     * @param array $attributes
+     * @param boolean $paginate
+     * @return Campaign
+     */
+    public function getAllWithAttributes(array $attributes, $paginate = false);
 
     /**
      * Get all SnapShot this week.
