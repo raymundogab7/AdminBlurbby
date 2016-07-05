@@ -28,11 +28,11 @@
 	                    </div>
 	                </div><!-- media -->
 	            </div><!-- pageheader -->
-	            
+
 	            <div class="contentpanel">
-	                
+
 	                <div class="row row-stat">
-						<div class="col-md-12">			
+						<div class="col-md-12">
 							<a href="{{url('/featured-section/create')}}"><button class="btn btn-primary"><i class="fa fa-plus"></i> Create New Featured Slide</button></a>
 							<hr>
 	                        <div class="table-responsive">
@@ -47,26 +47,25 @@
 	                                  </tr>
 	                                </thead>
 	                                <tbody>
-	                        
 	                                  	<tr>
 	                                    	<td>{{$featured_section[0]['position']}}</td>
 											<td>{{$featured_section[0]['merchant']['coy_name']}}</td>
 											<td>{{$featured_section[0]['status']}}</td>
 											<td class="table-action">&nbsp;&nbsp;&nbsp;&nbsp;
-												<a href="{{ url('featured-section/move/'.$featured_section[0]['id'].'/down') }}" data-toggle="tooltip" title="Down" class="tooltips"><i class="fa fa-arrow-down"></i></a>
+												<a href="{{ url('featured-section/move/'.$featured_section[0]['merchant_id'].'/'.$featured_section[0]['id'].'/down') }}" data-toggle="tooltip" title="Down" class="tooltips"><i class="fa fa-arrow-down"></i></a>
 											</td>
 											<td class="table-action">
 												<a href="{{ url('featured-section/'.$featured_section[0]['id'].'/edit') }}" data-toggle="tooltip" title="Edit" class="tooltips"><i class="fa fa-pencil"></i></a>
 											</td>
 	                                  	</tr>
-	                               		
+
 	                               		<tr>
 	                                    	<td>{{$featured_section[1]['position']}}</td>
 											<td>{{$featured_section[1]['merchant']['coy_name']}}</td>
 											<td>{{$featured_section[1]['status']}}</td>
 											<td class="table-action">&nbsp;&nbsp;&nbsp;&nbsp;
-												<a href="" data-toggle="tooltip" title="Down" class="tooltips"><i class="fa fa-arrow-down"></i></a>
-												<a href="" data-toggle="tooltip" title="Down" class="tooltips"><i class="fa fa-arrow-up"></i></a>
+												<a href="{{ url('featured-section/move/'.$featured_section[1]['merchant_id'].'/'.$featured_section[1]['id'].'/down') }}" data-toggle="tooltip" title="Down" class="tooltips"><i class="fa fa-arrow-down"></i></a>
+												<a href="{{ url('featured-section/move/'.$featured_section[1]['merchant_id'].'/'.$featured_section[1]['id'].'/up') }}" data-toggle="tooltip" title="Down" class="tooltips"><i class="fa fa-arrow-up"></i></a>
 											</td>
 											<td class="table-action">
 												<a href="{{ url('featured-section/'.$featured_section[1]['id'].'/edit') }}" data-toggle="tooltip" title="Edit" class="tooltips"><i class="fa fa-pencil"></i></a>
@@ -78,7 +77,7 @@
 											<td>{{$featured_section[2]['merchant']['coy_name']}}</td>
 											<td>{{$featured_section[2]['status']}}</td>
 											<td class="table-action">&nbsp;&nbsp;&nbsp;&nbsp;
-												<a href="" data-toggle="tooltip" title="Down" class="tooltips"><i class="fa fa-arrow-up"></i></a>
+												<a href="{{ url('featured-section/move/'.$featured_section[2]['merchant_id'].'/'.$featured_section[2]['id'].'/up') }}" data-toggle="tooltip" title="Down" class="tooltips"><i class="fa fa-arrow-up"></i></a>
 											</td>
 											<td class="table-action">
 												<a href="{{ url('featured-section/'.$featured_section[2]['id'].'/edit') }}" data-toggle="tooltip" title="Edit" class="tooltips"><i class="fa fa-pencil"></i></a>
@@ -88,7 +87,7 @@
 	                                </tbody>
 	                            </table>
 	                        </div><!-- table-responsive -->
-	                    </div>                            
+	                    </div>
 	                </div><!-- row -->
 	            </div><!-- contentpanel -->
 	        </div><!-- mainpanel -->

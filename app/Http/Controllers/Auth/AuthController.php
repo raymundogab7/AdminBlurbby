@@ -2,15 +2,13 @@
 
 namespace Admin\Http\Controllers\Auth;
 
+use Admin\Http\Controllers\Controller;
+use Admin\Http\Requests\LoginRequest;
+use Admin\User;
 use Auth;
 use Illuminate\Foundation\Auth\AuthenticatesAndRegistersUsers;
 use Illuminate\Foundation\Auth\ThrottlesLogins;
-use Admin\Http\Controllers\Controller;
-use Admin\Http\Requests\LoginRequest;
-use Admin\Repositories\Interfaces\CuisineInterface;
-use Admin\User;
 use Validator;
-use Admin\Repositories\Interfaces\CampaignInterface;
 
 class AuthController extends Controller
 {
@@ -23,7 +21,7 @@ class AuthController extends Controller
     | authentication of existing users. By default, this controller uses
     | a simple trait to add these behaviors. Why don't you explore it?
     |
-    */
+     */
 
     use AuthenticatesAndRegistersUsers, ThrottlesLogins;
 
@@ -71,7 +69,7 @@ class AuthController extends Controller
             ->withErrors(true)
             ->withInput();
     }
-    
+
     /**
      * Get a validator for an incoming registration request.
      *
