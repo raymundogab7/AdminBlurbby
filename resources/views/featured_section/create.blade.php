@@ -47,7 +47,7 @@
                             <div class="form-group">
                                 <label class="col-sm-2 control-label" style="text-align:left;">Position *</label>
                                 <div class="col-sm-8">
-                                    
+
                                     <select id="position" required="required" data-placeholder="Choose One" class="width300" name="position">
                                         <option value="">Choose One</option>
                                         <option value="1" selected="selected">1</option>
@@ -56,7 +56,7 @@
                                     </select>
                                 </div>
                             </div><!-- form-group -->
-                            
+
                             <div class="form-group">
                                 <label class="col-sm-2 control-label" style="text-align:left;">Merchant Name *</label>
                                 <div class="col-sm-8">
@@ -68,15 +68,15 @@
                                     </select>
                                 </div>
                             </div><!-- form-group -->
-                            
+
                             <div class="form-group">
                                 <label class="col-sm-2 control-label" style="text-align:left;">Slide Image *</label>
                                 <div class="col-sm-5">
-                                    <input name="slide_image" required="required" type="file" />
+                                    <input name="slide_image_temp" required="required" type="file" />
                                     <span class="help-block">Must be at least 800px x 400px.</span>
                                 </div>
                             </div>
-                            
+
                             <div class="form-group">
                                 <label class="col-sm-2 control-label" style="text-align:left;">Status *</label>
                                 <div class="col-sm-8">
@@ -91,8 +91,8 @@
                             <button style="margin-left:15px;" class="btn btn-primary">Update</button>
                             <button style="margin-left:15px;" class="btn btn-danger">Delete</button>
                         {!! Form::close() !!}
-                    </div><!-- row -->  
-                
+                    </div><!-- row -->
+
                 </div><!-- contentpanel -->
             </div><!-- mainpanel -->
         </div><!-- mainwrapper -->
@@ -101,7 +101,7 @@
 
 @section('custom-js')
 <script>
-    
+
     // Select2
     jQuery('#position, #merchant, #status').select2({
         minimumResultsForSearch: -1

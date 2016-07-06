@@ -103,16 +103,18 @@ class FeaturedSectionController extends Controller
      */
     public function store(FeaturedSectionRequest $request, ImageUploader $imageUploader)
     {
-        $file = $request->file('slide_image');
+        $file = $request->file('slide_image_temp');
 
-        if ($this->featuredSection->updateByAttributes(['position' => $request->position], $request->except('_token'))) {
+        if (!in_array($file->getClientOriginalExtension(), array('gif', 'png', 'jpg', 'jpeg', 'PNG', 'JPG'))) {
+            return Response::json(array(
+                'code' => 404,
+                'message' => 'Invalid format',
+            ), 404);
+        }
 
-            if (!in_array($file->getClientOriginalExtension(), array('gif', 'png', 'jpg', 'jpeg', 'PNG', 'JPG'))) {
-                return Response::json(array(
-                    'code' => 404,
-                    'message' => 'Invalid format',
-                ), 404);
-            }
+        $request->merge(['slide_image' => 'image_slides/' . $request->position . '/' . $request->position . '.jpg']);
+
+        if ($this->featuredSection->updateByAttributes(['position' => $request->position], $request->except('_token', 'slide_image_temp'))) {
 
             $imageUploader->upload($file, $request->position, 500, 500, 'image_slides/', '/' . $request->position . '.jpg');
 
@@ -148,7 +150,7 @@ class FeaturedSectionController extends Controller
      */
     public function update($id, FeaturedSectionRequest $request, ImageUploader $imageUploader)
     {
-        $file = $request->file('slide_image');
+        $file = $request->file('slide_image_temp');
 
         if ($file != null) {
             if (!in_array($file->getClientOriginalExtension(), array('gif', 'png', 'jpg', 'jpeg', 'PNG', 'JPG'))) {
@@ -158,18 +160,21 @@ class FeaturedSectionController extends Controller
             $imageUploader->upload($file, $request->position, 500, 500, 'image_slides/', '/' . $request->position . '.jpg');
         }
 
+        $request->merge(['slide_image' => 'image_slides/' . $request->position . '/' . $request->position . '.jpg']);
+
         $to_update = $this->featuredSection->getByAttributes(['position' => $request->position], false);
 
         $findSelected = $this->featuredSection->getById($id);
 
-        if ($this->featuredSection->updateByAttributes(['id' => $id], $request->except(['_token', '_method', 'featured_section_id']))) {
+        if ($this->featuredSection->updateByAttributes(['position' => $to_update->position], $request->except(['_token', '_method', 'featured_section_id', 'position', 'slide_image_temp']))) {
+            if ($request->position != $findSelected->position) {
+                $this->featuredSection->updateById($id, ['merchant_id' => $to_update->merchant_id]);
+            }
 
-            $this->featuredSection->updateById($to_update->id, ['position' => $findSelected->position]);
-
-            return redirect('featured-section/' . $id . '/edit/')->with('message', 'Updated Successfully.');
+            return redirect('featured-section')->with('message', 'Updated Successfully.');
         }
 
-        return redirect('featured-section/' . $id . '/edit/')->withInput();
+        return redirect('featured-section')->withInput();
     }
 
     /**

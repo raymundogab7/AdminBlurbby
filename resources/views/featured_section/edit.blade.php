@@ -47,43 +47,43 @@
                             <div class="form-group">
                                 <label class="col-sm-2 control-label" style="text-align:left;">Position *</label>
                                 <div class="col-sm-8">
-                                    
+
                                     <select id="position" required="required" data-placeholder="Choose One" class="width300" name="position">
                                         <option value="">Choose One</option>
-                                        <option value="1" <?php if($featured_section->position == "1") :?> selected="selected" <?php endif; ?> >1</option>
-                                        <option value="2" <?php if($featured_section->position == "2") :?> selected="selected" <?php endif; ?> >2</option>
-                                        <option value="3" <?php if($featured_section->position == "3") :?> selected="selected" <?php endif; ?> >3</option>
+                                        <option value="1" <?php if ($featured_section->position == "1"): ?> selected="selected" <?php endif;?> >1</option>
+                                        <option value="2" <?php if ($featured_section->position == "2"): ?> selected="selected" <?php endif;?> >2</option>
+                                        <option value="3" <?php if ($featured_section->position == "3"): ?> selected="selected" <?php endif;?> >3</option>
                                     </select>
                                 </div>
                             </div><!-- form-group -->
-                            
+
                             <div class="form-group">
                                 <label class="col-sm-2 control-label" style="text-align:left;">Merchant Name *</label>
                                 <div class="col-sm-8">
                                     <select id="merchant" required="required" data-placeholder="Choose One" class="width300" name="merchant_id">
                                         <option value="">Choose One</option>
                                         @foreach($merchant as $m)
-                                        <option value="{{$m['id']}}" <?php if($featured_section->merchant->id == $m['id']) :?> selected="selected" <?php endif; ?> >{{$m['coy_name']}}</option>
+                                        <option value="{{$m['id']}}" <?php if ($featured_section->merchant->id == $m['id']): ?> selected="selected" <?php endif;?> >{{$m['coy_name']}}</option>
                                         @endforeach
                                     </select>
                                 </div>
                             </div><!-- form-group -->
-                            
+
                             <div class="form-group">
                                 <label class="col-sm-2 control-label" style="text-align:left;">Slide Image *</label>
                                 <div class="col-sm-5">
-                                    <input name="slide_image" type="file" />
+                                    <input name="slide_image_temp" type="file" />
                                     <span class="help-block">Must be at least 800px x 400px.</span>
                                 </div>
                             </div>
-                            
+
                             <div class="form-group">
                                 <label class="col-sm-2 control-label" style="text-align:left;">Status *</label>
                                 <div class="col-sm-8">
                                     <select id="status" name="status" required="required" data-placeholder="Choose One" class="width300">
                                         <option value="">Choose One</option>
-                                        <option <?php if($featured_section->status == "Published") :?> selected="selected" <?php endif; ?> value="Published">Published</option>
-                                        <option <?php if($featured_section->status == "Unpublished") :?> selected="selected" <?php endif; ?> value="Unpublished">Unpublished</option>
+                                        <option <?php if ($featured_section->status == "Published"): ?> selected="selected" <?php endif;?> value="Published">Published</option>
+                                        <option <?php if ($featured_section->status == "Unpublished"): ?> selected="selected" <?php endif;?> value="Unpublished">Unpublished</option>
                                     </select>
                                 </div>
                             </div><!-- form-group -->
@@ -92,8 +92,8 @@
                             <button style="margin-left:15px;" class="btn btn-primary">Update</button>
                             <button style="margin-left:15px;" class="btn btn-danger">Delete</button>
                         {!! Form::close() !!}
-                    </div><!-- row -->  
-                
+                    </div><!-- row -->
+
                 </div><!-- contentpanel -->
             </div><!-- mainpanel -->
         </div><!-- mainwrapper -->
@@ -102,7 +102,7 @@
 
 @section('custom-js')
 <script>
-    
+
     // Select2
     jQuery('#position, #merchant, #status').select2({
         minimumResultsForSearch: -1
