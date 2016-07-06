@@ -66,8 +66,6 @@ class CampaignController extends Controller
      */
     public function index()
     {
-        
-        
         $this->blurb->deleteByAttributes(['merchant_id' => Auth::user()->id, 'blurb_name' => null]);
 
         $data = array(
@@ -81,7 +79,8 @@ class CampaignController extends Controller
             'total_pending_approval_campaigns' => $this->campaign->getCount('Pending Approval'),
             'total_draft_campaigns' => $this->campaign->getCount('Draft'),
             'total_expired_campaigns' => $this->campaign->getCount('Expired'),
-        );
+        );/*echo "<pre>";
+        print_r($data['campaigns']);die;*/
         return view('campaigns.index', $data);
     }
 
@@ -98,7 +97,7 @@ class CampaignController extends Controller
 
         $data = array(
             'restaurant' => $this->restaurant->getByAttributes(['merchant_id' => Auth::user()->id], false),
-            'campaigns' => $this->campaign->getAllWithAttributes(true),
+            'campaigns' => $this->campaign->search($search_word, $search_type),
             'total_campaigns' => $this->campaign->getTotalCount(),
             'total_last_thirty_days' => $this->campaign->getTotalMonth(),
             'total_live_campaigns' => $this->campaign->getCount(),
@@ -107,8 +106,11 @@ class CampaignController extends Controller
             'total_pending_approval_campaigns' => $this->campaign->getCount('Pending Approval'),
             'total_draft_campaigns' => $this->campaign->getCount('Draft'),
             'total_expired_campaigns' => $this->campaign->getCount('Expired'),
+            'search_word' => $search_word,
         );
-        return view('campaigns.index', $data);
+       /* echo "<pre>";
+        print_r($data['campaigns']);die;*/
+        return view('campaigns.search', $data);
     }
 
     /**
@@ -333,7 +335,7 @@ class CampaignController extends Controller
      */
     public function generateReport(Request $request)
     {
-        $campaign = $this->campaign->getAllByAttributesWithRelations(['cam_status' => $request->cam_status, 'merchant_id' => Auth::user()->id], ['blurb', 'snapshot'], 'campaign_name');
+        $campaign = $this->campaign->getAllWithRelations(['blurb', 'snapshot'], 'campaign_name');
         $count_likes = 0;
 
         $c = array_map(function($structure) use ($count_likes){
@@ -350,7 +352,7 @@ class CampaignController extends Controller
             ];
         }, $campaign);
         
-        
+
         $generator = new GenerateReport();
 
         $report_type = array(

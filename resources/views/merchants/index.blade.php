@@ -1,6 +1,6 @@
 @extends('layouts.admin')
 
-@section('page-title', 'Campaigns')
+@section('page-title', 'Merchants')
 
 @section('custom-css')
 
@@ -22,9 +22,9 @@
 	                    <div class="media-body">
 	                        <ul class="breadcrumb">
 	                            <li><a href="index-admin.html"><i class="glyphicon glyphicon-home"></i></a></li>
-	                            <li>Campaigns</li>
+	                            <li>Merchants</li>
 	                        </ul>
-	                        <h4>Campaigns</h4>
+	                        <h4>Merchants</h4>
 	                    </div>
 	                </div><!-- media -->
 	            </div><!-- pageheader -->
@@ -34,12 +34,12 @@
 	                <div class="row">
 	                    <div class="col-sm-3">
 	                        
-	                        <h5 class="md-title">Campaigns</h5>
+	                        <h5 class="md-title">Merchants</h5>
 	                        <ul class="nav nav-pills nav-stacked nav-contacts">
 	                            <li class="active">
 	                                <a href="#">
-	                                    <table><tr><td style="width:100%;">All Campaigns</td>
-	                                    <td><span class="badge pull-right">{{$total_campaigns}}</span></td></tr></table>
+	                                    <table><tr><td style="width:100%;">All Merchants</td>
+	                                    <td><span class="badge pull-right">{{$total_merchants}}</span></td></tr></table>
 	                                </a>
 	                            </li>
 	                            <li>
@@ -50,38 +50,26 @@
 	                            </li>
 	                            <li>
 	                                <a href="#">
-	                                    <table><tr><td style="width:100%;">Live</td>
-	                                    <td><span class="badge pull-right">{{$total_live_campaigns}}</span></td></tr></table>
-	                                </a>
-	                            </li>
-	                            <li>
-	                                <a href="#">
 	                                    <table><tr><td style="width:100%;">Approved</td>
-	                                    <td><span class="badge pull-right">{{$total_approved_campaigns}}</span></td></tr></table>
+	                                    <td><span class="badge pull-right">{{$total_approved_merchants}}</span></td></tr></table>
 	                                </a>
 	                            </li>
 	                            <li>
 	                                <a href="#">
-	                                    <table><tr><td style="width:100%;">Rejected</td>
-	                                    <td><span class="badge pull-right">{{$total_rejected_campaigns}}</span></td></tr></table>
+	                                    <table><tr><td style="width:100%;">Blocked</td>
+	                                    <td><span class="badge pull-right">{{$total_blocked_merchants}}</span></td></tr></table>
 	                                </a>
 	                            </li>
 	                            <li>
 	                                <a href="#">
-	                                    <table><tr><td style="width:100%;">Pending Approval</td>
-	                                    <td><span class="badge pull-right">{{$total_pending_approval_campaigns}}</span></td></tr></table>
+	                                    <table><tr><td style="width:100%;">Pending Admin Approval</td>
+	                                    <td><span class="badge pull-right">{{$total_pending_admin_approval_merchants}}</span></td></tr></table>
 	                                </a>
 	                            </li>
 	                            <li>
 	                                <a href="#">
-	                                    <table><tr><td style="width:100%;">Draft</td>
-	                                    <td><span class="badge pull-right">{{$total_draft_campaigns}}</span></td></tr></table>
-	                                </a>
-	                            </li>
-	                            <li>
-	                                <a href="#">
-	                                    <table><tr><td style="width:100%;">Expired</td>
-	                                    <td><span class="badge pull-right">{{$total_expired_campaigns}}</span></td></tr></table>
+	                                    <table><tr><td style="width:100%;">Pending Email Verification</td>
+	                                    <td><span class="badge pull-right">{{$total_pending_email_verification}}</span></td></tr></table>
 	                                </a>
 	                            </li>
 	                        </ul>
@@ -107,10 +95,10 @@
 	                            </div>
 	                        </div><!-- well -->
 
-							{!! Form::open(array('url' => 'campaigns/report/generate', 'style' => 'display:inline;', 'class' => 'form-horizontal form-bordered')) !!}
+							{!! Form::open(array('url' => 'merchants/report/generate', 'style' => 'display:inline;', 'class' => 'form-horizontal form-bordered')) !!}
 								<button class="btn btn-info"><i class="fa fa-file-excel-o"></i>&nbsp;Download List (.csv)</button>
 							{!! Form::close() !!}
-							<a href="{{url('campaigns/create')}}">
+							<a href="{{url('merchants/create')}}">
 								<button class="btn btn-primary"><i class="fa fa-plus"></i> Add New Campaign</button>
 							</a>
 	                        
@@ -118,57 +106,54 @@
 	                        
 	                        <div class="pull-right">
 	                            
-	                            @if ($campaigns->lastPage() > 1)
+	                            @if ($merchants->lastPage() > 1)
 								<ul class="pagination pagination-split pagination-sm pagination-contact">
-								    <li class="{{ ($campaigns->currentPage() == 1) ? ' disabled' : '' }}">
-								        <a href="{{ $campaigns->url(1) }}"><i class="fa fa-angle-left"></i></a>
+								    <li class="{{ ($merchants->currentPage() == 1) ? ' disabled' : '' }}">
+								        <a href="{{ $merchants->url(1) }}"><i class="fa fa-angle-left"></i></a>
 								    </li>
-								    @for ($i = 1; $i <= $campaigns->lastPage(); $i++)
-								        <li class="{{ ($campaigns->currentPage() == $i) ? ' active' : '' }}">
-								            <a href="{{ $campaigns->url($i) }}">{{ $i }}</a>
+								    @for ($i = 1; $i <= $merchants->lastPage(); $i++)
+								        <li class="{{ ($merchants->currentPage() == $i) ? ' active' : '' }}">
+								            <a href="{{ $merchants->url($i) }}">{{ $i }}</a>
 								        </li>
 								    @endfor
-								    <li class="{{ ($campaigns->currentPage() == $campaigns->lastPage()) ? ' disabled' : '' }}">
-								        <a href="{{ ($campaigns->currentPage() == $campaigns->lastPage()) ? '#' : $campaigns->url($campaigns->currentPage()+1) }}" ><i class="fa fa-angle-right"></i></a>
+								    <li class="{{ ($merchants->currentPage() == $merchants->lastPage()) ? ' disabled' : '' }}">
+								        <a href="{{ ($merchants->currentPage() == $merchants->lastPage()) ? '#' : $merchants->url($merchants->currentPage()+1) }}" ><i class="fa fa-angle-right"></i></a>
 								    </li>
 								</ul>
 								@endif
 	                        </div>
-	                        <h3 class="xlg-title">All Campaigns</h3>
+	                        <h3 class="xlg-title">All Merchants</h3>
 	                       
 	                        <div class="list-group contact-group">
-	                        	@foreach($campaigns as $campaign)
-	                            <a href="admin-campaign-details.html" class="list-group-item">
+	                        	@foreach($merchants as $merchant)
+	                            <a href="{{url('merchants/'.$merchant['id'].'/edit')}}" class="list-group-item">
 	                                <div class="media">
 	                                    <div class="pull-left">
-	                                    	@if(!is_null($campaign['restaurant']['res_logo']))
-	                                    	<img class="img-roundedcircle img-online" src="http://blurbby.merchant.loc/{{$campaign['restaurant']['res_logo']}}/profile_picture.jpg" alt="...">
+	                                    	@if(!is_null($merchant['restaurant']['res_logo']))
+	                                    	<img class="img-roundedcircle img-online" src="http://blurbby.merchant.loc/{{$merchant['restaurant']['res_logo']}}/profile_picture.jpg" alt="...">
 	                                    	@else
 	                                        <img class="img-roundedcircle img-online" src="images/photos/user1.png" alt="...">
 	                                        @endif
 	                                    </div>
 	                                    <div class="media-body">
-	                                        <h4 class="media-heading">{{$campaign['campaign_name']}}</h4>
+	                                        <h4 class="media-heading">{{$merchant['coy_name']}}</h4>
 	                                        <div class="media-content">
-	                                            <i class="fa fa-calendar"></i> <strong>{{date_format(date_create($campaign['cam_start']), 'd-M-Y')}}</strong> to <strong>{{date_format(date_create($campaign['cam_end']), 'd-M-Y')}}</strong>
+	                                            <i class="fa fa-clock-o"></i> Last online at {{date_format(date_create($merchant['last_online']), 'd-M-Y H:i:s')}}
 	                                            <ul class="list-unstyled">
-													<li><i class="fa fa-cutlery"></i> {{$campaign['merchant']['coy_name']}}</li>
+													<li><i class="fa fa-briefcase"></i> {{$merchant['coy_name']}}</li> 
 													<li><i class="fa fa-toggle-on"></i> 
-													@if($campaign['cam_status'] == 'Approved')
+													@if($merchant['status'] == 'Approved')
 					                            	<span class="text-success">
-					                            	@elseif($campaign['cam_status'] == 'Draft')
-					                            	<span class="text-info">
-					                            	@elseif($campaign['cam_status'] == 'Live')
-					                            	<span class="text-success">
-					                            	@elseif($campaign['cam_status'] == 'Rejected')
-					                            	<span class="text-danger">
-					                            	@elseif($campaign['cam_status'] == 'Expired')
+					                            	@elseif($merchant['status'] == 'Blocked')
 					                            	<span class="text-muted">
-					                            	@else
+					                            	@elseif($merchant['status'] == 'Pending Admin Approval')
 					                            	<span class="text-warning">
+					                            	
 					                            	@endif
-													<strong>{{$campaign['cam_status']}}</strong></span></small></li>
-	                                                <li><i class="fa fa-tags"></i> {{ \Admin\Blurb::where('campaign_id', $campaign['id'])->count()}} blurbs</li>
+													<strong>{{$merchant['status']}}</strong></span></small></li>
+	                                                
+	                                            	<li><i class="fa fa-phone"></i> +6597547690</li>
+													<li><i class="fa fa-envelope-o"></i> contact@starbucks.com.sg</li>
 	                                            </ul>
 	                                        </div>
 	                                    </div>
@@ -195,13 +180,13 @@
     });
 	$('#search-type').change(function(){
 		/*$.ajax({
-			url: '/campaigns/search/'+ $('#input').val() + '/'+ $(this).val(),
+			url: '/merchants/search/'+ $('#input').val() + '/'+ $(this).val(),
 			success:function(data){
 				console.log(data);
 			}
 		});*/
 		if($(this).val() != "" && $('#input').val() != "") {
-			window.location.href = $('#search_url').val()+'/campaigns/search/'+$('#input').val()+'/'+$(this).val();	
+			window.location.href = $('#search_url').val()+'/merchants/search/'+$('#input').val()+'/'+$(this).val();	
 		}
 		
 		
@@ -209,7 +194,7 @@
 		
     jQuery(document).ready(function(){
 
-        jQuery('#live_campaigns_table').DataTable({
+        jQuery('#live_merchants_table').DataTable({
             responsive: true,
             order: []
         });

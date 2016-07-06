@@ -94,19 +94,22 @@
 	                        <div class="well mt10">
 	                            <div class="row">
 	                                <div class="col-sm-9">
-	                                    <input type="text" placeholder="Which campaign are you looking for?" class="form-control">
+	                                    <input type="text" id="input" value="{{$search_word}}" placeholder="Which campaign are you looking for?" class="form-control">
 	                                </div>
 	                                <div class="col-sm-3">
 	                                    <select id="search-type" class="width100p" data-placeholder="Search Type">
 	                                        <option value="">Choose One</option>
-	                                        <option value="Campaign Name">Campaign Name</option>
-	                                        <option value="Restaurant Name">Restaurant Name</option>
-	                                        <option value="Company Name">Company Name</option>
+	                                        <option value="Campaign">Campaign Name</option>
+	                                        <option value="Restaurant">Restaurant Name</option>
+	                                        <option value="Company">Company Name</option>
 	                                    </select>
 	                                </div>
 	                            </div>
 	                        </div><!-- well -->
-							<a href=""><button class="btn btn-info"><i class="fa fa-file-excel-o"></i>&nbsp;Download List (.csv)</button></a><a href="admin-campaign-details.html"><button class="btn btn-primary"><i class="fa fa-plus"></i> Add New Campaign</button></a>
+	                        {!! Form::open(array('url' => 'campaigns/report/generate', 'style' => 'display:inline;', 'class' => 'form-horizontal form-bordered')) !!}
+								<button class="btn btn-info"><i class="fa fa-file-excel-o"></i>&nbsp;Download List (.csv)</button>
+							{!! Form::close() !!}
+							<a href="admin-campaign-details.html"><button class="btn btn-primary"><i class="fa fa-plus"></i> Add New Campaign</button></a>
 	                        
 	                        <hr />
 	                        
@@ -129,14 +132,18 @@
 								@endif
 	                        </div>
 	                        <h3 class="xlg-title">All Campaigns</h3>
-	                       
+	                       	@if(count($campaigns) == 0)<br>
+		                    <div class="alert alert-danger">
+		                        <strong>No results found.</strong>
+		                    </div>
+		                    @endif
 	                        <div class="list-group contact-group">
 	                        	@foreach($campaigns as $campaign)
 	                            <a href="admin-campaign-details.html" class="list-group-item">
 	                                <div class="media">
 	                                    <div class="pull-left">
-	                                    	@if(!is_null($campaign['restaurant']['res_logo']))
-	                                    	<img class="img-roundedcircle img-online" src="http://blurbby.merchant.loc/{{$campaign['restaurant']['res_logo']}}/profile_picture.jpg" alt="...">
+	                                    	@if(!is_null($campaign['res_logo']))
+	                                    	<img class="img-roundedcircle img-online" src="http://blurbby.merchant.loc/{{$campaign['res_logo']}}/profile_picture.jpg" alt="...">
 	                                    	@else
 	                                        <img class="img-roundedcircle img-online" src="images/photos/user1.png" alt="...">
 	                                        @endif
@@ -146,7 +153,7 @@
 	                                        <div class="media-content">
 	                                            <i class="fa fa-calendar"></i> <strong>{{date_format(date_create($campaign['cam_start']), 'd-M-Y')}}</strong> to <strong>{{date_format(date_create($campaign['cam_end']), 'd-M-Y')}}</strong>
 	                                            <ul class="list-unstyled">
-													<li><i class="fa fa-cutlery"></i> {{$campaign['restaurant']['res_name']}}</li>
+													<li><i class="fa fa-cutlery"></i> {{$campaign['coy_name']}}</li>
 													<li><i class="fa fa-toggle-on"></i> 
 													@if($campaign['cam_status'] == 'Approved')
 					                            	<span class="text-success">
@@ -186,6 +193,20 @@
 	jQuery('#search-type').select2({
         minimumResultsForSearch: -1
     });
+	$('#search-type').change(function(){
+		/*$.ajax({
+			url: '/campaigns/search/'+ $('#input').val() + '/'+ $(this).val(),
+			success:function(data){
+				console.log(data);
+			}
+		});*/
+		if($(this).val() != "" || $('#input').val() != "" || $('#input').val() != "undefined") {
+			window.location.href = '/campaigns/search/'+$('#input').val()+'/'+$(this).val();	
+		}
+		
+		
+	})
+	
     jQuery(document).ready(function(){
 
         jQuery('#live_campaigns_table').DataTable({

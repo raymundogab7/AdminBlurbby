@@ -23,4 +23,9 @@ class Merchant extends Model
     protected $hidden = [
         'password', 'remember_token',
     ];
+
+    public function restaurant()
+    {
+        return $this->belongsTo('Admin\Restaurant', 'id', 'merchant_id');
+    }
 }

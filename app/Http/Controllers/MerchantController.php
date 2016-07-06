@@ -6,16 +6,16 @@ use Auth;
 use Illuminate\Http\Request;
 use Admin\Http\Requests\AdminRequest;
 use Admin\Repositories\Interfaces\CuisineInterface;
-use Admin\Repositories\Interfaces\AdminInterface;
+use Admin\Repositories\Interfaces\MerchantInterface;
 use Admin\Repositories\Interfaces\OutletInterface;
 use Admin\Repositories\Interfaces\RestaurantCuisineInterface;
 use Admin\Repositories\Interfaces\RestaurantInterface;
 use Admin\Repositories\Interfaces\SnapShotInterface;
 
-class AdminController extends Controller
+class MerchantController extends Controller
 {
     /**
-     * @var AdminInterface
+     * @var MerchantInterface
      */
     protected $merchant;
 
@@ -47,7 +47,7 @@ class AdminController extends Controller
     /**
      * Create a new controller instance.
      *
-     * @param AdminInterface $merchant
+     * @param MerchantInterface $merchant
      * @param RestaurantInterface $restaurant
      * @param RestaurantCuisineInterface $restaurantCuisine
      * @param OutletInterface $outlet
@@ -55,7 +55,7 @@ class AdminController extends Controller
      * @return void
      */
     public function __construct(
-        AdminInterface $merchant,
+        MerchantInterface $merchant,
         RestaurantInterface $restaurant,
         RestaurantCuisineInterface $restaurantCuisine,
         SnapshotInterface $snapshot,
@@ -77,30 +77,19 @@ class AdminController extends Controller
      */
     public function index()
     {
-        $merchant_id = Auth::user()->id;
-
-        $restaurant = $this->restaurant->getByAttributes(['merchant_id' => $merchant_id], false);
-
-        $selected_cuisines = $this->restaurantCuisine->getByAttributesWithRelations(['restaurant_id' => $restaurant->id], ['cuisine'])->toArray();
-
-        $cuisines_id = array_map(function ($structure) {
-
-            return $structure['cuisine']['id'];
-
-        }, $selected_cuisines);
-
         $data = array(
-            'merchant' => $this->merchant->getById($merchant_id),
-            'restaurant' => $restaurant,
-            'snapshot' => $this->snapshot->getByAttributes(['merchant_id' => $merchant_id]),
-            'outlet' => $this->outlet->getByAttributes(['merchant_id' => $merchant_id, 'main' => 1], false),
-            'outlets' => $this->outlet->getByAttributes(['merchant_id' => $merchant_id, 'main' => 0]),
-            'restaurant_cuisine' => $selected_cuisines,
-            'cuisines' => $this->cuisine->getAll(),
-            'cuisines_id' => $cuisines_id,
-        );
-
-        return view('merchant.profile', $data);
+            'merchants' => $this->merchant->getAll(true),
+            'total_merchants' => $this->merchant->getTotalCount(),
+            'total_last_thirty_days' => $this->merchant->getTotalMonth(),
+            'total_live_merchants' => $this->merchant->getCount(),
+            'total_pending_admin_approval_merchants' => $this->merchant->getCount(0),
+            'total_approved_merchants' => $this->merchant->getCount(1),
+            'total_blocked_merchants' => $this->merchant->getCount(2),
+            'total_pending_email_verification' => $this->merchant->getCount(3),
+            
+        );/*echo "<pre>";
+        print_r($data['merchants']);die;*/
+        return view('merchants.index', $data);
     }
 
     /**

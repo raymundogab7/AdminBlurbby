@@ -1,6 +1,8 @@
 <?php namespace Admin\Repositories\Eloquent;
 
 use Admin\Campaign;
+use Admin\Restaurant;
+use Admin\Merchant;
 use Admin\Repositories\Interfaces\CampaignInterface;
 use Carbon\Carbon;
 
@@ -66,11 +68,11 @@ class CampaignEloquent implements CampaignInterface
     {
         if(!$paginate) {
 
-            return $this->campaign->with('restaurant')->get()->toArray();
+            return $this->campaign->with('restaurant')->with(['merchant' => function($query){ $query->select('id', 'coy_name');}])->get()->toArray();
 
         }
 
-        return $this->campaign->with('restaurant')->orderBy('campaign_name')->paginate(10);
+        return $this->campaign->with('restaurant')->with(['merchant' => function($query){ $query->select('id', 'coy_name');}])->orderBy('campaign_name')->paginate(10);
     }
 
     /**
@@ -89,6 +91,58 @@ class CampaignEloquent implements CampaignInterface
         }
 
         return $this->campaign->with('restaurant')->where($attributes)->orderBy('campaign_name')->paginate(10);
+    }
+
+    /**
+     * Search campaings
+     *
+     * @param array $attributes
+     * @param string $search_field
+     * @param boolean $paginate
+     * @return Campaign
+     */
+    public function search($search_word, $search_type)
+    {
+        if($search_type == 'Campaign') {
+           /*return $this->campaign->with(['restaurant'=>function($query){
+
+        }])
+        ->where('campaign_name', 'LIKE', '%'.$search_word.'%')
+        ->orderBy('campaign_name')
+        ->paginate(10);*/
+        return Campaign::select('campaign.*','restaurant.id', 'restaurant.res_name', 'res_logo', 'merchant.id', 'merchant.coy_name')
+            ->leftJoin('restaurant', 'campaign.merchant_id', '=', 'restaurant.merchant_id')
+            ->leftJoin('merchant', 'campaign.merchant_id', '=', 'merchant.id')
+            ->where('campaign.campaign_name', 'LIKE', '%'.$search_word.'%')
+            ->orderBy('campaign.campaign_name')
+            ->paginate(10);
+        }
+
+        if($search_type == 'Restaurant') {
+            /*return $this->campaign->with(['restaurant'=>function($query) use($search_word){
+                $query->where('res_name', 'LIKE', '%'.$search_word.'%');
+        }])
+        ->orderBy('campaign_name')
+        ->paginate(10);*/
+        return Campaign::select('campaign.*','restaurant.id', 'restaurant.res_name', 'res_logo', 'merchant.id', 'merchant.coy_name')
+        ->leftJoin('restaurant', 'campaign.merchant_id', '=', 'restaurant.merchant_id')
+        ->leftJoin('merchant', 'campaign.merchant_id', '=', 'merchant.id')
+        ->where('restaurant.res_name', 'LIKE', '%'.$search_word.'%')
+        ->orderBy('campaign.campaign_name')
+        ->paginate(10);
+        }
+
+        if($search_type == 'Company') {
+            return Campaign::select('campaign.*','restaurant.id', 'restaurant.res_name', 'res_logo', 'merchant.id', 'merchant.coy_name')
+                ->leftJoin('restaurant', 'campaign.merchant_id', '=', 'restaurant.merchant_id')
+                ->leftJoin('merchant', 'campaign.merchant_id', '=', 'merchant.id')
+                ->where('merchant.coy_name', 'LIKE', '%'.$search_word.'%')
+                ->orderBy('campaign.campaign_name')
+                ->paginate(10);
+            
+        }
+
+        return abort(404);
     }
 
     /**
@@ -175,6 +229,19 @@ class CampaignEloquent implements CampaignInterface
     public function getAllByAttributes(array $attributes, $orderBy = '', $sort = 'ASC')
     {
         return $this->campaign->where($attributes)->orderBy($orderBy, $sort)->get()->toArray();
+    }
+
+    /**
+     * Get all Campaign with relationships
+     *
+     * @param array $relations
+     * @param string $orderBy
+     * @param string $sort
+     * @return Campaign
+     */
+    public function getAllWithRelations(array $relations, $orderBy = '', $sort = 'ASC')
+    {
+        return $this->campaign->with($relations)->orderBy($orderBy, $sort)->get()->toArray();
     }
 
     /**

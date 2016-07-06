@@ -31,4 +31,9 @@ class Campaign extends Model
     {
         return $this->hasOne('Admin\Restaurant', 'merchant_id', 'merchant_id');
     }
+
+    public function merchant()
+    {
+        return $this->belongsTo('Admin\Merchant', 'merchant_id', 'id');
+    }
 }

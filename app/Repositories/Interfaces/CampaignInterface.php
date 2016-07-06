@@ -34,6 +34,16 @@ interface CampaignInterface
     public function getAll();
 
     /**
+     * Get all Campaign with relationships
+     *
+     * @param array $relations
+     * @param string $orderBy
+     * @param string $sort
+     * @return Campaign
+     */
+    public function getAllWithRelations(array $relations, $orderBy = '', $sort = 'ASC');
+
+    /**
      * Get All Campaign by attributes.
      *
      * @param array $attributes
@@ -41,6 +51,16 @@ interface CampaignInterface
      * @return Campaign
      */
     public function getAllWithAttributes(array $attributes, $paginate = false);
+
+    /**
+     * Search campaings
+     *
+     * @param array $attributes
+     * @param string $search_field
+     * @param boolean $paginate
+     * @return Campaign
+     */
+    public function search($search_field, $search_type);
 
     /**
      * Get all SnapShot this week.

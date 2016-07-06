@@ -1,4 +1,4 @@
-@extends('layouts.merchant')
+@extends('layouts.admin')
 
 @section('page-title', $restaurant->res_name . ' Add New Campaign')
 
@@ -14,7 +14,7 @@
 <section>
     <div class="mainwrapper">
     
-        @include('layouts.sidebar-merchant', ['restaurant' => $restaurant])
+        @include('layouts.sidebar-admin', ['restaurant' => $restaurant])
 
         <div class="mainpanel">
             <div class="pageheader">

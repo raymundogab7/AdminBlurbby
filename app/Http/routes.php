@@ -65,5 +65,27 @@ Route::group(['middleware' => ['auth']], function () {
 
     Route::get('campaigns/search/{search_word}/{search_type}', 'CampaignController@getSearchResult');
     Route::get('campaigns/search/show/{search_word}/{search_type}', 'CampaignController@getSearchResult');
+
+    /*
+    |--------------------------------------------------------------------------
+    | Merchant Route
+    |--------------------------------------------------------------------------
+     */
+    Route::resource('merchants', 'MerchantController');
+    Route::put('merchant/withdraw/{merchant_id}', 'MerchantControllerr@withdraw');
+    Route::put('merchant/updateStatus/{merchant_id}', 'MerchantControllerr@updateStatus');
+    Route::put('merchant/updateCamRead/{merchant_id}', 'MerchantControllerr@updateCamRead');
+    Route::post('merchant/markAllAsRead', 'MerchantControllerr@markAllAsRead');
+    Route::post('merchant/duplicate/{merchant_id}', 'MerchantControllerr@duplicate');
+
+    Route::put('merchant/updateNotifNotToRead/{notification_id}', 'NotificationsController@updateNotifNotToRead');
+    Route::put('merchant/updateNotifToRead/{notification_id}', 'NotificationsController@updateNotifToRead');
+    Route::post('merchant/report/generate', 'MerchantControllerr@generateReport');
+    Route::post('merchant/report/generate/{merchant_id}', 'MerchantControllerr@generateCampaignReport');
+
+    Route::get('merchant/getLastSevenDays/{merchant_id}/{field}', 'MerchantControllerr@getLastSevenDays');
+
+    Route::get('merchant/search/{search_word}/{search_type}', 'MerchantControllerr@getSearchResult');
+    Route::get('merchant/search/show/{search_word}/{search_type}', 'MerchantControllerr@getSearchResult');
 });
 
