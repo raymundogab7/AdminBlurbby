@@ -2,16 +2,17 @@
 
 namespace Admin\Http\Controllers;
 
-use Auth;
-use Illuminate\Http\Request;
 use Admin\Http\Requests\CampaignRequest;
-use Admin\Repositories\Interfaces\CampaignInterface;
-use Admin\Repositories\Interfaces\RestaurantInterface;
+use Admin\Merchant;
 use Admin\Repositories\Interfaces\BlurbInterface;
+use Admin\Repositories\Interfaces\CampaignInterface;
 use Admin\Repositories\Interfaces\NotificationInterface;
+use Admin\Repositories\Interfaces\RestaurantInterface;
+use Admin\Repositories\Interfaces\SnapShotInterface;
 use Admin\Services\GenerateReport;
 use Admin\SnapShot;
-use Admin\Repositories\Interfaces\SnapShotInterface;
+use Auth;
+use Illuminate\Http\Request;
 
 class CampaignController extends Controller
 {
@@ -79,7 +80,7 @@ class CampaignController extends Controller
             'total_pending_approval_campaigns' => $this->campaign->getCount('Pending Approval'),
             'total_draft_campaigns' => $this->campaign->getCount('Draft'),
             'total_expired_campaigns' => $this->campaign->getCount('Expired'),
-        );/*echo "<pre>";
+        ); /*echo "<pre>";
         print_r($data['campaigns']);die;*/
         return view('campaigns.index', $data);
     }
@@ -91,8 +92,7 @@ class CampaignController extends Controller
      */
     public function getSearchResult($search_word, $search_type)
     {
-        
-        
+
         $this->blurb->deleteByAttributes(['merchant_id' => Auth::user()->id, 'blurb_name' => null]);
 
         $data = array(
@@ -108,7 +108,7 @@ class CampaignController extends Controller
             'total_expired_campaigns' => $this->campaign->getCount('Expired'),
             'search_word' => $search_word,
         );
-       /* echo "<pre>";
+        /* echo "<pre>";
         print_r($data['campaigns']);die;*/
         return view('campaigns.search', $data);
     }
@@ -120,8 +120,7 @@ class CampaignController extends Controller
      */
     public function showSearchResult($search_word, $search_type)
     {
-        
-        
+
         $this->blurb->deleteByAttributes(['merchant_id' => Auth::user()->id, 'blurb_name' => null]);
 
         $data = array(
@@ -149,14 +148,14 @@ class CampaignController extends Controller
     {
         $this->blurb->deleteByAttributes(['merchant_id' => Auth::user()->id, 'blurb_name' => null]);
 
-        if(! $campaign = $this->campaign->getByIdAndAttiributes($id, ['merchant_id' => Auth::user()->id])){
+        if (!$campaign = $this->campaign->getByIdAndAttiributes($id, ['merchant_id' => Auth::user()->id])) {
             return abort(404);
         }
 
         $data = array(
             'restaurant' => $this->restaurant->getByAttributes(['merchant_id' => Auth::user()->id], false),
             'campaign' => $campaign,
-            'blurbs' => $this->blurb->getAllByAttributes(['merchant_id' => Auth::user()->id, 'campaign_id' => $id], 'created_at', 'DESC')
+            'blurbs' => $this->blurb->getAllByAttributes(['merchant_id' => Auth::user()->id, 'campaign_id' => $id], 'created_at', 'DESC'),
         );
 
         return view('campaigns.view', $data);
@@ -170,7 +169,8 @@ class CampaignController extends Controller
     public function create()
     {
         $data = [
-            'restaurant' => $this->restaurant->getByAttributes(['merchant_id' => Auth::user()->id], false)
+            'restaurant' => $this->restaurant->getByAttributes(['merchant_id' => Auth::user()->id], false),
+            'merchants' => Merchant::where('status', '!=', 3)->orderBy('coy_name')->get()->toArray(),
         ];
 
         return view('campaigns.create', $data);
@@ -190,7 +190,7 @@ class CampaignController extends Controller
 
         if ($this->campaign->create($request->all())) {
 
-            return redirect('blurb/create/'.$control_no);
+            return redirect('blurb/create/' . $control_no);
         }
 
         return redirect('campaign/create')->withInput();
@@ -205,13 +205,13 @@ class CampaignController extends Controller
     public function duplicate($id)
     {
         //$request->merge(array('merchant_id' => Auth::user()->id, 'cam_status' => 'Pending Approval'));
-        
+
         $campaign = $this->campaign->getByIdAndAttiributes($id, ['merchant_id' => Auth::user()->id])->toArray();
 
         $campaign['cam_status'] = 'Draft';
-        
+
         if ($duplicated_campaign = $this->campaign->create($campaign)) {
-            
+
             $duplicate_blurbs = $this->blurb->getAllByAttributes(['campaign_id' => $id, 'merchant_id' => Auth::user()->id], 'blurb_name', 'DESC');
 
             foreach ($duplicate_blurbs as $key => $value) {
@@ -220,10 +220,10 @@ class CampaignController extends Controller
                 $this->blurb->create($value);
             }
 
-            return redirect('campaign/'.$id)->with('message', 'Successfully duplicated.');
+            return redirect('campaign/' . $id)->with('message', 'Successfully duplicated.');
         }
 
-        return redirect('campaign/'.$id)->withInput()->with('message_error', 'Error while duplicating campaign. Please try again.');
+        return redirect('campaign/' . $id)->withInput()->with('message_error', 'Error while duplicating campaign. Please try again.');
     }
 
     /**
@@ -247,11 +247,11 @@ class CampaignController extends Controller
      */
     public function update($id, CampaignRequest $request)
     {
-        if($this->campaign->updateById($id, $request->all())){
-             return redirect('campaign/'.$id)->with('message', 'Successfully updated.');
+        if ($this->campaign->updateById($id, $request->all())) {
+            return redirect('campaign/' . $id)->with('message', 'Successfully updated.');
         }
 
-        return redirect('campaign/'.$id)->withInput()->with('message_error', 'Error while deleting campaign. Please try again.');
+        return redirect('campaign/' . $id)->withInput()->with('message_error', 'Error while deleting campaign. Please try again.');
     }
 
     /**
@@ -261,10 +261,10 @@ class CampaignController extends Controller
      */
     public function markAllAsRead()
     {
-        if($this->campaign->updateByAttributes(['merchant_id' => Auth::user()->id], ['cam_read' => 1])){
+        if ($this->campaign->updateByAttributes(['merchant_id' => Auth::user()->id], ['cam_read' => 1])) {
 
             $this->notification->updateByAttributes(['merchant_id' => Auth::user()->id], ['seen' => 1]);
-            
+
             return response()->json(['result' => true]);
         }
 
@@ -278,25 +278,23 @@ class CampaignController extends Controller
      */
     public function updateStatus($id, Request $request)
     {
-        if(empty($this->blurb->getAllByAttributes(['campaign_id' => $id, 'merchant_id' => Auth::user()->id], 'created_at'))) {
-            return redirect('campaign/'.$id)->withInput()->with('message_error', 'There are no blurbs in this campaign.');     
-        }
-        
-        if(!$this->campaign->updateById($id, $request->all())){
-            return redirect('campaign/'.$id)->withInput()->with('message_error', 'Error while updating campaign. Please try again.');     
+        if (empty($this->blurb->getAllByAttributes(['campaign_id' => $id, 'merchant_id' => Auth::user()->id], 'created_at'))) {
+            return redirect('campaign/' . $id)->withInput()->with('message_error', 'There are no blurbs in this campaign.');
         }
 
-        
+        if (!$this->campaign->updateById($id, $request->all())) {
+            return redirect('campaign/' . $id)->withInput()->with('message_error', 'Error while updating campaign. Please try again.');
+        }
 
-        if($request->cam_status == 'Draft'){
+        if ($request->cam_status == 'Draft') {
             $duplicate_blurbs = $this->blurb->updateByAttributes(['campaign_id' => $id, 'merchant_id' => Auth::user()->id], ['blurb_status' => 'Created'], 'DESC');
 
             $request->cam_status = 'Created';
         }
 
-        $test =$this->blurb->updateByAttributesWithCondition(['merchant_id' => Auth::user()->id, 'campaign_id' => $id], ['blurb_status' => $request->cam_status]);
+        $test = $this->blurb->updateByAttributesWithCondition(['merchant_id' => Auth::user()->id, 'campaign_id' => $id], ['blurb_status' => $request->cam_status]);
 
-        return redirect('campaign/'.$id)->with('message', 'Successfully updated.');
+        return redirect('campaign/' . $id)->with('message', 'Successfully updated.');
     }
 
     /**
@@ -306,8 +304,8 @@ class CampaignController extends Controller
      */
     public function updateCamRead($id, Request $request)
     {
-        if($this->campaign->updateById($id, $request->all())){
-             return response()->json(['result' => true]);
+        if ($this->campaign->updateById($id, $request->all())) {
+            return response()->json(['result' => true]);
         }
 
         return response()->json(['result' => false]);
@@ -321,11 +319,11 @@ class CampaignController extends Controller
      */
     public function destroy($id)
     {
-        if($this->campaign->delete($id)) {
+        if ($this->campaign->delete($id)) {
             return redirect('campaign')->with('message', 'Successfully deleted.');
         }
 
-        return redirect('campaign/'.$id)->withInput()->with('message_error', 'Error while deleting campaign. Please try again.');
+        return redirect('campaign/' . $id)->withInput()->with('message_error', 'Error while deleting campaign. Please try again.');
     }
 
     /**
@@ -338,7 +336,7 @@ class CampaignController extends Controller
         $campaign = $this->campaign->getAllWithRelations(['blurb', 'snapshot'], 'campaign_name');
         $count_likes = 0;
 
-        $c = array_map(function($structure) use ($count_likes){
+        $c = array_map(function ($structure) use ($count_likes) {
 
             return [
                 'Campaign Name' => $structure['campaign_name'],
@@ -351,7 +349,6 @@ class CampaignController extends Controller
                 'No. of Usage' => Snapshot::where(['campaign_id' => $structure['id'], 'merchant_id' => Auth::user()->id])->sum('snapshot_usage'),
             ];
         }, $campaign);
-        
 
         $generator = new GenerateReport();
 
@@ -373,8 +370,7 @@ class CampaignController extends Controller
         //$campaign = $this->campaign->getAllByAttributesWithRelations(['id' => $id, 'cam_status' => $request->cam_status, 'merchant_id' => Auth::user()->id], ['blurb', 'snapshot'], 'campaign_name');
         $snapshots = Snapshot::with('campaign')->where(['campaign_id' => $id, 'merchant_id' => Auth::user()->id])->get()->toArray();
 
-        
-        $c = array_map(function($structure) use ($id, $snapshots){
+        $c = array_map(function ($structure) use ($id, $snapshots) {
 
             return [
                 'Campaign Name' => $structure['campaign']['campaign_name'],

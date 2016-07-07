@@ -13,7 +13,7 @@
 
 <section>
     <div class="mainwrapper">
-    
+
         @include('layouts.sidebar-admin', ['restaurant' => $restaurant])
 
         <div class="mainpanel">
@@ -24,7 +24,7 @@
                     </div>
                     <div class="media-body">
                         <ul class="breadcrumb">
-                            <li><a href="index.html"><i class="glyphicon glyphicon-home"></i></a></li>
+                            <li><a href="{{url('campaigns')}}"><i class="glyphicon glyphicon-home"></i></a></li>
                             <li>Add New Campaign</li>
                         </ul>
                         <h4>Add New Campaign</h4>
@@ -61,8 +61,20 @@
                     </div>
 
 	                @endif
-					{!! Form::open(array('url' => 'campaign', 'style' => 'display:inline;', 'class' => 'form-horizontal form-bordered')) !!}
+					<form class="form-horizontal form-bordered" style="display:inline;" action="{{url('camapaign')}}" method="POST">
 
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label" style="text-align:left;">Merchant Name *</label>
+                            <div class="col-sm-8">
+
+                                <select id="select_merchants" data-placeholder="Choose One" style="width:100%;" tabindex="-1" title="" class="select2-offscreen">
+                                    <option value="">Choose One</option>
+                                    @foreach($merchants as $merchant)
+                                    <option value="{{$merchant['id']}}">{{$merchant['coy_name']}}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
 						<div class="form-group">
 							<label class="col-sm-2 control-label" style="text-align:left;">Campaign Name *</label>
 							<div class="col-sm-8">
@@ -84,7 +96,7 @@
 							<div class="col-sm-8">
 								<div class="input-group">
                                     <!-- <input type="text" class="form-control" placeholder="DD-MMM-YYYY" id="datepicker" required> -->
-                                    {!! Form::text('cam_start', null, ['readonly' => 'readonly', 'required' => 'required', 'id' => 'datepicker', 'placeholder' => 'YYYY-MM-DD', 'class' => 'form-control']) !!}
+                                    {!! Form::text('cam_start', null, ['required' => 'required', 'id' => 'datepicker', 'placeholder' => 'YYYY-MM-DD', 'class' => 'form-control']) !!}
                                     <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
                                 </div><!-- input-group -->
 							</div>
@@ -95,7 +107,7 @@
 							<div class="col-sm-8">
 								<div class="input-group">
                                     <!-- <input type="text" class="form-control" placeholder="DD-MMM-YYYY" id="datepicker2" required> -->
-                                    {!! Form::text('cam_end', null, ['readonly' => 'readonly', 'required' => 'required' ,'id' => 'datepicker2', 'placeholder' => 'YYYY-MM-DD', 'class' => 'form-control']) !!}
+                                    {!! Form::text('cam_end', null, ['required' => 'required' ,'id' => 'datepicker2', 'placeholder' => 'YYYY-MM-DD', 'class' => 'form-control']) !!}
                                     <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
                                 </div><!-- input-group -->
 							</div>
@@ -105,7 +117,7 @@
 
 						<button style="margin-left:15px;" class="btn btn-primary">Create and Add New Blurbs</button>
 
-					{!! Form::close() !!}
+					</form>
 
 					<a href="{{url('campaign')}}"><button style="margin-left:15px;" class="btn btn-default">Cancel</button></a>
 				</div>
@@ -126,13 +138,13 @@
 <script type="text/javascript">
 
 	// Date Picker
-	jQuery('#datepicker').datepicker({ 
+	jQuery('#datepicker').datepicker({
         dateFormat: 'yy-mm-dd',
         minDate: 0, // 0 days offset = today
         onSelect: function(dateText) {
             $sD = new Date(dateText);
             $("input#datepicker2").datepicker('option', 'minDate', dateText);
-        } 
+        }
     });
 	jQuery('#datepicker2').datepicker({
          dateFormat: 'yy-mm-dd',
@@ -140,10 +152,12 @@
          onSelect: function(dateText) {
             $sD = new Date(dateText);
             $("input#datepicker").datepicker('option', 'maxDate', dateText);
-        } 
+        }
 
     });
-
+    jQuery('#select_merchants').select2({
+        minimumResultsForSearch: -1
+    });
 </script>
 
 @endsection

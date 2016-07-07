@@ -1,7 +1,6 @@
 <?php namespace Admin\Repositories\Eloquent;
 
 use Admin\Merchant;
-use Admin\Restaurant;
 use Admin\Repositories\Interfaces\MerchantInterface;
 use Carbon\Carbon;
 
@@ -60,12 +59,12 @@ class MerchantEloquent implements MerchantInterface
     /**
      * Get All Merchant.
      *
-     * @param boolean $paginate 
+     * @param boolean $paginate
      * @return Merchant
      */
     public function getAll($paginate = false)
     {
-        if(!$paginate) {
+        if (!$paginate) {
 
             return $this->merchant->with('restaurant')->get()->toArray();
 
@@ -83,7 +82,7 @@ class MerchantEloquent implements MerchantInterface
      */
     public function getAllWithAttributes(array $attributes, $paginate = false)
     {
-        if(!$paginate) {
+        if (!$paginate) {
 
             return $this->merchant->where($attributes)->with('restaurant')->get()->toArray();
 
@@ -102,43 +101,43 @@ class MerchantEloquent implements MerchantInterface
      */
     public function search($search_word, $search_type)
     {
-        if($search_type == 'Merchant') {
-           /*return $this->merchant->with(['restaurant'=>function($query){
+        if ($search_type == 'Merchant') {
+            /*return $this->merchant->with(['restaurant'=>function($query){
 
-        }])
-        ->where('coy_name', 'LIKE', '%'.$search_word.'%')
-        ->orderBy('coy_name')
-        ->paginate(10);*/
-        return Merchant::select('merchant.*','restaurant.id', 'restaurant.res_name', 'res_logo', 'merchant.id', 'merchant.coy_name')
-            ->leftJoin('restaurant', 'merchant.merchant_id', '=', 'restaurant.merchant_id')
-            ->leftJoin('merchant', 'merchant.merchant_id', '=', 'merchant.id')
-            ->where('merchant.coy_name', 'LIKE', '%'.$search_word.'%')
-            ->orderBy('merchant.coy_name')
-            ->paginate(10);
-        }
-
-        if($search_type == 'Restaurant') {
-            /*return $this->merchant->with(['restaurant'=>function($query) use($search_word){
-                $query->where('res_name', 'LIKE', '%'.$search_word.'%');
-        }])
-        ->orderBy('coy_name')
-        ->paginate(10);*/
-        return Merchant::select('merchant.*','restaurant.id', 'restaurant.res_name', 'res_logo', 'merchant.id', 'merchant.coy_name')
-        ->leftJoin('restaurant', 'merchant.merchant_id', '=', 'restaurant.merchant_id')
-        ->leftJoin('merchant', 'merchant.merchant_id', '=', 'merchant.id')
-        ->where('restaurant.res_name', 'LIKE', '%'.$search_word.'%')
-        ->orderBy('merchant.coy_name')
-        ->paginate(10);
-        }
-
-        if($search_type == 'Company') {
-            return Merchant::select('merchant.*','restaurant.id', 'restaurant.res_name', 'res_logo', 'merchant.id', 'merchant.coy_name')
+            }])
+            ->where('coy_name', 'LIKE', '%'.$search_word.'%')
+            ->orderBy('coy_name')
+            ->paginate(10);*/
+            return Merchant::select('merchant.*', 'restaurant.id', 'restaurant.res_name', 'res_logo', 'merchant.id', 'merchant.coy_name')
                 ->leftJoin('restaurant', 'merchant.merchant_id', '=', 'restaurant.merchant_id')
                 ->leftJoin('merchant', 'merchant.merchant_id', '=', 'merchant.id')
-                ->where('merchant.coy_name', 'LIKE', '%'.$search_word.'%')
+                ->where('merchant.coy_name', 'LIKE', '%' . $search_word . '%')
                 ->orderBy('merchant.coy_name')
                 ->paginate(10);
-            
+        }
+
+        if ($search_type == 'Restaurant') {
+            /*return $this->merchant->with(['restaurant'=>function($query) use($search_word){
+            $query->where('res_name', 'LIKE', '%'.$search_word.'%');
+            }])
+            ->orderBy('coy_name')
+            ->paginate(10);*/
+            return Merchant::select('merchant.*', 'restaurant.id', 'restaurant.res_name', 'res_logo', 'merchant.id', 'merchant.coy_name')
+                ->leftJoin('restaurant', 'merchant.merchant_id', '=', 'restaurant.merchant_id')
+                ->leftJoin('merchant', 'merchant.merchant_id', '=', 'merchant.id')
+                ->where('restaurant.res_name', 'LIKE', '%' . $search_word . '%')
+                ->orderBy('merchant.coy_name')
+                ->paginate(10);
+        }
+
+        if ($search_type == 'Company') {
+            return Merchant::select('merchant.*', 'restaurant.id', 'restaurant.res_name', 'res_logo', 'merchant.id', 'merchant.coy_name')
+                ->leftJoin('restaurant', 'merchant.merchant_id', '=', 'restaurant.merchant_id')
+                ->leftJoin('merchant', 'merchant.merchant_id', '=', 'merchant.id')
+                ->where('merchant.coy_name', 'LIKE', '%' . $search_word . '%')
+                ->orderBy('merchant.coy_name')
+                ->paginate(10);
+
         }
 
         return abort(404);
@@ -147,34 +146,32 @@ class MerchantEloquent implements MerchantInterface
     /**
      * Get all Merchant this week.
      *
-     * @param array $attributes
      * @return Merchant
      */
-    public function getAllThisWeek(array $attributes)
+    public function getAllThisWeek()
     {
         $now = Carbon::today();
         $today = $now->toDateString();
         $last_sun = new Carbon('last sunday');
         $last_sunday = $last_sun->toDateString();
 
-        return $this->merchant->where($attributes)->whereBetween('date_created', array($last_sunday, $today))->count();
+        return $this->merchant->whereBetween('date_created', array($last_sunday, $today))->count();
     }
 
     /**
      * Get all Merchant last week.
      *
-     * @param array $attributes
      * @return Merchant
      */
-    public function getAllLastWeek(array $attributes)
+    public function getAllLastWeek()
     {
         $last_sat = new Carbon('last saturday');
         $last_saturday = $last_sat->toDateString();
-        
+
         $last_sun = new Carbon('last sunday');
         $last_last_sunday = $last_sun->subWeek()->toDateString();
 
-        return $this->merchant->where($attributes)->whereBetween('date_created', array($last_last_sunday, $last_saturday))->count();
+        return $this->merchant->whereBetween('date_created', array($last_last_sunday, $last_saturday))->count();
     }
 
     /**

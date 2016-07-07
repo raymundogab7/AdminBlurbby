@@ -65,18 +65,16 @@ interface MerchantInterface
     /**
      * Get all SnapShot this week.
      *
-     * @param array $attributes
      * @return merchant
      */
-    public function getAllThisWeek(array $attributes);
+    public function getAllThisWeek();
 
     /**
      * Get all merchant last week.
      *
-     * @param array $attributes
      * @return merchant
      */
-    public function getAllLastWeek(array $attributes);
+    public function getAllLastWeek();
 
     /**
      * Get merchant by id.

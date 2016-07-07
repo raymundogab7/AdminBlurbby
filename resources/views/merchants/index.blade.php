@@ -28,12 +28,12 @@
 	                    </div>
 	                </div><!-- media -->
 	            </div><!-- pageheader -->
-	            
+
 	            <div class="contentpanel">
-	                
+
 	                <div class="row">
 	                    <div class="col-sm-3">
-	                        
+
 	                        <h5 class="md-title">Merchants</h5>
 	                        <ul class="nav nav-pills nav-stacked nav-contacts">
 	                            <li class="active">
@@ -73,12 +73,12 @@
 	                                </a>
 	                            </li>
 	                        </ul>
-	                        
+
 	                        <hr />
-	                        
+
 	                    </div><!-- col-sm-3 -->
 	                    <div class="col-sm-9">
-	                        
+
 	                        <div class="well mt10">
 	                            <div class="row">
 	                                <div class="col-sm-9">
@@ -101,11 +101,11 @@
 							<a href="{{url('merchants/create')}}">
 								<button class="btn btn-primary"><i class="fa fa-plus"></i> Add New Campaign</button>
 							</a>
-	                        
+
 	                        <hr />
-	                        
+
 	                        <div class="pull-right">
-	                            
+
 	                            @if ($merchants->lastPage() > 1)
 								<ul class="pagination pagination-split pagination-sm pagination-contact">
 								    <li class="{{ ($merchants->currentPage() == 1) ? ' disabled' : '' }}">
@@ -123,16 +123,16 @@
 								@endif
 	                        </div>
 	                        <h3 class="xlg-title">All Merchants</h3>
-	                       
+
 	                        <div class="list-group contact-group">
 	                        	@foreach($merchants as $merchant)
 	                            <a href="{{url('merchants/'.$merchant['id'].'/edit')}}" class="list-group-item">
 	                                <div class="media">
 	                                    <div class="pull-left">
 	                                    	@if(!is_null($merchant['restaurant']['res_logo']))
-	                                    	<img class="img-roundedcircle img-online" src="http://blurbby.merchant.loc/{{$merchant['restaurant']['res_logo']}}/profile_picture.jpg" alt="...">
+	                                    	<img class="img-roundedcircle img-online" src="{{env('IMG_URL').$merchant['restaurant']['res_logo']}}/profile_picture.jpg" alt="...">
 	                                    	@else
-	                                        <img class="img-roundedcircle img-online" src="images/photos/user1.png" alt="...">
+	                                        <img class="img-roundedcircle img-online" src="{{env('IMG_URL')}}images/photos/user1.png" alt="...">
 	                                        @endif
 	                                    </div>
 	                                    <div class="media-body">
@@ -140,18 +140,18 @@
 	                                        <div class="media-content">
 	                                            <i class="fa fa-clock-o"></i> Last online at {{date_format(date_create($merchant['last_online']), 'd-M-Y H:i:s')}}
 	                                            <ul class="list-unstyled">
-													<li><i class="fa fa-briefcase"></i> {{$merchant['coy_name']}}</li> 
-													<li><i class="fa fa-toggle-on"></i> 
+													<li><i class="fa fa-briefcase"></i> {{$merchant['coy_name']}}</li>
+													<li><i class="fa fa-toggle-on"></i>
 													@if($merchant['status'] == 'Approved')
 					                            	<span class="text-success">
 					                            	@elseif($merchant['status'] == 'Blocked')
 					                            	<span class="text-muted">
 					                            	@elseif($merchant['status'] == 'Pending Admin Approval')
 					                            	<span class="text-warning">
-					                            	
+
 					                            	@endif
 													<strong>{{$merchant['status']}}</strong></span></small></li>
-	                                                
+
 	                                            	<li><i class="fa fa-phone"></i> +6597547690</li>
 													<li><i class="fa fa-envelope-o"></i> contact@starbucks.com.sg</li>
 	                                            </ul>
@@ -162,7 +162,7 @@
 	                            @endforeach
 	                        </div><!-- list-group -->
 	                    </div><!-- col-sm-9 -->
-	                </div><!-- row -->  
+	                </div><!-- row -->
 	            </div><!-- contentpanel -->
 			</div><!-- mainpanel -->
 	    </div><!-- mainwrapper -->
@@ -186,12 +186,12 @@
 			}
 		});*/
 		if($(this).val() != "" && $('#input').val() != "") {
-			window.location.href = $('#search_url').val()+'/merchants/search/'+$('#input').val()+'/'+$(this).val();	
+			window.location.href = $('#search_url').val()+'/merchants/search/'+$('#input').val()+'/'+$(this).val();
 		}
-		
-		
+
+
 	})
-		
+
     jQuery(document).ready(function(){
 
         jQuery('#live_merchants_table').DataTable({

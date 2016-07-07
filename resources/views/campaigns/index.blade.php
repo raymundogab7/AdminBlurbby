@@ -28,12 +28,12 @@
 	                    </div>
 	                </div><!-- media -->
 	            </div><!-- pageheader -->
-	            
+
 	            <div class="contentpanel">
-	                
+
 	                <div class="row">
 	                    <div class="col-sm-3">
-	                        
+
 	                        <h5 class="md-title">Campaigns</h5>
 	                        <ul class="nav nav-pills nav-stacked nav-contacts">
 	                            <li class="active">
@@ -85,12 +85,12 @@
 	                                </a>
 	                            </li>
 	                        </ul>
-	                        
+
 	                        <hr />
-	                        
+
 	                    </div><!-- col-sm-3 -->
 	                    <div class="col-sm-9">
-	                        
+
 	                        <div class="well mt10">
 	                            <div class="row">
 	                                <div class="col-sm-9">
@@ -110,14 +110,14 @@
 							{!! Form::open(array('url' => 'campaigns/report/generate', 'style' => 'display:inline;', 'class' => 'form-horizontal form-bordered')) !!}
 								<button class="btn btn-info"><i class="fa fa-file-excel-o"></i>&nbsp;Download List (.csv)</button>
 							{!! Form::close() !!}
-							<a href="{{url('campaigns/create')}}">
+							<a href="{{url('/campaigns/create')}}">
 								<button class="btn btn-primary"><i class="fa fa-plus"></i> Add New Campaign</button>
 							</a>
-	                        
+
 	                        <hr />
-	                        
+
 	                        <div class="pull-right">
-	                            
+
 	                            @if ($campaigns->lastPage() > 1)
 								<ul class="pagination pagination-split pagination-sm pagination-contact">
 								    <li class="{{ ($campaigns->currentPage() == 1) ? ' disabled' : '' }}">
@@ -135,16 +135,16 @@
 								@endif
 	                        </div>
 	                        <h3 class="xlg-title">All Campaigns</h3>
-	                       
+
 	                        <div class="list-group contact-group">
 	                        	@foreach($campaigns as $campaign)
 	                            <a href="admin-campaign-details.html" class="list-group-item">
 	                                <div class="media">
 	                                    <div class="pull-left">
 	                                    	@if(!is_null($campaign['restaurant']['res_logo']))
-	                                    	<img class="img-roundedcircle img-online" src="http://blurbby.merchant.loc/{{$campaign['restaurant']['res_logo']}}/profile_picture.jpg" alt="...">
+	                                    	<img class="img-roundedcircle img-online" src="{{env('IMG_URL').$campaign['restaurant']['res_logo']}}/profile_picture.jpg" alt="...">
 	                                    	@else
-	                                        <img class="img-roundedcircle img-online" src="images/photos/user1.png" alt="...">
+	                                        <img class="img-roundedcircle img-online" src="{{env('IMG_URL')}}images/photos/user1.png" alt="...">
 	                                        @endif
 	                                    </div>
 	                                    <div class="media-body">
@@ -153,7 +153,7 @@
 	                                            <i class="fa fa-calendar"></i> <strong>{{date_format(date_create($campaign['cam_start']), 'd-M-Y')}}</strong> to <strong>{{date_format(date_create($campaign['cam_end']), 'd-M-Y')}}</strong>
 	                                            <ul class="list-unstyled">
 													<li><i class="fa fa-cutlery"></i> {{$campaign['merchant']['coy_name']}}</li>
-													<li><i class="fa fa-toggle-on"></i> 
+													<li><i class="fa fa-toggle-on"></i>
 													@if($campaign['cam_status'] == 'Approved')
 					                            	<span class="text-success">
 					                            	@elseif($campaign['cam_status'] == 'Draft')
@@ -177,7 +177,7 @@
 	                            @endforeach
 	                        </div><!-- list-group -->
 	                    </div><!-- col-sm-9 -->
-	                </div><!-- row -->  
+	                </div><!-- row -->
 	            </div><!-- contentpanel -->
 			</div><!-- mainpanel -->
 	    </div><!-- mainwrapper -->
@@ -201,12 +201,12 @@
 			}
 		});*/
 		if($(this).val() != "" && $('#input').val() != "") {
-			window.location.href = $('#search_url').val()+'/campaigns/search/'+$('#input').val()+'/'+$(this).val();	
+			window.location.href = $('#search_url').val()+'/campaigns/search/'+$('#input').val()+'/'+$(this).val();
 		}
-		
-		
+
+
 	})
-		
+
     jQuery(document).ready(function(){
 
         jQuery('#live_campaigns_table').DataTable({
