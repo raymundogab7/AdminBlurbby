@@ -62,9 +62,9 @@ class BlurbController extends Controller
     {
         $campaign = $this->campaign->getByAttributes(['control_no' => $control_no], false);
         $data = array(
-            'restaurant' => $this->restaurant->getByAttributes(['merchant_id' => Auth::user()->id], false),
+            'restaurant' => $this->restaurant->getByAttributes(['merchant_id' => $campaign->merchant_id], false),
             'campaign' => $campaign,
-            'blurbs' => $this->blurb->getAllByAttributes(['merchant_id' => Auth::user()->id, 'campaign_id' => $campaign->id, 'blurb_status' => ucfirst($cam_status)], 'created_at', 'DESC')
+            'blurbs' => $this->blurb->getAllByAttributes(['merchant_id' => $campaign->merchant_id, 'campaign_id' => $campaign->id, 'blurb_status' => ucfirst($cam_status)], 'created_at', 'DESC')
         );
 
         return view('blurb.view_blurbs', $data);
@@ -77,9 +77,11 @@ class BlurbController extends Controller
      */
     public function create($control_no)
     {
+        $campaign = $this->campaign->getByAttributes(['control_no' => $control_no], false);
+
         $data = array(
-            'restaurant' => $this->restaurant->getByAttributes(['merchant_id' => Auth::user()->id], false),
-            'campaign' => $this->campaign->getByAttributes(['control_no' => $control_no], false),
+            'restaurant' => $this->restaurant->getByAttributes(['merchant_id' => $campaign->merchant_id], false),
+            'campaign' => $campaign,
         );
 
         return view('blurb.create', $data);
@@ -93,17 +95,17 @@ class BlurbController extends Controller
      */
     public function store(BlurbRequest $request)
     {
-        $request->merge(array('merchant_id' => Auth::user()->id, 'campaign_id' => $request->campaign_id));
+        $request->merge(array('blurb_start' => date_format(date_create($request->blurb_start), 'Y-m-d'), 'blurb_end' => date_format(date_create($request->blurb_end), 'Y-m-d'), 'merchant_id' => $request->merchant_id, 'campaign_id' => $request->campaign_id));
 
         if ($request->control_no != "") {
             $this->blurb->updateByAttributes(['control_no' => $request->control_no], $request->except('_token'));
 
-            return redirect('campaign/' . $request->campaign_id);
+            return redirect('campaigns/' . $request->campaign_id);
         }
 
         $this->blurb->create($request->all());
 
-        return redirect('campaign/'.$request->campaign_id);
+        return redirect('campaigns/'.$request->campaign_id);
     }
 
     /**
@@ -114,9 +116,9 @@ class BlurbController extends Controller
      */
     public function show($id, $control_no)
     {
-        $campaign = $this->campaign->getByAttributes(['merchant_id' => Auth::user()->id, 'control_no' => $control_no], false);
+        $campaign = $this->campaign->getByAttributes(['control_no' => $control_no], false);
 
-        $data['restaurant'] = $this->restaurant->getByAttributes(['merchant_id' => Auth::user()->id], false);
+        $data['restaurant'] = $this->restaurant->getByAttributes(['merchant_id' => $campaign->merchant_id], false);
         $data['campaign'] = $this->campaign->getById($campaign->id);
         $data['blurb'] = $this->blurb->getById($id);
 
@@ -131,9 +133,9 @@ class BlurbController extends Controller
      */
     public function edit($id, $control_no)
     {
-        $campaign = $this->campaign->getByAttributes(['merchant_id' => Auth::user()->id, 'control_no' => $control_no], false);
+        $campaign = $this->campaign->getByAttributes(['control_no' => $control_no], false);
 
-        $data['restaurant'] = $this->restaurant->getByAttributes(['merchant_id' => Auth::user()->id], false);
+        $data['restaurant'] = $this->restaurant->getByAttributes(['merchant_id' => $campaign->merchant_id], false);
         $data['campaign'] = $this->campaign->getById($campaign->id);
         $data['blurb'] = $this->blurb->getById($id);
 
@@ -147,6 +149,8 @@ class BlurbController extends Controller
      */
     public function update($id, BlurbRequest $request)
     {
+        $request->merge(array('blurb_start' => date_format(date_create($request->blurb_start), 'Y-m-d'), 'blurb_end' => date_format(date_create($request->blurb_end), 'Y-m-d')));
+        
         if($this->blurb->updateById($id, $request->all())){
              return redirect('blurb/'.$id.'/'.$request->control_no)->with('message', 'Successfully updated.');
         }
@@ -162,10 +166,10 @@ class BlurbController extends Controller
     public function destroy($id, $campaign_id)
     {
         if($this->blurb->delete($id)) {
-            return redirect('campaign/'.$campaign_id)->with('message', 'Successfully deleted.');
+            return redirect('campaigns/'.$campaign_id)->with('message', 'Successfully deleted.');
         }
 
-        return redirect('campaign/'.$campaign_id)->withInput()->with('message_error', 'Error while deleting campaign. Please try again.');
+        return redirect('campaigns/'.$campaign_id)->withInput()->with('message_error', 'Error while deleting campaign. Please try again.');
     }
 
     /**
@@ -180,9 +184,12 @@ class BlurbController extends Controller
     {
         $file = $request->file('file');
         $control_no = uniqid();
-        $result = $this->blurb->create(['merchant_id' => Auth::user()->id,'campaign_id' => $campaign_id, 'blurb_logo' => 'blurb.png', 'control_no' => $control_no]);
+
+        $campaign = $this->campaign->getByAttributes(['id' => $campaign_id], false);
+
+        $result = $this->blurb->create(['merchant_id' => $campaign->merchant_id, 'campaign_id' => $campaign_id, 'blurb_logo' => 'blurb.png', 'control_no' => $control_no]);
         
-        $user_id = Auth::user()->id;
+        $user_id = $campaign->merchant_id;
 
         if (!in_array($file->getClientOriginalExtension(), array('gif', 'png', 'jpg', 'jpeg', 'PNG', 'JPG'))) {
             return Response::json(array(
@@ -210,8 +217,6 @@ class BlurbController extends Controller
     {
         $file = $request->file('file');
         $control_no = uniqid();
-        
-        $user_id = Auth::user()->id;
 
         if (!in_array($file->getClientOriginalExtension(), array('gif', 'png', 'jpg', 'jpeg', 'PNG', 'JPG'))) {
             return Response::json(array(
@@ -235,7 +240,10 @@ class BlurbController extends Controller
      */
     public function generateReport(Request $request)
     {
-        $blurb = $this->blurb->getAllByAttributesWithRelations(['campaign_id' => $request->campaign_id, 'blurb_status' => $request->blurb_status, 'merchant_id' => Auth::user()->id], ['campaign'], 'blurb_name');
+        $campaign = $this->campaign->getByAttributes(['id' => $request->campaign_id], false);
+
+        $blurb = $this->blurb->getAllByAttributesWithRelations(['campaign_id' => $request->campaign_id, 'blurb_status' => $request->blurb_status, 'merchant_id' => $campaign->merchant_id], ['campaign'], 'blurb_name');
+        
         $count_likes = 0;
         
         $c = array_map(function($structure) use ($count_likes){
@@ -247,9 +255,9 @@ class BlurbController extends Controller
                 'Status' => $structure['blurb_status'],
                 'Start Date' => $structure['blurb_start'],
                 'End Date' => $structure['blurb_end'],
-                'No. of Likes' => Snapshot::where(['blurb_id' => $structure['id'], 'merchant_id' => Auth::user()->id])->sum('snapshot_likes'),
-                'No. of Unique Views' => Snapshot::where(['blurb_id' => $structure['id'], 'merchant_id' => Auth::user()->id])->sum('snapshot_uviews'),
-                'No. of Usage' => Snapshot::where(['blurb_id' => $structure['id'], 'merchant_id' => Auth::user()->id])->sum('snapshot_usage'),
+                'No. of Likes' => Snapshot::where(['blurb_id' => $structure['id'], 'merchant_id' => $campaign->merchant_id])->sum('snapshot_likes'),
+                'No. of Unique Views' => Snapshot::where(['blurb_id' => $structure['id'], 'merchant_id' => $campaign->merchant_id])->sum('snapshot_uviews'),
+                'No. of Usage' => Snapshot::where(['blurb_id' => $structure['id'], 'merchant_id' => $campaign->merchant_id])->sum('snapshot_usage'),
             ];
         }, $blurb);
         
@@ -265,6 +273,48 @@ class BlurbController extends Controller
     }
 
     /**
+     * Generate a Campaign report.
+     *
+     * @return Redirect
+     */
+    public function generateBlurbReport($id, Request $request)
+    {
+        $blurb = $this->blurb->getByIdWithRelations($id, ['campaign']);
+
+        $snapshots = Snapshot::with('campaign')->where(['blurb_id' => $id, 'campaign_id' => $request->campaign_id, 'merchant_id' => $blurb->merchant_id])->get()->toArray();
+
+        $dates_between = $this->getDatesFromRange($blurb->blurb_start, $blurb->blurb_end);
+        
+        $data = array();
+        
+        foreach($dates_between as $db) 
+        {
+            $data[] = [
+                'Campaign Name' => $blurb->campaign->campaign_name,
+                'Blurb Title' => $blurb->blurb_name,
+                'Status' => $blurb->blurb_status,
+                'Category' => $blurb->blurb_category,
+                'Start Date' => $blurb->blurb_start,
+                'End Date' => $blurb->blurb_end,
+                'Performance Date' => $db,
+                'No. of Likes' => Snapshot::where(['blurb_id' => $id, 'campaign_id' => $request->campaign_id, 'snapshot_date' => $db, 'merchant_id' => $blurb->merchant_id])->sum('snapshot_likes'),
+                'No. of Unique Views' => Snapshot::where(['blurb_id' => $id, 'campaign_id' => $request->campaign_id, 'snapshot_date' => $db, 'merchant_id' => $blurb->merchant_id])->sum('snapshot_uviews'),
+                'No. of Usage' => Snapshot::where(['blurb_id' => $id, 'campaign_id' => $request->campaign_id, 'snapshot_date' => $db, 'merchant_id' => $blurb->merchant_id])->sum('snapshot_usage'),
+            ];
+        }
+
+        $generator = new GenerateReport();
+
+        $report_type = array(
+            $request->cam_status . ' Campaign Report' => $data,
+        );
+        
+        $generator->generate($report_type);
+
+        return redirect()->back();
+    }
+
+    /**
      * Get SnapShot by attributes last seven days.
      *
      * @param array $attributes
@@ -273,6 +323,35 @@ class BlurbController extends Controller
      */
     public function getLastSevenDays($blurb_id, $field)
     {
-        return $this->snapShot->getByAttributesLastSevenDays(['blurb_id' => $blurb_id, 'merchant_id' => Auth::user()->id], $field);
+        $blurb = $this->blurb->getById($blurb_id);
+
+        return $this->snapShot->getByAttributesLastSevenDays(['blurb_id' => $blurb_id, 'merchant_id' => $blurb->merchant_id], $field);
+    }
+
+    /**
+     * Get dates between blurb start and blurb end.
+     *
+     * @param array $date_time_from
+     * @param string $date_time_to
+     * @return array
+     */
+    private function getDatesFromRange($date_time_from, $date_time_to)
+    {
+
+        // cut hours, because not getting last day when hours of time to is less than hours of time_from
+        // see while loop
+        $start = \Carbon\Carbon::createFromFormat('Y-m-d', substr($date_time_from, 0, 10));
+        $end = \Carbon\Carbon::createFromFormat('Y-m-d', substr($date_time_to, 0, 10));
+
+        $dates = [];
+
+        while ($start->lte($end)) {
+
+            $dates[] = $start->copy()->format('Y-m-d');
+
+            $start->addDay();
+        }
+
+        return $dates;
     }
 }

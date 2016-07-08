@@ -19,7 +19,7 @@
                         <div class="media-body">
                             <ul class="breadcrumb">
                                 <li><a href="{{url('dashboard')}}"><i class="glyphicon glyphicon-home"></i></a></li>
-                                <li><a href="{{url('featured-slide')}}">Featured Section</a></li>
+                                <li><a href="{{url('featured-section')}}">Featured Section</a></li>
                                 <li>Featured Slide</li>
                             </ul>
                             <h4>Featured Slide</h4>

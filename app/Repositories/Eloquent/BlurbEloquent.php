@@ -33,6 +33,20 @@ class BlurbEloquent implements BlurbInterface
     }
 
     /**
+     * Get Blurb by id.
+     *
+     * @param integer $id
+     * @param array $relations
+     *
+     * @return Merchant
+     */
+    public function getByIdWithRelations($id, array $relations)
+    {
+        return $this->blurb->with($relations)->find($id);
+    }
+
+
+    /**
      * Get Blurb by id and attributes.
      *
      * @param integer $id

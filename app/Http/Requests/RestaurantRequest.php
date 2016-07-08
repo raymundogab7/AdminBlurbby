@@ -53,7 +53,7 @@ class RestaurantRequest extends Request
     public function response(array $errors)
     {
 
-        return $this->redirector->to('merchant-profile')
+        return $this->redirector->to('merchants/'.$this->merchant_id.'/edit')
             ->withInput()
             ->with(['errors' => $errors]);
 

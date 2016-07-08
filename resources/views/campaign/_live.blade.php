@@ -18,7 +18,7 @@
 			<label class="col-sm-2 control-label" style="text-align:left;">Start Date *</label>
 			<div class="col-sm-8">
 				<div class="input-group">
-					<input type="text" class="form-control" value="{{date_format(date_create($campaign['cam_start']), 'M-d-Y')}}"" placeholder="DD-MMM-YYYY" id="disabledinput" disabled="">
+					<input type="text" class="form-control" value="{{date_format(date_create($campaign['cam_start']), 'd-M-Y')}}"" placeholder="DD-MMM-YYYY" id="disabledinput" disabled="">
 					<span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
 				</div><!-- input-group -->
 			</div>
@@ -28,7 +28,7 @@
 			<label class="col-sm-2 control-label" style="text-align:left;">End Date *</label>
 			<div class="col-sm-8">
 				<div class="input-group">
-					<input type="text" class="form-control" value="{{date_format(date_create($campaign['cam_end']), 'M-d-Y')}}" placeholder="DD-MMM-YYYY" id="disabledinput" disabled="">
+					<input type="text" class="form-control" value="{{date_format(date_create($campaign['cam_end']), 'd-M-Y')}}" placeholder="DD-MMM-YYYY" id="disabledinput" disabled="">
 					<span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
 				</div><!-- input-group -->
 			</div>
@@ -41,47 +41,55 @@
 			</div>
 		</div><!-- form-group -->
 	</form>
-</div>
-<div class="col-sm-12 col-md-12 col-xs-12" style="padding-bottom:50px;">
 	<hr style="margin-top:0;">
-    {!! Form::open(array('url' => 'blurbs/'.$campaign->id, 'style' => 'display:inline;', 'class' => 'form-horizontal form-bordered', 'method' => 'DELETE')) !!}
-    <button class="btn btn-primary">View Blurbs</button>
-    {!! Form::close() !!}
-	{!! Form::open(array('url' => 'campaign/duplicate/'.$campaign->id, 'style' => 'display:inline;', 'class' => 'form-horizontal form-bordered', 'method' => 'POST')) !!}
+	<a href="{{url('blurb/view/'.$campaign->control_no.'/live')}}">	
+		<button class="btn btn-primary">View Blurbs</button>
+	</a>
+	{!! Form::open(array('url' => 'campaigns/duplicate/'.$campaign->id, 'style' => 'display:inline;', 'class' => 'form-horizontal form-bordered', 'method' => 'POST')) !!}
 	<button class="btn btn-warning">Duplicate Campaign</button>
 	{!! Form::close() !!}
-	<a href="{{url('campaign')}}">
+	<a href="{{url('campaigns')}}">
 		<button style="margin-left:15px;" class="btn btn-default">Back</button>
 	</a>
+
+	<hr>
+
+	{!! Form::open(array('url' => 'campaigns/report/generate/'.$campaign->id, 'style' => 'display:inline;', 'class' => 'form-horizontal form-bordered')) !!}
+		<input type="hidden" name="cam_status" value="Live" readonly="">
+		<button class="btn btn-info" style="margin-left:15px;"><i class="fa fa-file-excel-o"></i>&nbsp;
+			Download Analytics Report (.csv)
+		</button>
+	{!! Form::close() !!}
+	<input type="hidden" disabled="" id="campaign_id" value="{{$campaign->id}}">
 </div>
 
 <div class="col-sm-12 col-md-12 col-xs-12" style="padding-bottom:20px;">
-    
-    <div class="col-md-4">
-        <div class="panel panel-default">
-            <div class="panel-body padding15">
-                <h5 class="md-title mt0 mb10">Campaign's Total Likes</h5>
-                <div id="basicflot" class="flotChart"></div>
-            </div><!-- panel-body -->
-        </div><!-- panel -->
-    </div>
-    <div class="col-md-4">
-        <div class="panel panel-default">
-            <div class="panel-body padding15">
-                <h5 class="md-title mt0 mb10">Campaign's Total Views</h5>
-                <div id="basicflot2" class="flotChart"></div>
-            </div><!-- panel-body -->
-        </div><!-- panel -->
-    </div>
-    
-    <div class="col-md-4">
-        <div class="panel panel-default">
-            <div class="panel-body padding15">
-                <h5 class="md-title mt0 mb10">Campaign's Total Usage</h5>
-                <div id="basicflot3" class="flotChart"></div>
-            </div><!-- panel-body -->
-        </div><!-- panel -->
-    </div>
+	
+	<div class="col-md-4">
+		<div class="panel panel-default">
+			<div class="panel-body padding15">
+				<h5 class="md-title mt0 mb10">Campaign's Total Likes</h5>
+				<div id="basicflot" class="flotChart"></div>
+			</div><!-- panel-body -->
+		</div><!-- panel -->
+	</div>
+	<div class="col-md-4">
+		<div class="panel panel-default">
+			<div class="panel-body padding15">
+				<h5 class="md-title mt0 mb10">Campaign's Total Views</h5>
+				<div id="basicflot2" class="flotChart"></div>
+			</div><!-- panel-body -->
+		</div><!-- panel -->
+	</div>
+	
+	<div class="col-md-4">
+		<div class="panel panel-default">
+			<div class="panel-body padding15">
+				<h5 class="md-title mt0 mb10">Campaign's Total Usage</h5>
+				<div id="basicflot3" class="flotChart"></div>
+			</div><!-- panel-body -->
+		</div><!-- panel -->
+	</div>
 </div>
 
 @section('custom-js')
@@ -91,6 +99,6 @@
 <script type="text/javascript" src="{{asset('js/flot/jquery.flot.spline.min.js')}}"></script>
 <script type="text/javascript" src="{{asset('js/raphael-2.1.0.min.js')}}"></script>
 <script type="text/javascript" src="{{asset('js/bootstrap-wizard.min.js')}}"></script>
-<script type="text/javascript" src="{{asset('js/charts.js')}}"></script>
+<script type="text/javascript" src="{{asset('js/campaign_charts.js')}}"></script>
 
 @endsection

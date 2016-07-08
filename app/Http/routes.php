@@ -68,24 +68,58 @@ Route::group(['middleware' => ['auth']], function () {
 
     /*
     |--------------------------------------------------------------------------
+    | Blurb Route
+    |--------------------------------------------------------------------------
+     */
+    Route::get('blurb/create/{control_no}', 'BlurbController@create');
+    Route::post('blurb', 'BlurbController@store');
+    Route::get('blurb/edit/{blurb_id}/{control_no}', 'BlurbController@edit');
+    Route::get('blurb/{blurb_id}/{control_no}', 'BlurbController@show');
+    Route::put('blurb/{blurb_id}', 'BlurbController@update');
+    Route::delete('blurb/{blurb_id}/{control_no}', 'BlurbController@destroy');
+    Route::post('blurb/upload/{campaign_id}', 'BlurbController@uploadLogo');
+    Route::post('blurb/updateLogo/{blurb_id}/{campaign_id}', 'BlurbController@updateLogo');
+    Route::get('blurb/view/{control_no}/{cam_status}', 'BlurbController@view');
+    Route::get('blurb/getLastSevenDays/{blurb_id}/{field}', 'BlurbController@getLastSevenDays');
+    Route::post('blurb/report/generate', 'BlurbController@generateReport');
+    Route::post('blurb/report/generate/{blurb_id}', 'BlurbController@generateBlurbReport');
+    
+    /*
+    |--------------------------------------------------------------------------
     | Merchant Route
     |--------------------------------------------------------------------------
      */
     Route::resource('merchants', 'MerchantController');
-    Route::put('merchant/withdraw/{merchant_id}', 'MerchantControllerr@withdraw');
-    Route::put('merchant/updateStatus/{merchant_id}', 'MerchantControllerr@updateStatus');
-    Route::put('merchant/updateCamRead/{merchant_id}', 'MerchantControllerr@updateCamRead');
-    Route::post('merchant/markAllAsRead', 'MerchantControllerr@markAllAsRead');
-    Route::post('merchant/duplicate/{merchant_id}', 'MerchantControllerr@duplicate');
+    Route::put('merchants/withdraw/{merchant_id}', 'MerchantControllerr@withdraw');
+    Route::put('merchants/updateStatus/{merchant_id}', 'MerchantControllerr@updateStatus');
+    Route::put('merchants/updateCamRead/{merchant_id}', 'MerchantControllerr@updateCamRead');
+    Route::post('merchants/markAllAsRead', 'MerchantControllerr@markAllAsRead');
+    Route::post('merchants/duplicate/{merchant_id}', 'MerchantControllerr@duplicate');
 
-    Route::put('merchant/updateNotifNotToRead/{notification_id}', 'NotificationsController@updateNotifNotToRead');
-    Route::put('merchant/updateNotifToRead/{notification_id}', 'NotificationsController@updateNotifToRead');
-    Route::post('merchant/report/generate', 'MerchantControllerr@generateReport');
-    Route::post('merchant/report/generate/{merchant_id}', 'MerchantControllerr@generateCampaignReport');
+    Route::put('merchants/updateNotifNotToRead/{notification_id}', 'NotificationsController@updateNotifNotToRead');
+    Route::put('merchants/updateNotifToRead/{notification_id}', 'NotificationsController@updateNotifToRead');
+    Route::post('merchants/report/generate', 'MerchantControllerr@generateReport');
+    Route::post('merchants/report/generate/{merchant_id}', 'MerchantControllerr@generateCampaignReport');
 
-    Route::get('merchant/getLastSevenDays/{merchant_id}/{field}', 'MerchantControllerr@getLastSevenDays');
+    Route::get('merchants/getLastSevenDays/{merchant_id}/{field}', 'MerchantControllerr@getLastSevenDays');
 
-    Route::get('merchant/search/{search_word}/{search_type}', 'MerchantControllerr@getSearchResult');
-    Route::get('merchant/search/show/{search_word}/{search_type}', 'MerchantControllerr@getSearchResult');
+    Route::get('merchants/search/{search_word}/{search_type}', 'MerchantControllerr@getSearchResult');
+    Route::get('merchants/search/show/{search_word}/{search_type}', 'MerchantControllerr@getSearchResult');
+
+    Route::put('merchants/company/{merchant_id}', 'CompanyController@update');
+    Route::put('merchants/outlet/{outlet_id}', 'OutletController@update');
+    Route::put('merchants/restaurant/{restaurant_id}', 'RestaurantController@update');
+    Route::post('merchants/restaurant/upload-pp/{restaurant_id}', 'RestaurantController@uploadProfilePicture');
+    Route::post('merchants/restaurant/upload-cp/{restaurant_id}', 'RestaurantController@uploadCoverPhoto');
+
+    /*
+    |--------------------------------------------------------------------------
+    | Outlets Route
+    |--------------------------------------------------------------------------
+     */
+    Route::resource('outlets', 'OutletController', ['except' => ['show', 'index', 'create', 'edit']]);
+    Route::get('outlets/{outlet_id}/create', 'OutletController@create');
+    Route::get('outlets/edit/{outlet_id}/{merchant_id_id}', 'OutletController@edit');
+
 });
 

@@ -21,7 +21,7 @@
 	                    </div>
 	                    <div class="media-body">
 	                        <ul class="breadcrumb">
-	                            <li><a href="index-admin.html"><i class="glyphicon glyphicon-home"></i></a></li>
+	                            <li><a href="{{url('dashboard')}}"><i class="glyphicon glyphicon-home"></i></a></li>
 	                            <li>Campaigns</li>
 	                        </ul>
 	                        <h4>Campaigns</h4>
@@ -99,9 +99,9 @@
 	                                <div class="col-sm-3">
 	                                    <select id="search-type" class="width100p" data-placeholder="Search Type">
 	                                        <option value="">Choose One</option>
-	                                        <option value="Campaign">Campaign Name</option>
-	                                        <option value="Restaurant">Restaurant Name</option>
-	                                        <option value="Company">Company Name</option>
+	                                        <option value="Campaign" <?php if($search_type == 'Campaign') : ?> selected <?php endif; ?>>Campaign Name</option>
+	                                        <option value="Restaurant" <?php if($search_type == 'Restaurant') : ?> selected <?php endif; ?>>Restaurant Name</option>
+	                                        <option value="Company" <?php if($search_type == 'Company') : ?> selected <?php endif; ?>>Company Name</option>
 	                                    </select>
 	                                </div>
 	                            </div>
@@ -139,37 +139,37 @@
 		                    @endif
 	                        <div class="list-group contact-group">
 	                        	@foreach($campaigns as $campaign)
-	                            <a href="admin-campaign-details.html" class="list-group-item">
+	                            <a href="{{url('campaigns/'.$campaign->campaignId)}}" class="list-group-item">
 	                                <div class="media">
 	                                    <div class="pull-left">
-	                                    	@if(!is_null($campaign['restaurant']['res_logo']))
-	                                    	<img class="img-roundedcircle img-online" src="{{env('IMG_URL').$campaign['restaurant']['res_logo']}}/profile_picture.jpg" alt="...">
+	                                    	@if(!is_null($campaign->res_logo))
+	                                    	<img class="img-roundedcircle img-online" src="{{env('MERCHANT_URL').'/'.$campaign->res_logo}}/profile_picture.jpg" alt="...">
 	                                    	@else
-	                                        <img class="img-roundedcircle img-online" src="{{env('IMG_URL')}}images/photos/user1.png" alt="...">
+	                                        <img class="img-roundedcircle img-online" src="{{env('APP_URL')}}/images/photos/user1.png" alt="...">
 	                                        @endif
 	                                    </div>
 	                                    <div class="media-body">
-	                                        <h4 class="media-heading">{{$campaign['campaign_name']}}</h4>
+	                                        <h4 class="media-heading">{{$campaign->campaign_name}}</h4>
 	                                        <div class="media-content">
-	                                            <i class="fa fa-calendar"></i> <strong>{{date_format(date_create($campaign['cam_start']), 'd-M-Y')}}</strong> to <strong>{{date_format(date_create($campaign['cam_end']), 'd-M-Y')}}</strong>
+	                                            <i class="fa fa-calendar"></i> <strong>{{date_format(date_create($campaign->cam_start), 'd-M-Y')}}</strong> to <strong>{{date_format(date_create($campaign->cam_end), 'd-M-Y')}}</strong>
 	                                            <ul class="list-unstyled">
-													<li><i class="fa fa-cutlery"></i> {{$campaign['coy_name']}}</li>
+													<li><i class="fa fa-cutlery"></i> {{$campaign->coy_name}}</li>
 													<li><i class="fa fa-toggle-on"></i>
-													@if($campaign['cam_status'] == 'Approved')
+													@if($campaign->cam_status == 'Approved')
 					                            	<span class="text-success">
-					                            	@elseif($campaign['cam_status'] == 'Draft')
+					                            	@elseif($campaign->cam_status == 'Draft')
 					                            	<span class="text-info">
-					                            	@elseif($campaign['cam_status'] == 'Live')
+					                            	@elseif($campaign->cam_status == 'Live')
 					                            	<span class="text-success">
-					                            	@elseif($campaign['cam_status'] == 'Rejected')
+					                            	@elseif($campaign->cam_status == 'Rejected')
 					                            	<span class="text-danger">
-					                            	@elseif($campaign['cam_status'] == 'Expired')
+					                            	@elseif($campaign->cam_status == 'Expired')
 					                            	<span class="text-muted">
 					                            	@else
 					                            	<span class="text-warning">
 					                            	@endif
-													<strong>{{$campaign['cam_status']}}</strong></span></small></li>
-	                                                <li><i class="fa fa-tags"></i> {{ \Admin\Blurb::where('campaign_id', $campaign['id'])->count()}} blurbs</li>
+													<strong>{{$campaign->cam_status}}</strong></span></small></li>
+	                                                <li><i class="fa fa-tags"></i> {{ \Admin\Blurb::where('campaign_id', $campaign->campaignId)->count()}} blurbs</li>
 	                                            </ul>
 	                                        </div>
 	                                    </div>
@@ -183,6 +183,7 @@
 			</div><!-- mainpanel -->
 	    </div><!-- mainwrapper -->
 	</section>
+	<input type="hidden" id="search_url" value="{{url('')}}">
 @endsection
 
 @section('custom-js')
@@ -200,8 +201,8 @@
 				console.log(data);
 			}
 		});*/
-		if($(this).val() != "" || $('#input').val() != "" || $('#input').val() != "undefined") {
-			window.location.href = '/campaigns/search/'+$('#input').val()+'/'+$(this).val();
+		if($(this).val() != "" && $('#input').val() != "") {
+			window.location.href = $('#search_url').val()+'/campaigns/search/'+$('#input').val()+'/'+$(this).val();
 		}
 
 

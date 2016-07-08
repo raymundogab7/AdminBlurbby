@@ -39,9 +39,9 @@ class OutletController extends Controller
      * @param Outlet $request
      * @return Redirect
      */
-    public function create()
+    public function create($merchant_id)
     {
-        $data['restaurant'] = $this->restaurant->getByAttributes(['merchant_id' => Auth::user()->id], false);
+        $data['restaurant'] = $this->restaurant->getByAttributes(['merchant_id' => $merchant_id], false);
 
         return view('outlets.create', $data);
     }
@@ -54,14 +54,14 @@ class OutletController extends Controller
      */
     public function store(OutletRequest $request)
     {
-        $request->merge(array('merchant_id' => \Auth::user()->id, 'outlet_no' => uniqid()));
+        $request->merge(array('outlet_no' => uniqid()));
 
         if ($this->outlet->create($request->all())) {
 
-            return redirect('outlets/create')->with('message', 'Successfully created.');
+            return redirect('outlets/'.$request->merchant_id.'/create')->with('message', 'Successfully created.');
         }
 
-        return redirect('outlets/create')->withInput();
+        return redirect('outlets/'.$request->merchant_id.'/create')->withInput();
     }
 
     /**
@@ -70,10 +70,10 @@ class OutletController extends Controller
      * @param integer $id
      * @return View
      */
-    public function edit($id)
+    public function edit($id, $merchant_id)
     {
         $data['outlet'] = $this->outlet->getById($id);
-        $data['restaurant'] = $this->restaurant->getByAttributes(['merchant_id' => Auth::user()->id], false);
+        $data['restaurant'] = $this->restaurant->getByAttributes(['merchant_id' => $merchant_id], false);
         
         return view('outlets.edit', $data);
     }
@@ -105,10 +105,10 @@ class OutletController extends Controller
     {
         if ($this->outlet->delete($id)) {
 
-            return redirect('merchant-profile')->with('message', 'Successfully deleted.');
+            return back()->with('message', 'Successfully deleted.');
         }
 
-        return redirect('merchant-profile')->with('message', 'Error while deleting.');
+        return back()->with('message', 'Error while deleting.');;
     }
 
     /**

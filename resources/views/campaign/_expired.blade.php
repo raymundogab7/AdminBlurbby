@@ -37,25 +37,25 @@
 		<div class="form-group">
 			<label class="col-sm-2 control-label" style="text-align:left;">Status</label>
 			<div class="col-sm-8">
-				<label class="text-success control-label" style="text-align:left;"><strong>{{$campaign->cam_status}}</strong></label>
+				<label class="text-nuted control-label" style="text-align:left;"><strong>{{$campaign->cam_status}}</strong></label>
 			</div>
 		</div><!-- form-group -->
 	</form>
 	<hr style="margin-top:0;">
-	<a href="{{url('blurb/view/'.$campaign->control_no.'/live')}}">	
+	<a href="{{url('blurb/view/'.$campaign->control_no.'/expired')}}">	
 		<button class="btn btn-primary">View Blurbs</button>
 	</a>
-	{!! Form::open(array('url' => 'campaign/duplicate/'.$campaign->id, 'style' => 'display:inline;', 'class' => 'form-horizontal form-bordered', 'method' => 'POST')) !!}
+	{!! Form::open(array('url' => 'campaigns/duplicate/'.$campaign->id, 'style' => 'display:inline;', 'class' => 'form-horizontal form-bordered', 'method' => 'POST')) !!}
 	<button class="btn btn-warning">Duplicate Campaign</button>
 	{!! Form::close() !!}
-	<a href="{{url('campaign')}}">
+	<a href="{{url('campaigns')}}">
 		<button style="margin-left:15px;" class="btn btn-default">Back</button>
 	</a>
 
 	<hr>
 
-	{!! Form::open(array('url' => 'campaign/report/generate/'.$campaign->id, 'style' => 'display:inline;', 'class' => 'form-horizontal form-bordered')) !!}
-		<input type="hidden" name="cam_status" value="Live" readonly="">
+	{!! Form::open(array('url' => 'campaigns/report/generate/'.$campaign->id, 'style' => 'display:inline;', 'class' => 'form-horizontal form-bordered')) !!}
+		<input type="hidden" name="cam_status" value="Expired" readonly="">
 		<button class="btn btn-info" style="margin-left:15px;"><i class="fa fa-file-excel-o"></i>&nbsp;
 			Download Analytics Report (.csv)
 		</button>

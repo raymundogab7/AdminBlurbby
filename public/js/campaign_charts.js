@@ -17,7 +17,7 @@ jQuery(document).ready(function(){
     //var likes = [[0, 23], [1, 10], [2,13], [3, 22], [4, 29], [5, 34], [6, 56]];
 	//var ticksq = [[0,'18-Apr-16'],[1,'19-Apr-16'],[2,'20-Apr-16'],[3,'21-Apr-16'],[4,'22-Apr-16'],[5,'23-Apr-16'],[6,'24-Apr-16']];
     var ticks = [];
-	$.get('/campaign/getLastSevenDays/'+$("#campaign_id").val()+'/snapshot_likes', function(data){
+	$.get('/campaigns/getLastSevenDays/'+$("#campaign_id").val()+'/snapshot_likes', function(data){
 
     	var plot = jQuery.plot(jQuery("#basicflot"),
 		[{
@@ -55,6 +55,7 @@ jQuery(document).ready(function(){
 			backgroundColor: '#fff'
 		    },
 		    yaxis: {
+		    	min: 0,
 			color: '#eee'
 		    },
 		    xaxis: {
@@ -100,7 +101,7 @@ jQuery(document).ready(function(){
     /*****CHART 2 *****/
     
     //var views = [[0, 4], [1, 7], [2,12], [3, 15], [4, 19], [5, 21], [6, 30]];
-	$.get('/campaign/getLastSevenDays/'+$("#campaign_id").val()+'/snapshot_uviews', function(data){
+	$.get('/campaigns/getLastSevenDays/'+$("#campaign_id").val()+'/snapshot_uviews', function(data){
 	    var plot = jQuery.plot(jQuery("#basicflot2"),
 		[{
 		    data: data.data,
@@ -137,6 +138,7 @@ jQuery(document).ready(function(){
 			backgroundColor: '#fff'
 		    },
 		    yaxis: {
+		    min: 0,
 			color: '#eee'
 		    },
 		    xaxis: {
@@ -179,7 +181,7 @@ jQuery(document).ready(function(){
     /*****CHART 3 *****/
     
     //var usage = [[0, 4], [1, 5], [2,2], [3, 7], [4, 4], [5, 9], [6, 20]];
-	$.get('/campaign/getLastSevenDays/'+$("#campaign_id").val()+'/snapshot_usage', function(data){
+	$.get('/campaigns/getLastSevenDays/'+$("#campaign_id").val()+'/snapshot_usage', function(data){
 	    var plot = jQuery.plot(jQuery("#basicflot3"),
 		[{
 		    data: data.data,
@@ -216,6 +218,7 @@ jQuery(document).ready(function(){
 			backgroundColor: '#fff'
 		    },
 		    yaxis: {
+		    min: 0,
 			color: '#eee'
 		    },
 		    xaxis: {

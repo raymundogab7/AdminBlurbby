@@ -110,8 +110,8 @@ class CampaignEloquent implements CampaignInterface
         ->where('campaign_name', 'LIKE', '%'.$search_word.'%')
         ->orderBy('campaign_name')
         ->paginate(10);*/
-        return Campaign::select('campaign.*','restaurant.id', 'restaurant.res_name', 'res_logo', 'merchant.id', 'merchant.coy_name')
-            ->leftJoin('restaurant', 'campaign.merchant_id', '=', 'restaurant.merchant_id')
+        return \DB::table('campaign')->select('campaign.id as campaignId','campaign.campaign_name', 'campaign.restaurant_id', 'campaign.cam_start', 'campaign.cam_end', 'campaign.cam_status' ,'restaurant.id AS res_id', 'restaurant.res_name', 'res_logo', 'merchant.id as mer_id', 'merchant.coy_name')
+            ->leftJoin('restaurant', 'campaign.restaurant_id', '=', 'restaurant.id')
             ->leftJoin('merchant', 'campaign.merchant_id', '=', 'merchant.id')
             ->where('campaign.campaign_name', 'LIKE', '%'.$search_word.'%')
             ->orderBy('campaign.campaign_name')
@@ -125,16 +125,16 @@ class CampaignEloquent implements CampaignInterface
         ->orderBy('campaign_name')
         ->paginate(10);*/
         return Campaign::select('campaign.*','restaurant.id', 'restaurant.res_name', 'res_logo', 'merchant.id', 'merchant.coy_name')
-        ->leftJoin('restaurant', 'campaign.merchant_id', '=', 'restaurant.merchant_id')
-        ->leftJoin('merchant', 'campaign.merchant_id', '=', 'merchant.id')
-        ->where('restaurant.res_name', 'LIKE', '%'.$search_word.'%')
-        ->orderBy('campaign.campaign_name')
-        ->paginate(10);
+            ->leftJoin('restaurant', 'campaign.restaurant_id', '=', 'restaurant.id')
+            ->leftJoin('merchant', 'campaign.merchant_id', '=', 'merchant.id')
+            ->where('restaurant.res_name', 'LIKE', '%'.$search_word.'%')
+            ->orderBy('campaign.campaign_name')
+            ->paginate(10);
         }
 
         if($search_type == 'Company') {
             return Campaign::select('campaign.*','restaurant.id', 'restaurant.res_name', 'res_logo', 'merchant.id', 'merchant.coy_name')
-                ->leftJoin('restaurant', 'campaign.merchant_id', '=', 'restaurant.merchant_id')
+                ->leftJoin('restaurant', 'campaign.restaurant_id', '=', 'restaurant.id')
                 ->leftJoin('merchant', 'campaign.merchant_id', '=', 'merchant.id')
                 ->where('merchant.coy_name', 'LIKE', '%'.$search_word.'%')
                 ->orderBy('campaign.campaign_name')

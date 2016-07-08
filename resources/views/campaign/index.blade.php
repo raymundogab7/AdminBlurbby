@@ -21,7 +21,7 @@
 	                    </div>
 	                    <div class="media-body">
 	                        <ul class="breadcrumb">
-	                            <li><a href="index-admin.html"><i class="glyphicon glyphicon-home"></i></a></li>
+	                            <li><a href="{{url('dashboard')}}"><i class="glyphicon glyphicon-home"></i></a></li>
 	                            <li>Campaigns</li>
 	                        </ul>
 	                        <h4>Campaigns</h4>
@@ -106,7 +106,33 @@
 	                                </div>
 	                            </div>
 	                        </div><!-- well -->
+	                        @if(session('message'))
 
+                                <div class="alert alert-success">
+                                    <strong>{{session('message')}}</strong>
+                                </div>
+
+                                @endif
+
+                                @if(count($errors) > 0)
+
+                                <div class="alert alert-danger">
+                                    <ul class="media-list">
+
+                                    @foreach($errors as  $v)
+
+                                        <li class="media">
+
+                                              <strong> {{str_replace('.1', '', $v[0])}}</strong>
+
+                                        </li>
+
+                                    @endforeach
+
+                                    </ul>
+                                </div>
+
+                                @endif
 							{!! Form::open(array('url' => 'campaigns/report/generate', 'style' => 'display:inline;', 'class' => 'form-horizontal form-bordered')) !!}
 								<button class="btn btn-info"><i class="fa fa-file-excel-o"></i>&nbsp;Download List (.csv)</button>
 							{!! Form::close() !!}
@@ -138,13 +164,13 @@
 
 	                        <div class="list-group contact-group">
 	                        	@foreach($campaigns as $campaign)
-	                            <a href="admin-campaign-details.html" class="list-group-item">
+	                            <a href="{{url('campaigns/'.$campaign['id'])}}" class="list-group-item">
 	                                <div class="media">
 	                                    <div class="pull-left">
 	                                    	@if(!is_null($campaign['restaurant']['res_logo']))
-	                                    	<img class="img-roundedcircle img-online" src="{{env('IMG_URL').$campaign['restaurant']['res_logo']}}/profile_picture.jpg" alt="...">
+	                                    	<img class="img-roundedcircle img-online" src="{{env('MERCHANT_URL').'/'.$campaign['restaurant']['res_logo']}}/profile_picture.jpg" alt="...">
 	                                    	@else
-	                                        <img class="img-roundedcircle img-online" src="{{env('IMG_URL')}}images/photos/user1.png" alt="...">
+	                                        <img class="img-roundedcircle img-online" src="{{env('APP_URL')}}/images/photos/user1.png" alt="...">
 	                                        @endif
 	                                    </div>
 	                                    <div class="media-body">

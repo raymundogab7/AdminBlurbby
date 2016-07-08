@@ -4,7 +4,7 @@ namespace Admin\Http\Requests;
 
 use Admin\Http\Requests\Request;
 
-class AdminRequest extends Request
+class MerchantRequest extends Request
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -33,11 +33,11 @@ class AdminRequest extends Request
                 'last_name' => 'required',
                 'coy_name' => 'required|unique:merchant',
                 'coy_add' => 'required',
-                'coy_zip' => 'required',
+                'coy_zip' => 'required|min:6|max:6',
                 'coy_phone' => 'required',
                 'res_name' => 'required|unique:restaurant',
                 'outlet_add' => 'required',
-                'outlet_zip' => 'required',
+                'outlet_zip' => 'required|min:6|max:6',
                 'outlet_phone' => 'required',
             ];
         }
@@ -64,9 +64,13 @@ class AdminRequest extends Request
             'coy_name.unique' => 'The company name has been already taken.',
             'coy_add.required' => 'The company address field is required.',
             'coy_zip.required' => 'The company postal code field is required.',
+            'coy_zip.max' => 'Company postal code maxlength is 6',
+            'coy_zip.min' => 'Company postal code minimum is 6.',
             'coy_phone.required' => 'The company phone field is required.',
             'outlet_add.required' => 'The outlet address field is required.',
             'outlet_zip.required' => 'The outlet postal zip field is required.',
+            'outlet_zip.max' => 'Outlet postal code maxlength is 6',
+            'outlet_zip.min' => 'Outlet postal code minimum is 6.',
             'outlet_phone.required' => 'The outlet phone number field is required.',
             'res_name.required' => 'The restaurant name field is required.',
             'res_name.unique' => 'The restaurant name has been already taken.',
@@ -87,7 +91,7 @@ class AdminRequest extends Request
                 ->with(['errors' => $errors]);
         }
 
-        return $this->redirector->to('merchant-profile')
+        return $this->redirector->to('merchants/'.$this->merchant_id.'/edit')
             ->withInput()
             ->with(['errors' => $errors]);
     }

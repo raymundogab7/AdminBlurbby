@@ -220,7 +220,7 @@ return [
         'Form' => Collective\Html\FormFacade::class,
         'Html' => Collective\Html\HtmlFacade::class,
         'Image' => Intervention\Image\Facades\Image::class,
-        'StoreHours' => Merchant\Services\StoreHours::class,
+        'StoreHours' => Admin\Services\StoreHours::class,
         'Excel' => Maatwebsite\Excel\Facades\Excel::class
 
     ],

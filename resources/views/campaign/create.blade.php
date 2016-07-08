@@ -24,7 +24,7 @@
                     </div>
                     <div class="media-body">
                         <ul class="breadcrumb">
-                            <li><a href="{{url('campaigns')}}"><i class="glyphicon glyphicon-home"></i></a></li>
+                            <li><a href="{{url('dashboard')}}"><i class="glyphicon glyphicon-home"></i></a></li>
                             <li>Add New Campaign</li>
                         </ul>
                         <h4>Add New Campaign</h4>
@@ -61,13 +61,13 @@
                     </div>
 
 	                @endif
-					<form class="form-horizontal form-bordered" style="display:inline;" action="{{url('camapaign')}}" method="POST">
+					<form class="form-horizontal form-bordered" style="display:inline;" action="{{url('campaigns')}}" method="POST">
 
                         <div class="form-group">
                             <label class="col-sm-2 control-label" style="text-align:left;">Merchant Name *</label>
                             <div class="col-sm-8">
-
-                                <select id="select_merchants" data-placeholder="Choose One" style="width:100%;" tabindex="-1" title="" class="select2-offscreen">
+                                <input type="hidden" value="{{csrf_token()}}" name="_token">
+                                <select id="select_merchants" name="merchant_id" data-placeholder="Choose One" style="width:100%;" tabindex="-1" title="" class="select2-offscreen">
                                     <option value="">Choose One</option>
                                     @foreach($merchants as $merchant)
                                     <option value="{{$merchant['id']}}">{{$merchant['coy_name']}}</option>
@@ -119,7 +119,7 @@
 
 					</form>
 
-					<a href="{{url('campaign')}}"><button style="margin-left:15px;" class="btn btn-default">Cancel</button></a>
+					<a href="{{url('campaigns')}}"><button style="margin-left:15px;" class="btn btn-default">Cancel</button></a>
 				</div>
             </div><!-- contentpanel -->
 

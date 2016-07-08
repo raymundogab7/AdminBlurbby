@@ -43,4 +43,17 @@ class CampaignRequest extends Request
             ->with(['errors' => $errors]);
 
     }
+
+    /**
+     * Get custom messages for validator errors.
+     *
+     * @return array
+     */
+    public function messages()
+    {
+        return [
+            'cam_start.required' => 'The campaign start date is required.',
+            'cam_end.required' => 'The campaign end date is required.',
+        ];
+    }
 }

@@ -4,7 +4,7 @@ namespace Admin\Http\Controllers;
 
 use Auth;
 use Illuminate\Http\Request;
-use Admin\Http\Requests\AdminRequest;
+use Admin\Http\Requests\MerchantRequest;
 use Admin\Repositories\Interfaces\CuisineInterface;
 use Admin\Repositories\Interfaces\MerchantInterface;
 use Admin\Repositories\Interfaces\OutletInterface;
@@ -93,6 +93,28 @@ class MerchantController extends Controller
     }
 
     /**
+     * Display create merchant page.
+     *
+     * @return View
+     */
+    public function create()
+    {
+        $data = array(
+            'merchants' => $this->merchant->getAll(true),
+            'total_merchants' => $this->merchant->getTotalCount(),
+            'total_last_thirty_days' => $this->merchant->getTotalMonth(),
+            'total_live_merchants' => $this->merchant->getCount(),
+            'total_pending_admin_approval_merchants' => $this->merchant->getCount(0),
+            'total_approved_merchants' => $this->merchant->getCount(1),
+            'total_blocked_merchants' => $this->merchant->getCount(2),
+            'total_pending_email_verification' => $this->merchant->getCount(3),
+            
+        );/*echo "<pre>";
+        print_r($data['merchants']);die;*/
+        return view('merchants.create', $data);
+    }
+
+    /**
      * Create a new merchant.
      *
      * @param AdminRequest $request
@@ -116,14 +138,48 @@ class MerchantController extends Controller
     }
 
     /**
+     * Display edit merchant profile page.
+     *
+     * @return View
+     */
+    public function edit($id)
+    {
+        $merchant_id = $id;
+
+        $restaurant = $this->restaurant->getByAttributes(['merchant_id' => $merchant_id], false);
+
+        $selected_cuisines = $this->restaurantCuisine->getByAttributesWithRelations(['restaurant_id' => $restaurant->id], ['cuisine'])->toArray();
+
+        $cuisines_id = array_map(function ($structure) {
+
+            return $structure['cuisine']['id'];
+
+        }, $selected_cuisines);
+
+        $data = array(
+            'merchant' => $this->merchant->getById($merchant_id),
+            'restaurant' => $restaurant,
+            'snapshot' => $this->snapshot->getByAttributes(['merchant_id' => $merchant_id]),
+            'outlet' => $this->outlet->getByAttributes(['merchant_id' => $merchant_id, 'main' => 1], false),
+            'outlets' => $this->outlet->getByAttributes(['merchant_id' => $merchant_id, 'main' => 0]),
+            'restaurant_cuisine' => $selected_cuisines,
+            'cuisines' => $this->cuisine->getAll(),
+            'cuisines_id' => $cuisines_id,
+        );
+
+        return view('merchants.edit', $data);
+    }
+
+    /**
      * Edit a merchant.
      *
      * @param integer $id
-     * @param AdminRequest $request
+     * @param MerchantRequest $request
      * @return Redirect
      */
-    public function update($id, AdminRequest $request)
+    public function update($id, MerchantRequest $request)
     {
+
         $request_new = $request->except(['password', 'password_confirmation']);
 
         if ($request->password != "") {
@@ -133,9 +189,9 @@ class MerchantController extends Controller
 
         if ($merchant = $this->merchant->updateById($id, $request_new)) {
 
-            return redirect('merchant-profile')->with('message', 'Successfully updated.');
+            return redirect('merchants/'.$request->merchant_id.'/edit')->with('message', 'Successfully updated.');
         }
 
-        return redirect('merchant-profile')->withInput();
+        return redirect('merchants/'.$request->merchant_id.'/edit')->withInput();
     }
 }

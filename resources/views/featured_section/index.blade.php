@@ -21,7 +21,7 @@
 	                    </div>
 	                    <div class="media-body">
 	                        <ul class="breadcrumb">
-	                            <li><a href="index-admin.html"><i class="glyphicon glyphicon-home"></i></a></li>
+	                            <li><a href="{{url('dashboard')}}"><i class="glyphicon glyphicon-home"></i></a></li>
 	                            <li>Featured Section</li>
 	                        </ul>
 	                        <h4>Featured Section</h4>

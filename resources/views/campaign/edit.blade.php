@@ -1,4 +1,4 @@
-@extends('layouts.merchant')
+@extends('layouts.admin')
 
 @section('page-title', $restaurant->res_name . ' Campaign Details')
 
@@ -17,7 +17,7 @@
 <section>
 	<div class="mainwrapper">
 
-		@include('layouts.sidebar-merchant', ['restaurant' => $restaurant])
+		@include('layouts.sidebar-admin', ['restaurant' => $restaurant])
 
 	    <div class="mainpanel">
             <div class="pageheader">
@@ -27,8 +27,8 @@
                     </div>
                     <div class="media-body">
                         <ul class="breadcrumb">
-                            <li><a href=""><i class="glyphicon glyphicon-home"></i></a></li>
-                            <li><a href="{{url('campaign')}}">Campaigns</a></li>
+                            <li><a href="{{url('dashboard')}}"><i class="glyphicon glyphicon-home"></i></a></li>
+                            <li><a href="{{url('campaigns')}}">Campaigns</a></li>
                             <li>Campaign Details</li>
                         </ul>
                         <h4>Campaign Details</h4>
@@ -67,7 +67,7 @@
 	                    </div>
 
 		                @endif
-						{!! Form::open(array('url' => 'campaign/'.$campaign->id, 'style' => 'display:inline;', 'class' => 'form-horizontal form-bordered')) !!}
+						{!! Form::open(array('url' => 'campaigns/'.$campaign->id, 'style' => 'display:inline;', 'class' => 'form-horizontal form-bordered')) !!}
 
 							<div class="form-group">
 								<label class="col-sm-2 control-label" style="text-align:left;">Campaign Name *</label>
@@ -90,7 +90,7 @@
 								<div class="col-sm-8">
 									<div class="input-group">
 	                                    <!-- <input type="text" class="form-control" placeholder="DD-MMM-YYYY" id="datepicker" required> -->
-	                                    {!! Form::text('cam_start', date_format(date_create($campaign['cam_end']), 'd-M-Y'), ['readonly' => 'readonly', 'required' => 'required', 'id' => 'datepicker', 'placeholder' => 'YYYY-MM-DD', 'class' => 'form-control']) !!}
+	                                    {!! Form::text('cam_start', date_format(date_create($campaign['cam_end']), 'd-M-Y'), ['required' => 'required', 'id' => 'datepicker', 'placeholder' => 'YYYY-MM-DD', 'class' => 'form-control']) !!}
 	                                    <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
 	                                </div><!-- input-group -->
 								</div>
@@ -101,7 +101,7 @@
 								<div class="col-sm-8">
 									<div class="input-group">
 	                                    <!-- <input type="text" class="form-control" placeholder="DD-MMM-YYYY" id="datepicker2" required> -->
-	                                    {!! Form::text('cam_end', date_format(date_create($campaign['cam_end']), 'd-M-Y'), ['readonly' => 'readonly', 'required' => 'required' ,'id' => 'datepicker2', 'placeholder' => 'YYYY-MM-DD', 'class' => 'form-control']) !!}
+	                                    {!! Form::text('cam_end', date_format(date_create($campaign['cam_end']), 'd-M-Y'), ['required' => 'required' ,'id' => 'datepicker2', 'placeholder' => 'YYYY-MM-DD', 'class' => 'form-control']) !!}
 	                                    <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
 	                                </div><!-- input-group -->
 								</div>
@@ -124,7 +124,7 @@
 							<button class="btn btn-danger" style="margin-left:15px;">Delete Campaign</button>
 						</a>
 
-						<a href="{{url('campaign')}}">
+						<a href="{{url('campaigns')}}">
 							<button style="margin-left:15px;" class="btn btn-default">Back</button>
 						</a>
 						<hr>

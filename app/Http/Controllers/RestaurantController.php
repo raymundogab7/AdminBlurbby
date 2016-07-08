@@ -55,10 +55,10 @@ class RestaurantController extends Controller
                 }
             }
 
-            return redirect('merchant-profile')->with('message', 'Successfully updated.');
+            return redirect('merchants/'.$request->merchant_id.'/edit')->with('message', 'Successfully updated.');
         }
 
-        return redirect('merchant-profile')->withInput();
+        return redirect('merchants/'.$request->merchant_id.'/edit')->withInput();
     }
 
     /**

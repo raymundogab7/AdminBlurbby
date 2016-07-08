@@ -3,25 +3,25 @@
 namespace Admin\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Admin\Repositories\Interfaces\AdminInterface;
+use Admin\Repositories\Interfaces\MerchantInterface;
 use Admin\Http\Requests\CompanyRequest;
 use Admin\Repositories\Interfaces\CompanyInterface;
 
 class CompanyController extends Controller
 {
 	/**
-     * @var AdminInterface
+     * @var MerchantInterface
      */
     protected $merchant;
 
 	/**
      * Create a new controller instance.
      *
-     * @param AdminInterface $merchant
+     * @param MerchantInterface $merchant
 
      * @return void
      */
-    public function __construct(AdminInterface $merchant)
+    public function __construct(MerchantInterface $merchant)
     {
         $this->merchant = $merchant;
     }
@@ -37,9 +37,9 @@ class CompanyController extends Controller
     {
         if ($this->merchant->updateById($id, $request->all())) {
 
-            return redirect('merchant-profile')->with('message', 'Successfully updated.');
+            return redirect('merchants/'.$id.'/edit')->with('message', 'Successfully updated.');
         }
 
-        return redirect('merchant-profile')->withInput();
+        return redirect('merchants/'.$id.'/edit')->withInput();
     }
 }

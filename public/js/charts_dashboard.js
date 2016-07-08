@@ -51,6 +51,7 @@ jQuery(document).ready(function(){
 		backgroundColor: '#fff'
 	    },
 	    yaxis: {
+	    min: 0,
 		color: '#eee'
 	    },
 	    xaxis: {
@@ -130,6 +131,7 @@ jQuery(document).ready(function(){
 		backgroundColor: '#fff'
 	    },
 	    yaxis: {
+	    min: 0,
 		color: '#eee'
 	    },
 	    xaxis: {
@@ -209,6 +211,7 @@ jQuery(document).ready(function(){
 		backgroundColor: '#fff'
 	    },
 	    yaxis: {
+	    min: 0,
 		color: '#eee'
 	    },
 	    xaxis: {

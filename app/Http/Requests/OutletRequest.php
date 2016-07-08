@@ -24,10 +24,9 @@ class OutletRequest extends Request
     public function rules()
     {
         return [
-            'outlet_name' => 'required',
             'outlet_add' => 'required',
             'outlet_country' => 'required',
-            'outlet_zip' => 'required',
+            'outlet_zip' => 'required|min:6|max:6',
             'outlet_phone' => 'required',
             'outlet_timezone' => 'required',
         ];
@@ -41,10 +40,11 @@ class OutletRequest extends Request
     public function messages()
     {
         return [
-            'outlet_name.required' => 'The main outlet name field is required.',
             'outlet_add.required' => 'The outlet address field is required.',
             'outlet_country.required' => 'The country field is required.',
             'outlet_zip.required' => 'The outlet postal code field is required.',
+            'outlet_zip.max' => 'Outlet postal code maxlength is 6',
+            'outlet_zip.min' => 'Outlet postal code minimum is 6.',
             'outlet_phone.required' => 'The outlet phone number field is required.',
             'outlet_timezone.required' => 'The timezone field is required.',
         ];
@@ -59,13 +59,13 @@ class OutletRequest extends Request
     public function response(array $errors)
     {
         if (!is_null($this->from_main)) {
-            return $this->redirector->to('merchant-profile')
+            return $this->redirector->to('merchants/'.$this->merchant_id.'/edit')
                 ->withInput()
                 ->with(['errors' => $errors]);
         }
 
         if (is_null($this->outlet_id)) {
-            return $this->redirector->to('outlets/create')
+            return $this->redirector->to('outlets/'.$this->merchant_id.'/create')
                 ->withInput()
                 ->with(['errors' => $errors]);
         }

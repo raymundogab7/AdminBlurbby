@@ -42,11 +42,11 @@
         </div><!-- form-group -->
     </form>
 
-    {!! Form::open(array('url' => 'campaign/updateStatus/'.$campaign['id'], 'style' => 'display:inline;', 'class' => 'form-horizontal form-bordered', 'method' => 'PUT')) !!}
+    {!! Form::open(array('url' => 'campaigns/updateStatus/'.$campaign['id'], 'style' => 'display:inline;', 'class' => 'form-horizontal form-bordered', 'method' => 'PUT')) !!}
     <input type="hidden" name="cam_status" value="Draft">
     <button class="btn btn-danger">Withdraw Campaign</button>
     {!! Form::close() !!}
-    <a href="{{url('campaign')}}">
+    <a href="{{url('campaigns')}}">
         <button style="margin-left:15px;" class="btn btn-default">Back</button>
     </a>
 </div>
@@ -71,7 +71,7 @@
             @foreach($blurbs as $blurb)
             <tr>
             	 @if(!is_null($blurb['blurb_logo']))
-                <td><img src="{{asset($blurb['blurb_logo'])}}" style="width:20px"></td>
+                <td><img src="{{env('MERCHANT_URL').'/'.$blurb['blurb_logo']}}" style="width:20px"></td>
                 @else
                 <td><!-- <img src="{{asset('images/no-blurb.png')}}" style="width:20px">  -->No Image Available</td>
                 @endif

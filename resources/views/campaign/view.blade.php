@@ -1,4 +1,4 @@
-@extends('layouts.merchant')
+@extends('layouts.admin')
 
 @section('page-title', $restaurant->res_name . ' Campaigns')
 
@@ -17,7 +17,7 @@
 <section>
 	<div class="mainwrapper">
 
-		@include('layouts.sidebar-merchant', ['restaurant' => $restaurant])
+		@include('layouts.sidebar-admin', ['restaurant' => $restaurant])
 
 	    <div class="mainpanel">
             <div class="pageheader">
@@ -27,8 +27,8 @@
                     </div>
                     <div class="media-body">
                         <ul class="breadcrumb">
-                            <li><a href=""><i class="glyphicon glyphicon-home"></i></a></li>
-                            <li><a href="{{url('campaign')}}">Campaigns</a></li>
+                            <li><a href="{{url('dashboard')}}"><i class="glyphicon glyphicon-home"></i></a></li>
+                            <li><a href="{{url('campaigns')}}">Campaigns</a></li>
                             <li>Campaign Details</li>
                         </ul>
                         <h4>Campaign Details</h4>

@@ -201,8 +201,8 @@
                                     <tbody>
                                     @foreach($campaigns as $c)
                                         <tr>
-                                        	<td><a href="{{url('merchant-profile') . '/' . $c['id']}}">{{$c['restaurant']['res_name']}}</a></td>
-                                            <td><a href="{{url('campaign') . '/' . $c['id']}}">{{$c['campaign_name']}}</a></td>
+                                        	<td><a href="{{url('merchants') . '/' . $c['id']}}">{{$c['restaurant']['res_name']}}</a></td>
+                                            <td><a href="{{url('campaigns') . '/' . $c['id']}}">{{$c['campaign_name']}}</a></td>
                                             <td>
                                                 @if($c['cam_status'] == 'Approved')
                                                 <span class="text-success">
@@ -231,11 +231,11 @@
 
                                                 @if($c['cam_status'] == 'Rejected' || $c['cam_status'] == 'Draft')
 
-                                                <a href="{{url('campaign') . '/' . $c['id']}}" data-toggle="tooltip" title="Edit" class="tooltips"><i class="fa fa-pencil"></i></a>
+                                                <a href="{{url('campaigns') . '/' . $c['id']}}" data-toggle="tooltip" title="Edit" class="tooltips"><i class="fa fa-pencil"></i></a>
 
                                                 @else
 
-                                                <a href="{{url('campaign') . '/' . $c['id']}}" data-toggle="tooltip" title="View" class="tooltips"><i class="fa fa-eye"></i></a>
+                                                <a href="{{url('campaigns') . '/' . $c['id']}}" data-toggle="tooltip" title="View" class="tooltips"><i class="fa fa-eye"></i></a>
 
                                                 @endif
 
@@ -247,12 +247,7 @@
                                     </tbody>
                                 </table>
                             </div><!-- table-responsive -->
-							<ul class="pagination mt5">
-                                <li class="disabled"><a href="#"><i class="fa fa-angle-left"></i></a></li>
-                                <li class="active"><a href="#">1</a></li>
-                                <li><a href="#">2</a></li>
-                                <li><a href="#"><i class="fa fa-angle-right"></i></a></li>
-                            </ul>
+							
                         </div>                            
                     </div><!-- row -->
 					

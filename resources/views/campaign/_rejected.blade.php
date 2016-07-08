@@ -1,12 +1,13 @@
 
 	<div class="col-sm-12 col-md-8 col-xs-12" style="padding-bottom:20px;">
 
-		{!! Form::open(array('url' => 'campaign/'.$campaign->id, 'style' => 'display:inline;', 'class' => 'form-horizontal form-bordered', 'method' => 'PUT')) !!}
-		
+		<form method="POST" action="{{url('campaigns/'.$campaign->id)}}" style="display:inline;" class="form-horizontal form-bordered" >
 		<div class="form-group">
 			<label class="col-sm-2 control-label" style="text-align:left;">Campaign Name *</label>
 			<div class="col-sm-8">
 				<!-- <input type="text" value="" class="form-control" required /> -->
+				<input type="hidden" name="_method" value="PUT">
+            	<input type="hidden" name="_token" value="{{csrf_token()}}">
 				{!! Form::text('campaign_name', $campaign->campaign_name, ['required' => 'required', 'class' => 'form-control']) !!}
 			</div>
 		</div><!-- form-group -->
@@ -24,7 +25,7 @@
 			<div class="col-sm-8">
 				<div class="input-group">
                     <!-- <input type="text" class="form-control" placeholder="DD-MMM-YYYY" id="datepicker" required> -->
-                    {!! Form::text('cam_start', $campaign->cam_start, ['readonly' => 'readonly', 'required' => 'required', 'id' => 'datepicker', 'placeholder' => 'YYYY-MM-DD', 'class' => 'form-control']) !!}
+                    {!! Form::text('cam_start', $campaign->cam_start, ['required' => 'required', 'id' => 'datepicker', 'placeholder' => 'YYYY-MM-DD', 'class' => 'form-control']) !!}
                     <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
                 </div><!-- input-group -->
 			</div>
@@ -35,7 +36,7 @@
 			<div class="col-sm-8">
 				<div class="input-group">
                     <!-- <input type="text" class="form-control" placeholder="DD-MMM-YYYY" id="datepicker2" required> -->
-                    {!! Form::text('cam_end', $campaign->cam_end, ['readonly' => 'readonly', 'required' => 'required' ,'id' => 'datepicker2', 'placeholder' => 'YYYY-MM-DD', 'class' => 'form-control']) !!}
+                    {!! Form::text('cam_end', $campaign->cam_end, [ 'required' => 'required' ,'id' => 'datepicker2', 'placeholder' => 'YYYY-MM-DD', 'class' => 'form-control']) !!}
                     <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
                 </div><!-- input-group -->
 			</div>
@@ -49,9 +50,9 @@
 		</div><!-- form-group -->
 		<button class="btn btn-primary" style="margin-left:15px;">Update Campaign</button>
 		
-		{!! Form::close() !!}
+		</form>
 
-		{!! Form::open(array('url' => 'campaign/updateStatus/'.$campaign->id, 'style' => 'display:inline;', 'class' => 'form-horizontal form-bordered', 'method' => 'PUT')) !!}
+		{!! Form::open(array('url' => 'campaigns/updateStatus/'.$campaign->id, 'style' => 'display:inline;', 'class' => 'form-horizontal form-bordered', 'method' => 'PUT')) !!}
 
 		<input type="hidden" name="cam_status" value="Pending Approval">
 		<a href="">
@@ -60,14 +61,14 @@
 
 		{!! Form::close() !!}
 
-		{!! Form::open(array('url' => 'campaign/'.$campaign->id, 'style' => 'display:inline;', 'class' => 'form-horizontal form-bordered', 'method' => 'DELETE')) !!}
+		{!! Form::open(array('url' => 'campaigns/'.$campaign->id, 'style' => 'display:inline;', 'class' => 'form-horizontal form-bordered', 'method' => 'DELETE')) !!}
 
 		<a href="">
 			<button class="btn btn-danger" style="margin-left:15px;">Delete Campaign</button>
 		</a>
 
 		{!! Form::close() !!}
-		<a href="{{url('campaign')}}">
+		<a href="{{url('campaigns')}}">
 			<button style="margin-left:15px;" class="btn btn-default">Back</button>
 		</a>
 	</div>
@@ -94,7 +95,7 @@
 	            @foreach($blurbs as $blurb)
 	            <tr>
 	            	 @if(!is_null($blurb['blurb_logo']))
-	                <td><img src="{{asset($blurb['blurb_logo'])}}" style="width:20px"></td>
+	                <td><img src="{{env('MERCHANT_URL').'/'.$blurb['blurb_logo']}}" style="width:20px"></td>
 	                @else
 	                <td><!-- <img src="{{asset('images/no-blurb.png')}}" style="width:20px">  -->No Image Available</td>
 	                @endif

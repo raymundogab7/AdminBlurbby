@@ -21,7 +21,7 @@
 	                    </div>
 	                    <div class="media-body">
 	                        <ul class="breadcrumb">
-	                            <li><a href="index-admin.html"><i class="glyphicon glyphicon-home"></i></a></li>
+	                            <li><a href="{{url('dashboard')}}"><i class="glyphicon glyphicon-home"></i></a></li>
 	                            <li>Merchants</li>
 	                        </ul>
 	                        <h4>Merchants</h4>
@@ -98,7 +98,7 @@
 							{!! Form::open(array('url' => 'merchants/report/generate', 'style' => 'display:inline;', 'class' => 'form-horizontal form-bordered')) !!}
 								<button class="btn btn-info"><i class="fa fa-file-excel-o"></i>&nbsp;Download List (.csv)</button>
 							{!! Form::close() !!}
-							<a href="{{url('merchants/create')}}">
+							<a href="{{url('campaigns/create')}}">
 								<button class="btn btn-primary"><i class="fa fa-plus"></i> Add New Campaign</button>
 							</a>
 
@@ -129,10 +129,11 @@
 	                            <a href="{{url('merchants/'.$merchant['id'].'/edit')}}" class="list-group-item">
 	                                <div class="media">
 	                                    <div class="pull-left">
-	                                    	@if(!is_null($merchant['restaurant']['res_logo']))
-	                                    	<img class="img-roundedcircle img-online" src="{{env('IMG_URL').$merchant['restaurant']['res_logo']}}/profile_picture.jpg" alt="...">
+
+	                                        @if(!is_null($merchant['restaurant']['res_logo']))
+	                                    	<img class="img-roundedcircle img-online" src="{{env('MERCHANT_URL').'/'.$merchant['restaurant']['res_logo']}}/profile_picture.jpg" alt="...">
 	                                    	@else
-	                                        <img class="img-roundedcircle img-online" src="{{env('IMG_URL')}}images/photos/user1.png" alt="...">
+	                                        <img class="img-roundedcircle img-online" src="{{env('APP_URL')}}/images/photos/user1.png" alt="...">
 	                                        @endif
 	                                    </div>
 	                                    <div class="media-body">
@@ -142,18 +143,18 @@
 	                                            <ul class="list-unstyled">
 													<li><i class="fa fa-briefcase"></i> {{$merchant['coy_name']}}</li>
 													<li><i class="fa fa-toggle-on"></i>
-													@if($merchant['status'] == 'Approved')
-					                            	<span class="text-success">
-					                            	@elseif($merchant['status'] == 'Blocked')
-					                            	<span class="text-muted">
-					                            	@elseif($merchant['status'] == 'Pending Admin Approval')
-					                            	<span class="text-warning">
+													@if($merchant['status'] == 1)
+					                            	<span class="text-success"><strong>Approved</strong>
+					                            	@elseif($merchant['status'] == 2)
+					                            	<span class="text-muted"><strong>Blocked</strong>
+					                            	@elseif($merchant['status'] == 0)
+					                            	<span class="text-warning"><strong>Pending Admin Approval</strong>
 
 					                            	@endif
-													<strong>{{$merchant['status']}}</strong></span></small></li>
+													</span></small></li>
 
-	                                            	<li><i class="fa fa-phone"></i> +6597547690</li>
-													<li><i class="fa fa-envelope-o"></i> contact@starbucks.com.sg</li>
+	                                            	<li><i class="fa fa-phone"></i> {{$merchant['coy_phone']}}</li>
+													<li><i class="fa fa-envelope-o"></i> {{$merchant['coy_url']}}</li>
 	                                            </ul>
 	                                        </div>
 	                                    </div>
