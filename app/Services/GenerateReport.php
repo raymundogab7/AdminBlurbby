@@ -2,12 +2,12 @@
 
 class GenerateReport
 {
-    public function generate($reportType)
+    public function generate($reportType, $file_name = 'CAMPAIGN REPORT')
     {
         $headers = array();
         $valueArray = array();
 
-        \Excel::create('CAMPAIGN REPORT', function ($excel) use ($reportType, $headers, $valueArray) {
+        \Excel::create($file_name, function ($excel) use ($reportType, $headers, $valueArray) {
             foreach ($reportType as $tyKey => $rtVal) {
                 $excel->sheet($tyKey, function ($sheet) use ($rtVal, $headers, $valueArray) {
                     foreach ($rtVal as $rtValKey => $v) {

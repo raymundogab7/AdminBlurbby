@@ -90,21 +90,21 @@ Route::group(['middleware' => ['auth']], function () {
     |--------------------------------------------------------------------------
      */
     Route::resource('merchants', 'MerchantController');
-    Route::put('merchants/withdraw/{merchant_id}', 'MerchantControllerr@withdraw');
-    Route::put('merchants/updateStatus/{merchant_id}', 'MerchantControllerr@updateStatus');
-    Route::put('merchants/updateCamRead/{merchant_id}', 'MerchantControllerr@updateCamRead');
-    Route::post('merchants/markAllAsRead', 'MerchantControllerr@markAllAsRead');
-    Route::post('merchants/duplicate/{merchant_id}', 'MerchantControllerr@duplicate');
+    Route::put('merchants/withdraw/{merchant_id}', 'MerchantController@withdraw');
+    Route::put('merchants/updateStatus/{merchant_id}', 'MerchantController@updateStatus');
+    Route::put('merchants/updateCamRead/{merchant_id}', 'MerchantController@updateCamRead');
+    Route::post('merchants/markAllAsRead', 'MerchantController@markAllAsRead');
+    Route::post('merchants/duplicate/{merchant_id}', 'MerchantController@duplicate');
 
     Route::put('merchants/updateNotifNotToRead/{notification_id}', 'NotificationsController@updateNotifNotToRead');
     Route::put('merchants/updateNotifToRead/{notification_id}', 'NotificationsController@updateNotifToRead');
-    Route::post('merchants/report/generate', 'MerchantControllerr@generateReport');
-    Route::post('merchants/report/generate/{merchant_id}', 'MerchantControllerr@generateCampaignReport');
+    Route::post('merchants/report/generate', 'MerchantController@generateReport');
+    Route::post('merchants/report/generate/{merchant_id}', 'MerchantController@generateCampaignReport');
 
-    Route::get('merchants/getLastSevenDays/{merchant_id}/{field}', 'MerchantControllerr@getLastSevenDays');
+    Route::get('merchants/getLastSevenDays/{merchant_id}/{field}', 'MerchantController@getLastSevenDays');
 
-    Route::get('merchants/search/{search_word}/{search_type}', 'MerchantControllerr@getSearchResult');
-    Route::get('merchants/search/show/{search_word}/{search_type}', 'MerchantControllerr@getSearchResult');
+    Route::get('merchants/search/{search_word}/{search_type}', 'MerchantController@getSearchResult');
+    Route::get('merchants/search/show/{search_word}/{search_type}', 'MerchantController@getSearchResult');
 
     Route::put('merchants/company/{merchant_id}', 'CompanyController@update');
     Route::put('merchants/outlet/{outlet_id}', 'OutletController@update');
@@ -120,6 +120,12 @@ Route::group(['middleware' => ['auth']], function () {
     Route::resource('outlets', 'OutletController', ['except' => ['show', 'index', 'create', 'edit']]);
     Route::get('outlets/{outlet_id}/create', 'OutletController@create');
     Route::get('outlets/edit/{outlet_id}/{merchant_id_id}', 'OutletController@edit');
-
+    
+    /*
+    |--------------------------------------------------------------------------
+    | Logout Route
+    |--------------------------------------------------------------------------
+     */
+    Route::get('logout', 'Auth\AuthController@logout');
 });
 

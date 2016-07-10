@@ -11,6 +11,7 @@ use Admin\Repositories\Interfaces\OutletInterface;
 use Admin\Repositories\Interfaces\RestaurantCuisineInterface;
 use Admin\Repositories\Interfaces\RestaurantInterface;
 use Admin\Repositories\Interfaces\SnapShotInterface;
+use Admin\Services\GenerateReport;
 
 class MerchantController extends Controller
 {
@@ -93,6 +94,30 @@ class MerchantController extends Controller
     }
 
     /**
+     * Get search result page.
+     *
+     * @return View
+     */
+    public function getSearchResult($search_word, $search_type)
+    {
+        $data = array(
+            'merchants' => $this->merchant->search($search_word, $search_type),
+            'total_merchants' => $this->merchant->getTotalCount(),
+            'total_last_thirty_days' => $this->merchant->getTotalMonth(),
+            'total_live_merchants' => $this->merchant->getCount(),
+            'total_pending_admin_approval_merchants' => $this->merchant->getCount(0),
+            'total_approved_merchants' => $this->merchant->getCount(1),
+            'total_blocked_merchants' => $this->merchant->getCount(2),
+            'total_pending_email_verification' => $this->merchant->getCount(3),
+            'search_word' => $search_word,
+            'search_type' => $search_type,
+        );
+        /* echo "<pre>";
+        print_r($data['campaigns']);die;*/
+        return view('merchants.search', $data);
+    }
+
+    /**
      * Display create merchant page.
      *
      * @return View
@@ -155,7 +180,7 @@ class MerchantController extends Controller
             return $structure['cuisine']['id'];
 
         }, $selected_cuisines);
-
+        
         $data = array(
             'merchant' => $this->merchant->getById($merchant_id),
             'restaurant' => $restaurant,
@@ -194,4 +219,52 @@ class MerchantController extends Controller
 
         return redirect('merchants/'.$request->merchant_id.'/edit')->withInput();
     }
+
+    /**
+     * Generate Campaign report.
+     *
+     * @return Redirect
+     */
+    public function generateReport(Request $request)
+    {
+        $merchant = $this->merchant->getAll();
+        
+        $c = array_map(function($structure) {
+
+            switch ($structure['status']) {
+                case 1:
+                    $status = "Approved";
+                    break;
+                case 2:
+                    $status = "Blocked";
+                    break;
+                case 3:
+                    $status = "Pending Email Verification";
+                    break;
+                default:
+                    $status = "Pending Admin Approval";
+                    break;
+            }
+            return [
+                'Merchant Name' => $structure['coy_name'],
+                'Status' => $status,
+                'Joined Date' => date_format(date_create($structure['date_created']), 'd-M-Y'),
+                'Last Online Date' => date_format(date_create($structure['last_online']), 'd-M-Y'),
+                'Last Online Time' => date_format(date_create($structure['last_online']), 'H:i:s'),
+                'Contact Person Name' => $structure['first_name']. ' ' . $structure['last_name'],
+                'Tel No' => $structure['coy_phone'],
+                'Email' => $structure['email'],
+
+            ];
+        }, $merchant);
+
+        $generator = new GenerateReport();
+
+        $report_type = array(
+            $request->blurb_status . ' Merchants Report' => array_filter($c),
+        );
+        $generator->generate($report_type, 'Merchants Report');
+
+        return redirect()->back();
+    }   
 }

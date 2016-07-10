@@ -101,40 +101,28 @@ class MerchantEloquent implements MerchantInterface
      */
     public function search($search_word, $search_type)
     {
-        if ($search_type == 'Merchant') {
-            /*return $this->merchant->with(['restaurant'=>function($query){
-
-            }])
-            ->where('coy_name', 'LIKE', '%'.$search_word.'%')
-            ->orderBy('coy_name')
-            ->paginate(10);*/
-            return Merchant::select('merchant.*', 'restaurant.id', 'restaurant.res_name', 'res_logo', 'merchant.id', 'merchant.coy_name')
-                ->leftJoin('restaurant', 'merchant.merchant_id', '=', 'restaurant.merchant_id')
-                ->leftJoin('merchant', 'merchant.merchant_id', '=', 'merchant.id')
-                ->where('merchant.coy_name', 'LIKE', '%' . $search_word . '%')
+        if ($search_type == 'Company') {
+            //return $this->merchant->where('coy_name', $search_word)->with('restaurant')->orderBy('coy_name')->paginate(10);
+            return \DB::table('merchant')->select('restaurant.id AS res_id', 'restaurant.res_name', 'res_logo', 'merchant.id as mer_id', 'merchant.coy_name', 'merchant.email', 'merchant.status', 'merchant.coy_phone', 'merchant.last_online', 'merchant.coy_url')
+                ->leftJoin('restaurant', 'merchant.id', '=', 'restaurant.merchant_id')
+                ->where('merchant.coy_name', 'LIKE', '%'.$search_word.'%')
                 ->orderBy('merchant.coy_name')
                 ->paginate(10);
         }
 
         if ($search_type == 'Restaurant') {
-            /*return $this->merchant->with(['restaurant'=>function($query) use($search_word){
-            $query->where('res_name', 'LIKE', '%'.$search_word.'%');
-            }])
-            ->orderBy('coy_name')
-            ->paginate(10);*/
-            return Merchant::select('merchant.*', 'restaurant.id', 'restaurant.res_name', 'res_logo', 'merchant.id', 'merchant.coy_name')
-                ->leftJoin('restaurant', 'merchant.merchant_id', '=', 'restaurant.merchant_id')
-                ->leftJoin('merchant', 'merchant.merchant_id', '=', 'merchant.id')
-                ->where('restaurant.res_name', 'LIKE', '%' . $search_word . '%')
+            return \DB::table('merchant')->select('restaurant.id AS res_id', 'restaurant.res_name', 'res_logo', 'merchant.id as mer_id', 'merchant.coy_name', 'merchant.email', 'merchant.status', 'merchant.coy_phone', 'merchant.last_online', 'merchant.coy_url')
+                ->leftJoin('restaurant', 'merchant.id', '=', 'restaurant.merchant_id')
+                ->where('restaurant.res_name', 'LIKE', '%'.$search_word.'%')
                 ->orderBy('merchant.coy_name')
                 ->paginate(10);
         }
 
-        if ($search_type == 'Company') {
-            return Merchant::select('merchant.*', 'restaurant.id', 'restaurant.res_name', 'res_logo', 'merchant.id', 'merchant.coy_name')
-                ->leftJoin('restaurant', 'merchant.merchant_id', '=', 'restaurant.merchant_id')
-                ->leftJoin('merchant', 'merchant.merchant_id', '=', 'merchant.id')
-                ->where('merchant.coy_name', 'LIKE', '%' . $search_word . '%')
+        if ($search_type == 'Email') {
+            //return $this->merchant->where('email', $search_word)->with('restaurant')->orderBy('coy_name')->paginate(10);
+             return \DB::table('merchant')->select('restaurant.id AS res_id', 'restaurant.res_name', 'res_logo', 'merchant.id as mer_id', 'merchant.coy_name', 'merchant.email', 'merchant.status', 'merchant.coy_phone', 'merchant.last_online', 'merchant.coy_url')
+                ->leftJoin('restaurant', 'merchant.id', '=', 'restaurant.merchant_id')
+                ->where('merchant.email', 'LIKE', '%'.$search_word.'%')
                 ->orderBy('merchant.coy_name')
                 ->paginate(10);
 

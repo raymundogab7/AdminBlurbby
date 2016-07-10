@@ -99,4 +99,16 @@ class AuthController extends Controller
             'password' => bcrypt($data['password']),
         ]);
     }
+
+    /**
+     * Logout user.
+     *
+     * @return View
+     */
+    public function logout()
+    {
+        Auth::logout();
+
+        return redirect('login');
+    }
 }

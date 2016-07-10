@@ -82,25 +82,22 @@
 	                        <div class="well mt10">
 	                            <div class="row">
 	                                <div class="col-sm-9">
-	                                    <input type="text" id="input" placeholder="Who are you looking for?" class="form-control">
+	                                    <input type="text" id="input" value="{{$search_word}}" placeholder="Who are you looking for?" class="form-control">
 	                                </div>
 	                                <div class="col-sm-3">
 	                                    <select id="search-type" class="width100p" data-placeholder="Search Type">
 	                                        <option value="">Choose One</option>
-	                                        <option value="Company">Company Name</option>
-	                                        <option value="Restaurant">Restaurant Name</option>
-	                                        <option value="Email">Email</option>
+	                                        <option value="Company" <?php if($search_type == 'Company') : ?> selected <?php endif; ?>>Company Name</option>
+	                                        <option value="Restaurant" <?php if($search_type == 'Restaurant') : ?> selected <?php endif; ?>>Restaurant Name</option>
+	                                        <option value="Email" <?php if($search_type == 'Email') : ?> selected <?php endif; ?>>Email</option>
 	                                    </select>
-	                                </div><!-- <?php// if($search_type == 'Email') : ?> selected <?php //endif; ?> -->
+	                                </div>
 	                            </div>
 	                        </div><!-- well -->
-
-							{!! Form::open(array('url' => '/merchants/report/generate', 'style' => 'display:inline;', 'class' => 'form-horizontal form-bordered')) !!}
+	                        {!! Form::open(array('url' => 'merchants/report/generate', 'style' => 'display:inline;', 'class' => 'form-horizontal form-bordered')) !!}
 								<button class="btn btn-info"><i class="fa fa-file-excel-o"></i>&nbsp;Download List (.csv)</button>
 							{!! Form::close() !!}
-							<a href="{{url('campaigns/create')}}">
-								<button class="btn btn-primary"><i class="fa fa-plus"></i> Add New Campaign</button>
-							</a>
+							<a href="admin-merchant-details.html"><button class="btn btn-primary"><i class="fa fa-plus"></i> Add New Campaign</button></a>
 
 	                        <hr />
 
@@ -123,38 +120,42 @@
 								@endif
 	                        </div>
 	                        <h3 class="xlg-title">All Merchants</h3>
-
+	                       	@if(count($merchants) == 0)<br>
+		                    <div class="alert alert-danger">
+		                        <strong>No results found.</strong>
+		                    </div>
+		                    @endif
 	                        <div class="list-group contact-group">
 	                        	@foreach($merchants as $merchant)
-	                            <a href="{{url('merchants/'.$merchant['id'].'/edit')}}" class="list-group-item">
+	                            <a href="{{url('merchants/'.$merchant->mer_id.'/edit')}}" class="list-group-item">
 	                                <div class="media">
 	                                    <div class="pull-left">
 
-	                                        @if(!is_null($merchant['restaurant']['res_logo']))
-	                                    	<img class="img-roundedcircle img-online" src="{{env('MERCHANT_URL').'/'.$merchant['restaurant']['res_logo']}}/profile_picture.jpg" alt="...">
+	                                        @if(!is_null($merchant->res_logo))
+	                                    	<img class="img-roundedcircle img-online" src="{{env('MERCHANT_URL').'/'.$merchant->res_logo}}/profile_picture.jpg" alt="...">
 	                                    	@else
 	                                        <img class="img-roundedcircle img-online" src="{{env('APP_URL')}}/images/photos/user1.png" alt="...">
 	                                        @endif
 	                                    </div>
 	                                    <div class="media-body">
-	                                        <h4 class="media-heading">{{$merchant['coy_name']}}</h4>
+	                                        <h4 class="media-heading">{{$merchant->coy_name}}</h4>
 	                                        <div class="media-content">
-	                                            <i class="fa fa-clock-o"></i> Last online at {{date_format(date_create($merchant['last_online']), 'd-M-Y H:i:s')}}
+	                                            <i class="fa fa-clock-o"></i> Last online at {{date_format(date_create($merchant->last_online), 'd-M-Y H:i:s')}}
 	                                            <ul class="list-unstyled">
-													<li><i class="fa fa-briefcase"></i> {{$merchant['coy_name']}}</li>
+													<li><i class="fa fa-briefcase"></i> {{$merchant->coy_name}}</li>
 													<li><i class="fa fa-toggle-on"></i>
-													@if($merchant['status'] == 1)
+													@if($merchant->status == 1)
 					                            	<span class="text-success"><strong>Approved</strong>
-					                            	@elseif($merchant['status'] == 2)
+					                            	@elseif($merchant->status == 2)
 					                            	<span class="text-muted"><strong>Blocked</strong>
-					                            	@elseif($merchant['status'] == 0)
+					                            	@elseif($merchant->status == 0)
 					                            	<span class="text-warning"><strong>Pending Admin Approval</strong>
 
 					                            	@endif
 													</span></small></li>
 
-	                                            	<li><i class="fa fa-phone"></i> {{$merchant['coy_phone']}}</li>
-													<li><i class="fa fa-envelope-o"></i> {{$merchant['coy_url']}}</li>
+	                                            	<li><i class="fa fa-phone"></i> {{$merchant->coy_phone}}</li>
+													<li><i class="fa fa-envelope-o"></i> {{$merchant->coy_url}}</li>
 	                                            </ul>
 	                                        </div>
 	                                    </div>
