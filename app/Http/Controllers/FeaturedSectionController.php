@@ -90,6 +90,7 @@ class FeaturedSectionController extends Controller
     {
         $data = array(
             'merchant' => $this->merchant->getAll(),
+            'slides_count' => $this->featuredSection->getCount(),
         );
 
         return view('featured_section.create', $data);
@@ -111,10 +112,17 @@ class FeaturedSectionController extends Controller
                 'message' => 'Invalid format',
             ), 404);
         }
+        $orig_position_selected = $request->position;
 
-        $request->merge(['slide_image' => 'image_slides/' . $request->position . '/' . $request->position . '.jpg']);
+        $request->merge(['slide_image' => 'image_slides/' . ($this->featuredSection->getCount() + 1) . '/' . ($this->featuredSection->getCount() + 1) . '.jpg', 'position' => $this->featuredSection->getCount() + 1]);
 
-        if ($this->featuredSection->updateByAttributes(['position' => $request->position], $request->except('_token', 'slide_image_temp'))) {
+        $new_featured = $this->featuredSection->create($request->except('_token', 'slide_image_temp'));
+
+        $to_update = $this->featuredSection->getByAttributes(['position' => $orig_position_selected], false);
+
+        if ($this->featuredSection->updateByAttributes(['position' => $orig_position_selected], ['merchant_id' => $new_featured->merchant_id, 'slide_image' => $new_featured->slide_image, 'status' => $new_featured->status])) {
+
+            $this->featuredSection->updateById($new_featured->id, ['merchant_id' => $to_update->merchant_id, 'slide_image' => $to_update->slide_image, 'status' => $to_update->status]);
 
             $imageUploader->upload($file, $request->position, 500, 500, 'image_slides/', '/' . $request->position . '.jpg');
 

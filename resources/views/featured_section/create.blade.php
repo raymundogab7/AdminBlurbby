@@ -49,10 +49,10 @@
                                 <div class="col-sm-8">
 
                                     <select id="position" required="required" data-placeholder="Choose One" class="width300" name="position">
-                                        <option value="">Choose One</option>
-                                        <option value="1" selected="selected">1</option>
-                                        <option value="2">2</option>
-                                        <option value="3">3</option>
+                                        <option value="" selected="">Choose One</option>
+                                        @for($i=1;$i<=$slides_count;$i++)
+                                        <option value="{{$i}}">Position {{$i}}</option>
+                                        @endfor
                                     </select>
                                 </div>
                             </div><!-- form-group -->

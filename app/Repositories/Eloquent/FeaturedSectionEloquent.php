@@ -34,6 +34,16 @@ class FeaturedSectionEloquent implements FeaturedSectionInterface
     }
 
     /**
+     * Get count of featured section
+     *
+     * @return integer
+     */
+    public function getCount()
+    {
+        return $this->featuredSection->count();
+    }
+
+    /**
      * Get FeaturedSection by id.
      *
      * @param integer $id

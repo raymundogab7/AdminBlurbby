@@ -24,6 +24,13 @@ interface FeaturedSectionInterface
     public function getById($id);
 
     /**
+     * Get count of featured section
+     *
+     * @return integer
+     */
+    public function getCount();
+
+    /**
      * Get FeaturedSection by id.
      *
      * @param integer $id
