@@ -31,4 +31,16 @@ class PageEloquent implements PageInterface
     {
         return $this->page->find($id);
     }
+
+    /**
+     * Update Page by id.
+     *
+     * @param integer $id
+     *
+     * @return Admin
+     */
+    public function updateById($id, $payload)
+    {
+        return $this->page->where('id', $id)->update($payload);
+    }
 }

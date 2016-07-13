@@ -28,9 +28,9 @@
                         </div>
                     </div><!-- media -->
                 </div><!-- pageheader -->
-                
+
                 <div class="contentpanel">
-                    
+
                     <div class="row row-stat">
                         <div class="col-md-4">
                             <div class="panel panel-success-alt noborder">
@@ -51,11 +51,11 @@
                                             <h4 class="nomargin">{{number_format($thisWeekTotalLikes, 0)}}</h4>
                                         </div>
                                     </div>
-                                    
+
                                 </div><!-- panel-body -->
                             </div><!-- panel -->
                         </div><!-- col-md-4 -->
-                        
+
                         <div class="col-md-4">
                             <div class="panel panel-primary noborder">
                                 <div class="panel-heading noborder">
@@ -75,11 +75,11 @@
                                             <h4 class="nomargin">{{number_format($thisWeekTotalViews, 0)}}</h4>
                                         </div>
                                     </div>
-                                    
+
                                 </div><!-- panel-body -->
                             </div><!-- panel -->
                         </div><!-- col-md-4 -->
-                        
+
                         <div class="col-md-4">
                             <div class="panel panel-warning-alt noborder">
                                 <div class="panel-heading noborder">
@@ -99,12 +99,12 @@
                                             <h4 class="nomargin">{{number_format($thisWeekTotalUsage, 0)}}</h4>
                                         </div>
                                     </div>
-                                    
+
                                 </div><!-- panel-body -->
                             </div><!-- panel -->
                         </div><!-- col-md-4 -->
                     </div><!-- row -->
-					
+
 					<div class="row row-stat">
                         <div class="col-md-4">
                             <div class="panel panel-success-dark noborder">
@@ -125,11 +125,11 @@
                                             <h4 class="nomargin">{{number_format($thisWeekMerchants, 0)}}</h4>
                                         </div>
                                     </div>
-                                    
+
                                 </div><!-- panel-body -->
                             </div><!-- panel -->
                         </div><!-- col-md-4 -->
-                        
+
                         <div class="col-md-4">
                             <div class="panel panel-info-alt noborder">
                                 <div class="panel-heading noborder">
@@ -149,11 +149,11 @@
                                             <h4 class="nomargin">{{number_format($thisWeekAppUser, 0)}}</h4>
                                         </div>
                                     </div>
-                                    
+
                                 </div><!-- panel-body -->
                             </div><!-- panel -->
                         </div><!-- col-md-4 -->
-                        
+
                         <div class="col-md-4">
                             <div class="panel panel-danger-alt noborder">
                                 <div class="panel-heading noborder">
@@ -173,7 +173,7 @@
                                             <h4 class="nomargin">{{number_format($thisWeekTotalLiveCampaignLikes, 0)}}</h4>
                                         </div>
                                     </div>
-                                    
+
                                 </div><!-- panel-body -->
                             </div><!-- panel -->
                         </div><!-- col-md-4 -->
@@ -181,7 +181,11 @@
 					<hr>
                     <div class="row">
 						<div class="col-md-12">
-							<h2>Live Campaigns</h2>								
+							<h2>Live Campaigns</h2>
+                            {!! Form::open(array('url' => 'dashboard/report/generate', 'style' => 'display:inline;', 'class' => 'form-horizontal form-bordered')) !!}
+                                <button class="btn btn-info" style="float:right;margin-bottom:20px;"><i class="fa fa-file-excel-o"></i>&nbsp;Download Analytics Report (.csv)</button>
+                            {!! Form::close() !!}
+
                             <div class="table-responsive">
                                 <table class="table table-primary" id="live_campaigns_table">
                                     <thead class="" style="background-color:#00B0ED">
@@ -201,7 +205,7 @@
                                     <tbody>
                                     @foreach($campaigns as $c)
                                         <tr>
-                                        	<td><a href="{{url('merchants') . '/' . $c['id']}}">{{$c['restaurant']['res_name']}}</a></td>
+                                        	<td><a href="{{url('merchants') . '/' . $c['id'].'/edit'}}">{{$c['restaurant']['res_name']}}</a></td>
                                             <td><a href="{{url('campaigns') . '/' . $c['id']}}">{{$c['campaign_name']}}</a></td>
                                             <td>
                                                 @if($c['cam_status'] == 'Approved')
@@ -247,12 +251,12 @@
                                     </tbody>
                                 </table>
                             </div><!-- table-responsive -->
-							
-                        </div>                            
+
+                        </div>
                     </div><!-- row -->
-					
+
                 </div><!-- contentpanel -->
-                
+
             </div><!-- mainpanel -->
         </div><!-- mainwrapper -->
     </section>
@@ -267,7 +271,9 @@
 
         jQuery('#live_campaigns_table').DataTable({
             responsive: true,
-            order: []
+            order: [],
+            "bFilter": false,
+            "bInfo": false,
         });
 
         var shTable = jQuery('#shTable').DataTable({

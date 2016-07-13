@@ -1,8 +1,6 @@
 <?php namespace Admin\Repositories\Eloquent;
 
 use Admin\Campaign;
-use Admin\Restaurant;
-use Admin\Merchant;
 use Admin\Repositories\Interfaces\CampaignInterface;
 use Carbon\Carbon;
 
@@ -61,18 +59,18 @@ class CampaignEloquent implements CampaignInterface
     /**
      * Get All Campaign.
      *
-     * @param boolean $paginate 
+     * @param boolean $paginate
      * @return Campaign
      */
     public function getAll($paginate = false)
     {
-        if(!$paginate) {
+        if (!$paginate) {
 
-            return $this->campaign->with('restaurant')->with(['merchant' => function($query){ $query->select('id', 'coy_name');}])->get()->toArray();
+            return $this->campaign->with('restaurant')->with(['merchant' => function ($query) {$query->select('id', 'coy_name');}])->get()->toArray();
 
         }
 
-        return $this->campaign->with('restaurant')->with(['merchant' => function($query){ $query->select('id', 'coy_name');}])->orderBy('campaign_name')->paginate(10);
+        return $this->campaign->with('restaurant')->with(['merchant' => function ($query) {$query->select('id', 'coy_name');}])->orderBy('campaign_name')->paginate(10);
     }
 
     /**
@@ -84,7 +82,7 @@ class CampaignEloquent implements CampaignInterface
      */
     public function getAllWithAttributes(array $attributes, $paginate = false)
     {
-        if(!$paginate) {
+        if (!$paginate) {
 
             return $this->campaign->where($attributes)->with('restaurant')->get()->toArray();
 
@@ -103,43 +101,43 @@ class CampaignEloquent implements CampaignInterface
      */
     public function search($search_word, $search_type)
     {
-        if($search_type == 'Campaign') {
-           /*return $this->campaign->with(['restaurant'=>function($query){
+        if ($search_type == 'Campaign') {
+            /*return $this->campaign->with(['restaurant'=>function($query){
 
-        }])
-        ->where('campaign_name', 'LIKE', '%'.$search_word.'%')
-        ->orderBy('campaign_name')
-        ->paginate(10);*/
-        return \DB::table('campaign')->select('campaign.id as campaignId','campaign.campaign_name', 'campaign.restaurant_id', 'campaign.cam_start', 'campaign.cam_end', 'campaign.cam_status' ,'restaurant.id AS res_id', 'restaurant.res_name', 'res_logo', 'merchant.id as mer_id', 'merchant.coy_name')
-            ->leftJoin('restaurant', 'campaign.restaurant_id', '=', 'restaurant.id')
-            ->leftJoin('merchant', 'campaign.merchant_id', '=', 'merchant.id')
-            ->where('campaign.campaign_name', 'LIKE', '%'.$search_word.'%')
-            ->orderBy('campaign.campaign_name')
-            ->paginate(10);
-        }
-
-        if($search_type == 'Restaurant') {
-            /*return $this->campaign->with(['restaurant'=>function($query) use($search_word){
-                $query->where('res_name', 'LIKE', '%'.$search_word.'%');
-        }])
-        ->orderBy('campaign_name')
-        ->paginate(10);*/
-        return Campaign::select('campaign.*','restaurant.id', 'restaurant.res_name', 'res_logo', 'merchant.id', 'merchant.coy_name')
-            ->leftJoin('restaurant', 'campaign.restaurant_id', '=', 'restaurant.id')
-            ->leftJoin('merchant', 'campaign.merchant_id', '=', 'merchant.id')
-            ->where('restaurant.res_name', 'LIKE', '%'.$search_word.'%')
-            ->orderBy('campaign.campaign_name')
-            ->paginate(10);
-        }
-
-        if($search_type == 'Company') {
-            return Campaign::select('campaign.*','restaurant.id', 'restaurant.res_name', 'res_logo', 'merchant.id', 'merchant.coy_name')
+            }])
+            ->where('campaign_name', 'LIKE', '%'.$search_word.'%')
+            ->orderBy('campaign_name')
+            ->paginate(10);*/
+            return \DB::table('campaign')->select('campaign.id as campaignId', 'campaign.campaign_name', 'campaign.restaurant_id', 'campaign.cam_start', 'campaign.cam_end', 'campaign.cam_status', 'restaurant.id AS res_id', 'restaurant.res_name', 'res_logo', 'merchant.id as mer_id', 'merchant.coy_name')
                 ->leftJoin('restaurant', 'campaign.restaurant_id', '=', 'restaurant.id')
                 ->leftJoin('merchant', 'campaign.merchant_id', '=', 'merchant.id')
-                ->where('merchant.coy_name', 'LIKE', '%'.$search_word.'%')
+                ->where('campaign.campaign_name', 'LIKE', '%' . $search_word . '%')
                 ->orderBy('campaign.campaign_name')
                 ->paginate(10);
-            
+        }
+
+        if ($search_type == 'Restaurant') {
+            /*return $this->campaign->with(['restaurant'=>function($query) use($search_word){
+            $query->where('res_name', 'LIKE', '%'.$search_word.'%');
+            }])
+            ->orderBy('campaign_name')
+            ->paginate(10);*/
+            return Campaign::select('campaign.*', 'restaurant.id', 'restaurant.res_name', 'res_logo', 'merchant.id', 'merchant.coy_name')
+                ->leftJoin('restaurant', 'campaign.restaurant_id', '=', 'restaurant.id')
+                ->leftJoin('merchant', 'campaign.merchant_id', '=', 'merchant.id')
+                ->where('restaurant.res_name', 'LIKE', '%' . $search_word . '%')
+                ->orderBy('campaign.campaign_name')
+                ->paginate(10);
+        }
+
+        if ($search_type == 'Company') {
+            return Campaign::select('campaign.*', 'restaurant.id', 'restaurant.res_name', 'res_logo', 'merchant.id', 'merchant.coy_name')
+                ->leftJoin('restaurant', 'campaign.restaurant_id', '=', 'restaurant.id')
+                ->leftJoin('merchant', 'campaign.merchant_id', '=', 'merchant.id')
+                ->where('merchant.coy_name', 'LIKE', '%' . $search_word . '%')
+                ->orderBy('campaign.campaign_name')
+                ->paginate(10);
+
         }
 
         return abort(404);
@@ -171,7 +169,7 @@ class CampaignEloquent implements CampaignInterface
     {
         $last_sat = new Carbon('last saturday');
         $last_saturday = $last_sat->toDateString();
-        
+
         $last_sun = new Carbon('last sunday');
         $last_last_sunday = $last_sun->subWeek()->toDateString();
 
@@ -239,9 +237,13 @@ class CampaignEloquent implements CampaignInterface
      * @param string $sort
      * @return Campaign
      */
-    public function getAllWithRelations(array $relations, $orderBy = '', $sort = 'ASC')
+    public function getAllWithRelations(array $relations, $orderBy = '', $sort = 'ASC', $wheres = [])
     {
-        return $this->campaign->with($relations)->orderBy($orderBy, $sort)->get()->toArray();
+        if (empty($wheres)) {
+            return $this->campaign->with($relations)->orderBy($orderBy, $sort)->get()->toArray();
+        }
+
+        return $this->campaign->with($relations)->orderBy($orderBy, $sort)->where($wheres)->get()->toArray();
     }
 
     /**

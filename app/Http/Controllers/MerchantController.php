@@ -2,9 +2,8 @@
 
 namespace Admin\Http\Controllers;
 
-use Auth;
-use Illuminate\Http\Request;
 use Admin\Http\Requests\MerchantRequest;
+use Admin\Repositories\Interfaces\CampaignInterface;
 use Admin\Repositories\Interfaces\CuisineInterface;
 use Admin\Repositories\Interfaces\MerchantInterface;
 use Admin\Repositories\Interfaces\OutletInterface;
@@ -12,6 +11,8 @@ use Admin\Repositories\Interfaces\RestaurantCuisineInterface;
 use Admin\Repositories\Interfaces\RestaurantInterface;
 use Admin\Repositories\Interfaces\SnapShotInterface;
 use Admin\Services\GenerateReport;
+use Auth;
+use Illuminate\Http\Request;
 
 class MerchantController extends Controller
 {
@@ -46,6 +47,11 @@ class MerchantController extends Controller
     protected $cuisine;
 
     /**
+     * @var CampaignInterface
+     */
+    protected $campaign;
+
+    /**
      * Create a new controller instance.
      *
      * @param MerchantInterface $merchant
@@ -53,6 +59,7 @@ class MerchantController extends Controller
      * @param RestaurantCuisineInterface $restaurantCuisine
      * @param OutletInterface $outlet
      * @param CuisineInterface $cuisine
+     * @param CampaignInterface $campaign
      * @return void
      */
     public function __construct(
@@ -61,7 +68,8 @@ class MerchantController extends Controller
         RestaurantCuisineInterface $restaurantCuisine,
         SnapshotInterface $snapshot,
         OutletInterface $outlet,
-        CuisineInterface $cuisine
+        CuisineInterface $cuisine,
+        CampaignInterface $campaign
     ) {
         $this->merchant = $merchant;
         $this->restaurant = $restaurant;
@@ -69,6 +77,7 @@ class MerchantController extends Controller
         $this->snapshot = $snapshot;
         $this->outlet = $outlet;
         $this->cuisine = $cuisine;
+        $this->campaign = $campaign;
     }
 
     /**
@@ -87,8 +96,8 @@ class MerchantController extends Controller
             'total_approved_merchants' => $this->merchant->getCount(1),
             'total_blocked_merchants' => $this->merchant->getCount(2),
             'total_pending_email_verification' => $this->merchant->getCount(3),
-            
-        );/*echo "<pre>";
+
+        ); /*echo "<pre>";
         print_r($data['merchants']);die;*/
         return view('merchants.index', $data);
     }
@@ -133,8 +142,8 @@ class MerchantController extends Controller
             'total_approved_merchants' => $this->merchant->getCount(1),
             'total_blocked_merchants' => $this->merchant->getCount(2),
             'total_pending_email_verification' => $this->merchant->getCount(3),
-            
-        );/*echo "<pre>";
+
+        ); /*echo "<pre>";
         print_r($data['merchants']);die;*/
         return view('merchants.create', $data);
     }
@@ -180,9 +189,10 @@ class MerchantController extends Controller
             return $structure['cuisine']['id'];
 
         }, $selected_cuisines);
-        
+
         $data = array(
             'merchant' => $this->merchant->getById($merchant_id),
+            'campaigns' => $this->campaign->getAllWithRelations(['blurb'], 'campaign_name', 'ASC', ['merchant_id' => $merchant_id]),
             'restaurant' => $restaurant,
             'snapshot' => $this->snapshot->getByAttributes(['merchant_id' => $merchant_id]),
             'outlet' => $this->outlet->getByAttributes(['merchant_id' => $merchant_id, 'main' => 1], false),
@@ -214,10 +224,10 @@ class MerchantController extends Controller
 
         if ($merchant = $this->merchant->updateById($id, $request_new)) {
 
-            return redirect('merchants/'.$request->merchant_id.'/edit')->with('message', 'Successfully updated.');
+            return redirect('merchants/' . $request->merchant_id . '/edit')->with('message', 'Successfully updated.');
         }
 
-        return redirect('merchants/'.$request->merchant_id.'/edit')->withInput();
+        return redirect('merchants/' . $request->merchant_id . '/edit')->withInput();
     }
 
     /**
@@ -228,8 +238,8 @@ class MerchantController extends Controller
     public function generateReport(Request $request)
     {
         $merchant = $this->merchant->getAll();
-        
-        $c = array_map(function($structure) {
+
+        $c = array_map(function ($structure) {
 
             switch ($structure['status']) {
                 case 1:
@@ -251,7 +261,7 @@ class MerchantController extends Controller
                 'Joined Date' => date_format(date_create($structure['date_created']), 'd-M-Y'),
                 'Last Online Date' => date_format(date_create($structure['last_online']), 'd-M-Y'),
                 'Last Online Time' => date_format(date_create($structure['last_online']), 'H:i:s'),
-                'Contact Person Name' => $structure['first_name']. ' ' . $structure['last_name'],
+                'Contact Person Name' => $structure['first_name'] . ' ' . $structure['last_name'],
                 'Tel No' => $structure['coy_phone'],
                 'Email' => $structure['email'],
 
@@ -266,5 +276,5 @@ class MerchantController extends Controller
         $generator->generate($report_type, 'Merchants Report');
 
         return redirect()->back();
-    }   
+    }
 }

@@ -87,9 +87,9 @@
 	                                <div class="col-sm-3">
 	                                    <select id="search-type" class="width100p" data-placeholder="Search Type">
 	                                        <option value="">Choose One</option>
-	                                        <option value="Company" <?php if($search_type == 'Company') : ?> selected <?php endif; ?>>Company Name</option>
-	                                        <option value="Restaurant" <?php if($search_type == 'Restaurant') : ?> selected <?php endif; ?>>Restaurant Name</option>
-	                                        <option value="Email" <?php if($search_type == 'Email') : ?> selected <?php endif; ?>>Email</option>
+	                                        <option value="Company" <?php if ($search_type == 'Company'): ?> selected <?php endif;?>>Company Name</option>
+	                                        <option value="Restaurant" <?php if ($search_type == 'Restaurant'): ?> selected <?php endif;?>>Restaurant Name</option>
+	                                        <option value="Email" <?php if ($search_type == 'Email'): ?> selected <?php endif;?>>Email</option>
 	                                    </select>
 	                                </div>
 	                            </div>
@@ -142,7 +142,7 @@
 	                                        <div class="media-content">
 	                                            <i class="fa fa-clock-o"></i> Last online at {{date_format(date_create($merchant->last_online), 'd-M-Y H:i:s')}}
 	                                            <ul class="list-unstyled">
-													<li><i class="fa fa-briefcase"></i> {{$merchant->coy_name}}</li>
+													<li><i class="fa fa-briefcase"></i> {{$merchant->res_name}}</li>
 													<li><i class="fa fa-toggle-on"></i>
 													@if($merchant->status == 1)
 					                            	<span class="text-success"><strong>Approved</strong>
@@ -155,7 +155,7 @@
 													</span></small></li>
 
 	                                            	<li><i class="fa fa-phone"></i> {{$merchant->coy_phone}}</li>
-													<li><i class="fa fa-envelope-o"></i> {{$merchant->coy_url}}</li>
+													<li><i class="fa fa-envelope-o"></i> {{$merchant->email}}</li>
 	                                            </ul>
 	                                        </div>
 	                                    </div>

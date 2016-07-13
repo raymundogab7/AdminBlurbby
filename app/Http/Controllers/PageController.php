@@ -2,12 +2,10 @@
 
 namespace Admin\Http\Controllers;
 
-use Illuminate\Http\Request;
-
-use Admin\Http\Requests;
 use Admin\Repositories\Interfaces\PageInterface;
 use Admin\Repositories\Interfaces\RestaurantInterface;
 use Auth;
+use Illuminate\Http\Request;
 
 class PageController extends Controller
 {
@@ -31,7 +29,43 @@ class PageController extends Controller
     public function __construct(PageInterface $page, RestaurantInterface $restaurant)
     {
         $this->page = $page;
-		$this->restaurant = $restaurant;
+        $this->restaurant = $restaurant;
+    }
+
+    /**
+     * Display tutorials page
+     *
+     * @return Redirect
+     */
+    public function index($id)
+    {
+        $data['page'] = $this->page->getById($id);
+
+        return view('pages.index', $data);
+    }
+
+    /**
+     * Display tutorials page
+     *
+     * @return Redirect
+     */
+    public function update($id, Request $request)
+    {
+        if ($this->page->updateById($id)) {
+            return redirect('pages')->with('message', 'Successfully updated.');
+        }
+
+        return redirect('pages')->with('error', 'Error while updating.');
+    }
+
+    /**
+     * Get page by id.
+     *
+     * @return Redirect
+     */
+    public function show($id)
+    {
+        return $this->page->getById($id);
     }
 
     /**
@@ -41,7 +75,7 @@ class PageController extends Controller
      */
     public function tutorials()
     {
-    	$data['restaurant'] = $this->restaurant->getByAttributes(['merchant_id' => Auth::user()->id], false);
+        $data['restaurant'] = $this->restaurant->getByAttributes(['merchant_id' => Auth::user()->id], false);
         $data['tutorials'] = $this->page->getById(1);
 
         return view('page.tutorials', $data);
@@ -54,7 +88,7 @@ class PageController extends Controller
      */
     public function faqs()
     {
-    	$data['restaurant'] = $this->restaurant->getByAttributes(['merchant_id' => Auth::user()->id], false);
+        $data['restaurant'] = $this->restaurant->getByAttributes(['merchant_id' => Auth::user()->id], false);
         $data['faqs'] = $this->page->getById(2);
 
         return view('page.faqs', $data);
@@ -67,7 +101,7 @@ class PageController extends Controller
      */
     public function terms()
     {
-    	$data['restaurant'] = $this->restaurant->getByAttributes(['merchant_id' => Auth::user()->id], false);
+        $data['restaurant'] = $this->restaurant->getByAttributes(['merchant_id' => Auth::user()->id], false);
         $data['terms'] = $this->page->getById(3);
 
         return view('page.terms', $data);

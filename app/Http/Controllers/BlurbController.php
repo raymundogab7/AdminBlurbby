@@ -2,17 +2,15 @@
 
 namespace Admin\Http\Controllers;
 
-use Illuminate\Http\Request;
 use Admin\Http\Requests\BlurbRequest;
+use Admin\Repositories\Interfaces\BlurbInterface;
 use Admin\Repositories\Interfaces\CampaignInterface;
 use Admin\Repositories\Interfaces\RestaurantInterface;
-use Admin\Repositories\Interfaces\BlurbInterface;
-use Admin\Http\Requests;
-use Auth;
-use Admin\Services\ImageUploader;
 use Admin\Repositories\Interfaces\SnapShotInterface;
 use Admin\Services\GenerateReport;
+use Admin\Services\ImageUploader;
 use Admin\SnapShot;
+use Illuminate\Http\Request;
 
 class BlurbController extends Controller
 {
@@ -40,7 +38,7 @@ class BlurbController extends Controller
      * Create a new controller instance.
      *
      * @param CampaignInterface $campaign
-	 * @param RestaurantInterface $restaurant
+     * @param RestaurantInterface $restaurant
      * @param BlurbInterface $blurb
      * @param SnapShotInterface $snapShot
      * @return void
@@ -64,7 +62,7 @@ class BlurbController extends Controller
         $data = array(
             'restaurant' => $this->restaurant->getByAttributes(['merchant_id' => $campaign->merchant_id], false),
             'campaign' => $campaign,
-            'blurbs' => $this->blurb->getAllByAttributes(['merchant_id' => $campaign->merchant_id, 'campaign_id' => $campaign->id, 'blurb_status' => ucfirst($cam_status)], 'created_at', 'DESC')
+            'blurbs' => $this->blurb->getAllByAttributes(['merchant_id' => $campaign->merchant_id, 'campaign_id' => $campaign->id, 'blurb_status' => ucfirst($cam_status)], 'created_at', 'DESC'),
         );
 
         return view('blurb.view_blurbs', $data);
@@ -105,7 +103,7 @@ class BlurbController extends Controller
 
         $this->blurb->create($request->all());
 
-        return redirect('campaigns/'.$request->campaign_id);
+        return redirect('campaigns/' . $request->campaign_id);
     }
 
     /**
@@ -150,12 +148,12 @@ class BlurbController extends Controller
     public function update($id, BlurbRequest $request)
     {
         $request->merge(array('blurb_start' => date_format(date_create($request->blurb_start), 'Y-m-d'), 'blurb_end' => date_format(date_create($request->blurb_end), 'Y-m-d')));
-        
-        if($this->blurb->updateById($id, $request->all())){
-             return redirect('blurb/'.$id.'/'.$request->control_no)->with('message', 'Successfully updated.');
+
+        if ($this->blurb->updateById($id, $request->all())) {
+            return redirect('blurb/' . $id . '/' . $request->control_no)->with('message', 'Successfully updated.');
         }
 
-        return redirect('blurb/'.$id.'/'.$request->control_no)->withInput()->with('message_error', 'Error while deleting campaign. Please try again.');
+        return redirect('blurb/' . $id . '/' . $request->control_no)->withInput()->with('message_error', 'Error while deleting campaign. Please try again.');
     }
 
     /**
@@ -165,11 +163,11 @@ class BlurbController extends Controller
      */
     public function destroy($id, $campaign_id)
     {
-        if($this->blurb->delete($id)) {
-            return redirect('campaigns/'.$campaign_id)->with('message', 'Successfully deleted.');
+        if ($this->blurb->delete($id)) {
+            return redirect('campaigns/' . $campaign_id)->with('message', 'Successfully deleted.');
         }
 
-        return redirect('campaigns/'.$campaign_id)->withInput()->with('message_error', 'Error while deleting campaign. Please try again.');
+        return redirect('campaigns/' . $campaign_id)->withInput()->with('message_error', 'Error while deleting campaign. Please try again.');
     }
 
     /**
@@ -188,7 +186,7 @@ class BlurbController extends Controller
         $campaign = $this->campaign->getByAttributes(['id' => $campaign_id], false);
 
         $result = $this->blurb->create(['merchant_id' => $campaign->merchant_id, 'campaign_id' => $campaign_id, 'blurb_logo' => 'blurb.png', 'control_no' => $control_no]);
-        
+
         $user_id = $campaign->merchant_id;
 
         if (!in_array($file->getClientOriginalExtension(), array('gif', 'png', 'jpg', 'jpeg', 'PNG', 'JPG'))) {
@@ -198,11 +196,11 @@ class BlurbController extends Controller
             ), 404);
         }
 
-        $this->blurb->updateByAttributes(['merchant_id' => $user_id, 'campaign_id' => $campaign_id], ['blurb_logo' => 'campaigns/' . $campaign_id.'/'.$result->id.'.png']);
+        $this->blurb->updateByAttributes(['merchant_id' => $user_id, 'campaign_id' => $campaign_id], ['blurb_logo' => 'campaigns/' . $campaign_id . '/' . $result->id . '.png']);
 
-         $imageUploader->upload($file, $campaign_id, 500, 500, 'campaigns/', '/'.$result->id.'.png');
+        $imageUploader->upload($file, $campaign_id, 500, 500, 'campaigns/', '/' . $result->id . '.png');
 
-         return ['blurb' => $result];
+        return ['blurb' => $result];
     }
 
     /**
@@ -226,9 +224,9 @@ class BlurbController extends Controller
         }
 
         //$this->blurb->updateByAttributes(['merchant_id' => $user_id, 'campaign_id' => $campaign_id], ['blurb_logo' => 'campaigns/' . $campaign_id.'/'.$result->id.'.png']);
-        $this->blurb->updateById($id, ['blurb_logo' => 'campaigns/'.$campaign_id.'/'.$id.'.png']);
+        $this->blurb->updateById($id, ['blurb_logo' => 'campaigns/' . $campaign_id . '/' . $id . '.png']);
 
-        $imageUploader->upload($file, $campaign_id, 500, 500, 'campaigns/', '/'.$id.'.png');
+        $imageUploader->upload($file, $campaign_id, 500, 500, 'campaigns/', '/' . $id . '.png');
 
         return ['blurb' => true];
     }
@@ -243,10 +241,10 @@ class BlurbController extends Controller
         $campaign = $this->campaign->getByAttributes(['id' => $request->campaign_id], false);
 
         $blurb = $this->blurb->getAllByAttributesWithRelations(['campaign_id' => $request->campaign_id, 'blurb_status' => $request->blurb_status, 'merchant_id' => $campaign->merchant_id], ['campaign'], 'blurb_name');
-        
+
         $count_likes = 0;
-        
-        $c = array_map(function($structure) use ($count_likes){
+
+        $c = array_map(function ($structure) use ($count_likes) {
 
             return [
                 'Campaign Name' => $structure['campaign']['campaign_name'],
@@ -260,14 +258,13 @@ class BlurbController extends Controller
                 'No. of Usage' => Snapshot::where(['blurb_id' => $structure['id'], 'merchant_id' => $campaign->merchant_id])->sum('snapshot_usage'),
             ];
         }, $blurb);
-        
-        
+
         $generator = new GenerateReport();
 
         $report_type = array(
             $request->blurb_status . ' Blurb Report' => array_filter($c),
         );
-        $generator->generate($report_type);
+        $generator->generate($report_type, 'Blurb Report');
 
         return redirect()->back();
     }
@@ -284,11 +281,10 @@ class BlurbController extends Controller
         $snapshots = Snapshot::with('campaign')->where(['blurb_id' => $id, 'campaign_id' => $request->campaign_id, 'merchant_id' => $blurb->merchant_id])->get()->toArray();
 
         $dates_between = $this->getDatesFromRange($blurb->blurb_start, $blurb->blurb_end);
-        
+
         $data = array();
-        
-        foreach($dates_between as $db) 
-        {
+
+        foreach ($dates_between as $db) {
             $data[] = [
                 'Campaign Name' => $blurb->campaign->campaign_name,
                 'Blurb Title' => $blurb->blurb_name,
@@ -308,8 +304,8 @@ class BlurbController extends Controller
         $report_type = array(
             $request->cam_status . ' Campaign Report' => $data,
         );
-        
-        $generator->generate($report_type);
+
+        $generator->generate($report_type, 'Blurb Report');
 
         return redirect()->back();
     }

@@ -34,6 +34,7 @@ Route::group(['middleware' => ['auth']], function () {
     |--------------------------------------------------------------------------
      */
     Route::get('dashboard', 'DashboardController@index');
+    Route::post('dashboard/report/generate', 'DashboardController@generateReport');
     Route::get('dashboard/getLastSevenDays/{field}', 'DashboardController@getLastSevenDays');
 
     /*
@@ -83,7 +84,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('blurb/getLastSevenDays/{blurb_id}/{field}', 'BlurbController@getLastSevenDays');
     Route::post('blurb/report/generate', 'BlurbController@generateReport');
     Route::post('blurb/report/generate/{blurb_id}', 'BlurbController@generateBlurbReport');
-    
+
     /*
     |--------------------------------------------------------------------------
     | Merchant Route
@@ -120,7 +121,15 @@ Route::group(['middleware' => ['auth']], function () {
     Route::resource('outlets', 'OutletController', ['except' => ['show', 'index', 'create', 'edit']]);
     Route::get('outlets/{outlet_id}/create', 'OutletController@create');
     Route::get('outlets/edit/{outlet_id}/{merchant_id_id}', 'OutletController@edit');
-    
+
+    /*
+    |--------------------------------------------------------------------------
+    | Pages Route
+    |--------------------------------------------------------------------------
+     */
+    Route::get('pages/{page_id}/edit', 'PageController@index');
+    Route::put('pages/{page_id}', 'PageController@update');
+
     /*
     |--------------------------------------------------------------------------
     | Logout Route
@@ -128,4 +137,3 @@ Route::group(['middleware' => ['auth']], function () {
      */
     Route::get('logout', 'Auth\AuthController@logout');
 });
-

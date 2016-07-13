@@ -141,7 +141,7 @@
 	                                        <div class="media-content">
 	                                            <i class="fa fa-clock-o"></i> Last online at {{date_format(date_create($merchant['last_online']), 'd-M-Y H:i:s')}}
 	                                            <ul class="list-unstyled">
-													<li><i class="fa fa-briefcase"></i> {{$merchant['coy_name']}}</li>
+													<li><i class="fa fa-briefcase"></i> {{$merchant['restaurant']['res_name']}}</li>
 													<li><i class="fa fa-toggle-on"></i>
 													@if($merchant['status'] == 1)
 					                            	<span class="text-success"><strong>Approved</strong>
@@ -154,7 +154,7 @@
 													</span></small></li>
 
 	                                            	<li><i class="fa fa-phone"></i> {{$merchant['coy_phone']}}</li>
-													<li><i class="fa fa-envelope-o"></i> {{$merchant['coy_url']}}</li>
+													<li><i class="fa fa-envelope-o"></i> {{$merchant['email']}}</li>
 	                                            </ul>
 	                                        </div>
 	                                    </div>

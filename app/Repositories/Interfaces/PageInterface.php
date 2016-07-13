@@ -12,4 +12,13 @@ interface PageInterface
      * @return Page
      */
     public function getById($id);
+
+    /**
+     * Update Page by id.
+     *
+     * @param integer $id
+     *
+     * @return Admin
+     */
+    public function updateById($id, $payload);
 }

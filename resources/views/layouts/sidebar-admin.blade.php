@@ -18,7 +18,7 @@
         <li class="@if(strpos(url()->current(), 'administrators')) active @endif"><a href="{{url('administrators')}}"><i class="fa fa-user-secret"></i> <span>Administrators</span></a></li>
         <li class="@if(strpos(url()->current(), 'app-users')) active @endif"><a href="{{url('app-users')}}"><span class="pull-right badge">6</span><i class="fa fa-user"></i> <span>App Users</span></a></li>
         <li class="@if(strpos(url()->current(), 'blurb-reports')) active @endif"><a href="{{url('blurb-reports')}}"><span class="pull-right badge">1</span><i class="fa fa-exclamation-circle"></i> <span>Blurb Reports</span></a></li>
-        <li class="@if(strpos(url()->current(), 'pages')) active @endif"><a href="{{url('pages')}}"><i class="fa fa-file-text"></i> <span>Pages</span></a></li>
+        <li class="@if(strpos(url()->current(), 'pages')) active @endif"><a href="{{url('pages/5/edit')}}"><i class="fa fa-file-text"></i> <span>Pages</span></a></li>
         <li class="@if(strpos(url()->current(), 'settings')) active @endif"><a href="{{url('settings')}}"><i class="fa fa-gear"></i> <span>Settings</span></a></li> <!-- Add new cuisine and blurb category -->
         <li><a href="{{url('logout')}}"><i class="fa fa-sign-out"></i> <span>Log Out</span></a></li>
     </ul>

@@ -41,7 +41,7 @@ interface CampaignInterface
      * @param string $sort
      * @return Campaign
      */
-    public function getAllWithRelations(array $relations, $orderBy = '', $sort = 'ASC');
+    public function getAllWithRelations(array $relations, $orderBy = '', $sort = 'ASC', $wheres = []);
 
     /**
      * Get All Campaign by attributes.

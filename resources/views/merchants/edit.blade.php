@@ -43,12 +43,13 @@
 								<!-- <img src="{{(! is_null($restaurant->res_logo)) ? asset('profile_pictures/'.$restaurant->merchant_id.'/profile_picture.jpg') : asset('images/nopp.jpg')}}" class="img-roundedcircle img-offline img-responsive img-profile" style="max-width:80px;margin-top:45px;" alt="" /> -->
                                 @if(!is_null($restaurant->res_logo))
                                 <img class="img-roundedcircle img-offline img-responsive img-profile" src="{{( is_null($restaurant->res_logo)) ? env('MERCHANT_URL').'/images/nopp.jpg' : env('MERCHANT_URL').'/'.$restaurant->res_logo.'/profile_picture.jpg'}}" style="max-width:50px;margin:20px 10px 20px 20px;" alt="">
-                                
+
                                 @else
-                                <!-- <div style="max-width:50px;margin:20px 10px 20px 20px;" class="img-roundedcircle square img-offline img-responsive img-profile">  
+                                <!-- <div style="max-width:50px;margin:20px 10px 20px 20px;" class="img-roundedcircle square img-offline img-responsive img-profile">
                                     <p>@if(!is_null($restaurant->res_name)) {{strtoupper($restaurant->res_name[0])}} @endif</p>
                                 </div> -->
-                                <img src="{{asset('images/photos/profile.png')}}" class="img-roundedcircle img-offline img-responsive img-profile" style="max-width:50px;margin:20px 10px 20px 20px;" alt="">
+                                <img src="{{asset('images/photos/profile.png')}}" class="img-roundedcircle img-offline img-responsive img-profile" style="max-width:80px;margin-top:45px;" alt="">
+
                                 @endif
 								<h4 class="profile-name mb5" style="color:#fff;padding-bottom:45px;font-size:16px;margin-top:5px;">{{$merchant->coy_name}}</h4>
 							</div><!-- text-center -->
@@ -85,55 +86,53 @@
 											<td style="width:25%;padding-left:25px;"><i class="fa fa-clock-o fa-lg"></i></td>
 											<td style="padding:15px 0;">
 
-                                            <?php 
-                                            $hourss = array(
-                                                'mon' => ($outlet->outlet_mon_active == 0) ? array() : array(date_format(date_create($outlet->outlet_mon_start), "H:i").' - '.date_format(date_create($outlet->outlet_mon_end), "H:i")),
-                                                'tue' => ($outlet->outlet_tue_active == 0) ? array() : array(date_format(date_create($outlet->outlet_tue_start), "H:i").' - '.date_format(date_create($outlet->outlet_tue_end), "H:i")),
-                                                'wed' => ($outlet->outlet_wed_active == 0) ? array() : array(date_format(date_create($outlet->outlet_wed_start), "H:i").' - '.date_format(date_create($outlet->outlet_wed_end), "H:i")),
-                                                'thu' => ($outlet->outlet_thu_active == 0) ? array() : array(date_format(date_create($outlet->outlet_thu_start), "H:i").' - '.date_format(date_create($outlet->outlet_thu_end), "H:i")),
-                                                'fri' => ($outlet->outlet_fri_active == 0) ? array() : array(date_format(date_create($outlet->outlet_fri_start), "H:i").' - '.date_format(date_create($outlet->outlet_fri_end), "H:i")),
-                                                'sat' => ($outlet->outlet_sat_active == 0) ? array() : array(date_format(date_create($outlet->outlet_sat_start), "H:i").' - '.date_format(date_create($outlet->outlet_sat_end), "H:i")),
-                                                'sun' => ($outlet->outlet_sun_active == 0) ? array() : array(date_format(date_create($outlet->outlet_sun_start), "H:i").' - '.date_format(date_create($outlet->outlet_sun_end), "H:i")),
-                                                //'ph' =>  ($outlet->outlet_ph_active == 0) ? array() : array(date_format(date_create($outlet->outlet_ph_start), "H:i").'-'.date_format(date_create($outlet->outlet_ph_end), "H:i")),
-                                            );
+                                            <?php
+$hourss = array(
+    'mon' => ($outlet->outlet_mon_active == 0) ? array() : array(date_format(date_create($outlet->outlet_mon_start), "H:i") . ' - ' . date_format(date_create($outlet->outlet_mon_end), "H:i")),
+    'tue' => ($outlet->outlet_tue_active == 0) ? array() : array(date_format(date_create($outlet->outlet_tue_start), "H:i") . ' - ' . date_format(date_create($outlet->outlet_tue_end), "H:i")),
+    'wed' => ($outlet->outlet_wed_active == 0) ? array() : array(date_format(date_create($outlet->outlet_wed_start), "H:i") . ' - ' . date_format(date_create($outlet->outlet_wed_end), "H:i")),
+    'thu' => ($outlet->outlet_thu_active == 0) ? array() : array(date_format(date_create($outlet->outlet_thu_start), "H:i") . ' - ' . date_format(date_create($outlet->outlet_thu_end), "H:i")),
+    'fri' => ($outlet->outlet_fri_active == 0) ? array() : array(date_format(date_create($outlet->outlet_fri_start), "H:i") . ' - ' . date_format(date_create($outlet->outlet_fri_end), "H:i")),
+    'sat' => ($outlet->outlet_sat_active == 0) ? array() : array(date_format(date_create($outlet->outlet_sat_start), "H:i") . ' - ' . date_format(date_create($outlet->outlet_sat_end), "H:i")),
+    'sun' => ($outlet->outlet_sun_active == 0) ? array() : array(date_format(date_create($outlet->outlet_sun_start), "H:i") . ' - ' . date_format(date_create($outlet->outlet_sun_end), "H:i")),
+    //'ph' =>  ($outlet->outlet_ph_active == 0) ? array() : array(date_format(date_create($outlet->outlet_ph_start), "H:i").'-'.date_format(date_create($outlet->outlet_ph_end), "H:i")),
+);
 
-                                            $store_hours = new StoreHours($hourss);
-                                            
-                                            foreach ($store_hours->hours_this_week(true) as $days => $hours) {
-                                                
-                                                echo $days . ' : ';
-                                                echo $hours;
-                                                echo "<br>";
-                                            }
+$store_hours = new StoreHours($hourss);
 
-                                            $close_again = false;
-                                            $close_days = [];
+foreach ($store_hours->hours_this_week(true) as $days => $hours) {
 
-                                            foreach ($hourss as $days => $h) {
-                                                if(empty($h))
-                                                {
-                                                    $close_days[] = ucfirst($days);
-                                                    /*echo ucfirst($days) . ' : ';
-                                                    echo 'Close';
-                                                    echo "<br>";    
-                                                    $close_again = false;*/
-                                                    
-                                                    
-                                                    //echo $close_again;
-                                                }
-                                                
-                                            }
-                                            
-                                            $ctr = 1;
-                                            foreach ($close_days as $key => $value) {
-                                                echo $value;
-                                                if($ctr != count($close_days)){echo ', ';}
-                                                $ctr++;
-                                            }
-                                            if(count($close_days) > 0) {echo ' : Close'."<br>";}
+    echo $days . ' : ';
+    echo $hours;
+    echo "<br>";
+}
 
-                                            echo ($outlet->outlet_ph_active == 0) ? 'PH : Close' : 'PH : ' . date_format(date_create($outlet->outlet_ph_start), "H:ia").' - '.date_format(date_create($outlet->outlet_ph_end), "H:ia")."<br>";
-                                            ?>
+$close_again = false;
+$close_days = [];
+
+foreach ($hourss as $days => $h) {
+    if (empty($h)) {
+        $close_days[] = ucfirst($days);
+        /*echo ucfirst($days) . ' : ';
+        echo 'Close';
+        echo "<br>";
+        $close_again = false;*/
+
+        //echo $close_again;
+    }
+
+}
+
+$ctr = 1;
+foreach ($close_days as $key => $value) {
+    echo $value;
+    if ($ctr != count($close_days)) {echo ', ';}
+    $ctr++;
+}
+if (count($close_days) > 0) {echo ' : Close' . "<br>";}
+
+echo ($outlet->outlet_ph_active == 0) ? 'PH : Close' : 'PH : ' . date_format(date_create($outlet->outlet_ph_start), "H:ia") . ' - ' . date_format(date_create($outlet->outlet_ph_end), "H:ia") . "<br>";
+?>
 
                                             </td>
 										</tr>
@@ -144,12 +143,12 @@
 										<tr style="border-top:1px solid #eee;">
 											<td style="width:25%;padding-left:25px;"><i class="fa fa-tag fa-lg"></i></td>
 											<td style="padding:15px 0;">
-                                                <?php $ctr=1?>
+                                                <?php $ctr = 1?>
 												@foreach($restaurant_cuisine as $rc)
 
 													{{ $rc['cuisine']['cuisine_name'] }}@if($ctr != count($restaurant_cuisine)),@endif
 
-                                                    <?php $ctr++; ?>
+                                                    <?php $ctr++;?>
 
 												@endforeach
 
@@ -169,6 +168,7 @@
                             <li><a href="#company" data-toggle="tab"><strong>Company</strong></a></li>
                             <li><a href="#restaurant" data-toggle="tab"><strong>Restaurant</strong></a></li>
                             <li><a href="#outlets" data-toggle="tab"><strong>Outlets</strong></a></li>
+                            <li><a href="#campaigns" data-toggle="tab"><strong>Campaigns</strong></a></li>
                         </ul>
 
                         @if(session('message'))
@@ -202,21 +202,21 @@
                         <div class="tab-content nopadding noborder">
                             <div class="tab-pane active" id="personal">
                                 <form method="POST" action="{{url('merchants/'.$merchant->id)}}" class="form-horizontal form-bordered" >
-                                    
+
                                     <div class="form-group">
                                         <label class="col-sm-2 control-label" style="text-align:left;">Registered on</label>
                                         <div class="col-sm-8">
                                             <p class="control-label" style="text-align:left;">{{date_format(date_create($merchant->created_at), 'd-M-Y H:i:s')}}</p>
                                         </div>
                                     </div><!-- form-group -->
-                                    
+
                                     <div class="form-group">
                                         <label class="col-sm-2 control-label" style="text-align:left;">Last online on</label>
                                         <div class="col-sm-8">
                                             <p class="control-label" style="text-align:left;">{{date_format(date_create($merchant->last_online), 'd-M-Y H:i:s')}}</p>
                                         </div>
                                     </div><!-- form-group -->
-                                    
+
                                     <div class="form-group">
                                         <label class="col-sm-2 control-label" style="text-align:left;">Status *</label>
                                         <div class="col-sm-8">
@@ -224,9 +224,9 @@
                                             <input type="hidden" name="_token" value="{{csrf_token()}}">
                                             <select name="status" id="status" data-placeholder="Choose One" class="width300">
                                                 <option value="">Choose One</option>
-                                                <option value="1" <?php if($merchant->status == 1) : ?> selected="selected" <?php endif; ?>>Approved</option>
-                                                <option value="0" <?php if($merchant->status == 0) : ?> selected="selected" <?php endif; ?>>Pending Admin Approval</option>
-                                                <option value="2" <?php if($merchant->status == 2) : ?> selected="selected" <?php endif; ?>>Blocked</option>
+                                                <option value="1" <?php if ($merchant->status == 1): ?> selected="selected" <?php endif;?>>Approved</option>
+                                                <option value="0" <?php if ($merchant->status == 0): ?> selected="selected" <?php endif;?>>Pending Admin Approval</option>
+                                                <option value="2" <?php if ($merchant->status == 2): ?> selected="selected" <?php endif;?>>Blocked</option>
                                             </select>
                                         </div>
                                     </div><!-- form-group -->
@@ -370,7 +370,7 @@
 										<span class="help-block">Must be at least 500px x 500px.</span>
 									</div>
 								</div>
-                                
+
                                 <form method="POST" action="{{url('merchants/restaurant/'.$restaurant->id)}}" class="form-horizontal form-bordered" >
 
                                     <div class="form-group">
@@ -419,8 +419,8 @@
 								<hr>
 								<h4 class="md-title">Main Outlet</h4>
                                 <form method="POST" action="{{url('merchants/outlet/'.$outlet->id)}}" class="form-horizontal form-bordered" >
-								
-                                    
+
+
 								   <div class="form-group">
                                         <label class="col-sm-2 control-label" style="text-align:left;">Outlet Name</label>
                                         <div class="col-sm-8">
@@ -429,7 +429,7 @@
                                             <input type="hidden" name="_token" value="{{csrf_token()}}">
                                             {!! Form::hidden('main', $outlet->main, ['id' => 'disabledinput', 'readonly' => 'readonly', 'class' => 'form-control']) !!}
 											{!! Form::hidden('merchant_id', $merchant->id, ['required' => 'required', 'class' => 'form-control'])!!}
-                                            
+
                                             <!-- <input type="text" value="Starbucks @ Northpoint" title="This is to differentiate from outlet's name." data-toggle="tooltip" data-trigger="hover" class="form-control tooltips" /> -->
 											{!! Form::text('outlet_name', $outlet->outlet_name, ['data-trigger' => 'hover', 'data-toggle' => 'tooltip', 'title' => "This is to differentiate from outlet's name.", 'class' => 'form-control tooltips']) !!}
                                         </div>
@@ -676,55 +676,47 @@
                                             <td>{{$o['outlet_add']}}</td>
                                             <td>{{$o['outlet_phone']}}</td>
 											<td>
-                                                <?php 
-                                                $hourss = array(
-                                                    'mon' => ($o['outlet_mon_active'] == 0) ? array() : array(date_format(date_create($o['outlet_mon_start']), "H:i").'-'.date_format(date_create($o['outlet_mon_end']), "H:i")),
-                                                    'tue' => ($o['outlet_tue_active'] == 0) ? array() : array(date_format(date_create($o['outlet_tue_start']), "H:i").'-'.date_format(date_create($o['outlet_tue_end']), "H:i")),
-                                                    'wed' => ($o['outlet_wed_active'] == 0) ? array() : array(date_format(date_create($o['outlet_wed_start']), "H:i").'-'.date_format(date_create($o['outlet_wed_end']), "H:i")),
-                                                    'thu' => ($o['outlet_thu_active'] == 0) ? array() : array(date_format(date_create($o['outlet_thu_start']), "H:i").'-'.date_format(date_create($o['outlet_thu_end']), "H:i")),
-                                                    'fri' => ($o['outlet_fri_active'] == 0) ? array() : array(date_format(date_create($o['outlet_fri_start']), "H:i").'-'.date_format(date_create($o['outlet_fri_end']), "H:i")),
-                                                    'sat' => ($o['outlet_sat_active'] == 0) ? array() : array(date_format(date_create($o['outlet_sat_start']), "H:i").'-'.date_format(date_create($o['outlet_sat_end']), "H:i")),
-                                                    'sun' => ($o['outlet_sun_active'] == 0) ? array() : array(date_format(date_create($o['outlet_sun_start']), "H:i").'-'.date_format(date_create($o['outlet_sun_end']), "H:i")),
-                                                    //'ph' =>  ($o['outlet_ph_active'] == 0) ? array() : array(date_format(date_create($o['outlet_ph_start']), "H:i").'-'.date_format(date_create($o['outlet_ph_end']), "H:i")),
-                                                );
+                                                <?php
+$hourss = array(
+    'mon' => ($o['outlet_mon_active'] == 0) ? array() : array(date_format(date_create($o['outlet_mon_start']), "H:i") . '-' . date_format(date_create($o['outlet_mon_end']), "H:i")),
+    'tue' => ($o['outlet_tue_active'] == 0) ? array() : array(date_format(date_create($o['outlet_tue_start']), "H:i") . '-' . date_format(date_create($o['outlet_tue_end']), "H:i")),
+    'wed' => ($o['outlet_wed_active'] == 0) ? array() : array(date_format(date_create($o['outlet_wed_start']), "H:i") . '-' . date_format(date_create($o['outlet_wed_end']), "H:i")),
+    'thu' => ($o['outlet_thu_active'] == 0) ? array() : array(date_format(date_create($o['outlet_thu_start']), "H:i") . '-' . date_format(date_create($o['outlet_thu_end']), "H:i")),
+    'fri' => ($o['outlet_fri_active'] == 0) ? array() : array(date_format(date_create($o['outlet_fri_start']), "H:i") . '-' . date_format(date_create($o['outlet_fri_end']), "H:i")),
+    'sat' => ($o['outlet_sat_active'] == 0) ? array() : array(date_format(date_create($o['outlet_sat_start']), "H:i") . '-' . date_format(date_create($o['outlet_sat_end']), "H:i")),
+    'sun' => ($o['outlet_sun_active'] == 0) ? array() : array(date_format(date_create($o['outlet_sun_start']), "H:i") . '-' . date_format(date_create($o['outlet_sun_end']), "H:i")),
+    //'ph' =>  ($o['outlet_ph_active'] == 0) ? array() : array(date_format(date_create($o['outlet_ph_start']), "H:i").'-'.date_format(date_create($o['outlet_ph_end']), "H:i")),
+);
 
-                                                $store_hours = new StoreHours($hourss);
-                                            
-                                                foreach ($store_hours->hours_this_week(true) as $days => $hours) {
-                                                    
-                                                    echo $days . ' : ';
-                                                    echo $hours;
-                                                    echo "<br>";
-                                                }
+$store_hours = new StoreHours($hourss);
 
-                                                $close_again = false;
-                                                $close_days = [];
+foreach ($store_hours->hours_this_week(true) as $days => $hours) {
 
-                                                foreach ($hourss as $days => $h) {
-                                                    if(empty($h))
-                                                    {
-                                                        $close_days[] = ucfirst($days);
-                                                        /*echo ucfirst($days) . ' : ';
-                                                        echo 'Close';
-                                                        echo "<br>";    
-                                                        $close_again = false;*/
-                                                        
-                                                        
-                                                        //echo $close_again;
-                                                    }
-                                                    
-                                                }
-                                                
-                                                $ctr = 1;
-                                                foreach ($close_days as $key => $value) {
-                                                    echo $value;
-                                                    if($ctr != count($close_days)){echo ', ';}
-                                                    $ctr++;
-                                                }
-                                                if(count($close_days) > 0) {echo ' : Close'."<br>";}
+    echo $days . ' : ';
+    echo $hours;
+    echo "<br>";
+}
 
-                                                echo ($outlet->outlet_ph_active == 0) ? 'PH : Close' : 'PH : ' . date_format(date_create($outlet->outlet_ph_start), "H:ia").' - '.date_format(date_create($outlet->outlet_ph_end), "H:ia")."<br>";
-                                                ?>
+$close_again = false;
+$close_days = [];
+
+foreach ($hourss as $days => $h) {
+    if (empty($h)) {
+        $close_days[] = ucfirst($days);
+    }
+
+}
+
+$ctr = 1;
+foreach ($close_days as $key => $value) {
+    echo $value;
+    if ($ctr != count($close_days)) {echo ', ';}
+    $ctr++;
+}
+if (count($close_days) > 0) {echo ' : Close' . "<br>";}
+
+echo ($outlet->outlet_ph_active == 0) ? 'PH : Close' : 'PH : ' . date_format(date_create($outlet->outlet_ph_start), "H:ia") . ' - ' . date_format(date_create($outlet->outlet_ph_end), "H:ia") . "<br>";
+?>
                                             </td>
 											<td class="table-action">
 												<a href="{{url('outlets/edit/'.$o['id'].'/'.$o['merchant_id'])}}" data-toggle="tooltip" title="Edit" class="tooltips"><i class="fa fa-pencil"></i></a>
@@ -737,6 +729,59 @@
 	                                </tbody>
                     			</table>
 							</div><!-- tab-pane -->
+                            <div class="tab-pane" id="campaigns">
+                                <a href="{{url('/campaigns/create')}}"><button class="btn btn-primary"><i class="fa fa-plus"></i> Add New Campaign</button></a>
+                                <hr>
+                                <table id="campaigns_table" class="table table-striped table-bordered responsive">
+                                    <thead class="">
+                                        <tr>
+                                            <th>Campaign Name</th>
+                                            <th>Status</th>
+                                            <th>Start Date</th>
+                                            <th>End Date</th>
+                                            <th>No. of Blurbs</th>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+
+                                    <tbody>
+                                        @foreach($campaigns as $campaign)
+                                        <tr>
+                                            <td><a href="{{url('/campaigns/'.$campaign['id'])}}">{{$campaign['campaign_name']}}</a></td>
+                                            <td>
+                                                @if($campaign['cam_status'] == 'Approved')
+                                                <span class="text-success">
+                                                @elseif($campaign['cam_status'] == 'Draft')
+                                                <span class="text-info">
+                                                @elseif($campaign['cam_status'] == 'Live')
+                                                <span class="text-success">
+                                                @elseif($campaign['cam_status'] == 'Rejected')
+                                                <span class="text-danger">
+                                                @elseif($campaign['cam_status'] == 'Expired')
+                                                <span class="text-muted">
+                                                @else
+                                                <span class="text-warning">
+                                                @endif
+                                                <strong>{{$campaign['cam_status']}}</strong></span></td>
+                                            <td>{{date_format(date_create($campaign['cam_start']), 'd-M-Y')}}</td>
+                                            <td>{{date_format(date_create($campaign['cam_end']), 'd-M-Y')}}</td>
+                                            <td>{{count($campaign['blurb'])}}</td>
+                                            <td class="table-action">
+                                                @if($campaign['cam_status'] == 'Rejected' || $campaign['cam_status'] == 'Draft')
+
+                                                <a href="{{url('campaign') . '/' . $campaign['id']}}" data-toggle="tooltip" title="Edit" class="tooltips"><i class="fa fa-pencil"></i></a>
+
+                                                @else
+
+                                                <a href="{{url('campaign') . '/' . $campaign['id']}}" data-toggle="tooltip" title="View" class="tooltips"><i class="fa fa-eye"></i></a>
+
+                                                @endif
+                                            </td>
+                                        </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                            </div><!-- tab-pane -->
                         </div><!-- tab-content -->
                     </div><!-- col-sm-9 -->
                 </div><!-- row -->
@@ -826,6 +871,10 @@ jQuery('#status').select2({
     jQuery(document).ready(function(){
 
         jQuery('#outleTable').DataTable({
+            responsive: true
+        });
+
+        jQuery('#campaigns_table').DataTable({
             responsive: true
         });
 
