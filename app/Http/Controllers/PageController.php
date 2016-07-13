@@ -51,11 +51,11 @@ class PageController extends Controller
      */
     public function update($id, Request $request)
     {
-        if ($this->page->updateById($id)) {
-            return redirect('pages')->with('message', 'Successfully updated.');
+        if ($this->page->updateById($id, $request->except('_token', '_method'))) {
+            return redirect('pages/'.$id.'/edit')->with('message', 'Successfully updated.');
         }
 
-        return redirect('pages')->with('error', 'Error while updating.');
+        return redirect('pages/'.$id.'/edit')->with('error', 'Error while updating.');
     }
 
     /**
