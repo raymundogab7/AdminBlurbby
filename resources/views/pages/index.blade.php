@@ -1,6 +1,6 @@
 @extends('layouts.admin')
 
-@section('page-title', 'Merchang Tutorial' . ' Campaign Details')
+@section('page-title', 'Merchant Tutorial' . ' Campaign Details')
 
 @section('custom-css')
 
@@ -57,15 +57,15 @@
 									<input type="hidden" readonly="readonly" value="{{\Auth::user()->id}}" name="modified_by">
 									<select id="pagename" data-placeholder="Choose One" class="width300" required="" onchange="loadPage(this)">
 										<optgroup label="Merchant Dashboard">
-										<option <?php if($page->id == 1) : ?> selected="selected" <?php endif;?>" value="1">Merchant Tutorial</option>
-										<option <?php if($page->id == 2) : ?> selected="selected" <?php endif;?>" value="2">FAQs</option>
-										<option <?php if($page->id == 3) : ?> selected="selected" <?php endif;?>" value="3">Terms & Conditions</option>
-										<option <?php if($page->id == 4) : ?> selected="selected" <?php endif;?>" value="4">Privacy Policy</option>
+										<option <?php if ($page->id == 1): ?> selected="selected" <?php endif;?>" value="1">Merchant Tutorial</option>
+										<option <?php if ($page->id == 2): ?> selected="selected" <?php endif;?>" value="2">FAQs</option>
+										<option <?php if ($page->id == 3): ?> selected="selected" <?php endif;?>" value="3">Terms & Conditions</option>
+										<option <?php if ($page->id == 4): ?> selected="selected" <?php endif;?>" value="4">Privacy Policy</option>
 										<optgroup label="App Interface">
-										<option <?php if($page->id == 5) : ?> selected="selected" <?php endif;?>" value="5">App Tutorial</option>
-										<option <?php if($page->id == 6) : ?> selected="selected" <?php endif;?>" value="6">FAQs</option>
-										<option <?php if($page->id == 7) : ?> selected="selected" <?php endif;?>" value="7">Terms Of Use</option>
-										<option <?php if($page->id == 8) : ?> selected="selected" <?php endif;?>" value="8">Privacy Policy</option>
+										<option <?php if ($page->id == 5): ?> selected="selected" <?php endif;?>" value="5">App Tutorial</option>
+										<option <?php if ($page->id == 6): ?> selected="selected" <?php endif;?>" value="6">FAQs</option>
+										<option <?php if ($page->id == 7): ?> selected="selected" <?php endif;?>" value="7">Terms Of Use</option>
+										<option <?php if ($page->id == 8): ?> selected="selected" <?php endif;?>" value="8">Privacy Policy</option>
 									</select>
 								</div>
 							</div><!-- form-group -->

@@ -11,7 +11,7 @@
                 <img src="images/logo-blue-big.png" alt="Blurbby Logo" class="main-logo" >
             </div>
             <br />
-            <h4 class="text-center mb5">Welcome Merchant!</h4>
+            <h4 class="text-center mb5">Welcome Admin!</h4>
             <p class="text-center">Sign in to your account below.</p>
 
             <div class="mb30"></div>
@@ -36,9 +36,9 @@
 
                 <div class="input-group mb15">
                     <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
-                    
+
                     {!! Form::email('email', null, ['placeholder'=>'Email Address', 'required' => 'required', 'class' => 'form-control'])!!}
-                
+
                 </div><!-- input-group -->
                 <div class="input-group mb15">
                     <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
@@ -62,7 +62,7 @@
 
         </div><!-- panel-body -->
         <div class="panel-footer">
-            <a href="{{url('register')}}" class="btn btn-primary btn-block">Not yet our Merchant? Create Account Now</a>
+            <a href="{{url('password')}}" class="btn btn-primary btn-block">Forgot Password?</a>
         </div><!-- panel-footer -->
     </div><!-- panel -->
 </section>

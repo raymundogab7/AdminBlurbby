@@ -2,33 +2,33 @@
 
 namespace Admin\Providers;
 
-use Illuminate\Support\ServiceProvider;
+use Admin\Repositories\Eloquent\AdminEloquent;
+use Admin\Repositories\Eloquent\AppUserEloquent;
+use Admin\Repositories\Eloquent\BlurbEloquent;
 use Admin\Repositories\Eloquent\CampaignEloquent;
 use Admin\Repositories\Eloquent\CuisineEloquent;
-use Admin\Repositories\Eloquent\AdminEloquent;
+use Admin\Repositories\Eloquent\FeaturedSectionEloquent;
+use Admin\Repositories\Eloquent\MerchantEloquent;
+use Admin\Repositories\Eloquent\NotificationEloquent;
 use Admin\Repositories\Eloquent\OutletEloquent;
+use Admin\Repositories\Eloquent\PageEloquent;
 use Admin\Repositories\Eloquent\RestaurantCuisineEloquent;
 use Admin\Repositories\Eloquent\RestaurantEloquent;
 use Admin\Repositories\Eloquent\SnapshotEloquent;
+use Admin\Repositories\Interfaces\AdminInterface;
+use Admin\Repositories\Interfaces\AppUserInterface;
+use Admin\Repositories\Interfaces\BlurbInterface;
 use Admin\Repositories\Interfaces\CampaignInterface;
 use Admin\Repositories\Interfaces\CuisineInterface;
-use Admin\Repositories\Interfaces\AdminInterface;
+use Admin\Repositories\Interfaces\FeaturedSectionInterface;
+use Admin\Repositories\Interfaces\MerchantInterface;
+use Admin\Repositories\Interfaces\NotificationInterface;
 use Admin\Repositories\Interfaces\OutletInterface;
+use Admin\Repositories\Interfaces\PageInterface;
 use Admin\Repositories\Interfaces\RestaurantCuisineInterface;
 use Admin\Repositories\Interfaces\RestaurantInterface;
 use Admin\Repositories\Interfaces\SnapShotInterface;
-use Admin\Repositories\Eloquent\BlurbEloquent;
-use Admin\Repositories\Interfaces\BlurbInterface;
-use Admin\Repositories\Eloquent\PageEloquent;
-use Admin\Repositories\Interfaces\PageInterface;
-use Admin\Repositories\Eloquent\NotificationEloquent;
-use Admin\Repositories\Interfaces\NotificationInterface;
-use Admin\Repositories\Eloquent\FeaturedSectionEloquent;
-use Admin\Repositories\Interfaces\FeaturedSectionInterface;
-use Admin\Repositories\Eloquent\MerchantEloquent;
-use Admin\Repositories\Interfaces\MerchantInterface;
-use Admin\Repositories\Eloquent\AppUserEloquent;
-use Admin\Repositories\Interfaces\AppUserInterface;
+use Illuminate\Support\ServiceProvider;
 
 class RepositoryServiceProvider extends ServiceProvider
 {
