@@ -91,7 +91,7 @@
 	                                        <option value="Restaurant">Restaurant Name</option>
 	                                        <option value="Email">Email</option>
 	                                    </select>
-	                                </div><!-- <?php// if($search_type == 'Email') : ?> selected <?php //endif; ?> -->
+	                                </div>
 	                            </div>
 	                        </div><!-- well -->
 
