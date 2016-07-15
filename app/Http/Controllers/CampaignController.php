@@ -6,6 +6,7 @@ use Admin\Http\Requests\CampaignRequest;
 use Admin\Merchant;
 use Admin\Repositories\Interfaces\BlurbInterface;
 use Admin\Repositories\Interfaces\CampaignInterface;
+use Admin\Repositories\Interfaces\MerchantInterface;
 use Admin\Repositories\Interfaces\NotificationInterface;
 use Admin\Repositories\Interfaces\RestaurantInterface;
 use Admin\Repositories\Interfaces\SnapShotInterface;
@@ -13,6 +14,7 @@ use Admin\Services\GenerateReport;
 use Admin\SnapShot;
 use Auth;
 use Illuminate\Http\Request;
+use Admin\Services\Mailer;
 
 class CampaignController extends Controller
 {
@@ -42,6 +44,11 @@ class CampaignController extends Controller
     protected $snapShot;
 
     /**
+     * @var MerchantInterface
+     */
+    protected $merchant;
+
+    /**
      * Create a new controller instance.
      *
      * @param CampaignInterface $campaign
@@ -51,13 +58,14 @@ class CampaignController extends Controller
      * @param SnapShotInterface $snapShot
      * @return void
      */
-    public function __construct(CampaignInterface $campaign, RestaurantInterface $restaurant, BlurbInterface $blurb, NotificationInterface $notification, SnapShotInterface $snapShot)
+    public function __construct(CampaignInterface $campaign, RestaurantInterface $restaurant, BlurbInterface $blurb, NotificationInterface $notification, SnapShotInterface $snapShot, MerchantInterface $merchant)
     {
         $this->campaign = $campaign;
         $this->restaurant = $restaurant;
         $this->blurb = $blurb;
         $this->notification = $notification;
         $this->snapShot = $snapShot;
+        $this->merchant = $merchant;
     }
 
     /**
@@ -153,6 +161,7 @@ class CampaignController extends Controller
             'restaurant' => $this->restaurant->getByAttributes(['merchant_id' => $campaign->merchant_id], false),
             'campaign' => $campaign,
             'blurbs' => $this->blurb->getAllByAttributes(['campaign_id' => $id], 'created_at', 'DESC'),
+            'merchants' => Merchant::where('status', '!=', 3)->orderBy('coy_name')->get()->toArray(),
         );
 
         return view('campaign.view', $data);
@@ -183,7 +192,9 @@ class CampaignController extends Controller
     {
         $control_no = uniqid();
 
-        $request->merge(array('cam_status' => 'Draft', 'control_no' => $control_no));
+        $restaurant = $this->restaurant->getByAttributes(['merchant_id' => $request->merchant_id], false);
+
+        $request->merge(array('restaurant_id' => $restaurant->id, 'cam_status' => 'Draft', 'control_no' => $control_no));
 
         if ($this->campaign->create($request->all())) {
 
@@ -235,6 +246,7 @@ class CampaignController extends Controller
 
         $data['restaurant'] = $this->restaurant->getByAttributes(['merchant_id' => $campaign->merchant_id], false);
         $data['campaign'] = $campaign;
+        $data['merchants'] = Merchant::where('status', '!=', 3)->orderBy('coy_name')->get()->toArray();
 
         return view('campaign.edit', $data);
     }
@@ -244,9 +256,32 @@ class CampaignController extends Controller
      *
      * @return Redirect
      */
-    public function update($id, CampaignRequest $request)
+    public function update($id, CampaignRequest $request, Mailer $mailer)
     {
+        $campaign = $this->campaign->getById($id);
+
         if ($this->campaign->updateById($id, $request->all())) {
+
+            if($request->cam_status == "Approved") {
+
+                $data = $this->merchant->getByAttributes(['id' => $request->merchant_id]);
+                
+
+                if($campaign->cam_status != "Approved") {
+                    $mailer->send('emails.campaign_approved', 'Your Campaign Has been Approved', $data[0]);
+                }
+            }
+
+            if($request->cam_status == "Rejected") {
+
+                $data = $this->merchant->getByAttributes(['id' => $request->merchant_id]);
+                
+
+                if($campaign->cam_status != "Rejected") {
+                    $mailer->send('emails.campaign_rejected', 'Your Campaign Needs Some Revision(s)', $data[0]);
+                }
+            }
+
             return redirect('campaigns/' . $id)->with('message', 'Successfully updated.');
         }
 

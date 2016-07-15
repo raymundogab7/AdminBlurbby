@@ -14,6 +14,23 @@ interface AdminInterface
     public function getById($id);
 
     /**
+     * Get all administrators.
+     *
+     * @return Admin
+     */
+    public function getAll();
+
+    /**
+     * Get all administrators by attributes.
+     *
+     * @param array $attributes
+     * @param string $orderBy
+     * @param string $sort
+     * @return Admin
+     */
+    public function getAllByAttributes(array $attributes, $orderBy, $sort = 'ASC');
+
+    /**
      * Get all Admin this week.
      *
      * @return Admin

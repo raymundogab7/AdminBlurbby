@@ -11,8 +11,11 @@ use Admin\Repositories\Interfaces\RestaurantCuisineInterface;
 use Admin\Repositories\Interfaces\RestaurantInterface;
 use Admin\Repositories\Interfaces\SnapShotInterface;
 use Admin\Services\GenerateReport;
+use Admin\Merchant;
 use Auth;
 use Illuminate\Http\Request;
+use Admin\Services\Mailer;
+use Admin\Repositories\Interfaces\BlurbInterface;
 
 class MerchantController extends Controller
 {
@@ -52,6 +55,11 @@ class MerchantController extends Controller
     protected $campaign;
 
     /**
+     * @var BlurbInterface
+     */
+    protected $blurb;
+
+    /**
      * Create a new controller instance.
      *
      * @param MerchantInterface $merchant
@@ -69,7 +77,8 @@ class MerchantController extends Controller
         SnapshotInterface $snapshot,
         OutletInterface $outlet,
         CuisineInterface $cuisine,
-        CampaignInterface $campaign
+        CampaignInterface $campaign,
+        BlurbInterface $blurb
     ) {
         $this->merchant = $merchant;
         $this->restaurant = $restaurant;
@@ -78,6 +87,7 @@ class MerchantController extends Controller
         $this->outlet = $outlet;
         $this->cuisine = $cuisine;
         $this->campaign = $campaign;
+        $this->blurb = $blurb;
     }
 
     /**
@@ -200,6 +210,7 @@ class MerchantController extends Controller
             'restaurant_cuisine' => $selected_cuisines,
             'cuisines' => $this->cuisine->getAll(),
             'cuisines_id' => $cuisines_id,
+            'merchant_id' => $id,
         );
 
         return view('merchants.edit', $data);
@@ -212,7 +223,7 @@ class MerchantController extends Controller
      * @param MerchantRequest $request
      * @return Redirect
      */
-    public function update($id, MerchantRequest $request)
+    public function update($id, MerchantRequest $request, Mailer $mailer)
     {
 
         $request_new = $request->except(['password', 'password_confirmation']);
@@ -221,9 +232,18 @@ class MerchantController extends Controller
             $request->merge(['password' => bcrypt($request->password)]);
             $request_new = $request->all();
         }
-
+        
         if ($merchant = $this->merchant->updateById($id, $request_new)) {
+            
+            if($request->status == "1") {
 
+                $data = $this->merchant->getByAttributes(['id' => $id]);
+
+                if($data[0]['status'] != 1) {
+                    $mailer->send('emails.approved', 'Congratulations, Your Account Has Been Approved', $data[0]);
+                }
+            }
+            
             return redirect('merchants/' . $request->merchant_id . '/edit')->with('message', 'Successfully updated.');
         }
 
@@ -276,5 +296,26 @@ class MerchantController extends Controller
         $generator->generate($report_type, 'Merchants Report');
 
         return redirect()->back();
+    }
+
+    public function create_campaign($id)
+    {
+        $data = [
+            'merchant' => Merchant::find($id),
+        ];
+
+        return view('merchants.campaign.create', $data);
+    }
+
+    public function edit_campaign($id)
+    {
+        $campaign = $this->campaign->getById($id);
+
+        $data['restaurant'] = $this->restaurant->getByAttributes(['merchant_id' => $campaign->merchant_id], false);
+        $data['campaign'] = $campaign;
+        $data['blurbs'] = $this->blurb->getAllByAttributes(['campaign_id' => $id], 'created_at', 'DESC');
+        $data['merchants'] = Merchant::where('status', '!=', 3)->orderBy('coy_name')->get()->toArray();
+
+        return view('merchants.campaign.view', $data);
     }
 }

@@ -113,6 +113,8 @@ Route::group(['middleware' => ['auth']], function () {
     Route::post('merchants/restaurant/upload-pp/{restaurant_id}', 'RestaurantController@uploadProfilePicture');
     Route::post('merchants/restaurant/upload-cp/{restaurant_id}', 'RestaurantController@uploadCoverPhoto');
 
+    Route::get('merchants/{merchant_id}/create-campaign', 'MerchantController@create_campaign');
+    Route::get('merchants/{merchant_id}/edit-campaign', 'MerchantController@edit_campaign');
     /*
     |--------------------------------------------------------------------------
     | Administrator Route

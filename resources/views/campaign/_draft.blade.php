@@ -3,10 +3,21 @@
 
 	<form method="POST" action="{{url('campaigns/'.$campaign['id'])}}" style="display:inline;" class="form-horizontal form-bordered" >
 	<div class="form-group">
+        <label class="col-sm-2 control-label" style="text-align:left;">Merchant Name *</label>
+        <div class="col-sm-8">
+        <input type="hidden" name="_method" value="PUT">
+            <input type="hidden" value="{{csrf_token()}}" name="_token">
+            <select id="select_merchants" name="merchant_id" data-placeholder="Choose One" style="width:100%;" tabindex="-1" title="" class="select2-offscreen">
+                @foreach($merchants as $merchant)
+                <option <?php if($merchant['id'] == $campaign['merchant_id']) :?> selected="selected" <?php endif;?> value="{{$merchant['id']}}">{{$merchant['coy_name']}}</option>
+                @endforeach
+            </select>
+        </div>
+    </div>
+    <div class="form-group">
 		<label class="col-sm-2 control-label" style="text-align:left;">Campaign Name *</label>
 		<div class="col-sm-8">
-            <input type="hidden" name="_method" value="PUT">
-            <input type="hidden" name="_token" value="{{csrf_token()}}">
+            
 			<!-- <input type="text" value="" class="form-control" required /> -->
 			{!! Form::text('campaign_name', $campaign['campaign_name'], ['required' => 'required', 'class' => 'form-control']) !!}
 		</div>
@@ -43,23 +54,19 @@
 	</div><!-- form-group -->
 
 	<div class="form-group">
-		<label class="col-sm-2 control-label" style="text-align:left;">Status</label>
-		<div class="col-sm-8">
-			<label class="text-info control-label" style="text-align:left;"><strong>{{$campaign['cam_status']}}</strong></label>
-		</div>
-	</div><!-- form-group -->
+        <label class="col-sm-2 control-label" style="text-align:left;">Status *</label>
+        <div class="col-sm-8">
+            <select id="select_status" name="cam_status" data-placeholder="Choose One" style="width:100%;" tabindex="-1" title="" class="select2-offscreen">
+                <option value="Draft" <?php if($campaign->cam_status == "Draft") :?> selected="selected" <?php endif;?>>Draft</option>
+                <option value="Pending Approval" <?php if($campaign->cam_status == "Pending Approval") :?> selected="selected" <?php endif;?>>Pending Approval</option>
+                <option value="Approved" <?php if($campaign->cam_status == "Approved") :?> selected="selected" <?php endif;?>>Approved</option>
+                <option value="Rejected" <?php if($campaign->cam_status == "Rejected") :?> selected="selected" <?php endif;?>>Rejected</option>
+            </select>
+        </div>
+    </div>
 	<button class="btn btn-primary" style="margin-left:15px;">Update Campaign</button>
 	
 	</form>
-
-	{!! Form::open(array('url' => 'campaigns/updateStatus/'.$campaign['id'], 'style' => 'display:inline;', 'class' => 'form-horizontal form-bordered', 'method' => 'PUT')) !!}
-
-	<input type="hidden" name="cam_status" value="Pending Approval">
-	<a href="">
-		<button class="btn btn-success" style="margin-left:15px;">Submit Campaign</button>
-	</a>
-
-	{!! Form::close() !!}
 
 	{!! Form::open(array('url' => 'campaigns/'.$campaign['id'], 'style' => 'display:inline;', 'class' => 'form-horizontal form-bordered', 'method' => 'DELETE')) !!}
 
@@ -220,6 +227,12 @@
             $("input#datepicker").datepicker('option', 'maxDate', dateText);
         } 
 
+    });
+    jQuery('#select_status').select2({
+        minimumResultsForSearch: -1
+    });
+    jQuery('#select_merchants').select2({
+        minimumResultsForSearch: -1
     });
 
 </script>

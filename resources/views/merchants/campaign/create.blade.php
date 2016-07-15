@@ -14,7 +14,7 @@
 <section>
     <div class="mainwrapper">
 
-        @include('layouts.sidebar-admin', ['restaurant' => $restaurant])
+        @include('layouts.sidebar-admin')
 
         <div class="mainpanel">
             <div class="pageheader">
@@ -67,12 +67,8 @@
                             <label class="col-sm-2 control-label" style="text-align:left;">Merchant Name *</label>
                             <div class="col-sm-8">
                                 <input type="hidden" value="{{csrf_token()}}" name="_token">
-                                <select id="select_merchants" name="merchant_id" data-placeholder="Choose One" style="width:100%;" tabindex="-1" title="" class="select2-offscreen">
-                                    <option value="">Choose One</option>
-                                    @foreach($merchants as $merchant)
-                                    <option value="{{$merchant['id']}}">{{$merchant['coy_name']}}</option>
-                                    @endforeach
-                                </select>
+                                <input type="text" readonly="" value="{{$merchant->coy_name}}" class="form-control">
+                                {!! Form::hidden('merchant_id', $merchant->id, ['required' => 'required', 'class' => 'form-control']) !!}
                             </div>
                         </div>
 						<div class="form-group">
@@ -112,17 +108,7 @@
                                 </div><!-- input-group -->
 							</div>
 						</div><!-- form-group -->
-                        <div class="form-group">
-                            <label class="col-sm-2 control-label" style="text-align:left;">Status *</label>
-                            <div class="col-sm-8">
-                                <select id="select_status" name="cam_status" data-placeholder="Choose One" style="width:100%;" tabindex="-1" title="" class="select2-offscreen">
-                                    <option value="Draft">Draft</option>
-                                    <option value="Pending Approval">Pending Approval</option>
-                                    <option value="Approved">Approved</option>
-                                    <option value="Rejected">Rejected</option>
-                                </select>
-                            </div>
-                        </div>
+
 						<br>
 
 						<button style="margin-left:15px;" class="btn btn-primary">Create and Add New Blurbs</button>
@@ -166,9 +152,6 @@
 
     });
     jQuery('#select_merchants').select2({
-        minimumResultsForSearch: -1
-    });
-    jQuery('#select_status').select2({
         minimumResultsForSearch: -1
     });
 </script>

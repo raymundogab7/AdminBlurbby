@@ -75,27 +75,27 @@
 	                @endif
 					@if($campaign->cam_status == 'Rejected')
 
-					@include('campaign._rejected', ['campaign' => $campaign, 'merchants' => $merchants])
+					@include('merchants.campaign._rejected', ['campaign' => $campaign])
 
 					@elseif($campaign->cam_status == 'Draft')
 
-					@include('campaign._draft', ['campaign' => $campaign, 'merchants' => $merchants])
+					@include('merchants.campaign._draft', ['campaign' => $campaign])
 
 					@elseif($campaign->cam_status == 'Approved')
 
-					@include('campaign._approved', ['campaign' => $campaign, 'merchants' => $merchants])
+					@include('merchants.campaign._approved', ['campaign' => $campaign])
 
 					@elseif($campaign->cam_status == 'Live')
 
-					@include('campaign._live', ['campaign' => $campaign, 'merchants' => $merchants])
+					@include('merchants.campaign._live', ['campaign' => $campaign])
 
 					@elseif($campaign->cam_status == 'Expired')
 
-					@include('campaign._expired', ['campaign' => $campaign, 'merchants' => $merchants])
+					@include('merchants.campaign._expired', ['campaign' => $campaign])
 
 					@else
 
-					@include('campaign._pending_approval', ['campaign' => $campaign, 'merchants' => $merchants])
+					@include('merchants.campaign._pending_approval', ['campaign' => $campaign])
 
 					@endif
 
@@ -109,5 +109,10 @@
 @endsection
 
 @section('custom-js')
+
+
+
+
+
 
 @endsection

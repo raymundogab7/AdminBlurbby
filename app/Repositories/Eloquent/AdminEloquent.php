@@ -35,6 +35,29 @@ class AdminEloquent implements AdminInterface
     }
 
     /**
+     * Get all administrators.
+     *
+     * @return Admin
+     */
+    public function getAll()
+    {
+        return $this->admin->orderBy('first_name')->get()->toArray();
+    }
+
+    /**
+     * Get all administrators by attributes.
+     *
+     * @param array $attributes
+     * @param string $orderBy
+     * @param string $sort
+     * @return Admin
+     */
+    public function getAllByAttributes(array $attributes, $orderBy, $sort = 'ASC')
+    {
+        return $this->admin->where($attributes)->orderBy($orderBy, $sort)->get()->toArray();
+    }
+
+    /**
      * Get all Admin this week.
      *
      * @return Admin

@@ -730,7 +730,7 @@ echo ($outlet->outlet_ph_active == 0) ? 'PH : Close' : 'PH : ' . date_format(dat
                     			</table>
 							</div><!-- tab-pane -->
                             <div class="tab-pane" id="campaigns">
-                                <a href="{{url('/campaigns/create')}}"><button class="btn btn-primary"><i class="fa fa-plus"></i> Add New Campaign</button></a>
+                                <a href="{{url('merchants/'.$merchant_id.'/create-campaign')}}"><button class="btn btn-primary"><i class="fa fa-plus"></i> Add New Campaign</button></a>
                                 <hr>
                                 <table id="campaigns_table" class="table table-striped table-bordered responsive">
                                     <thead class="">
@@ -769,11 +769,11 @@ echo ($outlet->outlet_ph_active == 0) ? 'PH : Close' : 'PH : ' . date_format(dat
                                             <td class="table-action">
                                                 @if($campaign['cam_status'] == 'Rejected' || $campaign['cam_status'] == 'Draft')
 
-                                                <a href="{{url('campaign') . '/' . $campaign['id']}}" data-toggle="tooltip" title="Edit" class="tooltips"><i class="fa fa-pencil"></i></a>
+                                                <a href="{{url('merchants/'.$campaign['id'].'/edit-campaign')}}" data-toggle="tooltip" title="Edit" class="tooltips"><i class="fa fa-pencil"></i></a>
 
                                                 @else
 
-                                                <a href="{{url('campaign') . '/' . $campaign['id']}}" data-toggle="tooltip" title="View" class="tooltips"><i class="fa fa-eye"></i></a>
+                                                <a href="{{url('merchants/'.$campaign['id'].'/edit-campaign')}}" data-toggle="tooltip" title="View" class="tooltips"><i class="fa fa-eye"></i></a>
 
                                                 @endif
                                             </td>
