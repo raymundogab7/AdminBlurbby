@@ -21,6 +21,13 @@ interface AdminInterface
     public function getAll();
 
     /**
+     * Get all administrators.
+     *
+     * @return Admin
+     */
+    public function paginate();
+
+    /**
      * Get all administrators by attributes.
      *
      * @param array $attributes

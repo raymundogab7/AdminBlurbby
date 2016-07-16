@@ -128,7 +128,7 @@ class MerchantEloquent implements MerchantInterface
 
         }
 
-        return abort(404);
+        return [];
     }
 
     /**

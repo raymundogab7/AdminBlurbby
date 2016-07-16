@@ -77,11 +77,13 @@
                                     </div>
                                 </div>
                             </div><!-- well -->
-							<a href=""><button class="btn btn-info"><i class="fa fa-file-excel-o"></i>&nbsp;Download List (.csv)</button></a>
-                            <a href="{{url('administrators/create')}}">
-                                <button class="btn btn-primary"><i class="fa fa-plus"></i> Add New Admin</button>
+							<a href="">
+                                <button class="btn btn-info"><i class="fa fa-file-excel-o"></i>&nbsp;Download List (.csv)</button>
                             </a>
+                            <a href="{{url('administrators/create')}}"><button class="btn btn-primary"><i class="fa fa-plus"></i> Add New Admin</button></a>
+                            
                             <hr />
+                            
                             <div class="pull-right">
                                 @if ($administrators->lastPage() > 1)
                                 <ul class="pagination pagination-split pagination-sm pagination-contact">
@@ -100,16 +102,20 @@
                                 @endif
                             </div>
                             <h3 class="xlg-title">All Admin</h3>
-                           
+                            @if(count($administrators) == 0)<br>
+                            <div class="alert alert-danger">
+                                <strong>No results found.</strong>
+                            </div>
+                            @endif
                             <div class="list-group contact-group">
                             	@foreach($administrators as $admin)
                                 <a href="{{url('administrators/'.$admin['id'])}}" class="list-group-item">
                                     <div class="media">
                                         <div class="pull-left">
                                         	@if($admin['profile_photo'] == null)
-                                            <img class="img-circle img-online" src="images/photos/user1.png" alt="...">
+                                            <img class="img-circle img-online" src="{{asset('images/photos/user1.png')}}" alt="...">
                                             @else
-                                            <img class="img-circle img-online" src="images/uploads/{{$admin['id']}}/profile_photo.jpg" alt="...">
+                                            <img class="img-circle img-online" src="{{asset('images/profile_photos/'.$admin['id'].'/profile_photo.jpg')}}" alt="...">
                                             @endif
                                         </div>
                                         <div class="media-body">

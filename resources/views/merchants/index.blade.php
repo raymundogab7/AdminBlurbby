@@ -187,7 +187,7 @@
 			}
 		});*/
 		if($(this).val() != "" && $('#input').val() != "") {
-			window.location.href = $('#search_url').val()+'/merchants/search/'+$('#input').val()+'/'+$(this).val();
+			window.location.href = $('#search_url').val()+'/administrators/search/'+$('#input').val()+'/'+$(this).val();
 		}
 
 

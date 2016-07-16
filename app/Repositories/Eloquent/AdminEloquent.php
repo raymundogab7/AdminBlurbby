@@ -45,6 +45,45 @@ class AdminEloquent implements AdminInterface
     }
 
     /**
+     * Get all administrators.
+     *
+     * @return Admin
+     */
+    public function paginate()
+    {
+        return $this->admin->orderBy('first_name')->paginate(10);
+    }
+
+    /**
+     * Search campaings
+     *
+     * @param array $attributes
+     * @param string $search_field
+     * @param boolean $paginate
+     * @return Merchant
+     */
+    public function search($search_word, $search_type)
+    {
+        if ($search_type == 'First Name') {
+            return $this->admin->where('first_name', 'LIKE', '%'.$search_word.'%')->orderBy('first_name')->paginate(10);
+        }
+
+        if ($search_type == 'Last Name') {
+            return $this->admin->where('last_name', 'LIKE', '%'.$search_word.'%')->orderBy('first_name')->paginate(10);
+        }
+
+        if ($search_type == 'Position') {
+             return $this->admin->where('title', 'LIKE', '%'.$search_word.'%')->orderBy('first_name')->paginate(10);
+        }
+
+        if ($search_type == 'Email') {
+            return $this->admin->where('email', 'LIKE', '%'.$search_word.'%')->orderBy('first_name')->paginate(10);
+        }
+
+        return [];
+    }
+
+    /**
      * Get all administrators by attributes.
      *
      * @param array $attributes
