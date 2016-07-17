@@ -103,7 +103,7 @@
                            
                             <div class="list-group contact-group">
                             	@foreach($administrators as $admin)
-                                <a href="{{url('administrators/'.$admin['id'])}}" class="list-group-item">
+                                <a href="{{url('administrators/'.$admin['id'].'/edit')}}" class="list-group-item">
                                     <div class="media">
                                         <div class="pull-left">
                                         	@if($admin['profile_photo'] == null)

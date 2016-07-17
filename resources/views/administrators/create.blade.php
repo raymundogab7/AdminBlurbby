@@ -37,29 +37,29 @@
                                     
                                 </div><!-- text-center -->
                                 <div class="mb20"></div>
-                                <div style="text-align:center;padding:10px 0;"><span id="title"></span></div>
+                                <div style="text-align:center;padding:10px 0;"><span id="keyup_title"></span></div>
                                 <div class="mb20"></div>
                                 <table style="width:100%;">
                                     <tbody>
                                         <tr style="border-top:1px solid #ccc;">
                                             <td style="width:50%;padding-left:25px;">First Name</td>
-                                            <td style="padding:15px 25px 15px 0;text-align:right;"><span id="first_name"></span></td>
+                                            <td style="padding:15px 25px 15px 0;text-align:right;"><span id="keyup_first_name"></span></td>
                                         </tr>
                                         <tr style="border-top:1px solid #ccc;">
                                             <td style="width:50%;padding-left:25px;">Last Name</td>
-                                            <td style="padding:15px 25px 15px 0;text-align:right;"><span id="last_name"></span></td>
+                                            <td style="padding:15px 25px 15px 0;text-align:right;"><span id="keyup_last_name"></span></td>
                                         </tr>
                                         <tr style="border-top:1px solid #ccc;">
                                             <td style="width:50%;padding-left:25px;">Email</td>
-                                            <td style="padding:15px 25px 15px 0;text-align:right;"><span id="email"></span></td>
+                                            <td style="padding:15px 25px 15px 0;text-align:right;"><span id="keyup_email"></span></td>
                                         </tr>
                                         <tr style="border-top:1px solid #ccc;">
                                             <td style="width:50%;padding-left:25px;">Date Of Birth</td>
-                                            <td style="padding:15px 25px 15px 0;text-align:right;"><span id="date_of_birth"></span></td>
+                                            <td style="padding:15px 25px 15px 0;text-align:right;"><span id="keyup_date_of_birth"></span></td>
                                         </tr>
                                         <tr style="border-top:1px solid #ccc;">
                                             <td style="width:50%;padding-left:25px;">Gender</td>
-                                            <td style="padding:15px 25px 15px 0;text-align:right;"><span id="gender"></span></td>
+                                            <td style="padding:15px 25px 15px 0;text-align:right;"><span id="keyup_gender"></span></td>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -67,7 +67,42 @@
                         </div><!-- col-sm-4 col-md-3 -->
                     
                         <div class="col-sm-12 col-md-9 col-xs-12">
-                            <form action="{{url('administrators')}}" class="form-horizontal form-bordered" method="POST" files="true" enctype="multipart/form-data">
+                            @if(session('message'))
+
+                            <div class="alert alert-success">
+                                <strong>{{session('message')}}</strong>
+                            </div>
+
+                            @endif
+
+                            @if(session('error'))
+
+                            <div class="alert alert-danger">
+                               <strong>{{session('error')}}</strong>
+                            </div>
+
+                            @endif
+
+                            @if(count($errors) > 0)
+
+                            <div class="alert alert-danger">
+                                <ul class="media-list">
+
+                                @foreach($errors as  $v)
+
+                                    <li class="media">
+
+                                          <strong> {{str_replace('.1', '', $v[0])}}</strong>
+
+                                    </li>
+
+                                @endforeach
+
+                                </ul>
+                            </div>
+
+                            @endif
+                            <form action="{{url('administrators')}}" accept-charset="UTF-8" class="form-horizontal form-bordered" method="POST" files="true" enctype="multipart/form-data">
                                 <!-- <div class="form-group">
                                     <label class="col-sm-2 control-label" style="text-align:left;">Status *</label>
                                     <div class="col-sm-8">
@@ -83,26 +118,28 @@
                                 <div class="form-group">
                                     <label class="col-sm-2 control-label" style="text-align:left;">Type *</label>
                                     <div class="col-sm-8">
-                                    <input type="hidden" name="_token" readonly="" value="csrf_token()">
-                                        <select id="type" name="role_id" data-placeholder="Choose One" class="width300">
+                                        <input type="hidden" name="_token" readonly="" value="{{csrf_token()}}">
+                                        <!-- <select id="type" name="role_id" data-placeholder="Choose One" class="width300" required="required" />
                                             <option value="" selected="selected">Choose One</option>
                                             <option value="1">Super Administrator</option>
                                             <option value="2">Administrator</option>
-                                        </select>
+                                        </select> -->
+                                        {!! Form::select('role_id', array('1' => 'Super Administrator', '2' => 'Administrator'), null, ['id' => 'type', 'required' => 'required', 'class' => 'width300', 'placeholder' => 'Choose One']) !!}
                                     </div>
                                 </div><!-- form-group -->
                                 
                                 <div class="form-group">
                                     <label class="col-sm-2 control-label" style="text-align:left;">Title *</label>
                                     <div class="col-sm-8">
-                                        <input type="text" name="title" class="form-control" />
+                                        {!! Form::text('title', null, ['id' => 'title', 'required' => 'required', 'class' => 'form-control']) !!}
                                     </div>
                                 </div><!-- form-group -->
                                 
                                 <div class="form-group">
                                     <label class="col-sm-2 control-label" style="text-align:left;">Profile Photo</label>
                                     <div class="col-sm-5">
-                                        <input name="file" type="file" name="profile_photo/>
+                                        <!-- <input name="file" type="file" name="profile_photo" required="required" /> -->
+                                        {!! Form::file('profile_photo', null, ['required' => 'required']) !!}
                                         <span class="help-block">Must be at least 500px x 500px.</span>
                                     </div>
                                 </div>
@@ -110,21 +147,24 @@
                                 <div class="form-group">
                                     <label class="col-sm-2 control-label" style="text-align:left;">First Name *</label>
                                     <div class="col-sm-8">
-                                        <input type="text" name="first_name" class="form-control" />
+                                        <!-- <input type="text" id="first_name" name="first_name" class="form-control" required="required" /> -->
+                                        {!! Form::text('first_name', null, ['id' => 'first_name', 'required' => 'required', 'class' => 'form-control']) !!}
                                     </div>
                                 </div><!-- form-group -->
                                 
                                 <div class="form-group">
                                     <label class="col-sm-2 control-label" style="text-align:left;">Last Name *</label>
                                     <div class="col-sm-8">
-                                        <input type="text" name="last_name" class="form-control" />
+                                        <!-- <input type="text" id="last_name" name="last_name" class="form-control" required="required" /> -->
+                                        {!! Form::text('last_name', null, ['id' => 'last_name', 'required' => 'required', 'class' => 'form-control']) !!}
                                     </div>
                                 </div><!-- form-group -->
         
                                 <div class="form-group">
                                     <label class="col-sm-2 control-label" style="text-align:left;">Email *</label>
                                     <div class="col-sm-8">
-                                        <input type="text" name="email" class="form-control" />
+                                        <!-- <input type="email" id="email" name="email" class="form-control" required="required" /> -->
+                                        {!! Form::email('email', null, ['id' => 'email', 'required' => 'required', 'class' => 'form-control']) !!}
                                     </div>
                                 </div><!-- form-group -->
                                 
@@ -132,7 +172,8 @@
                                     <label class="col-sm-2 control-label" style="text-align:left;">Date Of Birth *</label>
                                     <div class="col-sm-2">
                                         <div class="input-group">
-                                            <input type="text" name="date_of_birth" class="form-control"  id="datepicker" required>
+                                            <!-- <input type="text" name="date_of_birth" class="form-control"  id="datepicker" required="required"> -->
+                                            {!! Form::text('date_of_birth', null, ['id' => 'datepicker', 'required' => 'required', 'class' => 'form-control']) !!}
                                             <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
                                         </div><!-- input-group -->
                                     </div>
@@ -141,29 +182,31 @@
                                 <div class="form-group">
                                     <label class="col-sm-2 control-label" style="text-align:left;">Gender *</label>
                                     <div class="col-sm-8">
-                                        <select id="gender" name="gender" data-placeholder="Choose One" class="width300">
+                                        <!-- <select id="gender" name="gender" data-placeholder="Choose One" class="width300" required="required" />
                                             <option value="" selected="selected">Choose One</option>
                                             <option value="Female">Female</option>
                                             <option value="Male">Male</option>
-                                        </select>
+                                        </select> -->
+                                        {!! Form::select('gender', array('Female' => 'Female', 'Male' => 'Male'), null, ['onchange' => 'changeGender(this)', 'id' => 'gender', 'required' => 'required', 'class' => 'width300', 'placeholder' => 'Choose One']) !!}
                                     </div>
                                 </div><!-- form-group -->
                                 
                                 <div class="form-group">
                                     <label class="col-sm-2 control-label" style="text-align:left;">New Password</label>
                                     <div class="col-sm-8">
-                                        <input type="password" name="password" placeholder="" class="form-control" />
+                                        <input type="password" name="password" placeholder="" class="form-control" required="required" />
                                     </div>
                                 </div><!-- form-group -->
                                 
                                 <div class="form-group">
                                     <label class="col-sm-2 control-label" style="text-align:left;">Confirm Password Again</label>
                                     <div class="col-sm-8">
-                                        <input type="password" name="password_confirmation" placeholder="" class="form-control" />
+                                        <input type="password" name="password_confirmation" placeholder="" class="form-control" required="required" />
                                     </div>
                                 </div><!-- form-group -->
                                 <br>
-                                <button style="margin-left:15px;" type="submit" class="btn btn-primary">Create</button>
+                                <button style="margin-left:15px;" class="btn btn-primary">Create</button>
+                                <a href="{{url('administrators')}}"><button type="button" style="margin-left:15px;" class="btn btn-default">Back</button></a>
                             </form>
                         </div><!-- tab-content -->
                           
@@ -185,6 +228,37 @@
     });
     
     // Date Picker
-    jQuery('#datepicker').datepicker({ dateFormat: 'dd-M-yy',maxDate: 0 });
+    jQuery('#datepicker').datepicker({ 
+        dateFormat: 'dd-M-yy',
+        maxDate: 0,
+        onSelect: function(dateText) {
+            $('#keyup_date_of_birth').html($.datepicker.formatDate('dd-M-yy', new Date($(this).val())));
+        }
+    });
+
+    $('#title').keyup(function(){
+        $('#keyup_title').html($(this).val());
+    });
+
+    $('#first_name').keyup(function(){
+        $('#keyup_first_name').html($(this).val());
+    });
+
+    $('#last_name').keyup(function(){
+        $('#keyup_last_name').html($(this).val());
+    });
+
+    $('#email').keyup(function(){
+        $('#keyup_email').html($(this).val());
+    });
+
+
+    $('#changeGender').change(function(gender){
+        $('#keyup_gender').html($(gender).val());
+    });
+
+    function changeGender(gender) {
+        $('#keyup_gender').html($(gender).val());
+    }
 </script>
 @endsection
