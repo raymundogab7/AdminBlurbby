@@ -28,12 +28,12 @@
                         </div>
                     </div><!-- media -->
                 </div><!-- pageheader -->
-                
+
                 <div class="contentpanel">
-                    
+
                     <div class="row">
                         <div class="col-sm-3">
-                            
+
                             <h5 class="md-title">Administrators</h5>
                             <ul class="nav nav-pills nav-stacked nav-contacts">
                                 <li class="active">
@@ -55,24 +55,24 @@
                                     </a>
                                 </li>
                             </ul>
-                            
+
                             <hr />
-                            
+
                         </div><!-- col-sm-3 -->
                         <div class="col-sm-9">
-                            
+
                             <div class="well mt10">
                                 <div class="row">
                                     <div class="col-sm-9">
-                                        <input type="text" id="input" placeholder="Who are you looking for?" class="form-control">
+                                        <input type="text" id="input" value="{{$search_word}}" placeholder="Who are you looking for?" class="form-control">
                                     </div>
                                     <div class="col-sm-3">
                                         <select id="search-type" class="width100p" data-placeholder="Search Type">
                                             <option value="">Choose One</option>
-                                            <option value="First Name">First Name</option>
-                                            <option value="Last Name">Last Name</option>
-											<option value="Position">Position</option>
-                                            <option value="Email">Email</option>
+                                            <option value="First Name" <?php if ($search_type == "First Name"): ?> selected="selected" <?php endif;?> >First Name</option>
+                                            <option value="Last Name" <?php if ($search_type == "Last Name"): ?> selected="selected" <?php endif;?>>Last Name</option>
+											<option value="Position" <?php if ($search_type == "Position"): ?> selected="selected" <?php endif;?>>Position</option>
+                                            <option value="Email" <?php if ($search_type == "Email"): ?> selected="selected" <?php endif;?>>Email</option>
                                         </select>
                                     </div>
                                 </div>
@@ -81,9 +81,9 @@
                                 <button class="btn btn-info"><i class="fa fa-file-excel-o"></i>&nbsp;Download List (.csv)</button>
                             </a>
                             <a href="{{url('administrators/create')}}"><button class="btn btn-primary"><i class="fa fa-plus"></i> Add New Admin</button></a>
-                            
+
                             <hr />
-                            
+
                             <div class="pull-right">
                                 @if ($administrators->lastPage() > 1)
                                 <ul class="pagination pagination-split pagination-sm pagination-contact">
@@ -134,8 +134,8 @@
                                 </a><!-- list-group -->
                                 @endforeach
                         </div><!-- col-sm-9 -->
-                    </div><!-- row -->  
-                
+                    </div><!-- row -->
+
                 </div><!-- contentpanel -->
 			</div><!-- mainpanel -->
             <input type="hidden" id="search_url" value="{{url('')}}">

@@ -36,7 +36,7 @@
 		<div class="col-sm-8">
 			<div class="input-group">
                 <!-- <input type="text" class="form-control" placeholder="DD-MMM-YYYY" id="datepicker" required> -->
-                {!! Form::text('cam_start', date_format(date_create($campaign['cam_start']), 'Y-m-d'), ['required' => 'required', 'id' => 'datepicker', 'placeholder' => 'DD-MMM-YYYY', 'class' => 'form-control']) !!}
+                {!! Form::text('cam_start', date_format(date_create($campaign['cam_start']), 'd-M-Y'), ['required' => 'required', 'id' => 'datepicker', 'placeholder' => 'DD-MMM-YYYY', 'class' => 'form-control']) !!}
                 <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
             </div><!-- input-group -->
 		</div>
@@ -47,7 +47,7 @@
 		<div class="col-sm-8">
 			<div class="input-group">
                 <!-- <input type="text" class="form-control" placeholder="DD-MMM-YYYY" id="datepicker2" required> -->
-                {!! Form::text('cam_end', date_format(date_create($campaign['cam_end']), 'Y-m-d'), ['required' => 'required' ,'id' => 'datepicker2', 'placeholder' => 'DD-MMM-YYYY', 'class' => 'form-control']) !!}
+                {!! Form::text('cam_end', date_format(date_create($campaign['cam_end']), 'd-M-Y'), ['required' => 'required' ,'id' => 'datepicker2', 'placeholder' => 'DD-MMM-YYYY', 'class' => 'form-control']) !!}
                 <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
             </div><!-- input-group -->
 		</div>

@@ -9,7 +9,7 @@
             <input type="hidden" value="{{csrf_token()}}" name="_token">
             <select id="select_merchants" name="merchant_id" data-placeholder="Choose One" style="width:100%;" tabindex="-1" title="" class="select2-offscreen">
                 @foreach($merchants as $merchant)
-                <option <?php if($merchant['id'] == $campaign['merchant_id']) :?> selected="selected" <?php endif;?> value="{{$merchant['id']}}">{{$merchant['coy_name']}}</option>
+                <option <?php if ($merchant['id'] == $campaign['merchant_id']): ?> selected="selected" <?php endif;?> value="{{$merchant['id']}}">{{$merchant['coy_name']}}</option>
                 @endforeach
             </select>
         </div>
@@ -17,7 +17,7 @@
     <div class="form-group">
 		<label class="col-sm-2 control-label" style="text-align:left;">Campaign Name *</label>
 		<div class="col-sm-8">
-            
+
 			<!-- <input type="text" value="" class="form-control" required /> -->
 			{!! Form::text('campaign_name', $campaign['campaign_name'], ['required' => 'required', 'class' => 'form-control']) !!}
 		</div>
@@ -36,7 +36,7 @@
 		<div class="col-sm-8">
 			<div class="input-group">
                 <!-- <input type="text" class="form-control" placeholder="DD-MMM-YYYY" id="datepicker" required> -->
-                {!! Form::text('cam_start', date_format(date_create($campaign['cam_start']), 'Y-m-d'), ['required' => 'required', 'id' => 'datepicker', 'placeholder' => 'YYYY-MM-DD', 'class' => 'form-control']) !!}
+                {!! Form::text('cam_start', date_format(date_create($campaign['cam_start']), 'd-M-Y'), ['required' => 'required', 'id' => 'datepicker', 'placeholder' => 'DD-MMM-YYYY', 'class' => 'form-control']) !!}
                 <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
             </div><!-- input-group -->
 		</div>
@@ -47,7 +47,7 @@
 		<div class="col-sm-8">
 			<div class="input-group">
                 <!-- <input type="text" class="form-control" placeholder="DD-MMM-YYYY" id="datepicker2" required> -->
-                {!! Form::text('cam_end', date_format(date_create($campaign['cam_end']), 'Y-m-d'), ['required' => 'required' ,'id' => 'datepicker2', 'placeholder' => 'YYYY-MM-DD', 'class' => 'form-control']) !!}
+                {!! Form::text('cam_end', date_format(date_create($campaign['cam_end']), 'd-M-Y'), ['required' => 'required' ,'id' => 'datepicker2', 'placeholder' => 'DD-MMM-YYYY', 'class' => 'form-control']) !!}
                 <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
             </div><!-- input-group -->
 		</div>
@@ -57,15 +57,15 @@
         <label class="col-sm-2 control-label" style="text-align:left;">Status *</label>
         <div class="col-sm-8">
             <select id="select_status" name="cam_status" data-placeholder="Choose One" style="width:100%;" tabindex="-1" title="" class="select2-offscreen">
-                <option value="Draft" <?php if($campaign->cam_status == "Draft") :?> selected="selected" <?php endif;?>>Draft</option>
-                <option value="Pending Approval" <?php if($campaign->cam_status == "Pending Approval") :?> selected="selected" <?php endif;?>>Pending Approval</option>
-                <option value="Approved" <?php if($campaign->cam_status == "Approved") :?> selected="selected" <?php endif;?>>Approved</option>
-                <option value="Rejected" <?php if($campaign->cam_status == "Rejected") :?> selected="selected" <?php endif;?>>Rejected</option>
+                <option value="Draft" <?php if ($campaign->cam_status == "Draft"): ?> selected="selected" <?php endif;?>>Draft</option>
+                <option value="Pending Approval" <?php if ($campaign->cam_status == "Pending Approval"): ?> selected="selected" <?php endif;?>>Pending Approval</option>
+                <option value="Approved" <?php if ($campaign->cam_status == "Approved"): ?> selected="selected" <?php endif;?>>Approved</option>
+                <option value="Rejected" <?php if ($campaign->cam_status == "Rejected"): ?> selected="selected" <?php endif;?>>Rejected</option>
             </select>
         </div>
     </div>
 	<button class="btn btn-primary" style="margin-left:15px;">Update Campaign</button>
-	
+
 	</form>
 
 	{!! Form::open(array('url' => 'campaigns/'.$campaign['id'], 'style' => 'display:inline;', 'class' => 'form-horizontal form-bordered', 'method' => 'DELETE')) !!}
@@ -97,7 +97,7 @@
                 <th></th>
             </tr>
         </thead>
- 
+
         <tbody>
             @foreach($blurbs as $blurb)
             <tr>
@@ -137,8 +137,8 @@
 
                     <a href="{{url('blurb/'.$blurb['id'].'/'.$campaign->control_no)}}" data-toggle="tooltip" title="View" class="tooltips"><i class="fa fa-eye"></i></a>
                 @endif
-                    
-                
+
+
                 </td>
             </tr>
             @endforeach
@@ -159,7 +159,7 @@
       <div class="modal-footer">
 
         {!! Form::open(array('url' => '', 'class' => 'form-horizontal form-bordered delete-blurb-form')) !!}
-        
+
         <input name="_method" type="hidden" value="DELETE">
         <input type="hidden" id="blurbId" name="blurb_id">
         <input type="hidden" class="controlNo" value="{{$campaign['id']}}">
@@ -211,13 +211,13 @@
 <script type="text/javascript">
 
     // Date Picker
-    jQuery('#datepicker').datepicker({ 
+    jQuery('#datepicker').datepicker({
         dateFormat: 'yy-mm-dd',
         minDate: 0, // 0 days offset = today
         onSelect: function(dateText) {
             $sD = new Date(dateText);
             $("input#datepicker2").datepicker('option', 'minDate', dateText);
-        } 
+        }
     });
     jQuery('#datepicker2').datepicker({
          dateFormat: 'yy-mm-dd',
@@ -225,7 +225,7 @@
          onSelect: function(dateText) {
             $sD = new Date(dateText);
             $("input#datepicker").datepicker('option', 'maxDate', dateText);
-        } 
+        }
 
     });
     jQuery('#select_status').select2({

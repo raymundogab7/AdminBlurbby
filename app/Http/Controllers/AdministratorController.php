@@ -2,22 +2,22 @@
 
 namespace Admin\Http\Controllers;
 
-use Illuminate\Http\Request;
-use Admin\Repositories\Interfaces\AdminInterface;
-use Admin\Http\Requests;
 use Admin\Http\Requests\AdministratorRequest;
+use Admin\Repositories\Interfaces\AdminInterface;
+use Admin\Services\GenerateReport;
 use Admin\Services\ImageUploader;
+use Illuminate\Http\Request;
 
 class AdministratorController extends Controller
 {
-	/**
+    /**
      * @var AdminInterface
      */
     protected $admin;
 
     public function __construct(AdminInterface $admin)
     {
-    	$this->admin = $admin;
+        $this->admin = $admin;
     }
 
     /**
@@ -73,13 +73,13 @@ class AdministratorController extends Controller
      */
     public function store(AdministratorRequest $request, ImageUploader $imageUploader)
     {
-        if(is_null($request->file('profile_photo'))) {
+        if (is_null($request->file('profile_photo'))) {
             return redirect('administrators/create')->with('error', 'The profile photo is required.')->withInput();
         }
 
         $file = $request->file('profile_photo');
 
-        if(!$file->isValid()) {
+        if (!$file->isValid()) {
             return redirect('administrators/create')->with('error', 'Profile photo file size is too large.')->withInput();
         }
 
@@ -117,10 +117,10 @@ class AdministratorController extends Controller
 
         $file = $request->file('profile_photo');
 
-        if(!is_null($file)) {
+        if (!is_null($file)) {
             return redirect('administrators/create')->with('error', 'The profile photo is required.')->withInput();
 
-            if(!$file->isValid()) {
+            if (!$file->isValid()) {
                 return redirect('administrators/create')->with('error', 'Profile photo file size is too large.')->withInput();
             }
 
@@ -130,11 +130,45 @@ class AdministratorController extends Controller
 
             $imageUploader->upload($file, $id, 500, 500, 'profile_photo/', '/' . $id . '.jpg');
         }
-        
+
         $request->merge(['date_of_birth' => date_format(date_create($request->date_of_birth), 'Y-m-d')]);
 
         $this->admin->updateByAttributes(['id' => $id], $request->except('_token'));
 
-        return redirect('administrators/'.$id.'/edit')->with('messsage', 'Successfully Created.');
+        return redirect('administrators/' . $id . '/edit')->with('messsage', 'Successfully Created.');
+    }
+
+    /**
+     * Generate Merchant report.
+     *
+     * @return Redirect
+     */
+    public function generateReport(Request $request)
+    {
+        $admins = $this->admin->getAll();
+
+        $a = array_map(function ($structure) {
+
+            return [
+                'Admin Name' => $structure['first_name'] . ' ' . $structure['last_name'],
+                'Mode' => ($structure['role_id'] == 1) ? 'Super Administrator' : 'Administrator',
+                'Joined Date' => date_format(date_create($structure['created_at']), 'd-M-Y'),
+                'Last Online Date' => date_format(date_create($structure['last_online']), 'd-M-Y'),
+                'Last Online Time' => date_format(date_create($structure['last_online']), 'H:i:s'),
+                'Gender' => $structure['gender'],
+                //'Tel No.' => $structure['first_name'],
+                'Email' => $structure['email'],
+            ];
+        }, $admins);
+
+        $generator = new GenerateReport();
+
+        $report_type = array(
+            'Administrators Report' => array_filter($a),
+        );
+
+        $generator->generate($report_type, "Administrators List");
+
+        return redirect()->back();
     }
 }

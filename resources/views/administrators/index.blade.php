@@ -77,7 +77,9 @@
                                     </div>
                                 </div>
                             </div><!-- well -->
-							<a href=""><button class="btn btn-info"><i class="fa fa-file-excel-o"></i>&nbsp;Download List (.csv)</button></a>
+                            {!! Form::open(array('url' => 'administrators/generate', 'style' => 'display:inline;', 'class' => 'form-horizontal form-bordered')) !!}
+                                <button class="btn btn-info"><i class="fa fa-file-excel-o"></i>&nbsp;Download List (.csv)</button>
+                            {!! Form::close() !!}
                             <a href="{{url('administrators/create')}}">
                                 <button class="btn btn-primary"><i class="fa fa-plus"></i> Add New Admin</button>
                             </a>

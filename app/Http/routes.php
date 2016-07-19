@@ -122,6 +122,7 @@ Route::group(['middleware' => ['auth']], function () {
      */
     Route::resource('administrators', 'AdministratorController');
     Route::get('administrators/search/{search_word}/{search_type}', 'AdministratorController@getSearchResult');
+    Route::post('administrators/generate', 'AdministratorController@generateReport');
 
     /*
     |--------------------------------------------------------------------------
