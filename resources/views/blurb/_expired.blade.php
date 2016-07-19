@@ -1,5 +1,5 @@
 
- 
+
                             {!! Form::open(array('url' => 'blurb/report/generate/'.$blurb->id, 'style' => 'display:inline;', 'class' => 'form-horizontal form-bordered')) !!}
                                 <input type="hidden" name="blurb_status" value="Expired" readonly="">
                                 <input type="hidden" name="campaign_id" value="{{$campaign->id}}" readonly="">
@@ -24,7 +24,7 @@
                                     </div><!-- panel-body -->
                                 </div><!-- panel -->
                             </div>
-                            
+
                             <div class="col-md-4">
                                 <div class="panel panel-default">
                                     <div class="panel-body padding15">
@@ -33,7 +33,7 @@
                                     </div><!-- panel-body -->
                                 </div><!-- panel -->
                             </div>
-                        
+
                             <input type="hidden" id="blurb_id" disabled="" value="{{$blurb->id}}">
     @section('custom-js')
 
@@ -45,4 +45,4 @@
     <script type="text/javascript" src="{{asset('js/blurb_charts.js')}}"></script>
 
 
-    @endsection        
+    @endsection

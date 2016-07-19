@@ -28,12 +28,12 @@
                         </div>
                     </div><!-- media -->
                 </div><!-- pageheader -->
-                
+
                 <div class="contentpanel">
-                    
+
                     <div class="row">
                         <div class="col-sm-3">
-                            
+
                             <h5 class="md-title">Administrators</h5>
                             <ul class="nav nav-pills nav-stacked nav-contacts">
                                 <li class="active">
@@ -55,12 +55,12 @@
                                     </a>
                                 </li>
                             </ul>
-                            
+
                             <hr />
-                            
+
                         </div><!-- col-sm-3 -->
                         <div class="col-sm-9">
-                            
+
                             <div class="well mt10">
                                 <div class="row">
                                     <div class="col-sm-9">
@@ -100,7 +100,7 @@
                                 @endif
                             </div>
                             <h3 class="xlg-title">All Admin</h3>
-                           
+
                             <div class="list-group contact-group">
                             	@foreach($administrators as $admin)
                                 <a href="{{url('administrators/'.$admin['id'].'/edit')}}" class="list-group-item">
@@ -109,7 +109,7 @@
                                         	@if($admin['profile_photo'] == null)
                                             <img class="img-circle img-online" src="images/photos/user1.png" alt="...">
                                             @else
-                                            <img class="img-circle img-online" src="images/uploads/{{$admin['id']}}/profile_photo.jpg" alt="...">
+                                            <img class="img-circle img-online" src="{{asset('profile_photo/'.$admin['id'].'/'.$admin['id']. '.jpg')}}" alt="...">
                                             @endif
                                         </div>
                                         <div class="media-body">
@@ -128,8 +128,8 @@
                                 </a><!-- list-group -->
                                 @endforeach
                         </div><!-- col-sm-9 -->
-                    </div><!-- row -->  
-                
+                    </div><!-- row -->
+
                 </div><!-- contentpanel -->
 			</div><!-- mainpanel -->
             <input type="hidden" id="search_url" value="{{url('')}}">

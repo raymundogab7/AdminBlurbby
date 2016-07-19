@@ -54,7 +54,10 @@
 @import url('toggles.css');
 @import url('pace.css');
 
-
+.ui-state-disabled {
+    cursor: default !important;
+    color: #b6b4b3;
+}
 /********** 2. RESET STYLES **********/
 /*************************************/
 

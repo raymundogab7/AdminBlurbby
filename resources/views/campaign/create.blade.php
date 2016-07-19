@@ -96,7 +96,7 @@
 							<div class="col-sm-8">
 								<div class="input-group">
                                     <!-- <input type="text" class="form-control" placeholder="DD-MMM-YYYY" id="datepicker" required> -->
-                                    {!! Form::text('cam_start', null, ['required' => 'required', 'id' => 'datepicker', 'placeholder' => 'YYYY-MM-DD', 'class' => 'form-control']) !!}
+                                    {!! Form::text('cam_start', null, ['required' => 'required', 'id' => 'datepicker', 'placeholder' => 'DD-MMM-YYYY', 'class' => 'form-control']) !!}
                                     <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
                                 </div><!-- input-group -->
 							</div>
@@ -107,7 +107,7 @@
 							<div class="col-sm-8">
 								<div class="input-group">
                                     <!-- <input type="text" class="form-control" placeholder="DD-MMM-YYYY" id="datepicker2" required> -->
-                                    {!! Form::text('cam_end', null, ['required' => 'required' ,'id' => 'datepicker2', 'placeholder' => 'YYYY-MM-DD', 'class' => 'form-control']) !!}
+                                    {!! Form::text('cam_end', null, ['required' => 'required' ,'id' => 'datepicker2', 'placeholder' => 'DD-MMM-YYYY', 'class' => 'form-control']) !!}
                                     <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
                                 </div><!-- input-group -->
 							</div>

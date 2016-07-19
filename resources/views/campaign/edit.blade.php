@@ -35,10 +35,10 @@
                     </div>
                 </div><!-- media -->
             </div><!-- pageheader -->
-            
+
             <div class="contentpanel">
                 <div class="panel panel-primary-head">
-					
+
 					<div class="col-sm-12 col-md-8 col-xs-12" style="padding-bottom:20px;">
 						@if(session('message'))
 
@@ -90,7 +90,7 @@
 								<div class="col-sm-8">
 									<div class="input-group">
 	                                    <!-- <input type="text" class="form-control" placeholder="DD-MMM-YYYY" id="datepicker" required> -->
-	                                    {!! Form::text('cam_start', date_format(date_create($campaign['cam_end']), 'd-M-Y'), ['required' => 'required', 'id' => 'datepicker', 'placeholder' => 'YYYY-MM-DD', 'class' => 'form-control']) !!}
+	                                    {!! Form::text('cam_start', date_format(date_create($campaign['cam_end']), 'd-M-Y'), ['required' => 'required', 'id' => 'datepicker', 'placeholder' => 'DD-MMM-YYYY', 'class' => 'form-control']) !!}
 	                                    <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
 	                                </div><!-- input-group -->
 								</div>
@@ -101,7 +101,7 @@
 								<div class="col-sm-8">
 									<div class="input-group">
 	                                    <!-- <input type="text" class="form-control" placeholder="DD-MMM-YYYY" id="datepicker2" required> -->
-	                                    {!! Form::text('cam_end', date_format(date_create($campaign['cam_end']), 'd-M-Y'), ['required' => 'required' ,'id' => 'datepicker2', 'placeholder' => 'YYYY-MM-DD', 'class' => 'form-control']) !!}
+	                                    {!! Form::text('cam_end', date_format(date_create($campaign['cam_end']), 'd-M-Y'), ['required' => 'required' ,'id' => 'datepicker2', 'placeholder' => 'DD-MMM-YYYY', 'class' => 'form-control']) !!}
 	                                    <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
 	                                </div><!-- input-group -->
 								</div>
@@ -112,8 +112,8 @@
 						{!! Form::close() !!}
 					</div>
 					<div class="col-sm-12 col-md-12 col-xs-12" style="padding-bottom:50px;">
-						
-						
+
+
 						<a href="add-new-campaign.html">
 							<button class="btn btn-primary" style="margin-left:15px;">Update Campaign</button>
 						</a>
@@ -142,7 +142,7 @@
 									<th></th>
 								</tr>
 							</thead>
-					 
+
 							<tbody>
 								<tr>
 									<td><img src="images/coupon-image.jpg" style="width:20px;"></td>
@@ -187,13 +187,13 @@
 <script type="text/javascript">
 
 	// Date Picker
-	jQuery('#datepicker').datepicker({ 
+	jQuery('#datepicker').datepicker({
         dateFormat: 'yy-mm-dd',
         minDate: 0, // 0 days offset = today
         onSelect: function(dateText) {
             $sD = new Date(dateText);
             $("input#datepicker2").datepicker('option', 'minDate', dateText);
-        } 
+        }
     });
 	jQuery('#datepicker2').datepicker({
          dateFormat: 'yy-mm-dd',
@@ -201,7 +201,7 @@
          onSelect: function(dateText) {
             $sD = new Date(dateText);
             $("input#datepicker").datepicker('option', 'maxDate', dateText);
-        } 
+        }
 
     });
 

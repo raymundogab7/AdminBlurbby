@@ -13,9 +13,9 @@
 
 <section>
     <div class="mainwrapper">
-    
+
         @include('layouts.sidebar-admin', ['restaurant' => $restaurant])
-        
+
         <div class="mainpanel">
             <div class="pageheader">
                 <div class="media">
@@ -33,27 +33,27 @@
                     </div>
                 </div><!-- media -->
             </div><!-- pageheader -->
-            
+
             <div class="contentpanel">
-                
+
                 <div class="row">
                     <div class="col-sm-12 col-md-4 col-xs-12" style="padding-bottom:30px;max-width:417px;min-width:300px;">
 						<div style="border: 1px solid #ccc;">
 							@if(!is_null($blurb->blurb_logo))
-                            <img src="{{asset($blurb['blurb_logo'])}}" style="width:100%"> 
+                            <img src="{{asset($blurb['blurb_logo'])}}" style="width:100%">
                             @else
-                            <img src="{{asset('images/no-coupon.png')}}" style="width:100%"> 
-                            @endif                     
+                            <img src="{{asset('images/no-coupon.png')}}" style="width:100%">
+                            @endif
 
                             @if(!is_null($restaurant->res_logo))
                             <img class="img-roundedcircle img-offline img-responsive img-profile" src="{{( is_null($restaurant->res_logo)) ? env('MERCHANT_URL').'/images/nopp.jpg' : env('MERCHANT_URL').'/uploads/'.$restaurant->merchant_id.'/profile_picture.jpg'}}" style="max-width:50px;margin:20px 10px 20px 20px;" alt="">
                             <span style="font-size:16px;">{{$restaurant->res_name}}</span>
                             @else
-                            <div style="max-width:50px;margin:20px 10px 20px 20px;" class="img-roundedcircle square img-offline img-responsive img-profile">  
+                            <div style="max-width:50px;margin:20px 10px 20px 20px;" class="img-roundedcircle square img-offline img-responsive img-profile">
                                 <p>@if(!is_null($restaurant->res_name)) {{strtoupper($restaurant->res_name[0])}} @endif</p>
                             </div>
                             @endif
-							<div class="mb10"></div> 
+							<div class="mb10"></div>
 							<span style="margin:20px;font-size:15px;font-weight:bold;">{{$restaurant->res_name}}</span>
 							<div style="margin:20px;">{{$restaurant->res_desc}}</div>
 							<div class="mb20"></div>
@@ -70,7 +70,7 @@
 							<div class="mb20"></div>
 						</div>
                     </div><!-- col-sm-4 col-md-3 -->
-                    
+
                     <div class="col-sm-12 col-md-8 col-xs-12">
                         <div class="tab-content nopadding noborder">
 								<div class="col-sm-12" style="padding-bottom:30px;">
@@ -91,7 +91,7 @@
                                             <input type="text" value="$5 Big MAC & 16oz COKE" class="form-control" required id="disabledinput" disabled="" />
                                         </div>
                                     </div><!-- form-group -->
-									
+
 									<div class="form-group">
                                         <label class="col-sm-2 control-label" style="text-align:left;">Category *</label>
                                         <div class="col-sm-8">
@@ -102,7 +102,7 @@
 											</select>
                                         </div>
                                     </div><!-- form-group -->
-									
+
 									<div class="form-group">
 										<label class="col-sm-2 control-label" style="text-align:left;">Start Date *</label>
 										<div class="col-sm-8">
@@ -112,7 +112,7 @@
 											</div><!-- input-group -->
 										</div>
 									</div><!-- form-group -->
-									
+
 									<div class="form-group">
 										<label class="col-sm-2 control-label" style="text-align:left;">End Date *</label>
 										<div class="col-sm-8">
@@ -122,38 +122,38 @@
 											</div><!-- input-group -->
 										</div>
 									</div><!-- form-group -->
-									
+
 									<div class="form-group">
                                         <label class="col-sm-2 control-label" style="text-align:left;">Description *</label>
                                         <div class="col-sm-8">
                                             <textarea rows="5" class="form-control" maxlength="500" required id="disabledinput" disabled="" />Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</textarea>
                                         </div>
                                     </div><!-- form-group -->
-									
+
 									<div class="form-group">
                                         <label class="col-sm-2 control-label" style="text-align:left;">Terms & Conditions *</label>
                                         <div class="col-sm-8">
                                             <textarea rows="5" class="form-control" maxlength="2000" id="disabledinput" disabled="" />Valid in Singapore from 1st Jan till 31st Jan 2013. Blurb cannot be used with any other offers and is valid for one redemption per transaction. Offer only valid from 12nn to 3pm. Applicable for featured offer only, while stocks last. Restaurants' operating hours may vary. Not applicable for McDelivery, iFly Singapore and institutional stores. Customers must present original coupons for redemption.</textarea>
                                         </div>
                                     </div><!-- form-group -->
-									
+
 									<div class="form-group">
                                         <label class="col-sm-2 control-label" style="text-align:left;">Status</label>
                                         <div class="col-sm-8">
                                             <label class="control-label text-success" style="text-align:left;font-weight:bold;">Approved</label>
                                         </div>
                                     </div><!-- form-group -->
-									
+
 									<br>
                                     <button style="margin-left:15px;" class="btn btn-default">Back</button>
                                 </form>
 						</div><!-- tab-content -->
-                      
+
                     </div><!-- col-sm-9 -->
-                </div><!-- row -->  
-            
+                </div><!-- row -->
+
             </div><!-- contentpanel -->
-            
+
         </div>
     </div><!-- mainwrapper -->
 </section>
@@ -169,13 +169,13 @@
 <script type="text/javascript">
 
     // Date Picker
-    jQuery('#datepicker').datepicker({ 
+    jQuery('#datepicker').datepicker({
         dateFormat: 'dd-M-yy',
         minDate: 0, // 0 days offset = today
         onSelect: function(dateText) {
             $sD = new Date(dateText);
             $("input#datepicker2").datepicker('option', 'minDate', dateText);
-        } 
+        }
     });
     jQuery('#datepicker2').datepicker({
          dateFormat: 'dd-M-yy',
@@ -183,7 +183,7 @@
          onSelect: function(dateText) {
             $sD = new Date(dateText);
             $("input#datepicker").datepicker('option', 'maxDate', dateText);
-        } 
+        }
 
     });
 

@@ -12,45 +12,45 @@
                                         {!! Form::text('blurb_name', $blurb->blurb_name, ['required' => 'required', 'class' => 'form-control']) !!}
                                     </div>
                                 </div><!-- form-group -->
-                                
+
                                 <div class="form-group">
                                     <label class="col-sm-2 control-label" style="text-align:left;">Category *</label>
                                     <div class="col-sm-8">
                                         <select name="blurb_category" id="select-search-hide" data-placeholder="Choose One" class="width300" required />
                                             <option value="">Choose One</option>
-                                            <option value="Discount" <?php if($blurb->blurb_category == 'Discount') : ?> selected <?php endif; ?>>Discount</option>
-                                            <option value="Freebies" <?php if($blurb->blurb_category == 'Freebies') : ?> selected <?php endif; ?>>Freebies</option>
+                                            <option value="Discount" <?php if ($blurb->blurb_category == 'Discount'): ?> selected <?php endif;?>>Discount</option>
+                                            <option value="Freebies" <?php if ($blurb->blurb_category == 'Freebies'): ?> selected <?php endif;?>>Freebies</option>
                                         </select>
                                     </div>
                                 </div><!-- form-group -->
-                                
+
                                 <div class="form-group">
                                     <label class="col-sm-2 control-label" style="text-align:left;">Start Date *</label>
                                     <div class="col-sm-8">
                                         <div class="input-group">
-                                            {!! Form::text('blurb_start', date_format(date_create($blurb->blurb_start), 'd-M-Y'), ['required' => 'required', 'id' => 'datepicker', 'placeholder' => 'YYYY-MM-DD', 'class' => 'form-control']) !!}
+                                            {!! Form::text('blurb_start', date_format(date_create($blurb->blurb_start), 'd-M-Y'), ['required' => 'required', 'id' => 'datepicker', 'placeholder' => 'DD-MMM-YYYY', 'class' => 'form-control']) !!}
                                             <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
                                         </div><!-- input-group -->
                                     </div>
                                 </div><!-- form-group -->
-                                
+
                                 <div class="form-group">
                                     <label class="col-sm-2 control-label" style="text-align:left;">End Date *</label>
                                     <div class="col-sm-8">
                                         <div class="input-group">
-                                            {!! Form::text('blurb_end', date_format(date_create($blurb->blurb_end), 'd-M-Y'), ['required' => 'required' ,'id' => 'datepicker2', 'placeholder' => 'YYYY-MM-DD', 'class' => 'form-control']) !!}
+                                            {!! Form::text('blurb_end', date_format(date_create($blurb->blurb_end), 'd-M-Y'), ['required' => 'required' ,'id' => 'datepicker2', 'placeholder' => 'DD-MMM-YYYY', 'class' => 'form-control']) !!}
                                             <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
                                         </div><!-- input-group -->
                                     </div>
                                 </div><!-- form-group -->
-                                
+
                                 <div class="form-group">
                                     <label class="col-sm-2 control-label" style="text-align:left;">Description *</label>
                                     <div class="col-sm-8">
                                         {!! Form::textarea('blurb_desc', $blurb->blurb_desc, ['required' => 'required', 'class' => 'form-control', 'maxlength' => 500]) !!}
                                     </div>
                                 </div><!-- form-group -->
-                                
+
                                 <div class="form-group">
                                     <label class="col-sm-2 control-label" style="text-align:left;">Terms & Conditions *</label>
                                     <div class="col-sm-8">
@@ -69,4 +69,3 @@
                             <!-- {!! Form::close() !!} -->
                             </form>
 
-           
