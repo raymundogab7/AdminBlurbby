@@ -2,11 +2,11 @@
 
 namespace Admin\Http\Controllers;
 
-use Illuminate\Http\Request;
-use Auth;
 use Admin\Repositories\Interfaces\CampaignInterface;
-use Admin\Repositories\Interfaces\RestaurantInterface;
 use Admin\Repositories\Interfaces\NotificationInterface;
+use Admin\Repositories\Interfaces\RestaurantInterface;
+use Auth;
+use Illuminate\Http\Request;
 
 class NotificationsController extends Controller
 {
@@ -63,13 +63,13 @@ class NotificationsController extends Controller
      */
     public function updateNotifToRead($id, Request $request)
     {
-        if($this->notification->updateById($id, $request->all())){
-             return response()->json(['result' => true]);
+        if ($this->notification->updateById($id, $request->all())) {
+            return response()->json(['result' => true]);
         }
 
         return response()->json(['result' => false]);
     }
-    
+
     /**
      * Update a notification.
      *
@@ -77,8 +77,8 @@ class NotificationsController extends Controller
      */
     public function updateStatus($notification_id)
     {
-        if($this->notification->updateById($id, $request->all())){
-             return redirect('notifications')->with('message', 'Successfully updated.');
+        if ($this->notification->updateById($id, $request->all())) {
+            return redirect('notifications')->with('message', 'Successfully updated.');
         }
 
         return redirect('notifications')->with('message_error', 'Error while updating campaign. Please try again.');

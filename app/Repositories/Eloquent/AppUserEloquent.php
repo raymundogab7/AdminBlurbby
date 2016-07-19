@@ -1,4 +1,5 @@
-<?php namespace Admin\Repositories\Eloquent;
+<?php
+namespace Admin\Repositories\Eloquent;
 
 use Admin\AppUser;
 use Admin\Repositories\Interfaces\AppUserInterface;
@@ -23,6 +24,16 @@ class AppUserEloquent implements AppUserInterface
     }
 
     /**
+     * Get all app users.
+     *
+     * @return Admin
+     */
+    public function getAll()
+    {
+        return $this->appUser->orderBy('first_name')->get()->toArray();
+    }
+
+    /**
      * Get appUser by id.
      *
      * @param integer $id
@@ -32,6 +43,34 @@ class AppUserEloquent implements AppUserInterface
     public function getById($id)
     {
         return $this->appUser->find($id);
+    }
+
+    /**
+     * Get total used blurb in last 30 days.
+     *
+     * @return integer
+     */
+    public function getTotalMonth()
+    {
+        $today = Carbon::now('Asia/Singapore')->toDateString();
+        $timezone = new Carbon('Asia/Singapore');
+        $last_thirty_days = $timezone->subDays(30);
+
+        return $this->appUser->whereBetween('date_created', array($last_thirty_days, $today))->count();
+    }
+
+    /**
+     * Get total online users in last 30 days.
+     *
+     * @return integer
+     */
+    public function getLastOnlineTotalMonth()
+    {
+        $today = Carbon::now('Asia/Singapore')->toDateString();
+        $timezone = new Carbon('Asia/Singapore');
+        $last_thirty_days = $timezone->subDays(30);
+
+        return $this->appUser->whereBetween('last_online_date', array($last_thirty_days, $today))->count();
     }
 
     /**
@@ -58,11 +97,21 @@ class AppUserEloquent implements AppUserInterface
     {
         $last_sat = new Carbon('last saturday');
         $last_saturday = $last_sat->toDateString();
-        
+
         $last_sun = new Carbon('last sunday');
         $last_last_sunday = $last_sun->subWeek()->toDateString();
 
         return $this->appUser->whereBetween('date_created', array($last_last_sunday, $last_saturday))->count();
+    }
+
+    /**
+     * Get all AppUser.
+     *
+     * @return Admin
+     */
+    public function paginate()
+    {
+        return $this->appUser->orderBy('first_name')->paginate(10);
     }
 
     /**
@@ -74,7 +123,43 @@ class AppUserEloquent implements AppUserInterface
     {
         return $this->appUser->count();
     }
-    
+
+    /**
+     * Get total status of app user.
+     *
+     * @param string $status
+     * @return Campaign
+     */
+    public function getCountByStatus($status = 'Approved')
+    {
+        return $this->appUser->where('status', $status)->count();
+    }
+
+    /**
+     * Search campaings
+     *
+     * @param array $attributes
+     * @param string $search_field
+     * @param boolean $paginate
+     * @return Merchant
+     */
+    public function search($search_word, $search_type)
+    {
+        if ($search_type == 'First Name') {
+            return $this->appUser->where('first_name', 'LIKE', '%' . $search_word . '%')->orderBy('first_name')->paginate(10);
+        }
+
+        if ($search_type == 'Last Name') {
+            return $this->appUser->where('last_name', 'LIKE', '%' . $search_word . '%')->orderBy('first_name')->paginate(10);
+        }
+
+        if ($search_type == 'Email') {
+            return $this->appUser->where('email', 'LIKE', '%' . $search_word . '%')->orderBy('first_name')->paginate(10);
+        }
+
+        return [];
+    }
+
     /**
      * Update a appUser by id.
      *

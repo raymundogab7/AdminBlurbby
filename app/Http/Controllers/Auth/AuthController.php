@@ -2,6 +2,7 @@
 
 namespace Admin\Http\Controllers\Auth;
 
+use Admin\Admin;
 use Admin\Http\Controllers\Controller;
 use Admin\Http\Requests\LoginRequest;
 use Admin\User;
@@ -107,6 +108,8 @@ class AuthController extends Controller
      */
     public function logout()
     {
+        Admin::where('id', Auth::user()->id)->update(['last_online' => date('Y-m-d H:i:s'), 'last_online_date' => date('Y-m-d')]);
+
         Auth::logout();
 
         return redirect('login');

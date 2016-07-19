@@ -1,9 +1,17 @@
-<?php namespace Admin\Repositories\Interfaces;
+<?php
+namespace Admin\Repositories\Interfaces;
 
 use Admin\AppUser;
 
 interface AppUserInterface
 {
+    /**
+     * Get all app users.
+     *
+     * @return Admin
+     */
+    public function getAll();
+
     /**
      * Get appUser by id.
      *
@@ -12,6 +20,20 @@ interface AppUserInterface
      * @return AppUser
      */
     public function getById($id);
+
+    /**
+     * Get total used blurb in last 30 days.
+     *
+     * @return integer
+     */
+    public function getTotalMonth();
+
+    /**
+     * Get total online users in last 30 days.
+     *
+     * @return integer
+     */
+    public function getLastOnlineTotalMonth();
 
     /**
      * Get all AppUser this week.
@@ -28,11 +50,36 @@ interface AppUserInterface
     public function getAllLastWeek();
 
     /**
+     * Get all AppUser.
+     *
+     * @return Admin
+     */
+    public function paginate();
+
+    /**
      * Get count of AppUser.
      *
      * @return integer
      */
     public function getCount();
+
+    /**
+     * Get total status of app user.
+     *
+     * @param string $status
+     * @return Campaign
+     */
+    public function getCountByStatus($status = 'Approved');
+
+    /**
+     * Search campaings
+     *
+     * @param array $attributes
+     * @param string $search_field
+     * @param boolean $paginate
+     * @return Merchant
+     */
+    public function search($search_word, $search_type);
 
     /**
      * Update a appUser by id.

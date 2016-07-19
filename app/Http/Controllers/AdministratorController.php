@@ -15,6 +15,12 @@ class AdministratorController extends Controller
      */
     protected $admin;
 
+    /**
+     * Create a new controller instance.
+     *
+     * @param AdminInterface $admin
+     * @return void
+     */
     public function __construct(AdminInterface $admin)
     {
         $this->admin = $admin;

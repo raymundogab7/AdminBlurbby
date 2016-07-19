@@ -115,6 +115,7 @@ Route::group(['middleware' => ['auth']], function () {
 
     Route::get('merchants/{merchant_id}/create-campaign', 'MerchantController@create_campaign');
     Route::get('merchants/{merchant_id}/edit-campaign', 'MerchantController@edit_campaign');
+
     /*
     |--------------------------------------------------------------------------
     | Administrator Route
@@ -123,6 +124,23 @@ Route::group(['middleware' => ['auth']], function () {
     Route::resource('administrators', 'AdministratorController');
     Route::get('administrators/search/{search_word}/{search_type}', 'AdministratorController@getSearchResult');
     Route::post('administrators/generate', 'AdministratorController@generateReport');
+
+    /*
+    |--------------------------------------------------------------------------
+    | App Users
+    |--------------------------------------------------------------------------
+     */
+    Route::resource('app-users', 'AppUserController');
+    Route::get('app-users/search/{search_word}/{search_type}', 'AppUserController@getSearchResult');
+    Route::post('app-users/generate', 'AppUserController@generateReport');
+
+    /*
+    |--------------------------------------------------------------------------
+    | Pages Route
+    |--------------------------------------------------------------------------
+     */
+    Route::get('pages/{page_id}/edit', 'PageController@index');
+    Route::put('pages/{page_id}', 'PageController@update');
 
     /*
     |--------------------------------------------------------------------------

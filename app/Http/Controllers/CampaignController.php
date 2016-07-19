@@ -11,10 +11,10 @@ use Admin\Repositories\Interfaces\NotificationInterface;
 use Admin\Repositories\Interfaces\RestaurantInterface;
 use Admin\Repositories\Interfaces\SnapShotInterface;
 use Admin\Services\GenerateReport;
+use Admin\Services\Mailer;
 use Admin\SnapShot;
 use Auth;
 use Illuminate\Http\Request;
-use Admin\Services\Mailer;
 
 class CampaignController extends Controller
 {
@@ -96,6 +96,8 @@ class CampaignController extends Controller
     /**
      * Get search result page.
      *
+     * @param string $search_word
+     * @param string $search_type
      * @return View
      */
     public function getSearchResult($search_word, $search_type)
@@ -262,22 +264,20 @@ class CampaignController extends Controller
 
         if ($this->campaign->updateById($id, $request->all())) {
 
-            if($request->cam_status == "Approved") {
+            if ($request->cam_status == "Approved") {
 
                 $data = $this->merchant->getByAttributes(['id' => $request->merchant_id]);
-                
 
-                if($campaign->cam_status != "Approved") {
+                if ($campaign->cam_status != "Approved") {
                     $mailer->send('emails.campaign_approved', 'Your Campaign Has been Approved', $data[0]);
                 }
             }
 
-            if($request->cam_status == "Rejected") {
+            if ($request->cam_status == "Rejected") {
 
                 $data = $this->merchant->getByAttributes(['id' => $request->merchant_id]);
-                
 
-                if($campaign->cam_status != "Rejected") {
+                if ($campaign->cam_status != "Rejected") {
                     $mailer->send('emails.campaign_rejected', 'Your Campaign Needs Some Revision(s)', $data[0]);
                 }
             }
@@ -406,11 +406,10 @@ class CampaignController extends Controller
         $snapshots = Snapshot::with('campaign')->where(['campaign_id' => $id, 'merchant_id' => Auth::user()->id])->get()->toArray();
 
         $dates_between = $this->getDatesFromRange($campaign->cam_start, $campaign->cam_end);
-        
+
         $data = array();
-        
-        foreach($dates_between as $db) 
-        {
+
+        foreach ($dates_between as $db) {
             $data[] = [
                 'Campaign Name' => $campaign->campaign_name,
                 'Start Date' => $campaign->cam_start,
@@ -428,7 +427,7 @@ class CampaignController extends Controller
         $report_type = array(
             $request->cam_status . ' Campaign Report' => $data,
         );
-        
+
         $generator->generate($report_type);
 
         return redirect()->back();
