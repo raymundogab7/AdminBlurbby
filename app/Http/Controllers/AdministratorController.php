@@ -120,18 +120,16 @@ class AdministratorController extends Controller
      */
     public function update($id, AdministratorRequest $request, ImageUploader $imageUploader)
     {
-
         $file = $request->file('profile_photo');
 
         if (!is_null($file)) {
-            return redirect('administrators/create')->with('error', 'The profile photo is required.')->withInput();
 
             if (!$file->isValid()) {
-                return redirect('administrators/create')->with('error', 'Profile photo file size is too large.')->withInput();
+                return redirect('administrators/' . $id . '/edit')->with('error', 'Profile photo file size is too large.')->withInput();
             }
 
             if (!in_array($file->getClientOriginalExtension(), array('gif', 'png', 'jpg', 'jpeg', 'PNG', 'JPG'))) {
-                return redirect('administrators/create')->with('error', 'Invalid Format')->withInput();
+                return redirect('administrators/' . $id . '/edit')->with('error', 'Invalid Format')->withInput();
             }
 
             $imageUploader->upload($file, $id, 500, 500, 'profile_photo/', '/' . $id . '.jpg');
@@ -139,9 +137,9 @@ class AdministratorController extends Controller
 
         $request->merge(['date_of_birth' => date_format(date_create($request->date_of_birth), 'Y-m-d')]);
 
-        $this->admin->updateByAttributes(['id' => $id], $request->except('_token'));
+        $this->admin->updateByAttributes(['id' => $id], $request->except('_token', '_method', 'admin_id', 'password_confirmation'));
 
-        return redirect('administrators/' . $id . '/edit')->with('messsage', 'Successfully Created.');
+        return redirect('administrators/' . $id . '/edit')->with('message', 'Successfully Updated.');
     }
 
     /**

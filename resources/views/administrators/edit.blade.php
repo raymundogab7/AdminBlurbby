@@ -21,9 +21,9 @@
                             <ul class="breadcrumb">
                                 <li><a href="{{url('dashboard')}}"><i class="glyphicon glyphicon-home"></i></a></li>
                                 <li><a href="{{url('administrators')}}">Administrators</a></li>
-                                <li>Add New Administrator</li>
+                                <li>{{$admin->first_name}} {{$admin->last_name}}</li>
                             </ul>
-                            <h4>Add New Administrator</h4>
+                            <h4>{{$admin->first_name}} {{$admin->last_name}}</h4>
                         </div>
                     </div><!-- media -->
                 </div><!-- pageheader -->
@@ -34,7 +34,7 @@
                                 <div class="text-center" style="background:url({{asset('images/profile-background.jpg')}});    background-size:cover;">
                                     <img src="{{asset('profile_photo/'.$admin->id.'/'.$admin->id.'.jpg')}}" class="img-circle img-offline img-responsive img-profile" style="max-width:80px;margin-top:45px;" alt="" />
                                     <h4 class="profile-name mb5" style="color:#fff;padding-bottom:45px;font-size:16px;margin-top:5px;">Royce Cheng</h4>
-                                    
+
                                 </div><!-- text-center -->
                                 <div class="mb20"></div>
                                 <div style="text-align:center;padding:10px 0;"><span id="keyup_title">{{$admin->title}}</span></div>
@@ -55,7 +55,7 @@
                                         </tr>
                                         <tr style="border-top:1px solid #ccc;">
                                             <td style="width:50%;padding-left:25px;">Date Of Birth</td>
-                                            <td style="padding:15px 25px 15px 0;text-align:right;"><span id="keyup_date_of_birth">{{$admin->date_of_birth}}</span></td>
+                                            <td style="padding:15px 25px 15px 0;text-align:right;"><span id="keyup_date_of_birth">{{date_format(date_create($admin->date_of_birth), 'd-M-Y')}}</span></td>
                                         </tr>
                                         <tr style="border-top:1px solid #ccc;">
                                             <td style="width:50%;padding-left:25px;">Gender</td>
@@ -65,7 +65,7 @@
                                 </table>
                             </div>
                         </div><!-- col-sm-4 col-md-3 -->
-                    
+
                         <div class="col-sm-12 col-md-9 col-xs-12">
                             @if(session('message'))
 
@@ -115,13 +115,13 @@
                                         {!! Form::select('status', array('Approved' => 'Approved', 'Pending Email Approval' => 'Pending Email Approval', 'Blocked' => 'Blocked'), $admin->status, ['id' => 'type', 'required' => 'required', 'class' => 'width300']) !!}
                                     </div>
                                 </div><!-- form-group -->
-                                
+
                                 <div class="form-group">
                                     <label class="col-sm-2 control-label" style="text-align:left;">Type *</label>
                                     <div class="col-sm-8">
                                         <input type="hidden" name="_token" readonly="" value="{{csrf_token()}}">
                                         <input type="hidden" name="_method" readonly="" value="PUT">
-                                        <input type="hidden" name="admin_id" readonly="" value="{{url($admin->id)}}">
+                                        <input type="hidden" name="admin_id" readonly="" value="{{$admin->id}}">
                                         <!-- <select id="type" name="role_id" data-placeholder="Choose One" class="width300" required="required" />
                                             <option value="" selected="selected">Choose One</option>
                                             <option value="1">Super Administrator</option>
@@ -130,14 +130,14 @@
                                         {!! Form::select('role_id', array('1' => 'Super Administrator', '2' => 'Administrator'), $admin->role_id, ['id' => 'type', 'required' => 'required', 'class' => 'width300', 'placeholder' => 'Choose One']) !!}
                                     </div>
                                 </div><!-- form-group -->
-                                
+
                                 <div class="form-group">
                                     <label class="col-sm-2 control-label" style="text-align:left;">Title *</label>
                                     <div class="col-sm-8">
                                         {!! Form::text('title', $admin->title, ['id' => 'title', 'required' => 'required', 'class' => 'form-control']) !!}
                                     </div>
                                 </div><!-- form-group -->
-                                
+
                                 <div class="form-group">
                                     <label class="col-sm-2 control-label" style="text-align:left;">Profile Photo</label>
                                     <div class="col-sm-5">
@@ -146,7 +146,7 @@
                                         <span class="help-block">Must be at least 500px x 500px.</span>
                                     </div>
                                 </div>
-                            
+
                                 <div class="form-group">
                                     <label class="col-sm-2 control-label" style="text-align:left;">First Name *</label>
                                     <div class="col-sm-8">
@@ -154,7 +154,7 @@
                                         {!! Form::text('first_name', $admin->first_name, ['id' => 'first_name', 'required' => 'required', 'class' => 'form-control']) !!}
                                     </div>
                                 </div><!-- form-group -->
-                                
+
                                 <div class="form-group">
                                     <label class="col-sm-2 control-label" style="text-align:left;">Last Name *</label>
                                     <div class="col-sm-8">
@@ -162,7 +162,7 @@
                                         {!! Form::text('last_name', $admin->last_name, ['id' => 'last_name', 'required' => 'required', 'class' => 'form-control']) !!}
                                     </div>
                                 </div><!-- form-group -->
-        
+
                                 <div class="form-group">
                                     <label class="col-sm-2 control-label" style="text-align:left;">Email *</label>
                                     <div class="col-sm-8">
@@ -170,7 +170,7 @@
                                         {!! Form::email('email', $admin->email, ['id' => 'email', 'required' => 'required', 'class' => 'form-control']) !!}
                                     </div>
                                 </div><!-- form-group -->
-                                
+
                                 <div class="form-group">
                                     <label class="col-sm-2 control-label" style="text-align:left;">Date Of Birth *</label>
                                     <div class="col-sm-2">
@@ -181,7 +181,7 @@
                                         </div><!-- input-group -->
                                     </div>
                                 </div><!-- form-group -->
-                                
+
                                 <div class="form-group">
                                     <label class="col-sm-2 control-label" style="text-align:left;">Gender *</label>
                                     <div class="col-sm-8">
@@ -193,18 +193,18 @@
                                         {!! Form::select('gender', array('Female' => 'Female', 'Male' => 'Male'), $admin->gender, ['onchange' => 'changeGender(this)', 'id' => 'gender', 'required' => 'required', 'class' => 'width300', 'placeholder' => 'Choose One']) !!}
                                     </div>
                                 </div><!-- form-group -->
-                                
+
                                 <div class="form-group">
                                     <label class="col-sm-2 control-label" style="text-align:left;">New Password</label>
                                     <div class="col-sm-8">
-                                        <input type="password" name="password" placeholder="" class="form-control" required="required" />
+                                        <input type="password" name="password" placeholder="" class="form-control" />
                                     </div>
                                 </div><!-- form-group -->
-                                
+
                                 <div class="form-group">
                                     <label class="col-sm-2 control-label" style="text-align:left;">Confirm Password Again</label>
                                     <div class="col-sm-8">
-                                        <input type="password" name="password_confirmation" placeholder="" class="form-control" required="required" />
+                                        <input type="password" name="password_confirmation" placeholder="" class="form-control" />
                                     </div>
                                 </div><!-- form-group -->
                                 <br>
@@ -212,12 +212,12 @@
                                 <a href="{{url('administrators')}}"><button type="button" style="margin-left:15px;" class="btn btn-default">Back</button></a>
                             </form>
                         </div><!-- tab-content -->
-                          
+
                         </div><!-- col-sm-9 -->
-                    </div><!-- row -->  
-                
+                    </div><!-- row -->
+
                 </div><!-- contentpanel -->
-                
+
             <input type="hidden" id="search_url" value="{{url('')}}">
 @endsection
 
@@ -229,9 +229,9 @@
     jQuery('select').select2({
         minimumResultsForSearch: -1
     });
-    
+
     // Date Picker
-    jQuery('#datepicker').datepicker({ 
+    jQuery('#datepicker').datepicker({
         dateFormat: 'dd-M-yy',
         maxDate: 0,
         onSelect: function(dateText) {
