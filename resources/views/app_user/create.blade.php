@@ -115,9 +115,25 @@
                             <!-- Tab panes -->
                                 <div class="tab-content nopadding noborder">
                                     <div class="tab-pane active" id="personal">
+                                        @if(session('message'))
+
+                                        <div class="alert alert-success">
+                                            <strong>{{session('message')}}</strong>
+                                        </div>
+
+                                        @endif
+
+                                        @if(session('error'))
+
+                                        <div class="alert alert-danger">
+                                           <strong>{{session('error')}}</strong>
+                                        </div>
+
+                                        @endif
+
                                         <form action="{{url('app-users')}}" accept-charset="UTF-8" class="form-horizontal form-bordered" method="POST" files="true" enctype="multipart/form-data">
                                             <div class="form-group">
-                                                <label class="col-sm-2 control-label" style="text-align:left;">Type *</label>
+                                                <label class="col-sm-2 control-label" style="text-align:left;">Status *</label>
                                                 <div class="col-sm-8">
                                                     <input type="hidden" name="_token" readonly="" value="{{csrf_token()}}">
                                                     {!! Form::select('status', array('Approved' => 'Approved', 'Pending Email Approval' => 'Pending Email Approval', 'Blocked' => 'Blocked'), null, ['id' => 'type', 'required' => 'required', 'class' => 'width300', 'placeholder' => 'Choose One']) !!}

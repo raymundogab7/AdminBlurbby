@@ -103,7 +103,7 @@ $hourss = array(
 
 $store_hours = new StoreHours($hourss);
 
-foreach ($store_hours->hours_this_week(true) as $days => $hours) {
+foreach ($store_hours->hoursThisWeek(true) as $days => $hours) {
 
     echo $days . ' : ';
     echo $hours;
@@ -134,7 +134,7 @@ foreach ($close_days as $key => $value) {
 }
 if (count($close_days) > 0) {echo ' : Close' . "<br>";}
 
-echo ($outlet->outlet_ph_active == 0) ? 'PH : Close' : 'PH : ' . date_format(date_create($outlet->outlet_ph_start), "H:ia") . ' - ' . date_format(date_create($outlet->outlet_ph_end), "H:ia") . "<br>";
+echo ($outlet->outlet_ph_active == 0) ? 'PH : Close' : 'PH : ' . date_format(date_create($outlet->outlet_ph_start), "H:i") . ' - ' . date_format(date_create($outlet->outlet_ph_end), "H:i") . "<br>";
 ?>
 
                                             </td>
@@ -491,7 +491,7 @@ echo ($outlet->outlet_ph_active == 0) ? 'PH : Close' : 'PH : ' . date_format(dat
                                         <div class="col-xs-3 col-sm-2">
                                         	<div class="bootstrap-timepicker">
 												<!-- <input id="timepicker-mon-start-1" type="text" class="form-control" value="21:00"/> -->
-												{!! Form::text('outlet_mon_start', date_format(date_create($outlet->outlet_mon_start), 'H:ia'), ['id' => 'timepicker-mon-start-1', 'class' => 'toggle-timepicker-mon-active-toggle form-control']) !!}
+												{!! Form::text('outlet_mon_start', date_format(date_create($outlet->outlet_mon_start), 'H:i'), ['id' => 'timepicker-mon-start-1', 'class' => 'toggle-timepicker-mon-active-toggle form-control']) !!}
 											</div>
 										</div>
 										<div class="col-xs-1" style="width:40px;padding-top:12px;">
@@ -500,7 +500,7 @@ echo ($outlet->outlet_ph_active == 0) ? 'PH : Close' : 'PH : ' . date_format(dat
 										<div class="col-xs-3 col-sm-2">
 											<div class="bootstrap-timepicker">
 												<!-- <input id="timepicker-mon-end-1" type="text" class="form-control" value="21:00"/> -->
-												{!! Form::text('outlet_mon_end', date_format(date_create($outlet->outlet_mon_end), 'H:ia'), ['id' => 'timepicker-mon-end-1', 'class' => 'toggle-timepicker-mon-active-toggle form-control']) !!}
+												{!! Form::text('outlet_mon_end', date_format(date_create($outlet->outlet_mon_end), 'H:i'), ['id' => 'timepicker-mon-end-1', 'class' => 'toggle-timepicker-mon-active-toggle form-control']) !!}
 											</div>
 										</div>
                                     </div><!-- form-group -->
@@ -517,13 +517,13 @@ echo ($outlet->outlet_ph_active == 0) ? 'PH : Close' : 'PH : ' . date_format(dat
                                         </div>
                                         <div class="col-xs-3 col-sm-2">
 											<!-- <div class="bootstrap-timepicker"><input id="timepicker-tue-start-1" type="text" class="form-control" value="07:00"/></div> -->
-                                            <div class="bootstrap-timepicker">{!! Form::text('outlet_tue_start', date_format(date_create($outlet->outlet_tue_start), 'H:ia'), ['id' => 'timepicker-tue-start-1', 'class' => 'toggle-timepicker-tue-active-toggle form-control']) !!}</div>
+                                            <div class="bootstrap-timepicker">{!! Form::text('outlet_tue_start', date_format(date_create($outlet->outlet_tue_start), 'H:i'), ['id' => 'timepicker-tue-start-1', 'class' => 'toggle-timepicker-tue-active-toggle form-control']) !!}</div>
 										</div>
 										<div class="col-xs-1" style="width:40px;padding-top:12px;">
                                             <p style="text-align:center;">to</p>
                                         </div>
 										<div class="col-xs-3 col-sm-2">
-											<div class="bootstrap-timepicker">{!! Form::text('outlet_tue_end', date_format(date_create($outlet->outlet_tue_end), 'H:ia'), ['id' => 'timepicker-tue-end-1', 'class' => 'toggle-timepicker-tue-active-toggle form-control']) !!}</div>
+											<div class="bootstrap-timepicker">{!! Form::text('outlet_tue_end', date_format(date_create($outlet->outlet_tue_end), 'H:i'), ['id' => 'timepicker-tue-end-1', 'class' => 'toggle-timepicker-tue-active-toggle form-control']) !!}</div>
 										</div>
                                     </div><!-- form-group -->
 
@@ -538,13 +538,13 @@ echo ($outlet->outlet_ph_active == 0) ? 'PH : Close' : 'PH : ' . date_format(dat
                                             <input name="outlet_wed_active" value="{{$outlet->outlet_wed_active}}" type="hidden" class="form-control wed-active-toggle" />
                                         </div>
                                         <div class="col-xs-3 col-sm-2">
-											<div class="bootstrap-timepicker">{!! Form::text('outlet_wed_start', date_format(date_create($outlet->outlet_wed_start), 'H:ia'), ['id' => 'timepicker-wed-start-1', 'class' => 'toggle-timepicker-wed-active-toggle form-control']) !!}</div>
+											<div class="bootstrap-timepicker">{!! Form::text('outlet_wed_start', date_format(date_create($outlet->outlet_wed_start), 'H:i'), ['id' => 'timepicker-wed-start-1', 'class' => 'toggle-timepicker-wed-active-toggle form-control']) !!}</div>
 										</div>
 										<div class="col-xs-1" style="width:40px;padding-top:12px;">
                                             <p style="text-align:center;">to</p>
                                         </div>
 										<div class="col-xs-3 col-sm-2">
-											<div class="bootstrap-timepicker">{!! Form::text('outlet_wed_end', date_format(date_create($outlet->outlet_wed_end), 'H:ia'), ['id' => 'timepicker-wed-end-1', 'class' => 'toggle-timepicker-wed-active-toggle form-control']) !!}</div>
+											<div class="bootstrap-timepicker">{!! Form::text('outlet_wed_end', date_format(date_create($outlet->outlet_wed_end), 'H:i'), ['id' => 'timepicker-wed-end-1', 'class' => 'toggle-timepicker-wed-active-toggle form-control']) !!}</div>
 										</div>
                                     </div><!-- form-group -->
 
@@ -559,13 +559,13 @@ echo ($outlet->outlet_ph_active == 0) ? 'PH : Close' : 'PH : ' . date_format(dat
                                             <input name="outlet_thu_active" value="{{$outlet->outlet_thu_active}}" type="hidden" class="form-control thu-active-toggle" />
                                         </div>
                                         <div class="col-xs-3 col-sm-2">
-											<div class="bootstrap-timepicker">{!! Form::text('outlet_thu_start', date_format(date_create($outlet->outlet_thu_start), 'H:ia'), ['id' => 'timepicker-thu-start-1', 'class' => 'toggle-timepicker form-control']) !!}</div>
+											<div class="bootstrap-timepicker">{!! Form::text('outlet_thu_start', date_format(date_create($outlet->outlet_thu_start), 'H:i'), ['id' => 'timepicker-thu-start-1', 'class' => 'toggle-timepicker form-control']) !!}</div>
 										</div>
 										<div class="col-xs-1" style="width:40px;padding-top:12px;">
                                             <p style="text-align:center;">to</p>
                                         </div>
 										<div class="col-xs-3 col-sm-2">
-											<div class="bootstrap-timepicker">{!! Form::text('outlet_thu_end', date_format(date_create($outlet->outlet_thu_end), 'H:ia'), ['id' => 'timepicker-thu-end-1', 'class' => 'toggle-timepicker form-control']) !!}</div>
+											<div class="bootstrap-timepicker">{!! Form::text('outlet_thu_end', date_format(date_create($outlet->outlet_thu_end), 'H:i'), ['id' => 'timepicker-thu-end-1', 'class' => 'toggle-timepicker form-control']) !!}</div>
 										</div>
                                     </div><!-- form-group -->
 
@@ -580,13 +580,13 @@ echo ($outlet->outlet_ph_active == 0) ? 'PH : Close' : 'PH : ' . date_format(dat
                                             <input name="outlet_fri_active" value="{{$outlet->outlet_fri_active}}" type="hidden" class="form-control fri-active-toggle" />
                                         </div>
                                         <div class="col-xs-3 col-sm-2">
-											<div class="bootstrap-timepicker">{!! Form::text('outlet_fri_start', date_format(date_create($outlet->outlet_fri_start), 'H:ia'), ['id' => 'timepicker-fri-start-1', 'class' => 'toggle-timepicker-fri-active-toggle form-control']) !!}</div>
+											<div class="bootstrap-timepicker">{!! Form::text('outlet_fri_start', date_format(date_create($outlet->outlet_fri_start), 'H:i'), ['id' => 'timepicker-fri-start-1', 'class' => 'toggle-timepicker-fri-active-toggle form-control']) !!}</div>
 										</div>
 										<div class="col-xs-1" style="width:40px;padding-top:12px;">
                                             <p style="text-align:center;">to</p>
                                         </div>
 										<div class="col-xs-3 col-sm-2">
-											<div class="bootstrap-timepicker">{!! Form::text('outlet_fri_end', date_format(date_create($outlet->outlet_fri_end), 'H:ia'), ['id' => 'timepicker-fri-end-1', 'class' => 'toggle-timepicker-fri-active-toggle form-control']) !!}</div>
+											<div class="bootstrap-timepicker">{!! Form::text('outlet_fri_end', date_format(date_create($outlet->outlet_fri_end), 'H:i'), ['id' => 'timepicker-fri-end-1', 'class' => 'toggle-timepicker-fri-active-toggle form-control']) !!}</div>
 										</div>
                                     </div><!-- form-group -->
 
@@ -601,13 +601,13 @@ echo ($outlet->outlet_ph_active == 0) ? 'PH : Close' : 'PH : ' . date_format(dat
                                             <input name="outlet_sat_active" value="{{$outlet->outlet_sat_active}}" type="hidden" class="form-control sat-active-toggle" />
                                         </div>
                                         <div class="col-xs-3 col-sm-2">
-											<div class="bootstrap-timepicker">{!! Form::text('outlet_sat_start', date_format(date_create($outlet->outlet_sat_start), 'H:ia'), ['id' => 'timepicker-sat-start-1', 'class' => 'toggle-timepicker form-control']) !!}</div>
+											<div class="bootstrap-timepicker">{!! Form::text('outlet_sat_start', date_format(date_create($outlet->outlet_sat_start), 'H:i'), ['id' => 'timepicker-sat-start-1', 'class' => 'toggle-timepicker form-control']) !!}</div>
 										</div>
 										<div class="col-xs-1" style="width:40px;padding-top:12px;">
                                             <p style="text-align:center;">to</p>
                                         </div>
 										<div class="col-xs-3 col-sm-2">
-											<div class="bootstrap-timepicker">{!! Form::text('outlet_sat_end', date_format(date_create($outlet->outlet_sat_end), 'H:ia'), ['id' => 'timepicker-sat-end-1', 'class' => 'toggle-timepicker form-control']) !!}</div>
+											<div class="bootstrap-timepicker">{!! Form::text('outlet_sat_end', date_format(date_create($outlet->outlet_sat_end), 'H:i'), ['id' => 'timepicker-sat-end-1', 'class' => 'toggle-timepicker form-control']) !!}</div>
 										</div>
                                     </div><!-- form-group -->
 
@@ -622,13 +622,13 @@ echo ($outlet->outlet_ph_active == 0) ? 'PH : Close' : 'PH : ' . date_format(dat
                                             <input name="outlet_sun_active" value="{{$outlet->outlet_sun_active}}" type="hidden" class="form-control sun-active-toggle" />
                                         </div>
                                         <div class="col-xs-3 col-sm-2">
-											<div class="bootstrap-timepicker">{!! Form::text('outlet_sun_start', date_format(date_create($outlet->outlet_sun_start), 'H:ia'), ['id' => 'timepicker-sun-start-1', 'class' => 'toggle-timepicker form-control']) !!}</div>
+											<div class="bootstrap-timepicker">{!! Form::text('outlet_sun_start', date_format(date_create($outlet->outlet_sun_start), 'H:i'), ['id' => 'timepicker-sun-start-1', 'class' => 'toggle-timepicker form-control']) !!}</div>
 										</div>
 										<div class="col-xs-1" style="width:40px;padding-top:12px;">
                                             <p style="text-align:center;">to</p>
                                         </div>
 										<div class="col-xs-3 col-sm-2">
-											<div class="bootstrap-timepicker">{!! Form::text('outlet_sun_end', date_format(date_create($outlet->outlet_sun_end), 'H:ia'), ['id' => 'timepicker-sun-end-1', 'class' => 'toggle-timepicker form-control']) !!}</div>
+											<div class="bootstrap-timepicker">{!! Form::text('outlet_sun_end', date_format(date_create($outlet->outlet_sun_end), 'H:i'), ['id' => 'timepicker-sun-end-1', 'class' => 'toggle-timepicker form-control']) !!}</div>
 										</div>
                                     </div><!-- form-group -->
 
@@ -643,13 +643,13 @@ echo ($outlet->outlet_ph_active == 0) ? 'PH : Close' : 'PH : ' . date_format(dat
                                             <input name="outlet_ph_active" value="{{$outlet->outlet_ph_active}}" type="hidden" class="form-control ph-active-toggle" />
                                         </div>
                                         <div class="col-xs-3 col-sm-2">
-                                            <div class="bootstrap-timepicker">{!! Form::text('outlet_ph_start', date_format(date_create($outlet->outlet_ph_start), 'H:ia'), ['id' => 'timepicker-ph-start-1', 'class' => 'toggle-timepicker form-control']) !!}</div>
+                                            <div class="bootstrap-timepicker">{!! Form::text('outlet_ph_start', date_format(date_create($outlet->outlet_ph_start), 'H:i'), ['id' => 'timepicker-ph-start-1', 'class' => 'toggle-timepicker form-control']) !!}</div>
                                         </div>
                                         <div class="col-xs-1" style="width:40px;padding-top:12px;">
                                             <p style="text-align:center;">to</p>
                                         </div>
                                         <div class="col-xs-3 col-sm-2">
-                                            <div class="bootstrap-timepicker">{!! Form::text('outlet_ph_end', date_format(date_create($outlet->outlet_ph_end), 'H:ia'), ['id' => 'timepicker-ph-end-1', 'class' => 'toggle-timepicker form-control']) !!}</div>
+                                            <div class="bootstrap-timepicker">{!! Form::text('outlet_ph_end', date_format(date_create($outlet->outlet_ph_end), 'H:i'), ['id' => 'timepicker-ph-end-1', 'class' => 'toggle-timepicker form-control']) !!}</div>
                                         </div>
                                     </div><!-- form-group -->
                                     <button type="submit" class="btn btn-primary">Update</button>
@@ -693,7 +693,7 @@ $hourss = array(
 
 $store_hours = new StoreHours($hourss);
 
-foreach ($store_hours->hours_this_week(true) as $days => $hours) {
+foreach ($store_hours->hoursThisWeek(true) as $days => $hours) {
 
     echo $days . ' : ';
     echo $hours;
@@ -718,7 +718,7 @@ foreach ($close_days as $key => $value) {
 }
 if (count($close_days) > 0) {echo ' : Close' . "<br>";}
 
-echo ($outlet->outlet_ph_active == 0) ? 'PH : Close' : 'PH : ' . date_format(date_create($outlet->outlet_ph_start), "H:ia") . ' - ' . date_format(date_create($outlet->outlet_ph_end), "H:ia") . "<br>";
+echo ($outlet->outlet_ph_active == 0) ? 'PH : Close' : 'PH : ' . date_format(date_create($outlet->outlet_ph_start), "H:i") . ' - ' . date_format(date_create($outlet->outlet_ph_end), "H:i") . "<br>";
 ?>
                                             </td>
 											<td class="table-action">

@@ -2,6 +2,7 @@
 
 namespace Admin\Http\Controllers;
 
+use Admin\Http\Requests\AppUserRequest;
 use Admin\Repositories\Interfaces\AppUserInterface;
 use Admin\Services\GenerateReport;
 use Admin\Services\ImageUploader;
@@ -26,7 +27,7 @@ class AppUserController extends Controller
     }
 
     /**
-     * Display administrators page.
+     * Display app users page.
      *
      * @return View
      */
@@ -60,32 +61,34 @@ class AppUserController extends Controller
     /**
      * Store a new administrator.
      *
-     * @param AdministratorRequest $request
+     * @param AppUserRequest $request
      * @return View
      */
-    public function store(AdministratorRequest $request, ImageUploader $imageUploader)
+    public function store(AppUserRequest $request, ImageUploader $imageUploader)
     {
         if (is_null($request->file('profile_photo'))) {
-            return redirect('administrators/create')->with('error', 'The profile photo is required.')->withInput();
+            return redirect('app-users/create')->with('error', 'The profile photo is required.')->withInput();
         }
 
         $file = $request->file('profile_photo');
 
         if (!$file->isValid()) {
-            return redirect('administrators/create')->with('error', 'Profile photo file size is too large.')->withInput();
+            return redirect('app-users/create')->with('error', 'Profile photo file size is too large.')->withInput();
         }
 
         if (!in_array($file->getClientOriginalExtension(), array('gif', 'png', 'jpg', 'jpeg', 'PNG', 'JPG'))) {
-            return redirect('administrators/create')->with('error', 'Invalid Format')->withInput();
+            return redirect('app-users/create')->with('error', 'Invalid Format')->withInput();
         }
 
         $request->merge(['status' => 'Pending Email Verification', 'date_of_birth' => date_format(date_create($request->date_of_birth), 'Y-m-d')]);
 
-        $new_admin = $this->admin->create($request->except('_token'));
+        $new_app_user = $this->appUser->create($request->except('_token'));
 
-        $imageUploader->upload($file, $new_admin->id, 500, 500, 'profile_photo/', '/' . $new_admin->id . '.jpg');
+        $this->appUser->updateByAttributes(['id' => $new_app_user->id], ['photo' => 'app_user_profile_photo/' . $new_app_user->id]);
 
-        return redirect('administrators/create')->with('messsage', 'Successfully Created.');
+        $imageUploader->upload($file, $new_app_user->id, 128, 128, 'app_user_profile_photo/', '/' . $new_app_user->id . '.jpg');
+
+        return redirect('app-users/create')->with('message', 'Successfully Created.');
     }
 
     /**

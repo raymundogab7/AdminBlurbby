@@ -44,8 +44,8 @@ class StoreHours
      */
     public function __construct($hours = array(), $exceptions = array(), $templates = array())
     {
-        $this->exceptions    = $exceptions;
-        $this->templates     = $templates;
+        $this->exceptions = $exceptions;
+        $this->templates = $templates;
         $this->yesterdayFlag = false;
 
         $weekdayToIndex = array(
@@ -80,18 +80,18 @@ class StoreHours
         }
 
         $defaultTemplates = array(
-            'open'           => '<h3>Yes, we\'re open! Today\'s hours are {%hours%}.</h3>',
-            'closed'         => '<h3>Sorry, we\'re closed. Today\'s hours are {%hours%}.</h3>',
+            'open' => '<h3>Yes, we\'re open! Today\'s hours are {%hours%}.</h3>',
+            'closed' => '<h3>Sorry, we\'re closed. Today\'s hours are {%hours%}.</h3>',
             'closed_all_day' => '<h3>Sorry, we\'re closed.</h3>',
-            'separator'      => ' - ',
-            'join'           => ' and ',
-            'format'         => 'g:ia',
-            'hours'          => '{%open%}{%separator%}{%closed%}',
+            'separator' => ' - ',
+            'join' => ' and ',
+            'format' => 'H:i',
+            'hours' => '{%open%}{%separator%}{%closed%}',
 
-            'overview_separator' => '-',
-            'overview_join'      => ', ',
-            'overview_format'    => 'g:ia',
-            'overview_weekdays'  => array('Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun', 'PH')
+            'overview_separator' => ' - ',
+            'overview_join' => ', ',
+            'overview_format' => 'H:i',
+            'overview_weekdays' => array('Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun', 'PH'),
         );
 
         $this->templates += $defaultTemplates;
@@ -102,10 +102,10 @@ class StoreHours
      * @param string $timestamp
      * @return array Today's hours
      */
-    public function hours_today($timestamp = null)
+    public function hoursToday($timestamp = null)
     {
-        $timestamp     = (null !== $timestamp) ? $timestamp : time();
-        $today         = strtotime(date('Y-m-d', $timestamp) . ' midnight');
+        $timestamp = (null !== $timestamp) ? $timestamp : time();
+        $today = strtotime(date('Y-m-d', $timestamp) . ' midnight');
         $weekday_short = date('N', $timestamp);
 
         $hours_today = array();
@@ -129,7 +129,7 @@ class StoreHours
      * @param string $timestamp
      * @return boolean
      */
-    public function is_open($timestamp = null)
+    public function isOpen($timestamp = null)
     {
         $timestamp = (null !== $timestamp) ? $timestamp : time();
 
@@ -138,14 +138,14 @@ class StoreHours
 
         // Check whether shop's still open from day before
 
-        $ts_yesterday    = strtotime(date('Y-m-d H:i:s', $timestamp) . ' -1 day');
-        $yesterday       = date('Y-m-d', $ts_yesterday);
-        $hours_yesterday = $this->hours_today($ts_yesterday);
+        $ts_yesterday = strtotime(date('Y-m-d H:i:s', $timestamp) . ' -1 day');
+        $yesterday = date('Y-m-d', $ts_yesterday);
+        $hours_yesterday = $this->hoursToday($ts_yesterday);
 
         foreach ($hours_yesterday as $range) {
             $range = explode('-', $range);
             $start = strtotime($yesterday . ' ' . $range[0]);
-            $end   = strtotime($yesterday . ' ' . $range[1]);
+            $end = strtotime($yesterday . ' ' . $range[1]);
 
             if ($end <= $start) {
                 $end = strtotime($yesterday . ' ' . $range[1] . ' +1 day');
@@ -161,13 +161,13 @@ class StoreHours
         // Check today's hours
 
         if (!$is_open) {
-            $day         = date('Y-m-d', $timestamp);
-            $hours_today = $this->hours_today($timestamp);
+            $day = date('Y-m-d', $timestamp);
+            $hours_today = $this->hoursToday($timestamp);
 
             foreach ($hours_today as $range) {
                 $range = explode('-', $range);
                 $start = strtotime($day . ' ' . $range[0]);
-                $end   = strtotime($day . ' ' . $range[1]);
+                $end = strtotime($day . ' ' . $range[1]);
 
                 if ($end <= $start) {
                     $end = strtotime($day . ' ' . $range[1] . ' +1 day');
@@ -189,12 +189,12 @@ class StoreHours
      * @param string $template_name
      * @param int $timestamp
      */
-    private function render_html($template_name, $timestamp)
+    private function renderHtml($template_name, $timestamp)
     {
-        $template    = $this->templates;
-        $hours_today = $this->hours_today($timestamp);
-        $day         = date('Y-m-d', $timestamp);
-        $output      = '';
+        $template = $this->templates;
+        $hours_today = $this->hoursToday($timestamp);
+        $day = date('Y-m-d', $timestamp);
+        $output = '';
 
         if (count($hours_today) > 0) {
             $hours_template = '';
@@ -203,7 +203,7 @@ class StoreHours
             foreach ($hours_today as $range) {
                 $range = explode('-', $range);
                 $start = strtotime($day . ' ' . $range[0]);
-                $end   = strtotime($day . ' ' . $range[1]);
+                $end = strtotime($day . ' ' . $range[1]);
 
                 if (false === $first) {
                     $hours_template .= $template['join'];
@@ -235,15 +235,15 @@ class StoreHours
     {
         $timestamp = (null !== $timestamp) ? $timestamp : time();
 
-        if ($this->is_open($timestamp)) {
+        if ($this->isOpen($timestamp)) {
             // Print yesterday's hours if shop's still open from day before
             if ($this->yesterdayFlag) {
                 $timestamp = strtotime(date('Y-m-d H:i:s', $timestamp) . ' -1 day');
             }
 
-            $this->render_html('open', $timestamp);
+            $this->renderHtml('open', $timestamp);
         } else {
-            $this->render_html('closed', $timestamp);
+            $this->renderHtml('closed', $timestamp);
         }
     }
 
@@ -252,7 +252,7 @@ class StoreHours
      * @param array $ranges
      * @return string
      */
-    private function hours_overview_format_hours(array $ranges)
+    private function hoursOverviewFormatHours(array $ranges)
     {
         $hoursparts = array();
 
@@ -261,11 +261,11 @@ class StoreHours
 
             $range = explode('-', $range);
             $start = strtotime($day . ' ' . $range[0]);
-            $end   = strtotime($day . ' ' . $range[1]);
+            $end = strtotime($day . ' ' . $range[1]);
 
             $hoursparts[] = date($this->templates['overview_format'], $start)
-                          . $this->templates['overview_separator']
-                          . date($this->templates['overview_format'], $end);
+            . $this->templates['overview_separator']
+            . date($this->templates['overview_format'], $end);
         }
 
         return implode($this->templates['overview_join'], $hoursparts);
@@ -274,7 +274,7 @@ class StoreHours
     /**
      *
      */
-    private function hours_this_week_simple()
+    private function hoursThisWeekSimple()
     {
         $lookup = array_combine(range(1, 8), $this->templates['overview_weekdays']);
 
@@ -282,8 +282,8 @@ class StoreHours
 
         for ($i = 1; $i <= 8; $i++) {
             $hours_str = (isset($this->hours[$i]) && count($this->hours[$i]) > 0)
-                    ? $this->hours_overview_format_hours($this->hours[$i])
-                    : '-';
+            ? $this->hoursOverviewFormatHours($this->hours[$i])
+            : '-';
 
             $ret[$lookup[$i]] = $hours_str;
         }
@@ -295,7 +295,7 @@ class StoreHours
      *
      * @return array
      */
-    private function hours_this_week_grouped()
+    private function hoursThisWeekGrouped()
     {
         $lookup = array_combine(range(1, 8), $this->templates['overview_weekdays']);
 
@@ -326,10 +326,10 @@ class StoreHours
         foreach ($blocks as $block) {
             // Format days
 
-            $keyparts     = array();
-            $keys         = $block['days'];
-            $buffer       = array();
-            $lastIndex    = null;
+            $keyparts = array();
+            $keys = $block['days'];
+            $buffer = array();
+            $lastIndex = null;
             $minGroupSize = 3;
 
             foreach ($keys as $index) {
@@ -358,7 +358,7 @@ class StoreHours
 
             // Combine
 
-            $ret[implode(', ', $keyparts)] = $this->hours_overview_format_hours($block['hours']);
+            $ret[implode(', ', $keyparts)] = $this->hoursOverviewFormatHours($block['hours']);
         }
 
         return $ret;
@@ -368,10 +368,10 @@ class StoreHours
      *
      * @return array
      */
-    public function hours_this_week($groupSameDays = false)
+    public function hoursThisWeek($groupSameDays = false)
     {
         return (true === $groupSameDays)
-                ? $this->hours_this_week_grouped()
-                : $this->hours_this_week_simple();
+        ? $this->hoursThisWeekGrouped()
+        : $this->hoursThisWeekSimple();
     }
 }
