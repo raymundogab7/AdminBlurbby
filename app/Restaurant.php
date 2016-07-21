@@ -14,6 +14,6 @@ class Restaurant extends Model
      * @var array
      */
     protected $fillable = [
-        'merchant_id', 'res_name', 'res_logo', 'res_logo_background', 'res_url',
+        'merchant_id', 'res_name', 'res_logo', 'res_logo_background', 'res_url', 'photo_location', 'bg_photo_location',
     ];
 }

@@ -39,17 +39,20 @@
                 <div class="row">
                     <div class="col-sm-12 col-md-4 col-xs-12" style="padding-bottom:30px;max-width:417px;min-width:300px;">
 						<div style="border: 1px solid #ccc;">
-							<div class="text-center cover-photo" data-src="{{(! is_null($restaurant->res_logo_background)) ? env('MERCHANT_URL').'/'.$restaurant->res_logo_background.'/cover_photo.jpg' : asset('images/nobg.jpg')}}" style="background:url('{{(! is_null($restaurant->res_logo_background)) ? env('MERCHANT_URL').'/'.$restaurant->res_logo_background.'/cover_photo.jpg' : asset('images/profile-background.jpg')}}');background-size:cover;">
+							<div class="text-center cover-photo" data-src="{{(! is_null($restaurant->res_logo_background)) ? ($restaurant->bg_photo_location == 'merchant') ? env('MERCHANT_URL').'/uploads/'.$restaurant->merchant_id.'/cover_photo.jpg' : asset('uploads/'.$restaurant->merchant_id.'/cover_photo.jpg') : asset('images/nobg.jpg')}}" style="background:url('{{(! is_null($restaurant->res_logo_background)) ? ($restaurant->bg_photo_location == 'merchant') ? env('MERCHANT_URL').'/uploads/'.$restaurant->merchant_id.'/cover_photo.jpg' : asset('/uploads/'.$restaurant->merchant_id.'/cover_photo.jpg') : asset('images/profile-background.jpg')}}');background-size:cover;">
 								<!-- <img src="{{(! is_null($restaurant->res_logo)) ? asset('profile_pictures/'.$restaurant->merchant_id.'/profile_picture.jpg') : asset('images/nopp.jpg')}}" class="img-roundedcircle img-offline img-responsive img-profile" style="max-width:80px;margin-top:45px;" alt="" /> -->
                                 @if(!is_null($restaurant->res_logo))
-                                <img class="img-roundedcircle img-offline img-responsive img-profile" src="{{( is_null($restaurant->res_logo)) ? env('MERCHANT_URL').'/images/nopp.jpg' : env('MERCHANT_URL').'/'.$restaurant->res_logo.'/profile_picture.jpg'}}" style="max-width:50px;margin:20px 10px 20px 20px;" alt="">
+                                @if($restaurant->photo_location == 'merchant')
+                                <img src="{{(! is_null($restaurant->res_logo)) ? env('MERCHANT_URL').'/uploads/'.$restaurant->merchant_id.'/profile_picture.jpg' : asset('images/nopp.jpg')}}" class="img-roundedcircle img-offline img-responsive img-profile profile-pic" style="max-width:80px;margin-top:45px;" alt="" />
+                                @else
+                                <img src="{{(! is_null($restaurant->res_logo)) ? asset('uploads/'.$restaurant->merchant_id.'/profile_picture.jpg')  : asset('images/nopp.jpg')}}" class="img-roundedcircle img-offline img-responsive img-profile profile-pic" style="max-width:80px;margin-top:45px;" alt="" />
+                                @endif
 
                                 @else
-                                <!-- <div style="max-width:50px;margin:20px 10px 20px 20px;" class="img-roundedcircle square img-offline img-responsive img-profile">
+                                <!-- <span class="square-profile img-roundedcircle img-offline img-responsive img-profile" style="max-width:80px;margin-top:45px;padding-top:10px">
                                     <p>@if(!is_null($restaurant->res_name)) {{strtoupper($restaurant->res_name[0])}} @endif</p>
-                                </div> -->
-                                <img src="{{asset('images/photos/profile.png')}}" class="img-roundedcircle img-offline img-responsive img-profile" style="max-width:80px;margin-top:45px;" alt="">
-
+                                </span> -->
+                                <img src="{{asset('images/photos/profile.png')}}" class="profile-pic img-roundedcircle img-offline img-responsive img-profile" style="max-width:80px;margin-top:45px;" alt="">
                                 @endif
 								<h4 class="profile-name mb5" style="color:#fff;padding-bottom:45px;font-size:16px;margin-top:5px;">{{$merchant->coy_name}}</h4>
 							</div><!-- text-center -->
@@ -346,8 +349,8 @@ echo ($outlet->outlet_ph_active == 0) ? 'PH : Close' : 'PH : ' . date_format(dat
 									<div class="col-sm-5">
 										<h4 class="md-title">Restaurant Logo *</h4>
 										<!-- <form action="files" class="dropzone"> -->
-                                        {!! Form::open(array('id'=>'profile-picture', 'enctype' => 'multipart/form-data', 'url' => 'merchant-profile/restaurant/upload-pp/'.$restaurant->id, 'class' => 'dropzone form-horizontal form-bordered', 'method'=>'POST')) !!}
-
+                                        {!! Form::open(array('id'=>'profile-picture', 'enctype' => 'multipart/form-data', 'url' => 'merchants/restaurant/upload-pp/'.$restaurant->id, 'class' => 'dropzone form-horizontal form-bordered', 'method'=>'POST')) !!}
+                                            {!! Form::hidden('merchant_id', $merchant->id, ['required' => 'required', 'class' => 'form-control'])!!}
                                             <div class="fallback">
 												<input name="file" type="file" />
 											</div>
@@ -359,8 +362,8 @@ echo ($outlet->outlet_ph_active == 0) ? 'PH : Close' : 'PH : ' . date_format(dat
 									<div class="col-sm-5">
 										<h4 class="md-title">Logo Background *</h4>
 
-                                        {!! Form::open(array('id'=>'cover-photo', 'enctype' => 'multipart/form-data', 'url' => 'merchant-profile/restaurant/upload-cp/'.$restaurant->id, 'class' => 'dropzone form-horizontal form-bordered', 'method'=>'POST')) !!}
-
+                                        {!! Form::open(array('id'=>'cover-photo', 'enctype' => 'multipart/form-data', 'url' => 'merchants/restaurant/upload-cp/'.$restaurant->id, 'class' => 'dropzone form-horizontal form-bordered', 'method'=>'POST')) !!}
+                                            {!! Form::hidden('merchant_id', $merchant->id, ['required' => 'required', 'class' => 'form-control'])!!}
                                             <div class="fallback">
 												<input name="file" type="file" multiple />
 											</div>

@@ -131,7 +131,11 @@
 	                                    <div class="pull-left">
 
 	                                        @if(!is_null($merchant['restaurant']['res_logo']))
-	                                    	<img class="img-roundedcircle img-online" src="{{env('MERCHANT_URL').'/'.$merchant['restaurant']['res_logo']}}/profile_picture.jpg" alt="...">
+	                                        @if($merchant['restaurant']['photo_location'] == 'merchant')
+			                                <img class="img-roundedcircle img-online" src="{{env('MERCHANT_URL').'/'.$merchant['restaurant']['res_logo']}}/profile_picture.jpg" alt="...">
+			                                @else
+			                                <img class="img-roundedcircle img-online" src="{{asset($merchant['restaurant']['res_logo'].'/profile_picture.jpg')}}" alt="...">
+			                                @endif
 	                                    	@else
 	                                        <img class="img-roundedcircle img-online" src="{{env('APP_URL')}}/images/photos/user1.png" alt="...">
 	                                        @endif

@@ -20,7 +20,9 @@ jQuery('#timepicker-ph-end-1').timepicker({showMeridian: false});
 Dropzone.options.profilePicture = {
   init: function() {
         this.on("success", function(file) { 
-            $('.profile-pic').attr('src', $('.profile-pic').attr('src') + '?' + new Date().getTime());
+            var file = jQuery.parseJSON(file.xhr.responseText);
+            console.log($('#asset_path').val()+file.restaurant.image_path);
+            $('.profile-pic').attr('src', $('#asset_path').val()+file.restaurant.image_path + '?' + new Date().getTime());
         });
 
         this.on("error", function(file) { 
@@ -33,7 +35,9 @@ Dropzone.options.profilePicture = {
 Dropzone.options.coverPhoto = {
   init: function() {
         this.on("success", function(file) { 
-            $('.cover-photo').attr('style', 'background:url(' + $('.cover-photo').attr('data-src') + '?' + new Date().getTime()+');background-size:cover;');
+            var file = jQuery.parseJSON(file.xhr.responseText);
+                
+            $('.cover-photo').attr('style', 'background:url(' + $('#asset_path').val()+file.restaurant.image_path + '?' + new Date().getTime()+');background-size:cover;');
         });
 
         this.on("error", function(file) { 

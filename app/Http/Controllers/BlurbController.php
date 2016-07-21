@@ -185,7 +185,7 @@ class BlurbController extends Controller
 
         $campaign = $this->campaign->getByAttributes(['id' => $campaign_id], false);
 
-        $result = $this->blurb->create(['merchant_id' => $campaign->merchant_id, 'campaign_id' => $campaign_id, 'blurb_logo' => 'blurb.png', 'control_no' => $control_no]);
+        $result = $this->blurb->create(['photo_location' => 'admin', 'merchant_id' => $campaign->merchant_id, 'campaign_id' => $campaign_id, 'blurb_logo' => 'blurb.png', 'control_no' => $control_no]);
 
         $user_id = $campaign->merchant_id;
 
@@ -196,9 +196,9 @@ class BlurbController extends Controller
             ), 404);
         }
 
-        $this->blurb->updateByAttributes(['merchant_id' => $user_id, 'campaign_id' => $campaign_id], ['blurb_logo' => 'campaigns/' . $campaign_id . '/' . $result->id . '.png']);
+        $this->blurb->updateByAttributes(['merchant_id' => $user_id, 'campaign_id' => $campaign_id], ['photo_location' => 'admin', 'blurb_logo' => 'campaign/' . $campaign_id . '/' . $result->id . '.png']);
 
-        $imageUploader->upload($file, $campaign_id, 500, 500, 'campaigns/', '/' . $result->id . '.png');
+        $imageUploader->upload($file, $campaign_id, 500, 500, 'campaign/', '/' . $result->id . '.png');
 
         return ['blurb' => $result];
     }
@@ -224,9 +224,9 @@ class BlurbController extends Controller
         }
 
         //$this->blurb->updateByAttributes(['merchant_id' => $user_id, 'campaign_id' => $campaign_id], ['blurb_logo' => 'campaigns/' . $campaign_id.'/'.$result->id.'.png']);
-        $this->blurb->updateById($id, ['blurb_logo' => 'campaigns/' . $campaign_id . '/' . $id . '.png']);
+        $this->blurb->updateById($id, ['photo_location' => 'admin', 'blurb_logo' => 'campaign/' . $campaign_id . '/' . $id . '.png']);
 
-        $imageUploader->upload($file, $campaign_id, 500, 500, 'campaigns/', '/' . $id . '.png');
+        $imageUploader->upload($file, $campaign_id, 500, 500, 'campaign/', '/' . $id . '.png');
 
         return ['blurb' => true];
     }

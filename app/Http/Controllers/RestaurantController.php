@@ -2,13 +2,12 @@
 /*use Admin\Http\Requests\ImageRequest;*/
 namespace Admin\Http\Controllers;
 
-use Auth;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\File;
 use Admin\Http\Requests\RestaurantRequest;
 use Admin\Repositories\Interfaces\RestaurantCuisineInterface;
 use Admin\Repositories\Interfaces\RestaurantInterface;
 use Admin\Services\ImageUploader;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\File;
 use Response;
 
 class RestaurantController extends Controller
@@ -45,7 +44,7 @@ class RestaurantController extends Controller
     public function update($id, RestaurantRequest $request)
     {
         $this->restaurantCuisine->deleteByAttributes(['restaurant_id' => $request->restaurant_id], $request->res_cuisine);
-       
+
         if ($this->restaurant->updateById($id, $request->all())) {
 
             foreach ($request->res_cuisine as $key => $value) {
@@ -55,10 +54,10 @@ class RestaurantController extends Controller
                 }
             }
 
-            return redirect('merchants/'.$request->merchant_id.'/edit')->with('message', 'Successfully updated.');
+            return redirect('merchants/' . $request->merchant_id . '/edit')->with('message', 'Successfully updated.');
         }
 
-        return redirect('merchants/'.$request->merchant_id.'/edit')->withInput();
+        return redirect('merchants/' . $request->merchant_id . '/edit')->withInput();
     }
 
     /**
@@ -73,7 +72,7 @@ class RestaurantController extends Controller
     {
         $file = $request->file('file');
 
-        $user_id = Auth::user()->id;
+        $user_id = $request->merchant_id;
 
         if (!in_array($file->getClientOriginalExtension(), array('gif', 'png', 'jpg', 'jpeg', 'PNG', 'JPG'))) {
             return Response::json(array(
@@ -82,9 +81,13 @@ class RestaurantController extends Controller
             ), 404);
         }
 
-        $this->restaurant->updateByAttributes(['merchant_id' => $user_id], ['res_logo' => 'uploads/' . $user_id]);
+        $this->restaurant->updateByAttributes(['merchant_id' => $user_id], ['photo_location' => 'admin', 'res_logo' => 'uploads/' . $user_id]);
 
-        return $imageUploader->upload($file, $user_id, 128, 128, 'uploads/');
+        $imageUploader->upload($file, $user_id, 128, 128, 'uploads/');
+
+        $result['image_path'] = 'uploads/' . $user_id . '/profile_picture.jpg';
+
+        return ['restaurant' => $result];
     }
 
     /**
@@ -97,14 +100,9 @@ class RestaurantController extends Controller
      */
     public function uploadCoverPhoto(Request $request, ImageUploader $imageUploader)
     {
-/*
-$fileArray = array('file' => $file);
-
-$user_id = Auth::user()->id;*/
-
         $file = $request->file('file');
 
-        $user_id = Auth::user()->id;
+        $user_id = $request->merchant_id;
 
         if (!in_array($file->getClientOriginalExtension(), array('gif', 'png', 'jpg', 'jpeg', 'PNG', 'JPG'))) {
             return Response::json(array(
@@ -113,8 +111,12 @@ $user_id = Auth::user()->id;*/
             ), 404);
         }
 
-        $this->restaurant->updateByAttributes(['merchant_id' => $user_id], ['res_logo_background' => 'uploads/' . $user_id]);
+        $this->restaurant->updateByAttributes(['merchant_id' => $user_id], ['bg_photo_location' => 'admin', 'res_logo_background' => 'uploads/' . $user_id]);
 
-        return $imageUploader->upload($file, $user_id, 500, 500, 'uploads/', '/cover_photo.jpg');
+        $imageUploader->upload($file, $user_id, 500, 500, 'uploads/', '/cover_photo.jpg');
+
+        $result['image_path'] = 'uploads/' . $user_id . '/cover_photo.jpg';
+
+        return ['restaurant' => $result];
     }
 }

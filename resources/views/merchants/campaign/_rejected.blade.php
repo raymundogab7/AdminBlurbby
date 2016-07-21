@@ -49,7 +49,7 @@
 			</div>
 		</div><!-- form-group -->
 		<button class="btn btn-primary" style="margin-left:15px;">Update Campaign</button>
-		
+
 		</form>
 
 		{!! Form::open(array('url' => 'campaigns/updateStatus/'.$campaign->id, 'style' => 'display:inline;', 'class' => 'form-horizontal form-bordered', 'method' => 'PUT')) !!}
@@ -90,12 +90,16 @@
 	                <th></th>
 	            </tr>
 	        </thead>
-	 
+
 	        <tbody>
 	            @foreach($blurbs as $blurb)
 	            <tr>
 	            	 @if(!is_null($blurb['blurb_logo']))
+	                @if($blurb['photo_location'] == 'merchant')
 	                <td><img src="{{env('MERCHANT_URL').'/'.$blurb['blurb_logo']}}" style="width:20px"></td>
+	                @else
+	                <td><img src="{{asset($blurb['blurb_logo'])}}" style="width:20px"></td>
+	                @endif
 	                @else
 	                <td><!-- <img src="{{asset('images/no-blurb.png')}}" style="width:20px">  -->No Image Available</td>
 	                @endif
@@ -143,7 +147,7 @@
 	      <div class="modal-footer">
 
 	        {!! Form::open(array('url' => '', 'class' => 'form-horizontal form-bordered delete-blurb-form')) !!}
-	        
+
 	        <input name="_method" type="hidden" value="DELETE">
 	        <input type="hidden" id="blurbId" name="blurb_id">
 	        <input type="hidden" class="controlNo" value="{{$campaign['id']}}">
@@ -172,7 +176,7 @@
 	            responsive: true
 	        });
 	    });
-	
+
 
 	$('.deleteBlurbModal').on('show.bs.modal', function (event) {
 	        var button = $(event.relatedTarget);
@@ -195,13 +199,13 @@
 	<script type="text/javascript">
 
 	    // Date Picker
-	    jQuery('#datepicker').datepicker({ 
+	    jQuery('#datepicker').datepicker({
 	        dateFormat: 'yy-mm-dd',
 	        minDate: 0, // 0 days offset = today
 	        onSelect: function(dateText) {
 	            $sD = new Date(dateText);
 	            $("input#datepicker2").datepicker('option', 'minDate', dateText);
-	        } 
+	        }
 	    });
 	    jQuery('#datepicker2').datepicker({
 	         dateFormat: 'yy-mm-dd',
@@ -209,7 +213,7 @@
 	         onSelect: function(dateText) {
 	            $sD = new Date(dateText);
 	            $("input#datepicker").datepicker('option', 'maxDate', dateText);
-	        } 
+	        }
 
 	    });
 

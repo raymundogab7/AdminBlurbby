@@ -19,9 +19,9 @@
 
 <section>
     <div class="mainwrapper">
-    
+
         @include('layouts.sidebar-admin', ['restaurant' => $restaurant])
-        
+
         <div class="mainpanel">
             <div class="pageheader">
                 <div class="media">
@@ -44,35 +44,41 @@
                         @else
                         <h4>View Blurb</h4>
                         @endif
-                        
+
                     </div>
                 </div><!-- media -->
             </div><!-- pageheader -->
-            
+
             <div class="contentpanel">
-                
+
                 <div class="row">
                     <div class="col-sm-12 col-md-4 col-xs-12" style="padding-bottom:30px;max-width:417px;min-width:300px;">
 						<div style="border: 1px solid #ccc;">
-							                    
-                            @if(!is_null($blurb->blurb_logo))
-                            <img class="blurb-photo" src="{{env('MERCHANT_URL').'/'.$blurb->blurb_logo}}" style="width:100%"> 
 
+                            @if(!is_null($blurb->blurb_logo))
+                            @if($blurb->photo_location == 'merchant')
+                            <img class="blurb-photo" src="{{env('MERCHANT_URL').'/'.$blurb->blurb_logo}}" style="width:100%">
                             @else
-                            <img src="{{env('MERCHANT_URL').'/images/no-coupon.png'}}" style="width:100%"> 
+                            <img class="blurb-photo" src="{{asset($blurb->blurb_logo)}}" style="width:100%">
+                            @endif
+                            @else
+                            <img src="{{env('MERCHANT_URL').'/images/no-coupon.png'}}" style="width:100%">
                             @endif
 
                             @if(!is_null($restaurant->res_logo))
+                            @if($restaurant->photo_location == 'merchant')
                             <img class="img-roundedcircle img-offline img-responsive img-profile" src="{{( is_null($restaurant->res_logo)) ? env('MERCHANT_URL').'/images/nopp.jpg' : env('MERCHANT_URL').'/uploads/'.$restaurant->merchant_id.'/profile_picture.jpg'}}" style="max-width:50px;margin:20px 10px 20px 20px;" alt="">
-
                             @else
-                            <!-- <div style="max-width:50px;margin:20px 10px 20px 20px;" class="img-roundedcircle square img-offline img-responsive img-profile">  
+                            <img class="img-roundedcircle img-online" src="{{asset($restaurant->res_logo.'/profile_picture.jpg')}}" style="max-width:50px;margin:20px 10px 20px 20px;" alt="">
+                            @endif
+                            @else
+                            <!-- <div style="max-width:50px;margin:20px 10px 20px 20px;" class="img-roundedcircle square img-offline img-responsive img-profile">
                                 <p>@if(!is_null($restaurant->res_name)) {{strtoupper($restaurant->res_name[0])}} @endif</p>
                             </div> -->
                             <img src="{{asset('images/photos/profile.png')}}" class="img-roundedcircle img-offline img-responsive img-profile" style="max-width:50px;margin:20px 10px 20px 20px;" alt="">
                             @endif
                             <span style="font-size:16px;">{{$restaurant->res_name}}</span>
-							<div class="mb10"></div> 
+							<div class="mb10"></div>
 							<span style="margin:20px;font-size:15px;font-weight:bold;">{{$blurb->blurb_name}}</span>
 							<div style="margin:20px;">{{$blurb->blurb_desc}}</div>
 							<div class="mb20"></div>
@@ -89,7 +95,7 @@
 							<div class="mb20"></div>
 						</div>
                     </div><!-- col-sm-4 col-md-3 -->
-                    
+
                     <div class="col-sm-12 col-md-8 col-xs-12">
                         <div class="tab-content nopadding noborder">
 							<div class="col-sm-12" style="padding-bottom:30px;">
@@ -147,10 +153,10 @@
                             @endif
 						</div><!-- tab-content -->
                     </div><!-- col-sm-9 -->
-                </div><!-- row -->  
-            
+                </div><!-- row -->
+
             </div><!-- contentpanel -->
-            
+
         </div>
     </div><!-- mainwrapper -->
 </section>
@@ -166,13 +172,13 @@
 <script type="text/javascript">
 
     // Date Picker
-    jQuery('#datepicker').datepicker({ 
+    jQuery('#datepicker').datepicker({
         dateFormat: 'dd-M-yy',
         minDate: 0, // 0 days offset = today
         onSelect: function(dateText) {
             $sD = new Date(dateText);
             $("input#datepicker2").datepicker('option', 'minDate', dateText);
-        } 
+        }
     });
     jQuery('#datepicker2').datepicker({
          dateFormat: 'dd-M-yy',
@@ -180,7 +186,7 @@
          onSelect: function(dateText) {
             $sD = new Date(dateText);
             $("input#datepicker").datepicker('option', 'maxDate', dateText);
-        } 
+        }
 
     });
 
@@ -190,13 +196,13 @@
 
     Dropzone.options.blurbPhoto = {
       init: function() {
-            this.on("success", function(file) { 
-        
+            this.on("success", function(file) {
+
                 $('.blurb-photo').attr('src', $('.blurb-photo').attr('src') + '?' + new Date().getTime());
                 window.location.reload();
             });
 
-            this.on("error", function(file) { 
+            this.on("error", function(file) {
                 alert('Invalid format');
                 window.location.reload();
             });

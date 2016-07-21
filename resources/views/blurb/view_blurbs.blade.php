@@ -20,9 +20,9 @@
 
 <section>
     <div class="mainwrapper">
-    
+
         @include('layouts.sidebar-admin', ['restaurant' => $restaurant])
-        
+
         <div class="mainpanel">
             <div class="pageheader">
                 <div class="media">
@@ -45,14 +45,14 @@
                         @else
                         <h4>View Blurb</h4>
                         @endif
-                        
+
                     </div>
                 </div><!-- media -->
             </div><!-- pageheader -->
-            
+
              <div class="contentpanel">
                 <div class="panel panel-primary-head">
-                    
+
                     <div class="col-sm-12 col-md-12 col-xs-12" style="padding-bottom:20px;">
                         <table id="view_blurbs" class="table table-striped table-bordered responsive">
                             <thead class="">
@@ -66,12 +66,16 @@
                                     <th></th>
                                 </tr>
                             </thead>
-                     
+
                             <tbody>
                                 @foreach($blurbs as $blurb)
                                 <tr>
-                                     @if(!is_null($blurb['blurb_logo']))
+                                    @if(!is_null($blurb['blurb_logo']))
+                                    @if($blurb['photo_location'] == 'merchant')
+                                    <td><img src="{{env('MERCHANT_URL').'/'.$blurb['blurb_logo']}}" style="width:20px"></td>
+                                    @else
                                     <td><img src="{{asset($blurb['blurb_logo'])}}" style="width:20px"></td>
+                                    @endif
                                     @else
                                     <td><!-- <img src="{{asset('images/no-blurb.png')}}" style="width:20px">  -->No Image Available</td>
                                     @endif
@@ -106,22 +110,22 @@
 
                                         <a href="{{url('blurb/'.$blurb['id'].'/'.$campaign->control_no)}}" data-toggle="tooltip" title="View" class="tooltips"><i class="fa fa-eye"></i></a>
                                     @endif
-                                        
-                                    
+
+
                                     </td>
                                 </tr>
                                 @endforeach
                             </tbody>
                         </table>
                     </div><!-- col-sm-4 col-md-3 -->
-                    
+
                 </div>
                 <div class="col-sm-12 col-md-12 col-xs-12" style="padding-bottom:20px;">
                     <a href="{{url('campaigns/'.$campaign->id)}}"><button class="btn btn-default">Back</button></a>
                 </div>
-            
+
             </div><!-- contentpanel -->
-            
+
         </div>
     </div><!-- mainwrapper -->
 </section>
@@ -150,4 +154,4 @@
 <script type="text/javascript" src="//cdn.datatables.net/plug-ins/725b2a2115b/integration/bootstrap/3/dataTables.bootstrap.js"></script>
 <script type="text/javascript" src="//cdn.datatables.net/responsive/2.1.0/js/dataTables.responsive.min.js"></script>
 
-@endsection 
+@endsection

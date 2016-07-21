@@ -102,7 +102,12 @@
             @foreach($blurbs as $blurb)
             <tr>
             	 @if(!is_null($blurb['blurb_logo']))
+
+                @if($blurb['photo_location'] == 'merchant')
                 <td><img src="{{env('MERCHANT_URL').'/'.$blurb['blurb_logo']}}" style="width:20px"></td>
+                @else
+                <td><img src="{{asset($blurb['blurb_logo'])}}" style="width:20px"></td>
+                @endif
                 @else
                 <td><!-- <img src="{{asset('images/no-blurb.png')}}" style="width:20px">  -->No Image Available</td>
                 @endif
