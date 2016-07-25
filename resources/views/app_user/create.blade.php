@@ -115,21 +115,6 @@
                             <!-- Tab panes -->
                                 <div class="tab-content nopadding noborder">
                                     <div class="tab-pane active" id="personal">
-                                        @if(session('message'))
-
-                                        <div class="alert alert-success">
-                                            <strong>{{session('message')}}</strong>
-                                        </div>
-
-                                        @endif
-
-                                        @if(session('error'))
-
-                                        <div class="alert alert-danger">
-                                           <strong>{{session('error')}}</strong>
-                                        </div>
-
-                                        @endif
 
                                         <form action="{{url('app-users')}}" accept-charset="UTF-8" class="form-horizontal form-bordered" method="POST" files="true" enctype="multipart/form-data">
                                             <div class="form-group">
