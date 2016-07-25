@@ -102,7 +102,7 @@
                         <h3 style="font-weight:bold">Blurb Category</h3>
                     </div>
                     <div class="col-sm-6 col-md-6 col-xs-12" style="padding-bottom:50px;">
-                        <table id="catTable" class="table table-striped table-bordered responsive">
+                        <table id="blurbCategoryTable" class="table table-striped table-bordered responsive">
                             <thead class="">
                                 <tr>
                                     <th>Blurb Category Name</th>
@@ -110,21 +110,15 @@
                                 </tr>
                             </thead>
                             <tbody>
+                                @foreach($blurb_category as $bc)
                                 <tr>
-                                    <td>Discount</td>
+                                    <td>{{$bc['blurb_cat_name']}}</td>
                                     <td class="table-action">
-                                        <a href="edit-blurb.html" data-toggle="tooltip" title="Edit" class="tooltips"><i class="fa fa-pencil"></i></a>
-                                        <a href="" data-toggle="tooltip" title="Delete" class="delete-row tooltips"><i class="fa fa-trash-o"></i></a>
+                                        <a href="#updateBlurbCategoryModal" data-cuisine-id="{{$bc['id']}}" data-cuisine-name="{{$bc['cuisine_name']}}" data-target="#updateBlurbCategoryModal" data-toggle="modal" title="Edit" class="delete-row tooltips"><i class="fa fa-pencil"></i></a>
+                                        <a href="#deleteBlurbCategoryModal" data-cuisine-id="{{$bc['id']}}" data-cuisine-name="{{$bc['cuisine_name']}}" data-target="#deleteBlurbCategoryModal" data-toggle="modal" title="Delete" class="delete-row tooltips"><i class="fa fa-trash-o"></i></a>
                                     </td>
                                 </tr>
-                                <tr>
-                                    <td>Freebies</td>
-                                    <td class="table-action">
-                                        <a href="edit-blurb.html" data-toggle="tooltip" title="Edit" class="tooltips"><i class="fa fa-pencil"></i></a>
-                                        <a href="" data-toggle="tooltip" title="Delete" class="delete-row tooltips"><i class="fa fa-trash-o"></i></a>
-                                    </td>
-                                </tr>
-                            </tbody>
+                                @endforeach
                         </table>
                     </div>
                     <div class="col-sm-6 col-md-6 col-xs-12" style="padding-bottom:50px;">
@@ -222,9 +216,41 @@
         modal.find('.modal-footer #cuisine_id').val(cuisine_id);
         $('.delete-cuisine-form').attr('action', '/settings/cuisine/'+cuisine_id);
     });
+
+    $('.updateBlurbCategoryModal').on('show.bs.modal', function (event) {
+        var button = $(event.relatedTarget);
+        var cuisine_id = button.data('blurb-category-id');
+        var cuisine_name = button.data('cuisine-name');
+        var modal = $(this);
+        modal.find('.modal-title').html('Update ' + cuisine_name);
+        modal.find('.modal-body #ucuisine_id').val(cuisine_id);
+        modal.find('.modal-body #cuisine_name').val(cuisine_name);
+        $('.update-cuisine-form').attr('action', '/settings/cuisine/'+cuisine_id);
+    });
+    $('.deleteBlurbCategoryModal').on('show.bs.modal', function (event) {
+        var button = $(event.relatedTarget);
+        var cuisine_id = button.data('cuisine-id');
+        var cuisine_name = button.data('cuisine-name');
+        var modal = $(this);
+        modal.find('.modal-title').html('Delete ' + cuisine_name);
+        modal.find('.modal-footer #cuisine_id').val(cuisine_id);
+        $('.delete-cuisine-form').attr('action', '/settings/cuisine/'+cuisine_id);
+    });
     jQuery(document).ready(function(){
 
         jQuery('#cuisineTable').DataTable({
+            responsive: true,
+            order: []
+        });
+
+        var shTable = jQuery('#shTable').DataTable({
+            "fnDrawCallback": function(oSettings) {
+                jQuery('#shTable_paginate ul').addClass('pagination-active-dark');
+            },
+            responsive: true
+        });
+
+        jQuery('#blurbCategoryTable').DataTable({
             responsive: true,
             order: []
         });

@@ -2,6 +2,7 @@
 
 namespace Admin\Http\Controllers;
 
+use Admin\BlurbCategory;
 use Admin\Cuisine;
 use Illuminate\Http\Request;
 
@@ -15,6 +16,7 @@ class SettingsController extends Controller
     public function index()
     {
         $data['cuisines'] = Cuisine::get()->toArray();
+        $data['blurb_category'] = BlurbCategory::get()->toArray();
 
         return view('settings.index', $data);
     }
