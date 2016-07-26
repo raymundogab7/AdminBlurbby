@@ -1,7 +1,7 @@
-<?php namespace Merchant\Repositories\Eloquent;
+<?php namespace Admin\Repositories\Eloquent;
 
-use Merchant\BlurbCategory;
-use Merchant\Repositories\Interfaces\BlurbCategoryInterface;
+use Admin\BlurbCategory;
+use Admin\Repositories\Interfaces\BlurbCategoryInterface;
 
 class BlurbCategoryEloquent implements BlurbCategoryInterface
 {

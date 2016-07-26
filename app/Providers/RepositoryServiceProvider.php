@@ -4,7 +4,9 @@ namespace Admin\Providers;
 
 use Admin\Repositories\Eloquent\AdminEloquent;
 use Admin\Repositories\Eloquent\AppUserEloquent;
+use Admin\Repositories\Eloquent\BlurbCategoryEloquent;
 use Admin\Repositories\Eloquent\BlurbEloquent;
+use Admin\Repositories\Eloquent\BlurbReportEloquent;
 use Admin\Repositories\Eloquent\CampaignEloquent;
 use Admin\Repositories\Eloquent\CuisineEloquent;
 use Admin\Repositories\Eloquent\FeaturedSectionEloquent;
@@ -17,7 +19,9 @@ use Admin\Repositories\Eloquent\RestaurantEloquent;
 use Admin\Repositories\Eloquent\SnapshotEloquent;
 use Admin\Repositories\Interfaces\AdminInterface;
 use Admin\Repositories\Interfaces\AppUserInterface;
+use Admin\Repositories\Interfaces\BlurbCategoryInterface;
 use Admin\Repositories\Interfaces\BlurbInterface;
+use Admin\Repositories\Interfaces\BlurbReportInterface;
 use Admin\Repositories\Interfaces\CampaignInterface;
 use Admin\Repositories\Interfaces\CuisineInterface;
 use Admin\Repositories\Interfaces\FeaturedSectionInterface;
@@ -62,5 +66,7 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(FeaturedSectionInterface::class, FeaturedSectionEloquent::class);
         $this->app->bind(MerchantInterface::class, MerchantEloquent::class);
         $this->app->bind(AppUserInterface::class, AppUserEloquent::class);
+        $this->app->bind(BlurbCategoryInterface::class, BlurbCategoryEloquent::class);
+        $this->app->bind(BlurbReportInterface::class, BlurbReportEloquent::class);
     }
 }

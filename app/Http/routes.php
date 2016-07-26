@@ -165,9 +165,23 @@ Route::group(['middleware' => ['auth']], function () {
     |--------------------------------------------------------------------------
      */
     Route::get('settings', 'SettingsController@index');
+
+    /* Cuisine */
     Route::post('settings/cuisine/store', 'CuisineController@store');
-    Route::delete('settings/cuisine/{cuisine_id}', 'CuisineController@destroy');
     Route::put('settings/cuisine/{cuisine_id}', 'CuisineController@update');
+    Route::delete('settings/cuisine/{cuisine_id}', 'CuisineController@destroy');
+
+    /* Blurb Category */
+    Route::post('settings/blurb-category/store', 'BlurbCategoryController@store');
+    Route::put('settings/blurb-category/{cuisine_id}', 'BlurbCategoryController@update');
+    Route::delete('settings/blurb-category/{cuisine_id}', 'BlurbCategoryController@destroy');
+
+    /*
+    |--------------------------------------------------------------------------
+    | Blurb Reports Route
+    |--------------------------------------------------------------------------
+     */
+    Route::get('blurb-reports', 'BlurbReportController@index');
 
     /*
     |--------------------------------------------------------------------------

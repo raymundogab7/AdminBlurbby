@@ -114,20 +114,36 @@
                                 <tr>
                                     <td>{{$bc['blurb_cat_name']}}</td>
                                     <td class="table-action">
-                                        <a href="#updateBlurbCategoryModal" data-cuisine-id="{{$bc['id']}}" data-cuisine-name="{{$bc['blurb_cat_name']}}" data-target="#updateBlurbCategoryModal" data-toggle="modal" title="Edit" class="delete-row tooltips"><i class="fa fa-pencil"></i></a>
-                                        <a href="#deleteBlurbCategoryModal" data-cuisine-id="{{$bc['id']}}" data-cuisine-name="{{$bc['blurb_cat_name']}}" data-target="#deleteBlurbCategoryModal" data-toggle="modal" title="Delete" class="delete-row tooltips"><i class="fa fa-trash-o"></i></a>
+                                        <a href="#updateBlurbCategoryModal" data-blurb-category-id="{{$bc['id']}}" data-blurb-category-name="{{$bc['blurb_cat_name']}}" data-target="#updateBlurbCategoryModal" data-toggle="modal" title="Edit" class="delete-row tooltips"><i class="fa fa-pencil"></i></a>
+                                        <a href="#deleteBlurbCategoryModal" data-blurb-category-id="{{$bc['id']}}" data-blurb-category-name="{{$bc['blurb_cat_name']}}" data-target="#deleteBlurbCategoryModal" data-toggle="modal" title="Delete" class="delete-row tooltips"><i class="fa fa-trash-o"></i></a>
                                     </td>
                                 </tr>
                                 @endforeach
                         </table>
                     </div>
                     <div class="col-sm-6 col-md-6 col-xs-12" style="padding-bottom:50px;">
-                        <form action="{{url('settings/cuisine/store')}}" method="POST" class="form-horizontal form-bordered">
+                        @if(session('message_blurb_category'))
+
+                        <div class="alert alert-success">
+                            <strong>{{session('message_blurb_category')}}</strong>
+                        </div>
+
+                        @endif
+
+                        @if(session('message_error'))
+
+                        <div class="alert alert-danger">
+                            <strong>{{session('message_error')}}</strong>
+                        </div>
+
+                        @endif
+                        <form action="{{url('settings/blurb-category/store')}}" method="POST" class="form-horizontal form-bordered">
                             <h5 style="font-weight:bold">Add New Blurb Category</h5>
                             <div class="form-group">
                                 <label class="col-sm-3 control-label" style="text-align:left;">New Blurb Category Name *</label>
                                 <div class="col-sm-9">
-                                    <input type="text" value="" class="form-control" required />
+                                    <input type="hidden" value="{{csrf_token()}}" name="_token"/>
+                                    <input type="text" value="" name="blurb_cat_name" class="form-control" required />
                                 </div>
                             </div><!-- form-group -->
                             <br>
@@ -191,6 +207,56 @@
 </div>
 @endsection
 
+<!-- UPDATE BLURB CATEGORY MODAL -->
+<div class="modal fade updateBlurbCategoryModal" id="updateBlurbCategoryModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Update Blurb Category</h4>
+      </div>
+      {!! Form::open(array('url' => '', 'class' => 'form-horizontal form-bordered update-blurb-category-form')) !!}
+      <div class="modal-body">
+        <input name="_method" type="hidden" value="PUT">
+        <input type="hidden" id="ublurb_category_id" name="blurb_category_id">
+        <label class="col-sm-3 control-label" style="text-align:left;">Blurb Catetory Name *</label>
+        <input type="text" id="blurb_category_name" name="blurb_cat_name" class="form-control">
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
+        <button class="btn btn-primary update-blurb-category-yes">Yes</button>
+      </div>
+      {!! Form::close() !!}
+    </div>
+  </div>
+</div>
+
+<!-- DELETE BLURB CATEGORY MODAL -->
+<div class="modal fade deleteBlurbCategoryModal" id="deleteBlurbCategoryModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Delete Blurb Category</h4>
+      </div>
+      <div class="modal-body">
+        Are you sure you want to delete this blurb category?
+      </div>
+      <div class="modal-footer">
+
+        {!! Form::open(array('url' => '', 'class' => 'form-horizontal form-bordered delete-blurb-category-form')) !!}
+
+        <input name="_method" type="hidden" value="DELETE">
+        <input type="hidden" id="blurb_category_id" name="blurb_category_id">
+        <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
+        <button class="btn btn-primary delete-blurb-category-yes">Yes</button>
+
+        {!! Form::close() !!}
+      </div>
+    </div>
+  </div>
+</div>
+
 @section('custom-js')
 <script type="text/javascript" src="{{asset('js/jquery.dataTables.min.js')}}"></script>
 <script type="text/javascript" src="//cdn.datatables.net/plug-ins/725b2a2115b/integration/bootstrap/3/dataTables.bootstrap.js"></script>
@@ -219,22 +285,23 @@
 
     $('.updateBlurbCategoryModal').on('show.bs.modal', function (event) {
         var button = $(event.relatedTarget);
-        var cuisine_id = button.data('blurb-category-id');
-        var cuisine_name = button.data('cuisine-name');
+        var blurb_category_id = button.data('blurb-category-id');
+        var blurb_category_name = button.data('blurb-category-name');
         var modal = $(this);
-        modal.find('.modal-title').html('Update ' + cuisine_name);
-        modal.find('.modal-body #ucuisine_id').val(cuisine_id);
-        modal.find('.modal-body #cuisine_name').val(cuisine_name);
-        $('.update-cuisine-form').attr('action', '/settings/cuisine/'+cuisine_id);
+
+        modal.find('.modal-title').html('Update ' + blurb_category_name);
+        modal.find('.modal-body #ublurb_category_id').val(blurb_category_id);
+        modal.find('.modal-body #blurb_category_name').val(blurb_category_name);
+        $('.update-blurb-category-form').attr('action', '/settings/blurb-category/'+blurb_category_id);
     });
     $('.deleteBlurbCategoryModal').on('show.bs.modal', function (event) {
         var button = $(event.relatedTarget);
-        var cuisine_id = button.data('cuisine-id');
-        var cuisine_name = button.data('cuisine-name');
+        var blurb_category_id = button.data('blurb-category-id');
+        var blurb_category_name = button.data('blurb-category-name');
         var modal = $(this);
-        modal.find('.modal-title').html('Delete ' + cuisine_name);
-        modal.find('.modal-footer #cuisine_id').val(cuisine_id);
-        $('.delete-cuisine-form').attr('action', '/settings/cuisine/'+cuisine_id);
+        modal.find('.modal-title').html('Delete ' + blurb_category_name);
+        modal.find('.modal-footer #blurb_category_id').val(blurb_category_id);
+        $('.delete-blurb-category-form').attr('action', '/settings/blurb-category/'+blurb_category_id);
     });
     jQuery(document).ready(function(){
 

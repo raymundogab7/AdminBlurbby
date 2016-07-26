@@ -11,4 +11,6 @@ class BlurbCategory extends Model
     protected $fillable = [
         'blurb_cat_name',
     ];
+
+    public $timestamps = false;
 }

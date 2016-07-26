@@ -1,22 +1,22 @@
 <?php namespace Admin\Repositories\Interfaces;
 
-use Admin\BlurbCategory;
+use Admin\BlurbReport;
 
-interface BlurbCategoryInterface
+interface BlurbReportInterface
 {
     /**
-     * Get BlurbCategory by id.
+     * Get BlurbReport by id.
      *
      * @param integer $id
      *
-     * @return BlurbCategory
+     * @return BlurbReport
      */
     public function getById($id);
 
     /**
-     * Get all BlurbCategory.
+     * Get all BlurbReport.
      *
-     * @return BlurbCategory
+     * @return BlurbReport
      */
     public function getAll();
 
