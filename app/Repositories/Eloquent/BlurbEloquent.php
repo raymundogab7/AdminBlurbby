@@ -45,7 +45,6 @@ class BlurbEloquent implements BlurbInterface
         return $this->blurb->with($relations)->find($id);
     }
 
-
     /**
      * Get Blurb by id and attributes.
      *
@@ -84,9 +83,8 @@ class BlurbEloquent implements BlurbInterface
      */
     public function getAllByAttributes(array $attributes, $orderBy = '', $sort = 'ASC')
     {
-        return $this->blurb->where($attributes)->orderBy($orderBy, $sort)->get()->toArray();
+        return $this->blurb->with('category')->where($attributes)->orderBy($orderBy, $sort)->get()->toArray();
     }
-
     /**
      * Get all Blurb by attributes with relationships
      *

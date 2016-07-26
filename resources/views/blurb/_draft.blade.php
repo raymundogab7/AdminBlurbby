@@ -18,8 +18,9 @@
                                     <div class="col-sm-8">
                                         <select name="blurb_category" id="select-search-hide" data-placeholder="Choose One" class="width300" required />
                                             <option value="">Choose One</option>
-                                            <option value="Discount" <?php if ($blurb->blurb_category == 'Discount'): ?> selected <?php endif;?>>Discount</option>
-                                            <option value="Freebies" <?php if ($blurb->blurb_category == 'Freebies'): ?> selected <?php endif;?>>Freebies</option>
+                                            @foreach($blurb_category as $bc)
+                                            <option value="{{$bc['id']}}" <?php if ($bc['id'] == $blurb->category->id): ?> selected <?php endif;?>>{{$bc['blurb_cat_name']}}</option>
+                                            @endforeach
                                         </select>
                                     </div>
                                 </div><!-- form-group -->

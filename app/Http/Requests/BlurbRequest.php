@@ -25,7 +25,7 @@ class BlurbRequest extends Request
     {
         return [
             'blurb_name' => 'required',
-            'blurb_category' => 'required',
+            'blurb_category_id' => 'required',
             'blurb_start' => 'required',
             'blurb_end' => 'required',
             'blurb_desc' => 'required',
@@ -42,13 +42,13 @@ class BlurbRequest extends Request
     public function response(array $errors)
     {
         if (is_null($this->blurb_id)) {
-            return $this->redirector->to('blurb/create/'.$this->control_no)
+            return $this->redirector->to('blurb/create/' . $this->control_no)
                 ->withInput()
                 ->with(['errors' => $errors]);
         }
 
-        return $this->redirector->to('blurb/'.$this->blurb_id.'/'.$this->control_no)
-                ->withInput()
-                ->with(['errors' => $errors]);
+        return $this->redirector->to('blurb/' . $this->blurb_id . '/' . $this->control_no)
+            ->withInput()
+            ->with(['errors' => $errors]);
     }
 }

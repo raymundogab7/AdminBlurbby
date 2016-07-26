@@ -114,15 +114,15 @@
                                 <tr>
                                     <td>{{$bc['blurb_cat_name']}}</td>
                                     <td class="table-action">
-                                        <a href="#updateBlurbCategoryModal" data-cuisine-id="{{$bc['id']}}" data-cuisine-name="{{$bc['cuisine_name']}}" data-target="#updateBlurbCategoryModal" data-toggle="modal" title="Edit" class="delete-row tooltips"><i class="fa fa-pencil"></i></a>
-                                        <a href="#deleteBlurbCategoryModal" data-cuisine-id="{{$bc['id']}}" data-cuisine-name="{{$bc['cuisine_name']}}" data-target="#deleteBlurbCategoryModal" data-toggle="modal" title="Delete" class="delete-row tooltips"><i class="fa fa-trash-o"></i></a>
+                                        <a href="#updateBlurbCategoryModal" data-cuisine-id="{{$bc['id']}}" data-cuisine-name="{{$bc['blurb_cat_name']}}" data-target="#updateBlurbCategoryModal" data-toggle="modal" title="Edit" class="delete-row tooltips"><i class="fa fa-pencil"></i></a>
+                                        <a href="#deleteBlurbCategoryModal" data-cuisine-id="{{$bc['id']}}" data-cuisine-name="{{$bc['blurb_cat_name']}}" data-target="#deleteBlurbCategoryModal" data-toggle="modal" title="Delete" class="delete-row tooltips"><i class="fa fa-trash-o"></i></a>
                                     </td>
                                 </tr>
                                 @endforeach
                         </table>
                     </div>
                     <div class="col-sm-6 col-md-6 col-xs-12" style="padding-bottom:50px;">
-                        <form class="form-horizontal form-bordered">
+                        <form action="{{url('settings/cuisine/store')}}" method="POST" class="form-horizontal form-bordered">
                             <h5 style="font-weight:bold">Add New Blurb Category</h5>
                             <div class="form-group">
                                 <label class="col-sm-3 control-label" style="text-align:left;">New Blurb Category Name *</label>

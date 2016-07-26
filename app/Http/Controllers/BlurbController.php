@@ -3,6 +3,7 @@
 namespace Admin\Http\Controllers;
 
 use Admin\Http\Requests\BlurbRequest;
+use Admin\Repositories\Interfaces\BlurbCategoryInterface;
 use Admin\Repositories\Interfaces\BlurbInterface;
 use Admin\Repositories\Interfaces\CampaignInterface;
 use Admin\Repositories\Interfaces\RestaurantInterface;
@@ -35,6 +36,11 @@ class BlurbController extends Controller
     protected $snapShot;
 
     /**
+     * @var BlurbCategoryInterface
+     */
+    protected $blurbCategory;
+
+    /**
      * Create a new controller instance.
      *
      * @param CampaignInterface $campaign
@@ -43,12 +49,13 @@ class BlurbController extends Controller
      * @param SnapShotInterface $snapShot
      * @return void
      */
-    public function __construct(CampaignInterface $campaign, RestaurantInterface $restaurant, BlurbInterface $blurb, SnapShotInterface $snapShot)
+    public function __construct(CampaignInterface $campaign, RestaurantInterface $restaurant, BlurbInterface $blurb, SnapShotInterface $snapShot, BlurbCategoryInterface $blurbCategory)
     {
         $this->campaign = $campaign;
         $this->restaurant = $restaurant;
         $this->blurb = $blurb;
         $this->snapShot = $snapShot;
+        $this->blurbCategory = $blurbCategory;
     }
 
     /**
@@ -80,6 +87,7 @@ class BlurbController extends Controller
         $data = array(
             'restaurant' => $this->restaurant->getByAttributes(['merchant_id' => $campaign->merchant_id], false),
             'campaign' => $campaign,
+            'blurb_category' => $this->blurbCategory->getAll(),
         );
 
         return view('blurb.create', $data);
@@ -240,7 +248,7 @@ class BlurbController extends Controller
     {
         $campaign = $this->campaign->getByAttributes(['id' => $request->campaign_id], false);
 
-        $blurb = $this->blurb->getAllByAttributesWithRelations(['campaign_id' => $request->campaign_id, 'blurb_status' => $request->blurb_status, 'merchant_id' => $campaign->merchant_id], ['campaign'], 'blurb_name');
+        $blurb = $this->blurb->getAllByAttributesWithRelations(['campaign_id' => $request->campaign_id, 'blurb_status' => $request->blurb_status, 'merchant_id' => $campaign->merchant_id], ['campaign', 'category'], 'blurb_name');
 
         $count_likes = 0;
 
@@ -249,7 +257,7 @@ class BlurbController extends Controller
             return [
                 'Campaign Name' => $structure['campaign']['campaign_name'],
                 'Blurb Title' => $structure['blurb_name'],
-                'Category' => $structure['blurb_category'],
+                'Category' => $structure['category']['blurb_cat_name'],
                 'Status' => $structure['blurb_status'],
                 'Start Date' => $structure['blurb_start'],
                 'End Date' => $structure['blurb_end'],
@@ -276,7 +284,7 @@ class BlurbController extends Controller
      */
     public function generateBlurbReport($id, Request $request)
     {
-        $blurb = $this->blurb->getByIdWithRelations($id, ['campaign']);
+        $blurb = $this->blurb->getByIdWithRelations($id, ['campaign', 'category']);
 
         $snapshots = Snapshot::with('campaign')->where(['blurb_id' => $id, 'campaign_id' => $request->campaign_id, 'merchant_id' => $blurb->merchant_id])->get()->toArray();
 
@@ -289,7 +297,7 @@ class BlurbController extends Controller
                 'Campaign Name' => $blurb->campaign->campaign_name,
                 'Blurb Title' => $blurb->blurb_name,
                 'Status' => $blurb->blurb_status,
-                'Category' => $blurb->blurb_category,
+                'Category' => $blurb->category->blurb_cat_name,
                 'Start Date' => $blurb->blurb_start,
                 'End Date' => $blurb->blurb_end,
                 'Performance Date' => $db,
