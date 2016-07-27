@@ -16,8 +16,17 @@ interface BlurbReportInterface
     /**
      * Get all BlurbReport.
      *
+     * @param array $attributes
      * @return BlurbReport
      */
-    public function getAll();
+    public function getAll(array $attributes);
+
+    /**
+     * Delete a BlurbReport.
+     *
+     * @param integer $id
+     * @return integer
+     */
+    public function delete($id);
 
 }

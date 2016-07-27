@@ -26,4 +26,14 @@ class BlurbReport extends Model
     {
         return $this->belongsTo('Admin\AppUser', 'app_user_id', 'id');
     }
+
+    public function restaurant()
+    {
+        return $this->belongsTo('Admin\Restaurant', 'restaurant_id', 'id');
+    }
+
+    public function campaign()
+    {
+        return $this->belongsTo('Admin\Campaign', 'campaign_id', 'id');
+    }
 }

@@ -35,10 +35,22 @@ class BlurbReportEloquent implements BlurbReportInterface
     /**
      * Get all BlurbReport.
      *
+     * @param array $attributes
      * @return BlurbReport
      */
-    public function getAll()
+    public function getAll(array $attributes)
     {
-        return $this->blurbReport->with(['merchant', 'blurb', 'appUser'])->get()->toArray();
+        return $this->blurbReport->with(['merchant', 'blurb', 'appUser', 'restaurant', 'campaign'])->where($attributes)->orderBy('created_at', 'DESC')->paginate(10);
+    }
+
+    /**
+     * Delete a BlurbReport.
+     *
+     * @param integer $id
+     * @return integer
+     */
+    public function delete($id)
+    {
+        return $this->blurbReport->find($id)->delete();
     }
 }
