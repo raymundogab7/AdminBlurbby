@@ -29,7 +29,10 @@ class BlurbReportEloquent implements BlurbReportInterface
      */
     public function getById($id)
     {
-        return $this->blurbReport->find($id);
+        return $this->blurbReport->with(['merchant' => function ($query) {
+            $query->select('id', 'email', 'first_name', 'last_name');
+        }])
+            ->find($id);
     }
 
     /**
@@ -41,6 +44,17 @@ class BlurbReportEloquent implements BlurbReportInterface
     public function getAll(array $attributes)
     {
         return $this->blurbReport->with(['merchant', 'blurb', 'appUser', 'restaurant', 'campaign'])->where($attributes)->orderBy('created_at', 'DESC')->paginate(10);
+    }
+
+    /**
+     * Update a blurb report.
+     *
+     * @param integer $id
+     * @return integer
+     */
+    public function update($id, $payload)
+    {
+        return $this->blurbReport->where('id', $id)->update($payload);
     }
 
     /**

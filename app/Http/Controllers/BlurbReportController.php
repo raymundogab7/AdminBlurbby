@@ -3,6 +3,8 @@
 namespace Admin\Http\Controllers;
 
 use Admin\Repositories\Interfaces\BlurbReportInterface;
+use Admin\Repositories\Interfaces\MerchantInterface;
+use Admin\Services\Mailer;
 
 class BlurbReportController extends Controller
 {
@@ -12,14 +14,21 @@ class BlurbReportController extends Controller
     protected $blurbReport;
 
     /**
+     * @var MerchantInterface
+     */
+    protected $merchant;
+
+    /**
      * Create a new controller instance.
      *
      * @param BlurbReportInterface $blurbReport
+     * @param MerchantInterface $merchant
      * @return void
      */
-    public function __construct(BlurbReportInterface $blurbReport)
+    public function __construct(BlurbReportInterface $blurbReport, MerchantInterface $merchant)
     {
         $this->blurbReport = $blurbReport;
+        $this->merchant = $merchant;
     }
 
     /**
@@ -34,6 +43,27 @@ class BlurbReportController extends Controller
         );
 
         return view('blurb_report.index', $data);
+    }
+
+    /**
+     * Notify merchant.
+     *
+     * @param integer $id
+     * @return View
+     */
+    public function notify($id, Mailer $mailer)
+    {
+        $blurb_report = $this->blurbReport->getById($id);
+
+        $data = $this->merchant->getByAttributes(['id' => $blurb_report->merchant_id]);
+
+        if ($this->blurbReport->update($id, ['notified' => 1])) {
+            $send = $mailer->send('emails.blurb_report', 'Your Blurb Has Been Reported', $data[0]);
+
+            return response()->json(['result' => true, 'message' => 'Merchant has been notified.']);
+        }
+
+        return response()->json(['result' => false, 'message' => 'Merchant is already notified.']);
     }
 
     /**

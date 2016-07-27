@@ -22,6 +22,14 @@ interface BlurbReportInterface
     public function getAll(array $attributes);
 
     /**
+     * Update a blurb report.
+     *
+     * @param integer $id
+     * @return integer
+     */
+    public function update($id, $payload);
+
+    /**
      * Delete a BlurbReport.
      *
      * @param integer $id

@@ -54,8 +54,8 @@ $notif_count = $blurb_reports->count() - 1;
 
                             </div>
                             <div class="pull-left">
-                                <button class="btn btn-default btn-bordered" style="width:auto;"><i class="fa fa-send-o"></i> Notify Merchant</button>
-                                <button class="btn btn-default btn-bordered" id="btn-delete-blurb-reports" style="width:auto;"><i class="fa fa-trash"></i> Delete</button>
+                                <button <?php if (count($blurb_reports) == 0): ?> disabled <?php endif;?> class="btn btn-default btn-bordered btn_report" id="btn-notify" style="width:auto;"><i class="fa fa-send-o"></i> <span id="notify_merchant">Notify Merchant</span></button>
+                                <button <?php if (count($blurb_reports) == 0): ?> disabled <?php endif;?> class="btn btn-default btn-bordered btn_report" id="btn-delete-blurb-reports" style="width:auto;"><i class="fa fa-trash"></i> <span id="delete_merchant">Delete</span></button>
                             </div><!-- pull-right -->
                         </div><!-- msg-header -->
                         @if(session('message'))
@@ -134,6 +134,8 @@ $notif_count = $blurb_reports->count() - 1;
 <script type="text/javascript">
 $('#btn-delete-blurb-reports').on('click', function(){
     $('input.checkbox:checkbox:checked').each(function () {
+        $('.btn_report').attr('disabled', 'disabled');
+        $('#delete_merchant').html('Deleting...');
         var blurb_report_id = $(this).val();
         $.ajax({
             data: {'_token' : $('#_token').val()},
@@ -148,6 +150,23 @@ $('#btn-delete-blurb-reports').on('click', function(){
     });
 });
 
+$('#btn-notify').on('click', function(){
+
+    $('input.checkbox:checkbox:checked').each(function () {
+        $('.btn_report').attr('disabled', 'disabled');
+        $('#notify_merchant').html('Sending...');
+        var blurb_report_id = $(this).val();
+        $.ajax({
+            data: {'_token' : $('#_token').val()},
+            url : '/blurb-reports/notify/' + blurb_report_id,
+            method: 'GET',
+            complete: function(data){
+
+                window.location.reload();
+            }
+        });
+    });
+});
 
 </script>
 @endsection

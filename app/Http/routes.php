@@ -183,6 +183,7 @@ Route::group(['middleware' => ['auth']], function () {
      */
     Route::get('blurb-reports', 'BlurbReportController@index');
     Route::delete('blurb-reports/{blurb_report_id}', 'BlurbReportController@destroy');
+    Route::get('blurb-reports/notify/{blurb_report_id}', 'BlurbReportController@notify');
 
     /*
     |--------------------------------------------------------------------------
