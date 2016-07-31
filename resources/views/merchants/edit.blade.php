@@ -39,13 +39,13 @@
                 <div class="row">
                     <div class="col-sm-12 col-md-4 col-xs-12" style="padding-bottom:30px;max-width:417px;min-width:300px;">
 						<div style="border: 1px solid #ccc;">
-							<div class="text-center cover-photo" data-src="{{(! is_null($restaurant->res_logo_background)) ? ($restaurant->bg_photo_location == 'merchant') ? env('MERCHANT_URL').'/uploads/'.$restaurant->merchant_id.'/cover_photo.jpg' : asset('uploads/'.$restaurant->merchant_id.'/cover_photo.jpg') : asset('images/nobg.jpg')}}" style="background:url('{{(! is_null($restaurant->res_logo_background)) ? ($restaurant->bg_photo_location == 'merchant') ? env('MERCHANT_URL').'/uploads/'.$restaurant->merchant_id.'/cover_photo.jpg' : asset('/uploads/'.$restaurant->merchant_id.'/cover_photo.jpg') : asset('images/profile-background.jpg')}}');background-size:cover;">
+							<div class="text-center cover-photo" data-src="{{(! is_null($restaurant->res_logo_background)) ? ($restaurant->bg_photo_location == 'merchant') ? env('MERCHANT_URL').'/'.$restaurant->res_logo_background : asset($restaurant->res_logo_background) : asset('images/nobg.jpg')}}" style="background:url('{{(! is_null($restaurant->res_logo_background)) ? ($restaurant->bg_photo_location == 'merchant') ? env('MERCHANT_URL').'/'.$restaurant->res_logo_background : asset($restaurant->res_logo_background) : asset('images/profile-background.jpg')}}');background-size:cover;">
 								<!-- <img src="{{(! is_null($restaurant->res_logo)) ? asset('profile_pictures/'.$restaurant->merchant_id.'/profile_picture.jpg') : asset('images/nopp.jpg')}}" class="img-roundedcircle img-offline img-responsive img-profile" style="max-width:80px;margin-top:45px;" alt="" /> -->
                                 @if(!is_null($restaurant->res_logo))
                                 @if($restaurant->photo_location == 'merchant')
-                                <img src="{{(! is_null($restaurant->res_logo)) ? env('MERCHANT_URL').'/uploads/'.$restaurant->merchant_id.'/profile_picture.jpg' : asset('images/nopp.jpg')}}" class="img-roundedcircle img-offline img-responsive img-profile profile-pic" style="max-width:80px;margin-top:45px;" alt="" />
+                                <img src="{{(! is_null($restaurant->res_logo)) ? env('MERCHANT_URL').'/'.$restaurant->res_logo : asset('images/nopp.jpg')}}" class="img-roundedcircle img-offline img-responsive img-profile profile-pic" style="max-width:80px;margin-top:45px;" alt="" />
                                 @else
-                                <img src="{{(! is_null($restaurant->res_logo)) ? asset('uploads/'.$restaurant->merchant_id.'/profile_picture.jpg')  : asset('images/nopp.jpg')}}" class="img-roundedcircle img-offline img-responsive img-profile profile-pic" style="max-width:80px;margin-top:45px;" alt="" />
+                                <img src="{{(! is_null($restaurant->res_logo)) ? asset($restaurant->res_logo)  : asset('images/nopp.jpg')}}" class="img-roundedcircle img-offline img-responsive img-profile profile-pic" style="max-width:80px;margin-top:45px;" alt="" />
                                 @endif
 
                                 @else
@@ -357,6 +357,7 @@ echo ($outlet->outlet_ph_active == 0) ? 'PH : Close' : 'PH : ' . date_format(dat
 
 										{!! Form::close() !!}
 
+
 										<span class="help-block">Must be a square size with at least 128px x 128px.</span>
 									</div>
 									<div class="col-sm-5">
@@ -411,7 +412,7 @@ echo ($outlet->outlet_ph_active == 0) ? 'PH : Close' : 'PH : ' . date_format(dat
                                         </div>
                                     </div><!-- form-group -->
                                    	<br>
-                                    <button style="margin-left:15px;" type="submit" class="btn btn-primary">Update</button>
+                                    <button style="margin-left:15px;" type="submit" class="btn btn-primary" id="res_update_btn">Update</button>
 
                                 </form>
 

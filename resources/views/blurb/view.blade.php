@@ -160,7 +160,8 @@
         </div>
     </div><!-- mainwrapper -->
 </section>
-
+<input type="hidden" id="cam_start" value="{{$campaign->cam_start}}">
+<input type="hidden" id="cam_end" value="{{$campaign->cam_end}}">
 @endsection
 
 @section('custom-js')
@@ -174,18 +175,22 @@
     // Date Picker
     jQuery('#datepicker').datepicker({
         dateFormat: 'dd-M-yy',
-        minDate: 0, // 0 days offset = today
+        minDate: new Date($('#cam_start').val()), // 0 days offset = today
+        maxDate: new Date($('#cam_end').val()),
         onSelect: function(dateText) {
             $sD = new Date(dateText);
             $("input#datepicker2").datepicker('option', 'minDate', dateText);
+
         }
     });
     jQuery('#datepicker2').datepicker({
          dateFormat: 'dd-M-yy',
-         minDate: jQuery('#datepicker').val(),
+         minDate: new Date($('#cam_start').val()),
+         maxDate: new Date($('#cam_end').val()),
          onSelect: function(dateText) {
             $sD = new Date(dateText);
             $("input#datepicker").datepicker('option', 'maxDate', dateText);
+            $('#keyup_blurb_end').html($.datepicker.formatDate('dd M yy', new Date($(this).val())).toUpperCase());
         }
 
     });

@@ -199,6 +199,8 @@
 	</div><!-- mainwrapper -->
 </section>
 <input type="hidden" id="asset_path" value="{{env('MERCHANT_URL')}}">
+<input type="hidden" id="cam_start" value="{{$campaign->cam_start}}">
+<input type="hidden" id="cam_end" value="{{$campaign->cam_end}}">
 @endsection
 
 @section('custom-js')
@@ -223,8 +225,6 @@
 	Dropzone.options.blurbPhoto = {
 	  init: function() {
 	        this.on("success", function(file) {
-
-
 	            var file = jQuery.parseJSON(file.xhr.responseText);
 
 	            $('.coupon_image').attr('src', $('#asset_path').val()+'/'+file.blurb.image_path);
@@ -242,7 +242,8 @@
 	// Date Picker
 	jQuery('#datepicker').datepicker({
         dateFormat: 'dd-M-yy',
-        minDate: 0, // 0 days offset = today
+        minDate: new Date($('#cam_start').val()), // 0 days offset = today
+        maxDate: new Date($('#cam_end').val()),
         onSelect: function(dateText) {
             $sD = new Date(dateText);
             $("input#datepicker2").datepicker('option', 'minDate', dateText);
@@ -251,7 +252,8 @@
     });
 	jQuery('#datepicker2').datepicker({
          dateFormat: 'dd-M-yy',
-         minDate: jQuery('#datepicker').val(),
+         minDate: new Date($('#cam_start').val()),
+         maxDate: new Date($('#cam_end').val()),
          onSelect: function(dateText) {
             $sD = new Date(dateText);
             $("input#datepicker").datepicker('option', 'maxDate', dateText);

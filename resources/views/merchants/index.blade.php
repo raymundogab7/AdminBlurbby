@@ -132,9 +132,9 @@
 
 	                                        @if(!is_null($merchant['restaurant']['res_logo']))
 	                                        @if($merchant['restaurant']['photo_location'] == 'merchant')
-			                                <img class="img-roundedcircle img-online" src="{{env('MERCHANT_URL').'/'.$merchant['restaurant']['res_logo']}}/profile_picture.jpg" alt="...">
+			                                <img class="img-roundedcircle img-online" src="{{env('MERCHANT_URL').'/'.$merchant['restaurant']['res_logo']}}" alt="...">
 			                                @else
-			                                <img class="img-roundedcircle img-online" src="{{asset($merchant['restaurant']['res_logo'].'/profile_picture.jpg')}}" alt="...">
+			                                <img class="img-roundedcircle img-online" src="{{asset($merchant['restaurant']['res_logo'])}}" alt="...">
 			                                @endif
 	                                    	@else
 	                                        <img class="img-roundedcircle img-online" src="{{env('APP_URL')}}/images/photos/user1.png" alt="...">

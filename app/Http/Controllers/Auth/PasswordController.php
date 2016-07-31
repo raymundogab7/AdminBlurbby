@@ -66,7 +66,7 @@ class PasswordController extends Controller
             $mailer->send('auth.emails.password', 'Reset Password', $request->all());
 
             return redirect('password')
-                ->with('message', 'Request reset password has been successfully sent. Please check your email.');
+                ->with('message', 'Your request to reset password is successful. Please check your email.');
         }
 
         return redirect('password')

@@ -210,6 +210,12 @@
 <script type="text/javascript" src="{{asset('js/bootstrap-timepicker.min.js')}}"></script>
 <script type="text/javascript">
 
+    jQuery('#datepicker').on('keyup', function(){
+        if(this.value == ''){
+            $("input#datepicker2").datepicker('option', 'minDate', 0);
+        }
+    });
+
     // Date Picker
     jQuery('#datepicker').datepicker({
         dateFormat: 'yy-mm-dd',

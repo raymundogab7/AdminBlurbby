@@ -16,13 +16,27 @@ jQuery('#timepicker-ph-start-1').timepicker({showMeridian: false});
 jQuery('#timepicker-ph-end-1').timepicker({showMeridian: false});
 
 //Dropzone
-
 Dropzone.options.profilePicture = {
   init: function() {
+        var myDropzone = this;
+        $('#res_update_btn').on("click", function(e) {
+          //e.preventDefault();
+          e.stopPropagation();
+          myDropzone.processQueue();
+        });
+
+        this.on("thumbnail", function(file){
+            
+            if (file.height < 128 && file.width < 128) {
+                alert("Image should be at least 128px x 128px");
+                window.location.reload();
+                return false;
+            }
+        });
         this.on("success", function(file) { 
-            var file = jQuery.parseJSON(file.xhr.responseText);
-            console.log($('#asset_path').val()+file.restaurant.image_path);
-            $('.profile-pic').attr('src', $('#asset_path').val()+file.restaurant.image_path + '?' + new Date().getTime());
+            //var file = jQuery.parseJSON(file.xhr.responseText);
+            
+            //$('.profile-pic').attr('src', $('#asset_path').val()+file.restaurant.image_path + '?' + new Date().getTime());
         });
 
         this.on("error", function(file) { 
@@ -34,10 +48,24 @@ Dropzone.options.profilePicture = {
 
 Dropzone.options.coverPhoto = {
   init: function() {
+        $('#res_update_btn').on("click", function(e) {
+          //e.preventDefault();
+          e.stopPropagation();
+          myDropzone.processQueue();
+        });
+
+        this.on("thumbnail", function(file){
+            console.log(file.height);
+            if (file.height < 500 && file.width < 500) {
+                window.location.reload();
+                alert("Image should be at least 500px x 500px");
+                return false;
+            }
+        });
         this.on("success", function(file) { 
             var file = jQuery.parseJSON(file.xhr.responseText);
                 
-            $('.cover-photo').attr('style', 'background:url(' + $('#asset_path').val()+file.restaurant.image_path + '?' + new Date().getTime()+');background-size:cover;');
+            //$('.cover-photo').attr('style', 'background:url(' + $('#asset_path').val()+file.restaurant.image_path + '?' + new Date().getTime()+');background-size:cover;');
         });
 
         this.on("error", function(file) { 

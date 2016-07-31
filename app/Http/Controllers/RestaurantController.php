@@ -81,13 +81,14 @@ class RestaurantController extends Controller
             ), 404);
         }
 
-        $this->restaurant->updateByAttributes(['merchant_id' => $user_id], ['photo_location' => 'admin', 'res_logo' => 'uploads/' . $user_id]);
+        $this->restaurant->updateByAttributes(['merchant_id' => $user_id], ['photo_location' => 'admin', 'res_logo' => 'uploads/' . $user_id . '/profile_picture.' . $file->getClientOriginalExtension()]);
 
-        $imageUploader->upload($file, $user_id, 128, 128, 'uploads/');
+        $imageUploader->upload($file, $user_id, 128, 128, 'uploads/', '/profile_picture.' . $file->getClientOriginalExtension());
 
-        $result['image_path'] = 'uploads/' . $user_id . '/profile_picture.jpg';
+        $result['image_path'] = 'uploads/' . $user_id . '/profile_picture.' . $file->getClientOriginalExtension();
 
         return ['restaurant' => $result];
+        ///return redirect('merchants/' . $user_id . '/edit')->with('message', 'Successfully updated.');
     }
 
     /**
@@ -111,12 +112,12 @@ class RestaurantController extends Controller
             ), 404);
         }
 
-        $this->restaurant->updateByAttributes(['merchant_id' => $user_id], ['bg_photo_location' => 'admin', 'res_logo_background' => 'uploads/' . $user_id]);
+        $this->restaurant->updateByAttributes(['merchant_id' => $user_id], ['bg_photo_location' => 'admin', 'res_logo_background' => 'uploads/' . $user_id . '/cover_photo.' . $file->getClientOriginalExtension()]);
 
-        $imageUploader->upload($file, $user_id, 500, 500, 'uploads/', '/cover_photo.jpg');
+        $imageUploader->upload($file, $user_id, 500, 500, 'uploads/', '/cover_photo.' . $file->getClientOriginalExtension());
 
-        $result['image_path'] = 'uploads/' . $user_id . '/cover_photo.jpg';
+        $result['image_path'] = 'uploads/' . $user_id . '/cover_photo.' . $file->getClientOriginalExtension();
 
-        return ['restaurant' => $result];
+        // return redirect('merchants/' . $user_id . '/edit')->with('message', 'Successfully updated.');
     }
 }
