@@ -198,9 +198,9 @@ class CampaignController extends Controller
 
         $request->merge(array('restaurant_id' => $restaurant->id, 'cam_status' => 'Draft', 'control_no' => $control_no));
 
-        if ($this->campaign->create($request->all())) {
+        if ($campaign = $this->campaign->create($request->all())) {
 
-            return redirect('blurb/create/' . $control_no);
+            return redirect('campaigns/' . $campaign->id);
         }
 
         return redirect('campaigns/create')->withInput();

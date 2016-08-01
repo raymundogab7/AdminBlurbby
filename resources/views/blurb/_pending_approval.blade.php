@@ -6,17 +6,18 @@
                                         <input type="text" value="{{$blurb->blurb_name}}" class="form-control" required id="disabledinput" disabled="" />
                                     </div>
                                 </div><!-- form-group -->
-                                
+
                                 <div class="form-group">
                                     <label class="col-sm-2 control-label" style="text-align:left;">Category *</label>
                                     <div class="col-sm-8">
                                         <select id="select-search-hide" data-placeholder="Choose One" class="width300" required id="disabledinput" disabled="" />
-                                            <option value="Discount" <?php if($blurb->blurb_status == 'Discount') : ?> selected <?php endif; ?>>Discount</option>
-                                            <option value="Freebies" <?php if($blurb->blurb_status == 'Freebies') : ?> selected <?php endif; ?>>Freebies</option>
+                                            @foreach($blurb_category as $bc)
+                                            <option value="{{$bc['id']}}" <?php if ($bc['id'] == $blurb->category->id): ?> selected <?php endif;?>>{{$bc['blurb_cat_name']}}</option>
+                                            @endforeach
                                         </select>
                                     </div>
                                 </div><!-- form-group -->
-                                
+
                                 <div class="form-group">
                                     <label class="col-sm-2 control-label" style="text-align:left;">Start Date *</label>
                                     <div class="col-sm-8">
@@ -26,7 +27,7 @@
                                         </div><!-- input-group -->
                                     </div>
                                 </div><!-- form-group -->
-                                
+
                                 <div class="form-group">
                                     <label class="col-sm-2 control-label" style="text-align:left;">End Date *</label>
                                     <div class="col-sm-8">
@@ -36,21 +37,21 @@
                                         </div><!-- input-group -->
                                     </div>
                                 </div><!-- form-group -->
-                                
+
                                 <div class="form-group">
                                     <label class="col-sm-2 control-label" style="text-align:left;">Description *</label>
                                     <div class="col-sm-8">
                                         <textarea rows="5" class="form-control" maxlength="500" required id="disabledinput" disabled="" />{{$blurb->blurb_desc}}</textarea>
                                     </div>
                                 </div><!-- form-group -->
-                                
+
                                 <div class="form-group">
                                     <label class="col-sm-2 control-label" style="text-align:left;">Terms & Conditions *</label>
                                     <div class="col-sm-8">
                                         <textarea rows="5" class="form-control" maxlength="2000" id="disabledinput" disabled="" />{{$blurb->blurb_terms}}</textarea>
                                     </div>
                                 </div><!-- form-group -->
-                                
+
                                 <div class="form-group">
                                     <label class="col-sm-2 control-label" style="text-align:left;">Status</label>
                                     <div class="col-sm-8">
@@ -67,9 +68,8 @@
                                         </label>
                                     </div>
                                 </div><!-- form-group -->
-                                
+
                                 <br>
                                 <a href="{{url('campaigns/'.$campaign->id)}}"><button type="button" style="margin-left:15px;" class="btn btn-default">Back</button></a>
                             </form>
 
-           

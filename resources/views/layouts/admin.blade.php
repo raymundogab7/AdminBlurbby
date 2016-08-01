@@ -11,7 +11,13 @@
         @include('layouts.blurbby-admin-css')
 
         @yield('custom-css')
-
+        <style type="text/css">
+            input[type=number]::-webkit-inner-spin-button,
+            input[type=number]::-webkit-outer-spin-button {
+              -webkit-appearance: none;
+              margin: 0;
+            }
+        </style>
     </head>
 
     <body>

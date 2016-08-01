@@ -38,13 +38,45 @@ class AppUserRequest extends Request
         }
 
         return [
-            'role_id' => 'required',
+            'status' => 'required',
             'email' => 'required|email|unique:app_user,email,' . $this->app_user_id,
             'first_name' => 'required',
             'last_name' => 'required',
             'date_of_birth' => 'required',
             'gender' => 'required',
-            'password' => 'confirmed',
+            'password' => 'min:6|confirmed',
+            'password_confirmation' => 'min:6',
         ];
+    }
+
+    /**
+     * Get custom messages for validator errors.
+     *
+     * @return array
+     */
+    public function messages()
+    {
+        return [
+            'password.confirmed' => 'Email entered do not match.',
+        ];
+    }
+
+    /**
+     * Get the proper failed validation response for the request.
+     *
+     * @param  array  $errors
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function response(array $errors)
+    {
+        if (is_null($this->app_user_id)) {
+            return $this->redirector->to('app-users/create')
+                ->withInput()
+                ->with(['errors' => $errors]);
+        }
+
+        return $this->redirector->to('app-users/' . $this->app_user_id . '/edit')
+            ->withInput()
+            ->with(['errors' => $errors]);
     }
 }

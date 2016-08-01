@@ -1,6 +1,6 @@
 @extends('layouts.admin')
 
-@section('page-title', 'App Users')
+@section('page-title', $app_user->first_name. ' ' . $app_user->last_name)
 
 @section('custom-css')
 
@@ -21,9 +21,9 @@
                             <ul class="breadcrumb">
                                 <li><a href="{{url('dashboard')}}"><i class="glyphicon glyphicon-home"></i></a></li>
                                 <li><a href="{{url('app-users')}}">App Users</a></li>
-                                <li>Add New App User</li>
+                                <li>{{$app_user->first_name. ' ' . $app_user->last_name}}</li>
                             </ul>
-                            <h4>Add New App User</h4>
+                            <h4>{{$app_user->first_name. ' ' . $app_user->last_name}}</h4>
                         </div>
                     </div><!-- media -->
                 </div><!-- pageheader -->
@@ -31,9 +31,14 @@
                     <div class="row">
                         <div class="col-sm-12 col-md-3 col-xs-12" style="padding-bottom:30px;max-width:417px;min-width:300px;">
                             <div style="border: 1px solid #ccc;">
+                                @if($app_user->profile_photo == null || $app_user->profile_photo == '')
+                                <?php $pp_url = asset('images/profile-background.jpg');?>
+                                @else
+                                <?php $pp_url = $app_user->profile_photo;?>
+                                @endif
                                 <div class="text-center" style="background:url({{asset('images/profile-background.jpg')}});    background-size:cover;">
-                                    <img src="{{asset('images/photos/profile-big.jpg')}}" class="img-circle img-offline img-responsive img-profile" style="max-width:80px;margin-top:45px;" alt="" />
-                                    <h4 class="profile-name mb5" style="color:#fff;padding-bottom:45px;font-size:16px;margin-top:5px;">Royce Cheng</h4>
+                                    <img src="{{asset($pp_url)}}" class="img-circle img-offline img-responsive img-profile" style="max-width:80px;margin-top:45px;" alt="" />
+                                    <h4 class="profile-name mb5" style="color:#fff;padding-bottom:45px;font-size:16px;margin-top:5px;">{{$app_user->first_name. ' ' . $app_user->last_name}}</h4>
 
                                 </div><!-- text-center -->
                                 <div class="mb20"></div>
@@ -44,23 +49,23 @@
                                     <tbody>
                                         <tr style="border-top:1px solid #ccc;">
                                             <td style="width:50%;padding-left:25px;">First Name</td>
-                                            <td style="padding:15px 25px 15px 0;text-align:right;"><span id="keyup_first_name"></span></td>
+                                            <td style="padding:15px 25px 15px 0;text-align:right;">{{$app_user->first_name}}</td>
                                         </tr>
                                         <tr style="border-top:1px solid #ccc;">
                                             <td style="width:50%;padding-left:25px;">Last Name</td>
-                                            <td style="padding:15px 25px 15px 0;text-align:right;"><span id="keyup_last_name"></span></td>
+                                            <td style="padding:15px 25px 15px 0;text-align:right;">{{$app_user->last_name}}</td>
                                         </tr>
                                         <tr style="border-top:1px solid #ccc;">
                                             <td style="width:50%;padding-left:25px;">Email</td>
-                                            <td style="padding:15px 25px 15px 0;text-align:right;"><span id="keyup_email"></span></td>
+                                            <td style="padding:15px 25px 15px 0;text-align:right;">{{$app_user->email}}</td>
                                         </tr>
                                         <tr style="border-top:1px solid #ccc;">
                                             <td style="width:50%;padding-left:25px;">Date Of Birth</td>
-                                            <td style="padding:15px 25px 15px 0;text-align:right;"><span id="keyup_date_of_birth"></span></td>
+                                            <td style="padding:15px 25px 15px 0;text-align:right;">{{$app_user->date_of_birth}}</span></td>
                                         </tr>
                                         <tr style="border-top:1px solid #ccc;">
                                             <td style="width:50%;padding-left:25px;">Gender</td>
-                                            <td style="padding:15px 25px 15px 0;text-align:right;"><span id="keyup_gender"></span></td>
+                                            <td style="padding:15px 25px 15px 0;text-align:right;">{{$app_user->gender}}</td>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -116,12 +121,14 @@
                                 <div class="tab-content nopadding noborder">
                                     <div class="tab-pane active" id="personal">
 
-                                        <form action="{{url('app-users')}}" accept-charset="UTF-8" class="form-horizontal form-bordered" method="POST" files="true" enctype="multipart/form-data">
+                                        <form action="{{url('app-users/'.$app_user->id)}}" accept-charset="UTF-8" class="form-horizontal form-bordered" method="POST" files="true" enctype="multipart/form-data">
                                             <div class="form-group">
                                                 <label class="col-sm-2 control-label" style="text-align:left;">Status *</label>
                                                 <div class="col-sm-8">
                                                     <input type="hidden" name="_token" readonly="" value="{{csrf_token()}}">
-                                                    {!! Form::select('status', array('Approved' => 'Approved', 'Pending Email Approval' => 'Pending Email Approval', 'Blocked' => 'Blocked'), null, ['id' => 'type', 'required' => 'required', 'class' => 'width300', 'placeholder' => 'Choose One']) !!}
+                                                    <input type="hidden" name="_method" readonly="" value="PUT">
+                                                    <input type="hidden" name="app_user_id" readonly="" value="{{$app_user->id}}">
+                                                    {!! Form::select('status', array('Approved' => 'Approved', 'Pending Email Approval' => 'Pending Email Approval', 'Blocked' => 'Blocked'), $app_user->status, ['id' => 'type', 'required' => 'required', 'class' => 'width300', 'placeholder' => 'Choose One']) !!}
                                                 </div>
                                             </div><!-- form-group -->
                                             <div class="form-group">
@@ -137,7 +144,7 @@
                                                 <label class="col-sm-2 control-label" style="text-align:left;">First Name *</label>
                                                 <div class="col-sm-8">
                                                     <!-- <input type="text" id="first_name" name="first_name" class="form-control" required="required" /> -->
-                                                    {!! Form::text('first_name', null, ['id' => 'first_name', 'required' => 'required', 'class' => 'form-control']) !!}
+                                                    {!! Form::text('first_name', $app_user->first_name, ['id' => 'first_name', 'required' => 'required', 'class' => 'form-control']) !!}
                                                 </div>
                                             </div><!-- form-group -->
 
@@ -145,7 +152,7 @@
                                                 <label class="col-sm-2 control-label" style="text-align:left;">Last Name *</label>
                                                 <div class="col-sm-8">
                                                     <!-- <input type="text" id="last_name" name="last_name" class="form-control" required="required" /> -->
-                                                    {!! Form::text('last_name', null, ['id' => 'last_name', 'required' => 'required', 'class' => 'form-control']) !!}
+                                                    {!! Form::text('last_name', $app_user->last_name, ['id' => 'last_name', 'required' => 'required', 'class' => 'form-control']) !!}
                                                 </div>
                                             </div><!-- form-group -->
 
@@ -153,7 +160,7 @@
                                                 <label class="col-sm-2 control-label" style="text-align:left;">Email *</label>
                                                 <div class="col-sm-8">
                                                     <!-- <input type="email" id="email" name="email" class="form-control" required="required" /> -->
-                                                    {!! Form::email('email', null, ['id' => 'email', 'required' => 'required', 'class' => 'form-control']) !!}
+                                                    {!! Form::email('email', $app_user->email, ['id' => 'email', 'required' => 'required', 'class' => 'form-control']) !!}
                                                 </div>
                                             </div><!-- form-group -->
 
@@ -162,7 +169,7 @@
                                                 <div class="col-sm-2">
                                                     <div class="input-group">
                                                         <!-- <input type="text" name="date_of_birth" class="form-control"  id="datepicker" required="required"> -->
-                                                        {!! Form::text('date_of_birth', null, ['id' => 'datepicker', 'required' => 'required', 'class' => 'form-control']) !!}
+                                                        {!! Form::text('date_of_birth', date_format(date_create($app_user->date_of_birth), 'd-M-Y'), ['id' => 'datepicker', 'required' => 'required', 'class' => 'form-control']) !!}
                                                         <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
                                                     </div><!-- input-group -->
                                                 </div>
@@ -176,25 +183,25 @@
                                                         <option value="Female">Female</option>
                                                         <option value="Male">Male</option>
                                                     </select> -->
-                                                    {!! Form::select('gender', array('Female' => 'Female', 'Male' => 'Male'), null, ['onchange' => 'changeGender(this)', 'id' => 'gender', 'required' => 'required', 'class' => 'width300', 'placeholder' => 'Choose One']) !!}
+                                                    {!! Form::select('gender', array('Female' => 'Female', 'Male' => 'Male'), $app_user->gender, ['onchange' => 'changeGender(this)', 'id' => 'gender', 'required' => 'required', 'class' => 'width300', 'placeholder' => 'Choose One']) !!}
                                                 </div>
                                             </div><!-- form-group -->
 
                                             <div class="form-group">
                                                 <label class="col-sm-2 control-label" style="text-align:left;">New Password</label>
                                                 <div class="col-sm-8">
-                                                    <input type="password" name="password" placeholder="" class="form-control" required="required" />
+                                                    <input type="password" name="password" placeholder="" class="form-control" />
                                                 </div>
                                             </div><!-- form-group -->
 
                                             <div class="form-group">
                                                 <label class="col-sm-2 control-label" style="text-align:left;">Confirm Password Again</label>
                                                 <div class="col-sm-8">
-                                                    <input type="password" name="password_confirmation" placeholder="" class="form-control" required="required" />
+                                                    <input type="password" name="password_confirmation" placeholder="" class="form-control" />
                                                 </div>
                                             </div><!-- form-group -->
                                             <br>
-                                            <button style="margin-left:15px;" class="btn btn-primary">Create</button>
+                                            <button style="margin-left:15px;" class="btn btn-primary">Update</button>
                                             <a href="{{url('administrators')}}"><button type="button" style="margin-left:15px;" class="btn btn-default">Back</button></a>
                                         </form>
                                     </div><!-- tab-pane -->

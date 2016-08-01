@@ -70,6 +70,7 @@ class BlurbController extends Controller
             'restaurant' => $this->restaurant->getByAttributes(['merchant_id' => $campaign->merchant_id], false),
             'campaign' => $campaign,
             'blurbs' => $this->blurb->getAllByAttributes(['merchant_id' => $campaign->merchant_id, 'campaign_id' => $campaign->id, 'blurb_status' => ucfirst($cam_status)], 'created_at', 'DESC'),
+            'blurb_category' => $this->blurbCategory->getAll(),
         );
 
         return view('blurb.view_blurbs', $data);
@@ -127,6 +128,7 @@ class BlurbController extends Controller
         $data['restaurant'] = $this->restaurant->getByAttributes(['merchant_id' => $campaign->merchant_id], false);
         $data['campaign'] = $this->campaign->getById($campaign->id);
         $data['blurb'] = $this->blurb->getById($id);
+        $data['blurb_category'] = $this->blurbCategory->getAll();
 
         return view('blurb.view', $data);
     }

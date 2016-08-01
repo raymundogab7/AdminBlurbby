@@ -15,9 +15,10 @@
                                 <div class="form-group">
                                     <label class="col-sm-2 control-label" style="text-align:left;">Category *</label>
                                     <div class="col-sm-8">
-                                        <select id="select-search-hide" data-placeholder="Choose One" class="width300" required name="blurb_category" />
-                                            <option value="Discount" <?php if ($blurb->blurb_category == 'Discount'): ?> selected <?php endif;?>>Discount</option>
-                                            <option value="Freebies" <?php if ($blurb->blurb_category == 'Freebies'): ?> selected <?php endif;?>>Freebies</option>
+                                        <select id="select-search-hide" data-placeholder="Choose One" class="width300" required id="disabledinput" disabled="" />
+                                            @foreach($blurb_category as $bc)
+                                            <option value="{{$bc['id']}}" <?php if ($bc['id'] == $blurb->category->id): ?> selected <?php endif;?>>{{$bc['blurb_cat_name']}}</option>
+                                            @endforeach
                                         </select>
                                     </div>
                                 </div><!-- form-group -->

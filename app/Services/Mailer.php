@@ -22,8 +22,8 @@ class Mailer
     public function send($view, $subject, $data, $opt = array())
     {
         $sendMail = Mail::send($view, ['data' => $data], function ($message) use ($data, $subject) {
-            $message->from('gabriel@bilinear.ph', 'Blurbby')->subject($subject);
-            $message->to($data['email'], 'Blurburry Admin')->subject($subject);
+            $message->from('gabriel@bilinear.ph', 'Blurbes')->subject($subject);
+            $message->to($data['email'], 'Blurbes Admin')->subject($subject);
         });
 
         return $sendMail;

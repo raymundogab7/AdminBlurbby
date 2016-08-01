@@ -125,7 +125,7 @@
 	                <strong>{{$blurb['blurb_status']}}</strong>
 	                </span>
                 </td>
-                <td>{{$blurb['blurb_category']}}</td>
+                <td>{{$blurb['category']['blurb_cat_name']}}</td>
                 <td>{{date_format(date_create($blurb['blurb_start']), 'd-M-Y')}}</td>
                 <td>{{date_format(date_create($blurb['blurb_end']), 'd-M-Y')}}</td>
                 <td class="table-action">
@@ -215,10 +215,9 @@
             $("input#datepicker2").datepicker('option', 'minDate', 0);
         }
     });
-
     // Date Picker
     jQuery('#datepicker').datepicker({
-        dateFormat: 'yy-mm-dd',
+        dateFormat: 'dd-M-yy',
         minDate: 0, // 0 days offset = today
         onSelect: function(dateText) {
             $sD = new Date(dateText);
@@ -226,8 +225,8 @@
         }
     });
     jQuery('#datepicker2').datepicker({
-         dateFormat: 'yy-mm-dd',
-         minDate: jQuery('#datepicker').val(),
+         dateFormat: 'dd-M-yy',
+         minDate: 0,//jQuery('#datepicker').val(),
          onSelect: function(dateText) {
             $sD = new Date(dateText);
             $("input#datepicker").datepicker('option', 'maxDate', dateText);

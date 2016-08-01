@@ -17,7 +17,8 @@ jQuery('#timepicker-ph-end-1').timepicker({showMeridian: false});
 
 //Dropzone
 Dropzone.options.profilePicture = {
-  init: function() {
+    autoProcessQueue: false,
+    init: function() {
         var myDropzone = this;
         $('#res_update_btn').on("click", function(e) {
           //e.preventDefault();
@@ -47,7 +48,9 @@ Dropzone.options.profilePicture = {
 };
 
 Dropzone.options.coverPhoto = {
-  init: function() {
+    autoProcessQueue: false,
+    init: function() {
+        var myDropzone = this;
         $('#res_update_btn').on("click", function(e) {
           //e.preventDefault();
           e.stopPropagation();

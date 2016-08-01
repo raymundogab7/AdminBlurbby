@@ -152,19 +152,18 @@
             $("input#datepicker2").datepicker('option', 'minDate', 0);
         }
     });
-
-	// Date Picker
-	jQuery('#datepicker').datepicker({
-        dateFormat: 'yy-mm-dd',
+    // Date Picker
+    jQuery('#datepicker').datepicker({
+        dateFormat: 'dd-M-yy',
         minDate: 0, // 0 days offset = today
         onSelect: function(dateText) {
             $sD = new Date(dateText);
             $("input#datepicker2").datepicker('option', 'minDate', dateText);
         }
     });
-	jQuery('#datepicker2').datepicker({
-         dateFormat: 'yy-mm-dd',
-         minDate: jQuery('#datepicker').val(),
+    jQuery('#datepicker2').datepicker({
+         dateFormat: 'dd-M-yy',
+         minDate: 0,//jQuery('#datepicker').val(),
          onSelect: function(dateText) {
             $sD = new Date(dateText);
             $("input#datepicker").datepicker('option', 'maxDate', dateText);

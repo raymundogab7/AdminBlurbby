@@ -36,7 +36,13 @@ class ImageUploader
         $target_file = $target_dir;
 
         $image = new SimpleImage();
-        $image->load($file);
+
+        if (in_array($file->getClientOriginalExtension(), array('png', 'PNG'))) {
+            $image->load($file, IMAGETYPE_PNG);
+        } else {
+            $image->load($file);
+        }
+
         $image->resize($width, $height);
 
         return ['success' => $image->save($target_file)];

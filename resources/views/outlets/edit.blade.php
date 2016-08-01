@@ -126,7 +126,7 @@
                                 <div class="col-xs-3 col-sm-2">
                                     <div class="bootstrap-timepicker">
                                         <!-- <input id="timepicker-mon-start-1" type="text" class="form-control" value="21:00"/> -->
-                                        {!! Form::text('outlet_mon_start', $outlet->outlet_mon_start, ['id' => 'timepicker-mon-start-1', 'class' => 'toggle-timepicker-mon-active-toggle form-control']) !!}
+                                        {!! Form::text('outlet_mon_start', $outlet->outlet_mon_start, ['id' => 'timepicker-mon-start-1', 'class' => 'toggle-timepicker-mon-active-toggle form-control time-sched']) !!}
                                     </div>
                                 </div>
                                 <div class="col-xs-1" style="width:40px;padding-top:12px;">
@@ -135,7 +135,7 @@
                                 <div class="col-xs-3 col-sm-2">
                                     <div class="bootstrap-timepicker">
                                         <!-- <input id="timepicker-mon-end-1" type="text" class="form-control" value="21:00"/> -->
-                                        <div class="bootstrap-timepicker">{!! Form::text('outlet_mon_end', $outlet->outlet_mon_end, ['id' => 'timepicker-mon-end-1', 'class' => 'toggle-timepicker-mon-active-toggle form-control']) !!}</div>
+                                        <div class="bootstrap-timepicker">{!! Form::text('outlet_mon_end', $outlet->outlet_mon_end, ['id' => 'timepicker-mon-end-1', 'class' => 'toggle-timepicker-mon-active-toggle form-control time-sched']) !!}</div>
                                     </div>
                                 </div>
                             </div><!-- form-group -->
@@ -152,13 +152,13 @@
                                 </div>
                                 <div class="col-xs-3 col-sm-2">
                                     <!-- <div class="bootstrap-timepicker"><input id="timepicker-tue-start-1" type="text" class="form-control" value="07:00"/></div> -->
-                                    <div class="bootstrap-timepicker">{!! Form::text('outlet_tue_start', $outlet->outlet_tue_start, ['id' => 'timepicker-tue-start-1', 'class' => 'toggle-timepicker-tue-active-toggle form-control']) !!}</div>
+                                    <div class="bootstrap-timepicker">{!! Form::text('outlet_tue_start', $outlet->outlet_tue_start, ['id' => 'timepicker-tue-start-1', 'class' => 'toggle-timepicker-tue-active-toggle form-control time-sched']) !!}</div>
                                 </div>
                                 <div class="col-xs-1" style="width:40px;padding-top:12px;">
                                     <p style="text-align:center;">to</p>
                                 </div>
                                 <div class="col-xs-3 col-sm-2">
-                                    <div class="bootstrap-timepicker">{!! Form::text('outlet_tue_end', $outlet->outlet_tue_end, ['id' => 'timepicker-tue-end-1', 'class' => 'toggle-timepicker-tue-active-toggle form-control']) !!}</div>
+                                    <div class="bootstrap-timepicker">{!! Form::text('outlet_tue_end', $outlet->outlet_tue_end, ['id' => 'timepicker-tue-end-1', 'class' => 'toggle-timepicker-tue-active-toggle form-control time-sched']) !!}</div>
                                 </div>
                             </div><!-- form-group -->
 
@@ -173,13 +173,13 @@
                                     <input name="outlet_wed_active" value="{{$outlet->outlet_wed_active}}" type="hidden" class="form-control wed-active-toggle" />
                                 </div>
                                 <div class="col-xs-3 col-sm-2">
-                                    <div class="bootstrap-timepicker">{!! Form::text('outlet_wed_start', $outlet->outlet_wed_start, ['id' => 'timepicker-wed-start-1', 'class' => 'toggle-timepicker-wed-active-toggle form-control']) !!}</div>
+                                    <div class="bootstrap-timepicker">{!! Form::text('outlet_wed_start', $outlet->outlet_wed_start, ['id' => 'timepicker-wed-start-1', 'class' => 'toggle-timepicker-wed-active-toggle form-control time-sched']) !!}</div>
                                 </div>
                                 <div class="col-xs-1" style="width:40px;padding-top:12px;">
                                     <p style="text-align:center;">to</p>
                                 </div>
                                 <div class="col-xs-3 col-sm-2">
-                                    <div class="bootstrap-timepicker">{!! Form::text('outlet_wed_end', $outlet->outlet_wed_end, ['id' => 'timepicker-wed-end-1', 'class' => 'toggle-timepicker-wed-active-toggle form-control']) !!}</div>
+                                    <div class="bootstrap-timepicker">{!! Form::text('outlet_wed_end', $outlet->outlet_wed_end, ['id' => 'timepicker-wed-end-1', 'class' => 'toggle-timepicker-wed-active-toggle form-control time-sched']) !!}</div>
                                 </div>
                             </div><!-- form-group -->
 
@@ -194,13 +194,13 @@
                                     <input name="outlet_thu_active" value="{{$outlet->outlet_thu_active}}" type="hidden" class="form-control thu-active-toggle" />
                                 </div>
                                 <div class="col-xs-3 col-sm-2">
-                                    <div class="bootstrap-timepicker">{!! Form::text('outlet_thu_start', $outlet->outlet_thu_start, ['id' => 'timepicker-thu-start-1', 'class' => 'toggle-timepicker form-control']) !!}</div>
+                                    <div class="bootstrap-timepicker">{!! Form::text('outlet_thu_start', $outlet->outlet_thu_start, ['id' => 'timepicker-thu-start-1', 'class' => 'toggle-timepicker form-control time-sched']) !!}</div>
                                 </div>
                                 <div class="col-xs-1" style="width:40px;padding-top:12px;">
                                     <p style="text-align:center;">to</p>
                                 </div>
                                 <div class="col-xs-3 col-sm-2">
-                                    <div class="bootstrap-timepicker">{!! Form::text('outlet_thu_end', $outlet->outlet_thu_end, ['id' => 'timepicker-thu-end-1', 'class' => 'toggle-timepicker form-control']) !!}</div>
+                                    <div class="bootstrap-timepicker">{!! Form::text('outlet_thu_end', $outlet->outlet_thu_end, ['id' => 'timepicker-thu-end-1', 'class' => 'toggle-timepicker form-control time-sched']) !!}</div>
                                 </div>
                             </div><!-- form-group -->
 
@@ -215,13 +215,13 @@
                                     <input name="outlet_fri_active" value="{{$outlet->outlet_fri_active}}" type="hidden" class="form-control fri-active-toggle" />
                                 </div>
                                 <div class="col-xs-3 col-sm-2">
-                                    <div class="bootstrap-timepicker">{!! Form::text('outlet_fri_start', $outlet->outlet_fri_start, ['id' => 'timepicker-fri-start-1', 'class' => 'toggle-timepicker-fri-active-toggle form-control']) !!}</div>
+                                    <div class="bootstrap-timepicker">{!! Form::text('outlet_fri_start', $outlet->outlet_fri_start, ['id' => 'timepicker-fri-start-1', 'class' => 'toggle-timepicker-fri-active-toggle form-control time-sched']) !!}</div>
                                 </div>
                                 <div class="col-xs-1" style="width:40px;padding-top:12px;">
                                     <p style="text-align:center;">to</p>
                                 </div>
                                 <div class="col-xs-3 col-sm-2">
-                                    <div class="bootstrap-timepicker">{!! Form::text('outlet_fri_end', $outlet->outlet_fri_end, ['id' => 'timepicker-fri-end-1', 'class' => 'toggle-timepicker-fri-active-toggle form-control']) !!}</div>
+                                    <div class="bootstrap-timepicker">{!! Form::text('outlet_fri_end', $outlet->outlet_fri_end, ['id' => 'timepicker-fri-end-1', 'class' => 'toggle-timepicker-fri-active-toggle form-control time-sched']) !!}</div>
                                 </div>
                             </div><!-- form-group -->
 
@@ -236,13 +236,13 @@
                                     <input name="outlet_sat_active" value="{{$outlet->outlet_sat_active}}" type="hidden" class="form-control sat-active-toggle" />
                                 </div>
                                 <div class="col-xs-3 col-sm-2">
-                                    <div class="bootstrap-timepicker">{!! Form::text('outlet_sat_start', $outlet->outlet_sat_start, ['id' => 'timepicker-sat-start-1', 'class' => 'toggle-timepicker form-control']) !!}</div>
+                                    <div class="bootstrap-timepicker">{!! Form::text('outlet_sat_start', $outlet->outlet_sat_start, ['id' => 'timepicker-sat-start-1', 'class' => 'toggle-timepicker form-control time-sched']) !!}</div>
                                 </div>
                                 <div class="col-xs-1" style="width:40px;padding-top:12px;">
                                     <p style="text-align:center;">to</p>
                                 </div>
                                 <div class="col-xs-3 col-sm-2">
-                                    <div class="bootstrap-timepicker">{!! Form::text('outlet_sat_end', $outlet->outlet_sat_end, ['id' => 'timepicker-sat-end-1', 'class' => 'toggle-timepicker form-control']) !!}</div>
+                                    <div class="bootstrap-timepicker">{!! Form::text('outlet_sat_end', $outlet->outlet_sat_end, ['id' => 'timepicker-sat-end-1', 'class' => 'toggle-timepicker form-control time-sched']) !!}</div>
                                 </div>
                             </div><!-- form-group -->
 
@@ -257,13 +257,13 @@
                                     <input name="outlet_sun_active" value="{{$outlet->outlet_sun_active}}" type="hidden" class="form-control sun-active-toggle" />
                                 </div>
                                 <div class="col-xs-3 col-sm-2">
-                                    <div class="bootstrap-timepicker">{!! Form::text('outlet_sun_start', $outlet->outlet_sun_start, ['id' => 'timepicker-sun-start-1', 'class' => 'toggle-timepicker form-control']) !!}</div>
+                                    <div class="bootstrap-timepicker">{!! Form::text('outlet_sun_start', $outlet->outlet_sun_start, ['id' => 'timepicker-sun-start-1', 'class' => 'toggle-timepicker form-control time-sched']) !!}</div>
                                 </div>
                                 <div class="col-xs-1" style="width:40px;padding-top:12px;">
                                     <p style="text-align:center;">to</p>
                                 </div>
                                 <div class="col-xs-3 col-sm-2">
-                                    <div class="bootstrap-timepicker">{!! Form::text('outlet_sun_end', $outlet->outlet_sun_end, ['id' => 'timepicker-sun-end-1', 'class' => 'toggle-timepicker form-control']) !!}</div>
+                                    <div class="bootstrap-timepicker">{!! Form::text('outlet_sun_end', $outlet->outlet_sun_end, ['id' => 'timepicker-sun-end-1', 'class' => 'toggle-timepicker form-control time-sched']) !!}</div>
                                 </div>
                             </div><!-- form-group -->
 
@@ -278,13 +278,13 @@
                                     <input name="outlet_ph_active" value="{{$outlet->outlet_ph_active}}" type="hidden" class="form-control ph-active-toggle" />
                                 </div>
                                 <div class="col-xs-3 col-sm-2">
-                                    <div class="bootstrap-timepicker">{!! Form::text('outlet_ph_start', $outlet->outlet_ph_start, ['id' => 'timepicker-ph-start-1', 'class' => 'toggle-timepicker form-control']) !!}</div>
+                                    <div class="bootstrap-timepicker">{!! Form::text('outlet_ph_start', $outlet->outlet_ph_start, ['id' => 'timepicker-ph-start-1', 'class' => 'toggle-timepicker form-control time-sched']) !!}</div>
                                 </div>
                                 <div class="col-xs-1" style="width:40px;padding-top:12px;">
                                     <p style="text-align:center;">to</p>
                                 </div>
                                 <div class="col-xs-3 col-sm-2">
-                                    <div class="bootstrap-timepicker">{!! Form::text('outlet_ph_end', $outlet->outlet_ph_end, ['id' => 'timepicker-ph-end-1', 'class' => 'toggle-timepicker form-control']) !!}</div>
+                                    <div class="bootstrap-timepicker">{!! Form::text('outlet_ph_end', $outlet->outlet_ph_end, ['id' => 'timepicker-ph-end-1', 'class' => 'toggle-timepicker form-control time-sched']) !!}</div>
                                 </div>
                             </div><!-- form-group -->
 
@@ -341,6 +341,23 @@
       }
     });
 </script>
+<script type="text/javascript">
+     $(function(){
+        $('.time-sched').inputmask("hh:mm", {
+            //placeholder: "HH:MM",
+            insertMode: false,
+            showMaskOnHover: false,
+            //hourFormat: 24
+        });
+
+        $(function() {
+            $('td').on('keydown', '.bootstrap-timepicker-hour', function(e){-1!==$.inArray(e.keyCode,[46,8,9,27,13,110,190])||/65|67|86|88/.test(e.keyCode)&&(!0===e.ctrlKey||!0===e.metaKey)||35<=e.keyCode&&40>=e.keyCode||(e.shiftKey||48>e.keyCode||57<e.keyCode)&&(96>e.keyCode||105<e.keyCode)&&e.preventDefault()});
+
+            $('td').on('keydown', '.bootstrap-timepicker-minute', function(e){-1!==$.inArray(e.keyCode,[46,8,9,27,13,110,190])||/65|67|86|88/.test(e.keyCode)&&(!0===e.ctrlKey||!0===e.metaKey)||35<=e.keyCode&&40>=e.keyCode||(e.shiftKey||48>e.keyCode||57<e.keyCode)&&(96>e.keyCode||105<e.keyCode)&&e.preventDefault()});
+        });
+    });
+</script>
+<script src="https://rawgit.com/RobinHerbots/jquery.inputmask/3.x/dist/jquery.inputmask.bundle.js"></script>
 <script type="text/javascript" src="{{asset('js/dropzone.min.js')}}"></script>
 <script type="text/javascript" src="{{asset('js/toggles.min.js')}}"></script>
 <script type="text/javascript" src="{{asset('js/bootstrap-timepicker.min.js')}}"></script>

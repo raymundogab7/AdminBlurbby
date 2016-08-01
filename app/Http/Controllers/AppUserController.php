@@ -59,9 +59,24 @@ class AppUserController extends Controller
     }
 
     /**
-     * Store a new administrator.
+     * Display edit app user page.
+     *
+     * @return View
+     */
+    public function edit($id)
+    {
+        $data = array(
+            'app_user' => $this->appUser->getById($id),
+        );
+
+        return view('app_user.edit', $data);
+    }
+
+    /**
+     * Store an app user.
      *
      * @param AppUserRequest $request
+     * @param ImageUploader $imageUploader
      * @return View
      */
     public function store(AppUserRequest $request, ImageUploader $imageUploader)
@@ -80,15 +95,46 @@ class AppUserController extends Controller
             return redirect('app-users/create')->with('error', 'Invalid Format')->withInput();
         }
 
-        $request->merge(['status' => 'Pending Email Verification', 'date_of_birth' => date_format(date_create($request->date_of_birth), 'Y-m-d')]);
+        $request->merge(['date_created' => 'Y-m-d', 'status' => 'Pending Email Approval', 'date_of_birth' => date_format(date_create($request->date_of_birth), 'Y-m-d')]);
 
         $new_app_user = $this->appUser->create($request->except('_token'));
 
-        $this->appUser->updateByAttributes(['id' => $new_app_user->id], ['photo' => 'app_user_profile_photo/' . $new_app_user->id]);
+        $this->appUser->updateByAttributes(['id' => $new_app_user->id], ['profile_photo' => 'app_user_profile_photo/' . $new_app_user->id . '/' . $new_app_user->id . '.' . $file->getClientOriginalExtension()]);
 
-        $imageUploader->upload($file, $new_app_user->id, 128, 128, 'app_user_profile_photo/', '/' . $new_app_user->id . '.jpg');
+        $imageUploader->upload($file, $new_app_user->id, 128, 128, 'app_user_profile_photo/', '/' . $new_app_user->id . '.' . $file->getClientOriginalExtension());
 
-        return redirect('app-users/create')->with('message', 'Successfully Created.');
+        return redirect('app-users')->with('message', 'Successfully Created.');
+    }
+
+    /**
+     * Update an app user.
+     *
+     * @param integer $id
+     * @param AppUserRequest $request
+     * @param ImageUploader $imageUploader
+     * @return View
+     */
+    public function update($id, AppUserRequest $request, ImageUploader $imageUploader)
+    {
+        if (!is_null($request->file('profile_photo'))) {
+            $file = $request->file('profile_photo');
+
+            if (!$file->isValid()) {
+                return redirect('app-users/' . $id . '/edit')->with('error', 'Profile photo file size is too large.')->withInput();
+            }
+
+            if (!in_array($file->getClientOriginalExtension(), array('gif', 'png', 'jpg', 'jpeg', 'PNG', 'JPG'))) {
+                return redirect('app-users/' . $id . '/edit')->with('error', 'Invalid Format')->withInput();
+            }
+
+            $imageUploader->upload($file, $new_app_user->id, 128, 128, 'app_user_profile_photo/', '/' . $new_app_user->id . '.' . $file->getClientOriginalExtension());
+        }
+
+        $request->merge(['date_of_birth' => date_format(date_create($request->date_of_birth), 'Y-m-d')]);
+
+        $this->appUser->updateByAttributes(['id' => $id], $request->except('_token', '_method', 'app_user_id', 'password_confirmation'));
+
+        return redirect('app-users/' . $id . '/edit')->with('message', 'Successfully Updated.');
     }
 
     /**

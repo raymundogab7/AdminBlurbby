@@ -2,11 +2,10 @@
 
 namespace Admin\Http\Controllers;
 
-use Illuminate\Http\Request;
 use Admin\Http\Requests\OutletRequest;
 use Admin\Repositories\Interfaces\OutletInterface;
-use Auth;
 use Admin\Repositories\Interfaces\RestaurantInterface;
+use Illuminate\Http\Request;
 
 class OutletController extends Controller
 {
@@ -58,10 +57,10 @@ class OutletController extends Controller
 
         if ($this->outlet->create($request->all())) {
 
-            return redirect('outlets/'.$request->merchant_id.'/create')->with('message', 'Successfully created.');
+            return redirect('merchants/' . $request->merchant_id . '/edit')->with('message', 'Successfully created.');
         }
 
-        return redirect('outlets/'.$request->merchant_id.'/create')->withInput();
+        return redirect('outlets/' . $request->merchant_id . '/create')->withInput();
     }
 
     /**
@@ -74,7 +73,7 @@ class OutletController extends Controller
     {
         $data['outlet'] = $this->outlet->getById($id);
         $data['restaurant'] = $this->restaurant->getByAttributes(['merchant_id' => $merchant_id], false);
-        
+
         return view('outlets.edit', $data);
     }
 
@@ -108,7 +107,7 @@ class OutletController extends Controller
             return back()->with('message', 'Successfully deleted.');
         }
 
-        return back()->with('message', 'Error while deleting.');;
+        return back()->with('message', 'Error while deleting.');
     }
 
     /**

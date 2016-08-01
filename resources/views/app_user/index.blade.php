@@ -131,7 +131,7 @@
                                 <a href="{{url('app-users/'.$user['id'].'/edit')}}" class="list-group-item">
                                     <div class="media">
                                         <div class="pull-left">
-                                        	@if($user['photo'] == null || $user['photo'] == '')
+                                        	@if($user['profile_photo'] == null || $user['profile_photo'] == '')
                                             <img class="img-circle img-online" src="{{asset('images/photos/user1.png')}}" alt="...">
                                             @else
                                             <img class="img-circle img-online" src="{{asset('app_user_profile_photo/'.$user['id'].'/'.$user['id']. '.jpg')}}" alt="...">

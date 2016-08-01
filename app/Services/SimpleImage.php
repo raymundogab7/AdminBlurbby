@@ -106,8 +106,12 @@ class SimpleImage
 
     public function resize($width, $height)
     {
+        $colorRgb = array('red' => 255, 'green' => 255, 'blue' => 255);
         $new_image = imagecreatetruecolor($width, $height);
-        imagecopyresampled($new_image, $this->image, 0, 0, 0, 0, $width, $height, $this->getWidth(), $this->getHeight());
+        $color = imagecolorallocate($new_image, $colorRgb['red'], $colorRgb['green'], $colorRgb['blue']);
+        imagefill($new_image, 0, 0, $color);
+        imagecopy($new_image, $this->image, 0, 0, 0, 0, $width, $height);
+        //imagecopyresampled($new_image, $this->image, 0, 0, 0, 0, $width, $height, $this->getWidth(), $this->getHeight());
         $this->image = $new_image;
     }
 
