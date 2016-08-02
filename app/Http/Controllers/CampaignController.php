@@ -262,6 +262,8 @@ class CampaignController extends Controller
     {
         $campaign = $this->campaign->getById($id);
 
+        $request->merge(array('cam_start' => date_format(date_create($request->cam_start), 'Y-m-d'), 'cam_end' => date_format(date_create($request->cam_end), 'Y-m-d')));
+
         if ($this->campaign->updateById($id, $request->all())) {
 
             if ($request->cam_status == "Approved") {
@@ -280,6 +282,12 @@ class CampaignController extends Controller
                 if ($campaign->cam_status != "Rejected") {
                     $mailer->send('emails.campaign_rejected', 'Your Campaign Needs Some Revision(s)', $data[0]);
                 }
+            }
+
+            $this->blurb->updateByAttributesWithCondition(['campaign_id' => $id], ['blurb_status' => $request->cam_status]);
+
+            if ($request->cam_status == "Draft") {
+                $this->blurb->updateByAttributesWithCondition(['campaign_id' => $id], ['blurb_status' => 'Created']);
             }
 
             return redirect('campaigns/' . $id)->with('message', 'Successfully updated.');
@@ -312,6 +320,7 @@ class CampaignController extends Controller
      */
     public function updateStatus($id, Request $request)
     {
+        dd($request->cam_status);
         if (empty($this->blurb->getAllByAttributes(['campaign_id' => $id], 'created_at'))) {
             return redirect('campaigns/' . $id)->withInput()->with('message_error', 'There are no blurbs in this campaign.');
         }

@@ -16,7 +16,7 @@
                                 <div class="form-group">
                                     <label class="col-sm-2 control-label" style="text-align:left;">Category *</label>
                                     <div class="col-sm-8">
-                                        <select name="blurb_category" id="select-search-hide" data-placeholder="Choose One" class="width300" required />
+                                        <select name="blurb_category_id" id="select-search-hide" data-placeholder="Choose One" class="width300" required />
                                             <option value="">Choose One</option>
                                             @foreach($blurb_category as $bc)
                                             <option value="{{$bc['id']}}" <?php if ($bc['id'] == $blurb->category->id): ?> selected <?php endif;?>>{{$bc['blurb_cat_name']}}</option>

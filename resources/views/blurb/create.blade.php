@@ -133,17 +133,18 @@
                                     <div class="col-sm-8">
                                     	{!! Form::hidden('merchant_id', $campaign->merchant_id, ['required' => 'required', 'class' => 'form-control', 'readonly' => 'readonly']) !!}
                                     	{!! Form::hidden('campaign_id', $campaign->id, ['required' => 'required', 'class' => 'form-control', 'readonly' => 'readonly']) !!}
+                                    	{!! Form::hidden('control_no_temp', $campaign->control_no, ['id' => 'control_no', 'required' => 'required', 'class' => 'form-control', 'readonly' => 'readonly']) !!}
                                         {!! Form::text('blurb_name', null, ['id' => 'blurb_name_keyup', 'required' => 'required', 'class' => 'form-control blurb']) !!}
                                     </div>
                                 </div><!-- form-group -->
-								{!! Form::hidden('control_no', null, ['readonly' => 'readonly', 'id' => 'control_no', 'class' => 'form-control blurb']) !!}
 								<div class="form-group">
                                     <label class="col-sm-2 control-label" style="text-align:left;">Category *</label>
                                     <div class="col-sm-8">
-                                        <select name="blurb_category" id="select-search-hide" data-placeholder="Choose One" class="width300" required />
+                                        <select name="blurb_category_id" id="select-search-hide" data-placeholder="Choose One" class="width300" required />
 											<option value="">Choose One</option>
-											<option value="Discount">Discount</option>
-											<option value="Freebies">Freebies</option>
+                                            @foreach($blurb_category as $bc)
+                                            <option value="{{$bc['id']}}">{{$bc['blurb_cat_name']}}</option>
+                                            @endforeach
 										</select>
                                     </div>
                                 </div><!-- form-group -->

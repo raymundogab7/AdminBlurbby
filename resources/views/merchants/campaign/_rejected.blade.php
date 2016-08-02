@@ -122,7 +122,7 @@
 		                <strong>{{$blurb['blurb_status']}}</strong>
 		                </span>
 	                </td>
-	                <td>{{$blurb['blurb_category']}}</td>
+	                <td>{{$blurb['category']['blurb_cat_name']}}</td>
 	                <td>{{date_format(date_create($blurb['blurb_start']), 'd-M-Y')}}</td>
                 	<td>{{date_format(date_create($blurb['blurb_end']), 'd-M-Y')}}</td>
 	                <td class="table-action">

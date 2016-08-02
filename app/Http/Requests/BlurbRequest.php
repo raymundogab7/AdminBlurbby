@@ -42,7 +42,7 @@ class BlurbRequest extends Request
     public function response(array $errors)
     {
         if (is_null($this->blurb_id)) {
-            return $this->redirector->to('blurb/create/' . $this->control_no)
+            return $this->redirector->to('blurb/create/' . $this->control_no_temp)
                 ->withInput()
                 ->with(['errors' => $errors]);
         }

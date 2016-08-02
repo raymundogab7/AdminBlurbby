@@ -6,14 +6,14 @@
                 <input type="text" value="{{$campaign->campaign_name}}" class="form-control" id="disabledinput" disabled="" />
             </div>
         </div><!-- form-group -->
-        
+
         <div class="form-group">
             <label class="col-sm-2 control-label" style="text-align:left;">Timezone *</label>
             <div class="col-sm-8">
                 <input type="text" value="GMT +08:00 (Singapore)" id="disabledinput" class="form-control" disabled="" />
             </div>
         </div><!-- form-group -->
-        
+
         <div class="form-group">
             <label class="col-sm-2 control-label" style="text-align:left;">Start Date *</label>
             <div class="col-sm-8">
@@ -23,7 +23,7 @@
                 </div><!-- input-group -->
             </div>
         </div><!-- form-group -->
-        
+
         <div class="form-group">
             <label class="col-sm-2 control-label" style="text-align:left;">End Date *</label>
             <div class="col-sm-8">
@@ -33,7 +33,7 @@
                 </div><!-- input-group -->
             </div>
         </div><!-- form-group -->
-        
+
         <div class="form-group">
             <label class="col-sm-2 control-label" style="text-align:left;">Status</label>
             <div class="col-sm-8">
@@ -66,7 +66,7 @@
                 <th></th>
             </tr>
         </thead>
- 
+
         <tbody>
             @foreach($blurbs as $blurb)
             <tr>
@@ -92,7 +92,7 @@
                     <strong>{{$blurb['blurb_status']}}</strong>
                     </span>
                 </td>
-                <td>{{$blurb['blurb_category']}}</td>
+                <td>{{$blurb['category']['blurb_cat_name']}}</td>
                 <td>{{date_format(date_create($blurb['blurb_start']), 'd-M-Y')}}</td>
                 <td>{{date_format(date_create($blurb['blurb_end']), 'd-M-Y')}}</td>
                 <td class="table-action">
