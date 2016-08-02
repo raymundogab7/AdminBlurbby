@@ -32,7 +32,13 @@
                         <div class="col-sm-12 col-md-3 col-xs-12" style="padding-bottom:30px;max-width:417px;min-width:300px;">
                             <div style="border: 1px solid #ccc;">
                                 <div class="text-center" style="background:url({{asset('images/profile-background.jpg')}});    background-size:cover;">
-                                    <img src="{{asset('profile_photo/'.$admin->id.'/'.$admin->id.'.jpg')}}" class="img-circle img-offline img-responsive img-profile" style="max-width:80px;margin-top:45px;" alt="" />
+                                    @if($admin->profile_photo == null || $admin->profile_photo == '')
+                                    <?php $pp_url = asset('images/photos/profile-big.jpg');?>
+                                    @else
+                                    <?php $pp_url = asset($admin->profile_photo);?>
+                                    @endif
+
+                                    <img src="{{$pp_url}}" class="img-circle img-offline img-responsive img-profile" style="max-width:80px;margin-top:45px;" alt="" />
                                     <h4 class="profile-name mb5" style="color:#fff;padding-bottom:45px;font-size:16px;margin-top:5px;">Royce Cheng</h4>
 
                                 </div><!-- text-center -->
@@ -142,7 +148,7 @@
                                     <label class="col-sm-2 control-label" style="text-align:left;">Profile Photo</label>
                                     <div class="col-sm-5">
                                         <!-- <input name="file" type="file" name="profile_photo" required="required" /> -->
-                                        {!! Form::file('profile_photo', null, []) !!}
+                                        {!! Form::file('profile_photo_temp', null, []) !!}
                                         <span class="help-block">Must be at least 500px x 500px.</span>
                                     </div>
                                 </div>

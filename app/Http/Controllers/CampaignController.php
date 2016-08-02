@@ -260,6 +260,7 @@ class CampaignController extends Controller
      */
     public function update($id, CampaignRequest $request, Mailer $mailer)
     {
+
         $campaign = $this->campaign->getById($id);
 
         $request->merge(array('cam_start' => date_format(date_create($request->cam_start), 'Y-m-d'), 'cam_end' => date_format(date_create($request->cam_end), 'Y-m-d')));
@@ -290,7 +291,16 @@ class CampaignController extends Controller
                 $this->blurb->updateByAttributesWithCondition(['campaign_id' => $id], ['blurb_status' => 'Created']);
             }
 
+            if (is_null($request->cam_status)) {
+                return redirect('merchants/' . $id . '/edit-campaign')->with('message', 'Successfully updated.');
+            }
+
             return redirect('campaigns/' . $id)->with('message', 'Successfully updated.');
+
+        }
+
+        if (is_null($request->cam_status)) {
+            return redirect('merchants/' . $id . '/edit-campaign')->withInput()->with('message_error', 'Error while deleting campaign. Please try again.');
         }
 
         return redirect('campaigns/' . $id)->withInput()->with('message_error', 'Error while deleting campaign. Please try again.');

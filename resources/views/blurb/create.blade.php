@@ -51,9 +51,9 @@
 
 							@if(!is_null($restaurant->res_logo))
 				            @if($restaurant->photo_location == 'merchant')
-                            <img class="img-roundedcircle img-offline img-responsive img-profile" src="{{( is_null($restaurant->res_logo)) ? env('MERCHANT_URL').'/images/nopp.jpg' : env('MERCHANT_URL').'/uploads/'.$restaurant->merchant_id.'/profile_picture.jpg'}}" style="max-width:50px;margin:20px 10px 20px 20px;" alt="">
+                            <img class="img-roundedcircle img-offline img-responsive img-profile" src="{{( is_null($restaurant->res_logo)) ? env('MERCHANT_URL').'/images/nopp.jpg' : env('MERCHANT_URL').'/'.$restaurant->res_logo}}" style="max-width:50px;margin:20px 10px 20px 20px;" alt="">
                             @else
-                            <img class="img-roundedcircle img-online" src="{{asset($restaurant->res_logo.'/profile_picture.jpg')}}" style="max-width:50px;margin:20px 10px 20px 20px;" alt="">
+                            <img class="img-roundedcircle img-online" src="{{asset($restaurant->res_logo)}}" style="max-width:50px;margin:20px 10px 20px 20px;" alt="">
                             @endif
 				            @else
 				            <!-- <div style="max-width:50px;margin:20px 10px 20px 20px;" class="img-roundedcircle square img-offline img-responsive img-profile">

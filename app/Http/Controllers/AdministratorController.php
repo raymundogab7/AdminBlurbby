@@ -93,11 +93,13 @@ class AdministratorController extends Controller
             return redirect('administrators/create')->with('error', 'Invalid Format')->withInput();
         }
 
-        $request->merge(['status' => 'Pending Admin Approval', 'date_of_birth' => date_format(date_create($request->date_of_birth), 'Y-m-d')]);
+        $request->merge(['password' => bcrypt($request->password), 'status' => 'Pending Admin Approval', 'date_of_birth' => date_format(date_create($request->date_of_birth), 'Y-m-d')]);
 
         $new_admin = $this->admin->create($request->except('_token'));
 
-        $imageUploader->upload($file, $new_admin->id, 500, 500, 'profile_photo/', '/' . $new_admin->id . '.jpg');
+        $this->admin->updateByAttributes(['id' => $new_admin->id], ['profile_photo' => 'admin_profile_photo/' . $new_admin->id . '/' . $new_admin->id . '.' . $file->getClientOriginalExtension()]);
+
+        $imageUploader->upload($file, $new_admin->id, 60, 60, 'admin_profile_photo/', '/' . $new_admin->id . '.' . $file->getClientOriginalExtension());
 
         return redirect('administrators/create')->with('messsage', 'Successfully Created.');
     }
@@ -120,7 +122,7 @@ class AdministratorController extends Controller
      */
     public function update($id, AdministratorRequest $request, ImageUploader $imageUploader)
     {
-        $file = $request->file('profile_photo');
+        $file = $request->file('profile_photo_temp');
 
         if (!is_null($file)) {
 
@@ -132,12 +134,20 @@ class AdministratorController extends Controller
                 return redirect('administrators/' . $id . '/edit')->with('error', 'Invalid Format')->withInput();
             }
 
-            $imageUploader->upload($file, $id, 500, 500, 'profile_photo/', '/' . $id . '.jpg');
+            $imageUploader->upload($file, $id, 60, 60, 'admin_profile_photo/', '/' . $id . '.' . $file->getClientOriginalExtension());
+            $request->merge(['profile_photo' => 'admin_profile_photo/' . $id . '/' . $id . '.' . $file->getClientOriginalExtension()]);
         }
 
         $request->merge(['date_of_birth' => date_format(date_create($request->date_of_birth), 'Y-m-d')]);
 
-        $this->admin->updateByAttributes(['id' => $id], $request->except('_token', '_method', 'admin_id', 'password_confirmation'));
+        $req = $request->except('_token', '_method', 'admin_id', 'password_confirmation', 'password', 'profile_photo_temp');
+
+        if ($request->password != "") {
+            $request->merge(['password' => bcrypt($request->password)]);
+            $req = $request->except('_token', '_method', 'admin_id', 'password_confirmation', 'profile_photo_temp');
+        }
+
+        $this->admin->updateByAttributes(['id' => $id], $req);
 
         return redirect('administrators/' . $id . '/edit')->with('message', 'Successfully Updated.');
     }

@@ -32,7 +32,7 @@
                         <div class="col-sm-12 col-md-3 col-xs-12" style="padding-bottom:30px;max-width:417px;min-width:300px;">
                             <div style="border: 1px solid #ccc;">
                                 @if($app_user->profile_photo == null || $app_user->profile_photo == '')
-                                <?php $pp_url = asset('images/profile-background.jpg');?>
+                                <?php $pp_url = asset($app_user->profile_photo);?>
                                 @else
                                 <?php $pp_url = $app_user->profile_photo;?>
                                 @endif
@@ -135,7 +135,7 @@
                                                 <label class="col-sm-2 control-label" style="text-align:left;">Profile Photo</label>
                                                 <div class="col-sm-5">
                                                     <!-- <input name="file" type="file" name="profile_photo" required="required" /> -->
-                                                    {!! Form::file('profile_photo', null, ['required' => 'required']) !!}
+                                                    {!! Form::file('profile_photo_temp', null, ['required' => 'required']) !!}
                                                     <span class="help-block">Must be at least 500px x 500px.</span>
                                                 </div>
                                             </div>

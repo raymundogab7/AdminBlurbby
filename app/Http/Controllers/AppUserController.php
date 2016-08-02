@@ -95,7 +95,7 @@ class AppUserController extends Controller
             return redirect('app-users/create')->with('error', 'Invalid Format')->withInput();
         }
 
-        $request->merge(['date_created' => 'Y-m-d', 'status' => 'Pending Email Approval', 'date_of_birth' => date_format(date_create($request->date_of_birth), 'Y-m-d')]);
+        $request->merge(['password' => bcrypt($request->password), 'date_created' => 'Y-m-d', 'status' => 'Pending Email Approval', 'date_of_birth' => date_format(date_create($request->date_of_birth), 'Y-m-d')]);
 
         $new_app_user = $this->appUser->create($request->except('_token'));
 
@@ -116,8 +116,9 @@ class AppUserController extends Controller
      */
     public function update($id, AppUserRequest $request, ImageUploader $imageUploader)
     {
-        if (!is_null($request->file('profile_photo'))) {
-            $file = $request->file('profile_photo');
+
+        if (!is_null($request->file('profile_photo_temp'))) {
+            $file = $request->file('profile_photo_temp');
 
             if (!$file->isValid()) {
                 return redirect('app-users/' . $id . '/edit')->with('error', 'Profile photo file size is too large.')->withInput();
@@ -127,12 +128,20 @@ class AppUserController extends Controller
                 return redirect('app-users/' . $id . '/edit')->with('error', 'Invalid Format')->withInput();
             }
 
-            $imageUploader->upload($file, $new_app_user->id, 128, 128, 'app_user_profile_photo/', '/' . $new_app_user->id . '.' . $file->getClientOriginalExtension());
+            $imageUploader->upload($file, $id, 128, 128, 'app_user_profile_photo/', '/' . $id . '.' . $file->getClientOriginalExtension());
+            $request->merge(['profile_photo' => 'app_user_profile_photo/' . $id . '/' . $id . '.' . $file->getClientOriginalExtension()]);
         }
 
         $request->merge(['date_of_birth' => date_format(date_create($request->date_of_birth), 'Y-m-d')]);
 
-        $this->appUser->updateByAttributes(['id' => $id], $request->except('_token', '_method', 'app_user_id', 'password_confirmation'));
+        $req = $request->except('_token', '_method', 'app_user_id', 'password_confirmation', 'password', 'profile_photo_temp');
+
+        if ($request->password != "") {
+            $request->merge(['password' => bcrypt($request->password)]);
+            $req = $request->except('_token', '_method', 'app_user_id', 'password_confirmation', 'profile_photo_temp');
+        }
+
+        $this->appUser->updateByAttributes(['id' => $id], $req);
 
         return redirect('app-users/' . $id . '/edit')->with('message', 'Successfully Updated.');
     }

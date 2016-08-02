@@ -124,7 +124,7 @@
                                 </ul>
                                 @endif
                             </div>
-                            <h3 class="xlg-title">All Admin</h3>
+                            <h3 class="xlg-title">All App Users</h3>
 
                             <div class="list-group contact-group">
                             	@foreach($app_user_paginate as $user)
@@ -134,7 +134,7 @@
                                         	@if($user['profile_photo'] == null || $user['profile_photo'] == '')
                                             <img class="img-circle img-online" src="{{asset('images/photos/user1.png')}}" alt="...">
                                             @else
-                                            <img class="img-circle img-online" src="{{asset('app_user_profile_photo/'.$user['id'].'/'.$user['id']. '.jpg')}}" alt="...">
+                                            <img class="img-circle img-online" src="{{asset($user['profile_photo'])}}" alt="...">
                                             @endif
                                         </div>
                                         <div class="media-body">

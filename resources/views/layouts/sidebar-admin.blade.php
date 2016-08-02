@@ -1,11 +1,17 @@
 <div class="leftpanel">
     <div class="media profile-left">
-        <a class="pull-left profile-thumb-rounded" href="admin-profile-admin.html">
+        <a class="pull-left profile-thumb-rounded" href="{{url('administrators/'.Auth::user()->id.'/edit')}}">
+            @if(Auth::user()->profile_photo == null || Auth::user()->profile_photo == '')
             <img class="img-circle" src="{{asset('images/photos/profile.png')}}" alt="">
+            @else
+
+            <img class="img-circle" src="{{asset(Auth::user()->profile_photo)}}"  alt="" />
+            @endif
+
         </a>
         <div class="media-body">
             <h4 class="media-heading">{{Auth::user()->first_name}} {{Auth::user()->last_name}}</h4>
-            <small class="text-muted">Super Admin</small>
+            <small class="text-muted">{{(Auth::user()->role_id == 1) ? 'Super Administrator' : 'Administrator'}}</small>
         </div>
     </div><!-- media -->
 

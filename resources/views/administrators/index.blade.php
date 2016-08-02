@@ -109,9 +109,9 @@
                                     <div class="media">
                                         <div class="pull-left">
                                         	@if($admin['profile_photo'] == null)
-                                            <img class="img-circle img-online" src="images/photos/user1.png" alt="...">
+                                            <img class="img-circle img-online" src="{{asset('images/photos/profile-big.jpg')}}" alt="...">
                                             @else
-                                            <img class="img-circle img-online" src="{{asset('profile_photo/'.$admin['id'].'/'.$admin['id']. '.jpg')}}" alt="...">
+                                            <img class="img-circle img-online" src="{{asset($admin['profile_photo'])}}" alt="...">
                                             @endif
                                         </div>
                                         <div class="media-body">
