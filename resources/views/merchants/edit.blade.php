@@ -375,7 +375,7 @@ echo ($outlet->outlet_ph_active == 0) ? 'PH : Close' : 'PH : ' . date_format(dat
 									</div>
 								</div>
 
-                                <form method="POST" action="{{url('merchants/restaurant/'.$restaurant->id)}}" class="form-horizontal form-bordered" >
+                                <form method="POST" id="restaurant_form" action="{{url('merchants/restaurant/'.$restaurant->id)}}" class="form-horizontal form-bordered" >
 
                                     <div class="form-group">
                                         <label class="col-sm-2 control-label" style="text-align:left;">Restaurant Name *</label>

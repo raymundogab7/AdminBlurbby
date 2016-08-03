@@ -75,7 +75,7 @@ class FeaturedSectionController extends Controller
     public function index()
     {
         $data = array(
-            'featured_section' => $this->featuredSection->getAll(['merchant'], 'position'),
+            'featured_sections' => $this->featuredSection->getAll(['merchant'], 'position'),
         );
 
         return view('featured_section.index', $data);
@@ -126,7 +126,7 @@ class FeaturedSectionController extends Controller
 
             $imageUploader->upload($file, $request->position, 500, 500, 'image_slides/', '/' . $request->position . '.jpg');
 
-            return redirect('featured-section/create')->with('message', 'Created Successfully.');
+            return redirect('featured-section')->with('message', 'Created Successfully.');
         }
 
         return redirect('featured-section/create')->withInput();

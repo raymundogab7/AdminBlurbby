@@ -21,7 +21,7 @@ Dropzone.options.profilePicture = {
     init: function() {
         var myDropzone = this;
         $('#res_update_btn').on("click", function(e) {
-          //e.preventDefault();
+          e.preventDefault();
           e.stopPropagation();
           myDropzone.processQueue();
         });
@@ -35,14 +35,12 @@ Dropzone.options.profilePicture = {
             }
         });
         this.on("success", function(file) { 
-            //var file = jQuery.parseJSON(file.xhr.responseText);
-            
-            //$('.profile-pic').attr('src', $('#asset_path').val()+file.restaurant.image_path + '?' + new Date().getTime());
+            $('#restaurant_form').submit();
         });
 
         this.on("error", function(file) { 
-            alert('Invalid format');
-            //window.location.reload();
+            alert('Invalid format or Image size is too big.');
+            window.location.reload();
         });
     }
 };
@@ -52,27 +50,25 @@ Dropzone.options.coverPhoto = {
     init: function() {
         var myDropzone = this;
         $('#res_update_btn').on("click", function(e) {
-          //e.preventDefault();
+          e.preventDefault();
           e.stopPropagation();
           myDropzone.processQueue();
         });
 
         this.on("thumbnail", function(file){
-            console.log(file.height);
             if (file.height < 500 && file.width < 500) {
-                window.location.reload();
+                
                 alert("Image should be at least 500px x 500px");
+                window.location.reload();
                 return false;
             }
         });
         this.on("success", function(file) { 
-            var file = jQuery.parseJSON(file.xhr.responseText);
-                
-            //$('.cover-photo').attr('style', 'background:url(' + $('#asset_path').val()+file.restaurant.image_path + '?' + new Date().getTime()+');background-size:cover;');
+            $('#restaurant_form').submit();
         });
 
         this.on("error", function(file) { 
-            alert('Invalid format');
+            alert('Invalid format or Image size is too big.');
             window.location.reload();
         });
     }

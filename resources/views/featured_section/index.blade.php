@@ -47,43 +47,22 @@
 	                                  </tr>
 	                                </thead>
 	                                <tbody>
-	                                  	<tr>
-	                                    	<td>{{$featured_section[0]['position']}}</td>
-											<td>{{$featured_section[0]['merchant']['coy_name']}}</td>
-											<td>{{$featured_section[0]['status']}}</td>
+	                                	@foreach($featured_sections as $featured_section)
+	                                	<tr>
+	                                    	<td>{{$featured_section['position']}}</td>
+											<td>{{$featured_section['merchant']['coy_name']}}</td>
+											<td>{{$featured_section['status']}}</td>
 											<td class="table-action">&nbsp;&nbsp;&nbsp;&nbsp;
-												<a href="{{ url('featured-section/move/'.$featured_section[0]['merchant_id'].'/'.$featured_section[0]['id'].'/down') }}" data-toggle="tooltip" title="Down" class="tooltips"><i class="fa fa-arrow-down"></i></a>
+												<a href="{{ url('featured-section/move/'.$featured_section['merchant_id'].'/'.$featured_section['id'].'/down') }}" data-toggle="tooltip" title="Down" class="tooltips"><i class="fa fa-arrow-down"></i></a>
+												@if($featured_section['position'] > 1)
+												<a href="{{ url('featured-section/move/'.$featured_section['merchant_id'].'/'.$featured_section['id'].'/up') }}" data-toggle="tooltip" title="Down" class="tooltips"><i class="fa fa-arrow-up"></i></a>
+												@endif
 											</td>
 											<td class="table-action">
-												<a href="{{ url('featured-section/'.$featured_section[0]['id'].'/edit') }}" data-toggle="tooltip" title="Edit" class="tooltips"><i class="fa fa-pencil"></i></a>
+												<a href="{{ url('featured-section/'.$featured_section['id'].'/edit') }}" data-toggle="tooltip" title="Edit" class="tooltips"><i class="fa fa-pencil"></i></a>
 											</td>
 	                                  	</tr>
-
-	                               		<tr>
-	                                    	<td>{{$featured_section[1]['position']}}</td>
-											<td>{{$featured_section[1]['merchant']['coy_name']}}</td>
-											<td>{{$featured_section[1]['status']}}</td>
-											<td class="table-action">&nbsp;&nbsp;&nbsp;&nbsp;
-												<a href="{{ url('featured-section/move/'.$featured_section[1]['merchant_id'].'/'.$featured_section[1]['id'].'/down') }}" data-toggle="tooltip" title="Down" class="tooltips"><i class="fa fa-arrow-down"></i></a>
-												<a href="{{ url('featured-section/move/'.$featured_section[1]['merchant_id'].'/'.$featured_section[1]['id'].'/up') }}" data-toggle="tooltip" title="Down" class="tooltips"><i class="fa fa-arrow-up"></i></a>
-											</td>
-											<td class="table-action">
-												<a href="{{ url('featured-section/'.$featured_section[1]['id'].'/edit') }}" data-toggle="tooltip" title="Edit" class="tooltips"><i class="fa fa-pencil"></i></a>
-											</td>
-	                                  	</tr>
-
-	                                  	<tr>
-	                                    	<td>{{$featured_section[2]['position']}}</td>
-											<td>{{$featured_section[2]['merchant']['coy_name']}}</td>
-											<td>{{$featured_section[2]['status']}}</td>
-											<td class="table-action">&nbsp;&nbsp;&nbsp;&nbsp;
-												<a href="{{ url('featured-section/move/'.$featured_section[2]['merchant_id'].'/'.$featured_section[2]['id'].'/up') }}" data-toggle="tooltip" title="Down" class="tooltips"><i class="fa fa-arrow-up"></i></a>
-											</td>
-											<td class="table-action">
-												<a href="{{ url('featured-section/'.$featured_section[2]['id'].'/edit') }}" data-toggle="tooltip" title="Edit" class="tooltips"><i class="fa fa-pencil"></i></a>
-											</td>
-	                                  	</tr>
-
+	                                  	@endforeach
 	                                </tbody>
 	                            </table>
 	                        </div><!-- table-responsive -->

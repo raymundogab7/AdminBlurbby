@@ -110,8 +110,8 @@ class SimpleImage
         $new_image = imagecreatetruecolor($width, $height);
         $color = imagecolorallocate($new_image, $colorRgb['red'], $colorRgb['green'], $colorRgb['blue']);
         imagefill($new_image, 0, 0, $color);
-        imagecopy($new_image, $this->image, 0, 0, 0, 0, $width, $height);
-        //imagecopyresampled($new_image, $this->image, 0, 0, 0, 0, $width, $height, $this->getWidth(), $this->getHeight());
+        //imagecopy($new_image, $this->image, 0, 0, 0, 0, $width, $height);
+        imagecopyresampled($new_image, $this->image, 0, 0, 0, 0, $width, $height, $this->getWidth(), $this->getHeight());
         $this->image = $new_image;
     }
 

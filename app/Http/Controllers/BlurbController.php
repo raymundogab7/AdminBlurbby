@@ -102,6 +102,7 @@ class BlurbController extends Controller
      */
     public function store(BlurbRequest $request)
     {
+
         $request->merge(array('blurb_start' => date_format(date_create($request->blurb_start), 'Y-m-d'), 'blurb_end' => date_format(date_create($request->blurb_end), 'Y-m-d'), 'merchant_id' => $request->merchant_id, 'campaign_id' => $request->campaign_id));
 
         if ($request->control_no != "") {

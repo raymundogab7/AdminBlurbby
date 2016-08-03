@@ -155,6 +155,8 @@ class CampaignController extends Controller
     {
         $campaign = $this->campaign->getById($id);
 
+        $this->blurb->deleteByAttributes(['merchant_id' => $campaign->merchant_id, 'blurb_name' => null]);
+
         if (!$campaign) {
             return abort(404);
         }
@@ -272,6 +274,9 @@ class CampaignController extends Controller
                 $data = $this->merchant->getByAttributes(['id' => $request->merchant_id]);
 
                 if ($campaign->cam_status != "Approved") {
+
+                    $this->notification->create(['merchant_id' => $request->merchant_id, 'campaign_id' => $id, 'admin_id' => Auth::user()->id, 'status' => 'Approved', 'seen' => 0]);
+
                     $mailer->send('emails.campaign_approved', 'Your Campaign Has been Approved', $data[0]);
                 }
             }
@@ -281,6 +286,9 @@ class CampaignController extends Controller
                 $data = $this->merchant->getByAttributes(['id' => $request->merchant_id]);
 
                 if ($campaign->cam_status != "Rejected") {
+
+                    $this->notification->create(['merchant_id' => $request->merchant_id, 'campaign_id' => $id, 'admin_id' => Auth::user()->id, 'status' => 'Rejected', 'seen' => 0]);
+
                     $mailer->send('emails.campaign_rejected', 'Your Campaign Needs Some Revision(s)', $data[0]);
                 }
             }

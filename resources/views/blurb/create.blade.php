@@ -226,10 +226,10 @@
 	Dropzone.options.blurbPhoto = {
 	  init: function() {
 	        this.on("success", function(file) {
-	            var file = jQuery.parseJSON(file.xhr.responseText);
+	            //var file = jQuery.parseJSON(file.xhr.responseText);
 
-	            $('.coupon_image').attr('src', $('#asset_path').val()+'/'+file.blurb.image_path);
-	            $('#control_no').val(file.blurb.control_no);
+	            //$('.coupon_image').attr('src', $('#asset_path').val()+'/'+file.blurb.image_path);
+	           // $('#control_no').val(file.blurb.control_no);
 	        });
 
 	        this.on("error", function(file) {
