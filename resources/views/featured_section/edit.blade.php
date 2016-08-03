@@ -49,10 +49,10 @@
                                 <div class="col-sm-8">
 
                                     <select id="position" required="required" data-placeholder="Choose One" class="width300" name="position">
-                                        <option value="">Choose One</option>
-                                        <option value="1" <?php if ($featured_section->position == "1"): ?> selected="selected" <?php endif;?> >1</option>
-                                        <option value="2" <?php if ($featured_section->position == "2"): ?> selected="selected" <?php endif;?> >2</option>
-                                        <option value="3" <?php if ($featured_section->position == "3"): ?> selected="selected" <?php endif;?> >3</option>
+                                        <option value="" selected="">Choose One</option>
+                                        @foreach($featured_sections as $fs)
+                                        <option <?php if ($fs['position'] == $featured_section->position): ?> selected="selected" <?php endif;?> value="{{$fs['position']}}">Position {{$fs['position']}}</option>
+                                        @endforeach
                                     </select>
                                 </div>
                             </div><!-- form-group -->

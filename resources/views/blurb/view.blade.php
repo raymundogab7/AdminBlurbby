@@ -203,8 +203,8 @@
       init: function() {
             this.on("success", function(file) {
 
-                $('.blurb-photo').attr('src', $('.blurb-photo').attr('src') + '?' + new Date().getTime());
-                window.location.reload();
+                //$('.blurb-photo').attr('src', $('.blurb-photo').attr('src') + '?' + new Date().getTime());
+               // window.location.reload();
             });
 
             this.on("error", function(file) {

@@ -15,6 +15,13 @@ interface FeaturedSectionInterface
     public function getAll(array $relations, $orderBy = '', $sort = 'ASC');
 
     /**
+     * Get all FeaturedSection
+     *
+     * @return FeaturedSection
+     */
+    public function all();
+
+    /**
      * Get FeaturedSection by id.
      *
      * @param integer $id
@@ -125,6 +132,13 @@ interface FeaturedSectionInterface
      * @return FeaturedSection
      */
     public function delete($id);
+
+    /**
+     * Delete all.
+     *
+     * @return FeaturedSection
+     */
+    public function deleteAll();
 
     /**
      * Delete a featuredSection by attributes.

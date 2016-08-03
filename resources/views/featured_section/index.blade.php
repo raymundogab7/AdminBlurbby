@@ -53,8 +53,10 @@
 											<td>{{$featured_section['merchant']['coy_name']}}</td>
 											<td>{{$featured_section['status']}}</td>
 											<td class="table-action">&nbsp;&nbsp;&nbsp;&nbsp;
+												@if($featured_section['position'] < count($featured_sections))
 												<a href="{{ url('featured-section/move/'.$featured_section['merchant_id'].'/'.$featured_section['id'].'/down') }}" data-toggle="tooltip" title="Down" class="tooltips"><i class="fa fa-arrow-down"></i></a>
-												@if($featured_section['position'] > 1)
+												@endif
+												@if(count($featured_sections >= $featured_section['position'])  && $featured_section['position'] != 1)
 												<a href="{{ url('featured-section/move/'.$featured_section['merchant_id'].'/'.$featured_section['id'].'/up') }}" data-toggle="tooltip" title="Down" class="tooltips"><i class="fa fa-arrow-up"></i></a>
 												@endif
 											</td>

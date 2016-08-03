@@ -133,7 +133,7 @@
                                     <div class="col-sm-8">
                                     	{!! Form::hidden('merchant_id', $campaign->merchant_id, ['required' => 'required', 'class' => 'form-control', 'readonly' => 'readonly']) !!}
                                     	{!! Form::hidden('campaign_id', $campaign->id, ['required' => 'required', 'class' => 'form-control', 'readonly' => 'readonly']) !!}
-                                    	{!! Form::hidden('control_no_temp', $campaign->control_no, ['id' => 'control_no', 'required' => 'required', 'class' => 'form-control', 'readonly' => 'readonly']) !!}
+                                    	{!! Form::hidden('control_no', null, ['readonly' => 'readonly', 'id' => 'control_no', 'class' => 'form-control blurb']) !!}
                                         {!! Form::text('blurb_name', null, ['id' => 'blurb_name_keyup', 'required' => 'required', 'class' => 'form-control blurb']) !!}
                                     </div>
                                 </div><!-- form-group -->
@@ -226,10 +226,10 @@
 	Dropzone.options.blurbPhoto = {
 	  init: function() {
 	        this.on("success", function(file) {
-	            //var file = jQuery.parseJSON(file.xhr.responseText);
+	            var file = jQuery.parseJSON(file.xhr.responseText);
 
 	            //$('.coupon_image').attr('src', $('#asset_path').val()+'/'+file.blurb.image_path);
-	           // $('#control_no').val(file.blurb.control_no);
+	            $('#control_no').val(file.blurb.control_no);
 	        });
 
 	        this.on("error", function(file) {

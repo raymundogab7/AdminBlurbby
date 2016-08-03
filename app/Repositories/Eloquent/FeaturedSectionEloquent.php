@@ -34,6 +34,16 @@ class FeaturedSectionEloquent implements FeaturedSectionInterface
     }
 
     /**
+     * Get all FeaturedSection
+     *
+     * @return FeaturedSection
+     */
+    public function all()
+    {
+        return $this->featuredSection->orderBy('position', 'ASC')->get()->toArray();
+    }
+
+    /**
      * Get count of featured section
      *
      * @return integer
@@ -183,6 +193,16 @@ class FeaturedSectionEloquent implements FeaturedSectionInterface
     public function delete($id)
     {
         return $this->featuredSection->find($id)->delete();
+    }
+
+    /**
+     * Delete all.
+     *
+     * @return FeaturedSection
+     */
+    public function deleteAll()
+    {
+        return $this->featuredSection->truncate();
     }
 
     /**
