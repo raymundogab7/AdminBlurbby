@@ -229,7 +229,15 @@ class CampaignController extends Controller
             foreach ($duplicate_blurbs as $key => $value) {
                 $value['campaign_id'] = $duplicated_campaign->id;
                 $value['blurb_status'] = 'Created';
+
+                if ($value['control_no'] != null || $value['control_no'] != '') {
+                    $value['control_no'] = uniqid();
+                } else {
+                    $value['control_no'] = null;
+                }
+
                 $this->blurb->create($value);
+
             }
 
             return redirect('campaigns/' . $id)->with('message', 'Successfully duplicated.');

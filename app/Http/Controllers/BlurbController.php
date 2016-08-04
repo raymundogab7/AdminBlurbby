@@ -69,7 +69,7 @@ class BlurbController extends Controller
         $data = array(
             'restaurant' => $this->restaurant->getByAttributes(['merchant_id' => $campaign->merchant_id], false),
             'campaign' => $campaign,
-            'blurbs' => $this->blurb->getAllByAttributes(['merchant_id' => $campaign->merchant_id, 'campaign_id' => $campaign->id, 'blurb_status' => ucfirst($cam_status)], 'created_at', 'DESC'),
+            'blurbs' => $this->blurb->getAllByAttributes(['merchant_id' => $campaign->merchant_id, 'campaign_id' => $campaign->id/*, 'blurb_status' => ucfirst($cam_status)*/], 'created_at', 'DESC'),
             'blurb_category' => $this->blurbCategory->getAll(),
         );
 
@@ -192,7 +192,7 @@ class BlurbController extends Controller
     public function uploadLogo($campaign_id, Request $request, ImageUploader $imageUploader)
     {
         $file = $request->file('file');
-        $control_no = uniqid();
+        $control_no = $campaign_id . uniqid();
 
         $campaign = $this->campaign->getByAttributes(['id' => $campaign_id], false);
 
@@ -225,7 +225,7 @@ class BlurbController extends Controller
     public function updateLogo($id, $campaign_id, Request $request, ImageUploader $imageUploader)
     {
         $file = $request->file('file');
-        $control_no = uniqid();
+        $control_no = $campaign_id . uniqid();
 
         if (!in_array($file->getClientOriginalExtension(), array('gif', 'png', 'jpg', 'jpeg', 'PNG', 'JPG'))) {
             return Response::json(array(
