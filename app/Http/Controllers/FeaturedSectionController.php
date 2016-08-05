@@ -117,17 +117,17 @@ class FeaturedSectionController extends Controller
         $featured_sections = $this->featuredSection->all();
 
         $new_featured_sections = array();
-        $idk = false;
+        $insert_now = false;
         foreach ($featured_sections as $key => $value) {
 
             if ($value['position'] == $request->position) {
 
                 $new_featured_sections[] = ['merchant_id' => $request->merchant_id, 'position' => $request->position, 'slide_image' => 'image_slides/' . ($this->featuredSection->getCount() + 1) . '/' . ($this->featuredSection->getCount() + 1) . '.jpg', 'status' => $request->status, 'created_at' => date('Y-m-d H:i:s'), 'updated_at' => date('Y-m-d H:i:s')];
 
-                $idk = true;
+                $insert_now = true;
             }
 
-            if ($idk) {
+            if ($insert_now) {
                 $value['position'] = $value['position'] + 1;
                 $new_featured_sections[] = $value;
             } else {
@@ -210,7 +210,38 @@ class FeaturedSectionController extends Controller
         return redirect('featured-section')->with('message', 'Updated Successfully.');
         }*/
 
-        return redirect('featured-section')->withInput();
+        return redirect('featured-section');
+    }
+
+    /**
+     * Update a certain featured section.
+     *
+     * @param integer $id
+     * @return View
+     */
+    public function destroy($id)
+    {
+        $this->featuredSection->delete($id);
+
+        $featured_section = $this->featuredSection->all();
+
+        $this->featuredSection->deleteAll();
+
+        $new_featured_section = array();
+        $ctr = 1;
+
+        foreach ($featured_section as $key => $value) {
+            $new_featured_section['merchant_id'] = $value['merchant_id'];
+            $new_featured_section['position'] = $ctr;
+            $new_featured_section['slide_image'] = $value['slide_image'];
+            $new_featured_section['status'] = $value['status'];
+            $new_featured_section['created_at'] = $value['created_at'];
+            $new_featured_section['updated_at'] = $value['updated_at'];
+            $ctr++;
+            $this->featuredSection->create($new_featured_section);
+        }
+
+        return redirect('featured-section');
     }
 
     /**
@@ -240,37 +271,5 @@ class FeaturedSectionController extends Controller
         }
 
         return redirect('featured-section')->with('message', 'Updated Successfully.');
-        /* if ($direction == 'down') {
-
-        if ($id == 1) {
-        $findById = $this->featuredSection->getById($id);
-        $findById2 = $this->featuredSection->getById(2);
-        $to_update = $this->featuredSection->updateByAttributes(['id' => 2], ['merchant_id' => $findById->merchant_id], false);
-        $to_update = $this->featuredSection->updateByAttributes(['id' => 1], ['merchant_id' => $findById2->merchant_id], false);
-        }
-
-        if ($id == 2) {
-        $findById = $this->featuredSection->getById($id);
-        $findById2 = $this->featuredSection->getById(3);
-        $to_update = $this->featuredSection->updateByAttributes(['id' => 3], ['merchant_id' => $findById->merchant_id], false);
-        $to_update = $this->featuredSection->updateByAttributes(['id' => 2], ['merchant_id' => $findById2->merchant_id], false);
-        }
-        } else {
-        if ($id == 2) {
-        $findById = $this->featuredSection->getById($id);
-        $findById2 = $this->featuredSection->getById(1);
-        $to_update = $this->featuredSection->updateByAttributes(['id' => 1], ['merchant_id' => $findById->merchant_id], false);
-        $to_update = $this->featuredSection->updateByAttributes(['id' => 2], ['merchant_id' => $findById2->merchant_id], false);
-        }
-
-        if ($id == 3) {
-        $findById = $this->featuredSection->getById($id);
-        $findById2 = $this->featuredSection->getById(2);
-        $to_update = $this->featuredSection->updateByAttributes(['id' => 2], ['merchant_id' => $findById->merchant_id], false);
-        $to_update = $this->featuredSection->updateByAttributes(['id' => 3], ['merchant_id' => $findById2->merchant_id], false);
-        }
-        }*/
-
-        return redirect('featured-section')->withInput();
     }
 }

@@ -90,7 +90,9 @@
                             <input name="featured_section_id" value="{{$featured_section->id}}" required="required" readonly="readonly" type="hidden" />
                             <br>
                             <button style="margin-left:15px;" class="btn btn-primary">Update</button>
-                            <button style="margin-left:15px;" class="btn btn-danger">Delete</button>
+                            <a href="{{url('featured-section/'.$featured_section->id)}}">
+                                <button style="margin-left:15px;" class="btn btn-danger" type="button">Delete</button>
+                            </a>
                         {!! Form::close() !!}
                     </div><!-- row -->
 

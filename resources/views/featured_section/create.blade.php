@@ -88,8 +88,8 @@
                                 </div>
                             </div><!-- form-group -->
                             <br>
-                            <button style="margin-left:15px;" class="btn btn-primary">Update</button>
-                            <button style="margin-left:15px;" class="btn btn-danger">Delete</button>
+                            <button style="margin-left:15px;" class="btn btn-primary">Create</button>
+                            <a href="{{url('featured-section')}}"><button type="button" style="margin-left:15px;" class="btn btn-default">Back</button></a>
                         {!! Form::close() !!}
                     </div><!-- row -->
 
