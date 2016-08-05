@@ -179,7 +179,7 @@
 								<div class="form-group">
                                     <label class="col-sm-2 control-label" style="text-align:left;">Terms & Conditions *</label>
                                     <div class="col-sm-8">
-                                        {!! Form::textarea('blurb_terms', null, ['id' => 'blurb_terms_keyup', 'required' => 'required', 'class' => 'form-control', 'maxlength' => 2000]) !!}
+                                        {!! Form::textarea('blurb_terms', "Blurb cannot be used with any other offers and is valid for one redemption per transaction. Offer only valid from 12nn to 3pm. Applicable for featured offer only, while stocks last. Restaurants' operating hours may vary. Not applicable for delivery. Forwarded mail and screenshots are not accepted. The privilege may be changed at the discretion of the outlet.", ['id' => 'blurb_terms_keyup', 'required' => 'required', 'class' => 'form-control', 'maxlength' => 2000]) !!}
                                     </div>
                                 </div><!-- form-group -->
 								<br>
@@ -209,7 +209,7 @@
 <script type="text/javascript" src="{{asset('js/jquery-ui-1.10.3.min.js')}}"></script>
 <script type="text/javascript" src="{{asset('js/dropzone.min.js')}}"></script>
 <script type="text/javascript" src="{{asset('js/bootstrap-timepicker.min.js')}}"></script>
-
+<script type="text/javascript" src="http://www.datejs.com/build/date.js"></script>
 <script type="text/javascript">
 	$('#blurb_name_keyup').keyup(function(){
 		$('#keyup_blurb_name').html($(this).val());
@@ -222,6 +222,8 @@
 	$('#blurb_terms_keyup').keyup(function(){
 		$('#keyup_blurb_terms').html($(this).val());
 	});
+
+	$('#keyup_blurb_terms').html($('#blurb_terms_keyup').val());
 
 	Dropzone.options.blurbPhoto = {
 	  init: function() {
@@ -256,9 +258,11 @@
          minDate: new Date($('#cam_start').val()),
          maxDate: new Date($('#cam_end').val()),
          onSelect: function(dateText) {
-            $sD = new Date(dateText);
+
             $("input#datepicker").datepicker('option', 'maxDate', dateText);
-            $('#keyup_blurb_end').html($.datepicker.formatDate('dd M yy', new Date($(this).val())).toUpperCase());
+            var date = $(this).val().toString().replace(/-/g,'/');
+            var sD = new Date(date);
+            $('#keyup_blurb_end').html(sD.toString('dd MMM yyyy').toUpperCase());
         }
 
     });
