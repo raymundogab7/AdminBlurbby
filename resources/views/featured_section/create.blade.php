@@ -47,13 +47,20 @@
                             <div class="form-group">
                                 <label class="col-sm-2 control-label" style="text-align:left;">Position *</label>
                                 <div class="col-sm-8">
-
+                                    @if($slides_count > 0)
                                     <select id="position" required="required" data-placeholder="Choose One" class="width300" name="position">
                                         <option value="" selected="">Choose One</option>
                                         @for($i=1;$i<=$slides_count;$i++)
                                         <option value="{{$i}}">Position {{$i}}</option>
                                         @endfor
                                     </select>
+                                    @else
+                                    <select id="position" required="required" data-placeholder="Choose One" class="width300" name="position">
+                                        <option value="" selected="">Choose One</option>
+                                        <option value="1">Position 1</option>
+
+                                    </select>
+                                    @endif
                                 </div>
                             </div><!-- form-group -->
 

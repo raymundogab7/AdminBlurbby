@@ -207,9 +207,9 @@ class BlurbController extends Controller
             ), 404);
         }
 
-        $this->blurb->updateByAttributes(['merchant_id' => $user_id, 'campaign_id' => $campaign_id], ['photo_location' => 'admin', 'blurb_logo' => 'campaign/' . $campaign_id . '/' . $result->id . '.png']);
+        $this->blurb->updateByAttributes(['merchant_id' => $user_id, 'campaign_id' => $campaign_id], ['photo_location' => 'admin', 'blurb_logo' => 'campaign/' . $campaign_id . '/' . $result->id . '.' . $file->getClientOriginalExtension()]);
 
-        $imageUploader->upload($file, $campaign_id, 500, 500, 'campaign/', '/' . $result->id . '.png');
+        $imageUploader->upload($file, $campaign_id, 500, 500, 'campaign/', '/' . $result->id . '.' . $file->getClientOriginalExtension());
 
         return ['blurb' => $result];
     }
@@ -235,9 +235,9 @@ class BlurbController extends Controller
         }
 
         //$this->blurb->updateByAttributes(['merchant_id' => $user_id, 'campaign_id' => $campaign_id], ['blurb_logo' => 'campaigns/' . $campaign_id.'/'.$result->id.'.png']);
-        $this->blurb->updateById($id, ['photo_location' => 'admin', 'blurb_logo' => 'campaign/' . $campaign_id . '/' . $id . '.png']);
+        $this->blurb->updateById($id, ['photo_location' => 'admin', 'blurb_logo' => 'campaign/' . $campaign_id . '/' . $id . '.' . $file->getClientOriginalExtension()]);
 
-        $imageUploader->upload($file, $campaign_id, 500, 500, 'campaign/', '/' . $id . '.png');
+        $imageUploader->upload($file, $campaign_id, 500, 500, 'campaign/', '/' . $id . '.' . $file->getClientOriginalExtension());
 
         return ['blurb' => true];
     }

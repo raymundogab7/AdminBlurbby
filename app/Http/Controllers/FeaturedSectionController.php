@@ -100,6 +100,7 @@ class FeaturedSectionController extends Controller
      * Create a featured request.
      *
      * @param FeaturedSectionRequest $request
+     * @param ImageUploader $imageUploader
      * @return Redirect
      */
     public function store(FeaturedSectionRequest $request, ImageUploader $imageUploader)
@@ -112,9 +113,16 @@ class FeaturedSectionController extends Controller
                 'code' => 404,
                 'message' => 'Invalid format',
             ), 404);
+
         }
 
         $featured_sections = $this->featuredSection->all();
+
+        if (empty($featured_sections)) {
+            $this->featuredSection->create(['merchant_id' => $request->merchant_id, 'position' => $request->position, 'slide_image' => 'image_slides/1/1.jpg', 'status' => $request->status]);
+            $imageUploader->upload($file, $request->position, 800, 400, 'image_slides/', '/' . $request->position . '.jpg');
+            return redirect('featured-section')->with('message', 'Created Successfully.');
+        }
 
         $new_featured_sections = array();
         $insert_now = false;
@@ -137,7 +145,11 @@ class FeaturedSectionController extends Controller
         }
 
         $this->featuredSection->deleteAll();
+
+        $imageUploader->upload($file, count($new_featured_sections), 800, 400, 'image_slides/', '/' . count($new_featured_sections) . '.jpg');
+
         foreach ($new_featured_sections as $key => $value) {
+
             $this->featuredSection->create(['merchant_id' => $value['merchant_id'], 'position' => $value['position'], 'slide_image' => $value['slide_image'], 'status' => $value['status']]);
         }
 
@@ -180,7 +192,7 @@ class FeaturedSectionController extends Controller
                 return redirect('featured-section/' . $id . '/edit/')->with('error', 'Uploaded image is not valid.');
             }
 
-            $imageUploader->upload($file, $request->position, 500, 500, 'image_slides/', '/' . $request->position . '.jpg');
+            $imageUploader->upload($file, $request->position, 800, 400, 'image_slides/', '/' . $request->position . '.jpg');
         }
 
         $to_update = $this->featuredSection->getByAttributes(['position' => $request->position], false);
