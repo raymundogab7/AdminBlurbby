@@ -26,7 +26,7 @@ class SimpleImage
     public $image;
     public $image_type;
 
-    public function load($filename)
+    public function load($filename, $profile_background = false)
     {
 
         $image_info = getimagesize($filename);
@@ -40,6 +40,13 @@ class SimpleImage
         } elseif ($this->image_type == IMAGETYPE_PNG) {
 
             $this->image = imagecreatefrompng($filename);
+        }
+
+        if ($profile_background) {
+            $blur_amount = 50;
+            for ($i = 0; $i < $blur_amount; $i++) {
+                imagefilter($this->image, IMG_FILTER_GAUSSIAN_BLUR);
+            }
         }
     }
     public function save($filename, $image_type = IMAGETYPE_JPEG, $compression = 75, $permissions = null)

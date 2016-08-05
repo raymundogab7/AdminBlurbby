@@ -22,7 +22,7 @@ class ImageUploader
      * @param string $image_type
      * @return Image
      */
-    public function upload($file, $user_id, $width, $height, $path, $image_type = "/profile_picture.jpg")
+    public function upload($file, $user_id, $width, $height, $path, $image_type = "/profile_picture.jpg", $profile_background = false)
     {
         /* $img = Image::make($file->getRealPath())->resize(128, 128);
 
@@ -38,9 +38,9 @@ class ImageUploader
         $image = new SimpleImage();
 
         if (in_array($file->getClientOriginalExtension(), array('png', 'PNG'))) {
-            $image->load($file, IMAGETYPE_PNG);
+            $image->load($file, $profile_background, IMAGETYPE_PNG);
         } else {
-            $image->load($file);
+            $image->load($file, $profile_background);
         }
 
         $image->resize($width, $height);
