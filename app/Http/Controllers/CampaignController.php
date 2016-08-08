@@ -10,6 +10,7 @@ use Admin\Repositories\Interfaces\MerchantInterface;
 use Admin\Repositories\Interfaces\NotificationInterface;
 use Admin\Repositories\Interfaces\RestaurantInterface;
 use Admin\Repositories\Interfaces\SnapShotInterface;
+use Admin\Restaurant;
 use Admin\Services\GenerateReport;
 use Admin\Services\Mailer;
 use Admin\SnapShot;
@@ -165,13 +166,14 @@ class CampaignController extends Controller
             'restaurant' => $this->restaurant->getByAttributes(['merchant_id' => $campaign->merchant_id], false),
             'campaign' => $campaign,
             'blurbs' => $this->blurb->getAllByAttributes(['campaign_id' => $id], 'created_at', 'DESC'),
-            'merchants' => Merchant::where('status', '!=', 3)->orderBy('coy_name')->get()->toArray(),
+            'merchants' => Merchant::where('status', 1)->orderBy('coy_name')->get()->toArray(),
+            'restaurants' => Restaurant::orderBy('res_name')->get()->toArray(),
         );
 
         return view('campaign.view', $data);
     }
 
-    /**
+    /**dd
      * Edit a campaign campaign.
      *
      * @return View
@@ -181,6 +183,7 @@ class CampaignController extends Controller
         $data = [
             'restaurant' => $this->restaurant->getByAttributes(['merchant_id' => Auth::user()->id], false),
             'merchants' => Merchant::where('status', '!=', 3)->orderBy('coy_name')->get()->toArray(),
+            'restaurants' => Restaurant::orderBy('res_name')->get()->toArray(),
         ];
 
         return view('campaign.create', $data);
@@ -196,9 +199,9 @@ class CampaignController extends Controller
     {
         $control_no = uniqid();
 
-        $restaurant = $this->restaurant->getByAttributes(['merchant_id' => $request->merchant_id], false);
+        $restaurant = $this->restaurant->getByAttributes(['id' => $request->restaurant_id], false);
 
-        $request->merge(array('restaurant_id' => $restaurant->id, 'cam_status' => 'Draft', 'control_no' => $control_no));
+        $request->merge(array('cam_start' => date_format(date_create($request->cam_start), 'Y-m-d'), 'cam_end' => date_format(date_create($request->cam_end), 'Y-m-d'), 'merchant_id' => $restaurant->merchant_id, 'cam_status' => 'Draft', 'control_no' => $control_no));
 
         if ($campaign = $this->campaign->create($request->all())) {
 
@@ -271,9 +274,10 @@ class CampaignController extends Controller
     public function update($id, CampaignRequest $request, Mailer $mailer)
     {
 
-        $campaign = $this->campaign->getById($id);
+        $restaurant = $this->restaurant->getByAttributes(['id' => $request->restaurant_id], false);
 
-        $request->merge(array('cam_start' => date_format(date_create($request->cam_start), 'Y-m-d'), 'cam_end' => date_format(date_create($request->cam_end), 'Y-m-d')));
+        $campaign = $this->campaign->getById($id);
+        $request->merge(array('merchant_id' => $restaurant->merchant_id, 'cam_start' => date_format(date_create($request->cam_start), 'Y-m-d'), 'cam_end' => date_format(date_create($request->cam_end), 'Y-m-d')));
 
         if ($this->campaign->updateById($id, $request->all())) {
 
@@ -286,6 +290,20 @@ class CampaignController extends Controller
                     $this->notification->create(['merchant_id' => $request->merchant_id, 'campaign_id' => $id, 'admin_id' => Auth::user()->id, 'status' => 'Approved', 'seen' => 0]);
 
                     $mailer->send('emails.campaign_approved', 'Your Campaign Has been Approved', $data[0]);
+
+                    if (date('Y-m-d') >= $campaign->cam_start || date('Y-m-d') >= $request->cam_start) {
+
+                        $this->campaign->updateById($id, ['cam_status' => 'Live']);
+
+                        $mailer->send('emails.campaign_live', 'Your Campaign is Live', $data[0]);
+                    }
+
+                    if (date('Y-m-d') >= $campaign->cam_end || date('Y-m-d') >= $request->cam_end) {
+
+                        $this->campaign->updateById($id, ['cam_status' => 'Expired']);
+
+                        $mailer->send('emails.campaign_live', 'Your Campaign is Live', $data[0]);
+                    }
                 }
             }
 
@@ -301,11 +319,15 @@ class CampaignController extends Controller
                 }
             }
 
-            $this->blurb->updateByAttributesWithCondition(['campaign_id' => $id], ['blurb_status' => $request->cam_status]);
+            if ($request->cam_status == "Pending Approval") {
+                $this->blurb->updateByAttributesWithCondition(['campaign_id' => $id], ['blurb_status' => 'Pending Admin Approval']);
+            }
 
             if ($request->cam_status == "Draft") {
                 $this->blurb->updateByAttributesWithCondition(['campaign_id' => $id], ['blurb_status' => 'Created']);
             }
+
+            $this->blurb->updateByAttributesWithCondition(['campaign_id' => $id], ['merchant_id' => $restaurant->merchant_id, 'campaign_id' => $id]);
 
             if (is_null($request->cam_status)) {
                 return redirect('merchants/' . $id . '/edit-campaign')->with('message', 'Successfully updated.');
@@ -346,13 +368,19 @@ class CampaignController extends Controller
      */
     public function updateStatus($id, Request $request)
     {
-        dd($request->cam_status);
         if (empty($this->blurb->getAllByAttributes(['campaign_id' => $id], 'created_at'))) {
             return redirect('campaigns/' . $id)->withInput()->with('message_error', 'There are no blurbs in this campaign.');
         }
 
         if (!$this->campaign->updateById($id, $request->all())) {
             return redirect('campaigns/' . $id)->withInput()->with('message_error', 'Error while updating campaign. Please try again.');
+        }
+
+        if ($request->cam_status == 'Pending Approval') {
+            $data = $this->merchant->getByAttributes(['id' => Auth::user()->id]);
+
+            $request->cam_status = 'Pending Admin Approval';
+            //$mailer->send('emails.campaign_sent', 'We Have Received Your Campaign', $data[0]);
         }
 
         if ($request->cam_status == 'Draft') {

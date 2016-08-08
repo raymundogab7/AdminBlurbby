@@ -160,6 +160,16 @@ class BlurbController extends Controller
     {
         $request->merge(array('blurb_start' => date_format(date_create($request->blurb_start), 'Y-m-d'), 'blurb_end' => date_format(date_create($request->blurb_end), 'Y-m-d')));
 
+        if ($request->blurb_status == 'Approved') {
+            if (date('Y-m-d') >= $request->blurb_start) {
+                $request->merge(['blurb_status' => 'Live']);
+            }
+
+            if (date('Y-m-d') >= $request->blurb_end) {
+                $request->merge(['blurb_status' => 'Expired']);
+            }
+        }
+
         if ($this->blurb->updateById($id, $request->all())) {
             return redirect('blurb/' . $id . '/' . $request->control_no)->with('message', 'Successfully updated.');
         }

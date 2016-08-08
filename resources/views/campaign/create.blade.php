@@ -67,10 +67,10 @@
                             <label class="col-sm-2 control-label" style="text-align:left;">Merchant Name *</label>
                             <div class="col-sm-8">
                                 <input type="hidden" value="{{csrf_token()}}" name="_token">
-                                <select id="select_merchants" name="merchant_id" data-placeholder="Choose One" style="width:100%;" tabindex="-1" title="" class="select2-offscreen">
-                                    <option value="">Choose One</option>
-                                    @foreach($merchants as $merchant)
-                                    <option value="{{$merchant['id']}}">{{$merchant['coy_name']}}</option>
+                                <select required="required" id="select_merchants" name="restaurant_id" data-placeholder="Choose One" style="width:100%;" tabindex="-1" title="" class="select2-offscreen">
+                                    <option value="" selected="selected">Choose One</option>
+                                    @foreach($restaurants as $restaurant)
+                                    <option value="{{$restaurant['id']}}">{{$restaurant['res_name']}}</option>
                                     @endforeach
                                 </select>
                             </div>

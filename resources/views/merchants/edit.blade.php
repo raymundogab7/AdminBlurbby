@@ -751,7 +751,7 @@ echo ($outlet->outlet_ph_active == 0) ? 'PH : Close' : 'PH : ' . date_format(dat
                                     <tbody>
                                         @foreach($campaigns as $campaign)
                                         <tr>
-                                            <td><a href="{{url('/campaigns/'.$campaign['id'])}}">{{$campaign['campaign_name']}}</a></td>
+                                            <td><a href="{{url('merchants/'.$campaign['id'].'/edit-campaign')}}">{{$campaign['campaign_name']}}</a></td>
                                             <td>
                                                 @if($campaign['cam_status'] == 'Approved')
                                                 <span class="text-success">

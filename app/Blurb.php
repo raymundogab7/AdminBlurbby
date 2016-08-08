@@ -21,4 +21,9 @@ class Blurb extends Model
     {
         return $this->belongsTo('Admin\BlurbCategory', 'blurb_category_id', 'id');
     }
+
+    public function merchant()
+    {
+        return $this->belongsTo('Admin\Merchant', 'merchant_id', 'id');
+    }
 }

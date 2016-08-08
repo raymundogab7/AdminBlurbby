@@ -205,7 +205,7 @@
     </div>
   </div>
 </div>
-@endsection
+
 
 <!-- UPDATE BLURB CATEGORY MODAL -->
 <div class="modal fade updateBlurbCategoryModal" id="updateBlurbCategoryModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
@@ -256,7 +256,7 @@
     </div>
   </div>
 </div>
-
+@endsection
 @section('custom-js')
 <script type="text/javascript" src="{{asset('js/jquery.dataTables.min.js')}}"></script>
 <script type="text/javascript" src="//cdn.datatables.net/plug-ins/725b2a2115b/integration/bootstrap/3/dataTables.bootstrap.js"></script>

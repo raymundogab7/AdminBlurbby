@@ -2,6 +2,7 @@
 namespace Admin\Repositories\Eloquent;
 
 use Admin\AppUser;
+use Admin\AppUserBlurb;
 use Admin\Repositories\Interfaces\AppUserInterface;
 use Carbon\Carbon;
 
@@ -16,11 +17,13 @@ class AppUserEloquent implements AppUserInterface
      * Create a new AppUser Eloquent instance.
      *
      * @param AppUser $appUser
+     * @param AppUserBlurb $appUserBlurb
      * @return void
      */
-    public function __construct(AppUser $appUser)
+    public function __construct(AppUser $appUser, AppUserBlurb $appUserBlurb)
     {
         $this->appUser = $appUser;
+        $this->appUserBlurb = $appUserBlurb;
     }
 
     /**
@@ -46,14 +49,32 @@ class AppUserEloquent implements AppUserInterface
     }
 
     /**
+     * Get total app users who used blurb in last 30 days.
+     *
+     * @return integer
+     */
+    public function getUsageCount()
+    {
+        //$today = Carbon::now('Asia/Singapore')->toDateString();
+        $today = Carbon::now()->toDateString();
+        //$timezone = new Carbon('Asia/Singapore');
+        $timezone = new Carbon();
+        $last_thirty_days = $timezone->subDays(30);
+
+        return $this->appUserBlurb->where('interaction_type', 'use')->whereBetween('created_at', array($last_thirty_days, $today))->count();
+    }
+
+    /**
      * Get total used blurb in last 30 days.
      *
      * @return integer
      */
     public function getTotalMonth()
     {
-        $today = Carbon::now('Asia/Singapore')->toDateString();
-        $timezone = new Carbon('Asia/Singapore');
+        //$today = Carbon::now('Asia/Singapore')->toDateString();
+        $today = Carbon::now()->toDateString();
+        //$timezone = new Carbon('Asia/Singapore');
+        $timezone = new Carbon();
         $last_thirty_days = $timezone->subDays(30);
 
         return $this->appUser->whereBetween('date_created', array($last_thirty_days, $today))->count();
@@ -66,8 +87,10 @@ class AppUserEloquent implements AppUserInterface
      */
     public function getLastOnlineTotalMonth()
     {
-        $today = Carbon::now('Asia/Singapore')->toDateString();
-        $timezone = new Carbon('Asia/Singapore');
+        //$today = Carbon::now('Asia/Singapore')->toDateString();
+        //$timezone = new Carbon('Asia/Singapore');
+        $today = Carbon::now()->toDateString();
+        $timezone = new Carbon();
         $last_thirty_days = $timezone->subDays(30);
 
         return $this->appUser->whereBetween('last_online_date', array($last_thirty_days, $today))->count();

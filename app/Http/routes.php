@@ -114,8 +114,11 @@ Route::group(['middleware' => ['auth']], function () {
     Route::post('merchants/restaurant/upload-pp/{restaurant_id}', 'RestaurantController@uploadProfilePicture');
     Route::post('merchants/restaurant/upload-cp/{restaurant_id}', 'RestaurantController@uploadCoverPhoto');
 
-    Route::get('merchants/{merchant_id}/create-campaign', 'MerchantController@create_campaign');
-    Route::get('merchants/{merchant_id}/edit-campaign', 'MerchantController@edit_campaign');
+    Route::get('merchants/{campaign_id}/create-campaign', 'MerchantController@create_campaign');
+    Route::get('merchants/{campaign_id}/edit-campaign', 'MerchantController@edit_campaign');
+
+    Route::get('merchants/{blurb_id}/{cam_control_no}/create-blurb', 'MerchantController@create_blurb');
+    Route::get('merchants/{blurb_id}/{cam_control_no}/edit-blurb', 'MerchantController@edit_blurb');
 
     /*
     |--------------------------------------------------------------------------

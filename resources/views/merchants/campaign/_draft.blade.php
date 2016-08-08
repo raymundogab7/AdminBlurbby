@@ -104,7 +104,7 @@
                 <td><!-- <img src="{{asset('images/no-blurb.png')}}" style="width:20px">  -->No Image Available</td>
                 @endif
 
-                <td><a href="{{url('blurb/'.$blurb['id'].'/'.$campaign['control_no'])}}">{{$blurb['blurb_name']}}</a></td>
+                <td><a href="{{url('merchants/'.$blurb['id'].'/'.$campaign['control_no'].'/edit-blurb')}}">{{$blurb['blurb_name']}}</a></td>
                 <td>
                 	@if($blurb['blurb_status'] == 'Approved')
                 	<span class="text-success">
@@ -127,15 +127,11 @@
                 <td>{{date_format(date_create($blurb['blurb_end']), 'd-M-Y')}}</td>
                 <td class="table-action">
                 @if($blurb['blurb_status'] == 'Rejected' || $blurb['blurb_status'] == 'Created')
-
-                    <a href="{{url('blurb/'.$blurb['id'].'/'.$campaign['control_no'])}}" data-toggle="tooltip" title="Edit" class="tooltips"><i class="fa fa-pencil"></i></a>
+                    <a href="{{url('merchants/'.$blurb['id'].'/'.$campaign['control_no'].'/edit-blurb')}}" data-toggle="tooltip" title="Edit" class="tooltips"><i class="fa fa-pencil"></i></a>
                     <a href="#deleteBlurbModal" data-blurb-id="{{$blurb['id']}}" data-blurb-name="{{$blurb['blurb_name']}}" data-target="#deleteBlurbModal" data-toggle="modal" title="Delete" class="tooltips"><i class="fa fa-trash-o"></i></a>
                 @else
-
-                    <a href="{{url('blurb/'.$blurb['id'].'/'.$campaign->control_no)}}" data-toggle="tooltip" title="View" class="tooltips"><i class="fa fa-eye"></i></a>
+                    <a href="{{url('merchants/'.$blurb['id'].'/'.$campaign['control_no'].'/edit-blurb')}}" data-toggle="tooltip" title="View" class="tooltips"><i class="fa fa-eye"></i></a>
                 @endif
-
-
                 </td>
             </tr>
             @endforeach

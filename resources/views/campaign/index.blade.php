@@ -182,7 +182,7 @@
 	                                        <div class="media-content">
 	                                            <i class="fa fa-calendar"></i> <strong>{{date_format(date_create($campaign['cam_start']), 'd-M-Y')}}</strong> to <strong>{{date_format(date_create($campaign['cam_end']), 'd-M-Y')}}</strong>
 	                                            <ul class="list-unstyled">
-													<li><i class="fa fa-cutlery"></i> {{$campaign['merchant']['coy_name']}}</li>
+													<li><i class="fa fa-cutlery"></i> {{$campaign['restaurants']['res_name']}}</li>
 													<li><i class="fa fa-toggle-on"></i>
 													@if($campaign['cam_status'] == 'Approved')
 					                            	<span class="text-success">

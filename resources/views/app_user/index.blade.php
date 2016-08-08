@@ -45,7 +45,7 @@
                                     <li>
                                         <a href="#">
                                             <table><tr><td style="width:100%;">Used at least a blurb in the last 30 days</td>
-                                            <td><span class="badge pull-right">1</span></td></tr></table>
+                                            <td><span class="badge pull-right">{{$total_app_users_used_blurb}}</span></td></tr></table>
                                         </a>
                                     </li>
                                     <li>

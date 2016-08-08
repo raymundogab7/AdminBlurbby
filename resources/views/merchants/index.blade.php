@@ -141,11 +141,11 @@
 	                                        @endif
 	                                    </div>
 	                                    <div class="media-body">
-	                                        <h4 class="media-heading">{{$merchant['coy_name']}}</h4>
+	                                        <h4 class="media-heading">{{$merchant['restaurant']['res_name']}}</h4>
 	                                        <div class="media-content">
 	                                            <i class="fa fa-clock-o"></i> Last online at {{date_format(date_create($merchant['last_online']), 'd-M-Y H:i:s')}}
 	                                            <ul class="list-unstyled">
-													<li><i class="fa fa-briefcase"></i> {{$merchant['restaurant']['res_name']}}</li>
+													<li><i class="fa fa-briefcase"></i> {{$merchant['coy_name']}}</li>
 													<li><i class="fa fa-toggle-on"></i>
 													@if($merchant['status'] == 1)
 					                            	<span class="text-success"><strong>Approved</strong>
@@ -191,7 +191,7 @@
 			}
 		});*/
 		if($(this).val() != "" && $('#input').val() != "") {
-			window.location.href = $('#search_url').val()+'/administrators/search/'+$('#input').val()+'/'+$(this).val();
+			window.location.href = $('#search_url').val()+'/merchants/search/'+$('#input').val()+'/'+$(this).val();
 		}
 
 

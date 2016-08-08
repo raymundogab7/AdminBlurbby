@@ -143,7 +143,7 @@
 	                                <div class="media">
 	                                    <div class="pull-left">
 	                                    	@if(!is_null($campaign->res_logo))
-	                                    	<img class="img-roundedcircle img-online" src="{{env('MERCHANT_URL').'/'.$campaign->res_logo}}/profile_picture.jpg" alt="...">
+	                                    	<img class="img-roundedcircle img-online" src="{{env('MERCHANT_URL').'/'.$campaign->res_logo}}" alt="...">
 	                                    	@else
 	                                        <img class="img-roundedcircle img-online" src="{{env('APP_URL')}}/images/photos/user1.png" alt="...">
 	                                        @endif

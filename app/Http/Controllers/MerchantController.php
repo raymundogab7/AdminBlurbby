@@ -3,6 +3,9 @@
 namespace Admin\Http\Controllers;
 
 use Admin\Http\Requests\MerchantRequest;
+use Admin\Merchant;
+use Admin\Repositories\Interfaces\BlurbCategoryInterface;
+use Admin\Repositories\Interfaces\BlurbInterface;
 use Admin\Repositories\Interfaces\CampaignInterface;
 use Admin\Repositories\Interfaces\CuisineInterface;
 use Admin\Repositories\Interfaces\MerchantInterface;
@@ -11,11 +14,9 @@ use Admin\Repositories\Interfaces\RestaurantCuisineInterface;
 use Admin\Repositories\Interfaces\RestaurantInterface;
 use Admin\Repositories\Interfaces\SnapShotInterface;
 use Admin\Services\GenerateReport;
-use Admin\Merchant;
+use Admin\Services\Mailer;
 use Auth;
 use Illuminate\Http\Request;
-use Admin\Services\Mailer;
-use Admin\Repositories\Interfaces\BlurbInterface;
 
 class MerchantController extends Controller
 {
@@ -60,6 +61,11 @@ class MerchantController extends Controller
     protected $blurb;
 
     /**
+     * @var BlurbCategoryInterface
+     */
+    protected $blurbCategory;
+
+    /**
      * Create a new controller instance.
      *
      * @param MerchantInterface $merchant
@@ -68,6 +74,7 @@ class MerchantController extends Controller
      * @param OutletInterface $outlet
      * @param CuisineInterface $cuisine
      * @param CampaignInterface $campaign
+     * @param BlurbCategoryInterface $blurbCategory
      * @return void
      */
     public function __construct(
@@ -78,7 +85,8 @@ class MerchantController extends Controller
         OutletInterface $outlet,
         CuisineInterface $cuisine,
         CampaignInterface $campaign,
-        BlurbInterface $blurb
+        BlurbInterface $blurb,
+        BlurbCategoryInterface $blurbCategory
     ) {
         $this->merchant = $merchant;
         $this->restaurant = $restaurant;
@@ -88,6 +96,7 @@ class MerchantController extends Controller
         $this->cuisine = $cuisine;
         $this->campaign = $campaign;
         $this->blurb = $blurb;
+        $this->blurbCategory = $blurbCategory;
     }
 
     /**
@@ -232,18 +241,18 @@ class MerchantController extends Controller
             $request->merge(['password' => bcrypt($request->password)]);
             $request_new = $request->all();
         }
-        
+
         if ($merchant = $this->merchant->updateById($id, $request_new)) {
-            
-            if($request->status == "1") {
+
+            if ($request->status == "1") {
 
                 $data = $this->merchant->getByAttributes(['id' => $id]);
 
-                if($data[0]['status'] != 1) {
+                if ($data[0]['status'] != 1) {
                     $mailer->send('emails.approved', 'Congratulations, Your Account Has Been Approved', $data[0]);
                 }
             }
-            
+
             return redirect('merchants/' . $request->merchant_id . '/edit')->with('message', 'Successfully updated.');
         }
 
@@ -298,7 +307,7 @@ class MerchantController extends Controller
         return redirect()->back();
     }
 
-    public function create_campaign($id)
+    public function createCampaign($id)
     {
         $data = [
             'merchant' => Merchant::find($id),
@@ -307,7 +316,7 @@ class MerchantController extends Controller
         return view('merchants.campaign.create', $data);
     }
 
-    public function edit_campaign($id)
+    public function editCampaign($id)
     {
         $campaign = $this->campaign->getById($id);
 
@@ -317,5 +326,26 @@ class MerchantController extends Controller
         $data['merchants'] = Merchant::where('status', '!=', 3)->orderBy('coy_name')->get()->toArray();
 
         return view('merchants.campaign.view', $data);
+    }
+
+    public function createBlurb($id, $control_no)
+    {
+        $data = [
+            'merchant' => Merchant::find($id),
+        ];
+
+        return view('merchants.blurb.create', $data);
+    }
+
+    public function editBlurb($id, $control_no)
+    {
+        $campaign = $this->campaign->getByAttributes(['control_no' => $control_no], false);
+
+        $data['restaurant'] = $this->restaurant->getByAttributes(['merchant_id' => $campaign->merchant_id], false);
+        $data['campaign'] = $this->campaign->getById($campaign->id);
+        $data['blurb'] = $this->blurb->getById($id);
+        $data['blurb_category'] = $this->blurbCategory->getAll();
+
+        return view('merchants.blurb.view', $data);
     }
 }

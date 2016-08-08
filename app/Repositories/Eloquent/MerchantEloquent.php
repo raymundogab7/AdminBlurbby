@@ -49,8 +49,11 @@ class MerchantEloquent implements MerchantInterface
      */
     public function getTotalMonth()
     {
-        $today = Carbon::now('Asia/Singapore')->toDateString();
-        $timezone = new Carbon('Asia/Singapore');
+        //$today = Carbon::now('Asia/Singapore')->toDateString();
+        //$timezone = new Carbon('Asia/Singapore');
+
+        $today = Carbon::now()->toDateString();
+        $timezone = new Carbon();
         $last_thirty_days = $timezone->subDays(30);
 
         return $this->merchant->whereBetween('date_created', array($last_thirty_days, $today))->count();
@@ -103,32 +106,32 @@ class MerchantEloquent implements MerchantInterface
     {
         if ($search_type == 'Company') {
             //return $this->merchant->where('coy_name', $search_word)->with('restaurant')->orderBy('coy_name')->paginate(10);
-            return \DB::table('merchant')->select('restaurant.id AS res_id', 'restaurant.res_name', 'res_logo', 'merchant.id as mer_id', 'merchant.coy_name', 'merchant.email', 'merchant.status', 'merchant.coy_phone', 'merchant.last_online', 'merchant.coy_url')
+            return \DB::table('merchant')->select('restaurant.id AS res_id', 'restaurant.res_name', 'restaurant.res_logo', 'restaurant.photo_location', 'merchant.id as mer_id', 'merchant.coy_name', 'merchant.email', 'merchant.status', 'merchant.coy_phone', 'merchant.last_online', 'merchant.coy_url')
                 ->leftJoin('restaurant', 'merchant.id', '=', 'restaurant.merchant_id')
-                ->where('merchant.coy_name', 'LIKE', '%'.$search_word.'%')
+                ->where('merchant.coy_name', 'LIKE', '%' . $search_word . '%')
                 ->orderBy('merchant.coy_name')
                 ->paginate(10);
         }
 
         if ($search_type == 'Restaurant') {
-            return \DB::table('merchant')->select('restaurant.id AS res_id', 'restaurant.res_name', 'res_logo', 'merchant.id as mer_id', 'merchant.coy_name', 'merchant.email', 'merchant.status', 'merchant.coy_phone', 'merchant.last_online', 'merchant.coy_url')
+            return \DB::table('merchant')->select('restaurant.id AS res_id', 'restaurant.res_name', 'restaurant.res_logo', 'restaurant.photo_location', 'merchant.id as mer_id', 'merchant.coy_name', 'merchant.email', 'merchant.status', 'merchant.coy_phone', 'merchant.last_online', 'merchant.coy_url')
                 ->leftJoin('restaurant', 'merchant.id', '=', 'restaurant.merchant_id')
-                ->where('restaurant.res_name', 'LIKE', '%'.$search_word.'%')
+                ->where('restaurant.res_name', 'LIKE', '%' . $search_word . '%')
                 ->orderBy('merchant.coy_name')
                 ->paginate(10);
         }
 
         if ($search_type == 'Email') {
             //return $this->merchant->where('email', $search_word)->with('restaurant')->orderBy('coy_name')->paginate(10);
-             return \DB::table('merchant')->select('restaurant.id AS res_id', 'restaurant.res_name', 'res_logo', 'merchant.id as mer_id', 'merchant.coy_name', 'merchant.email', 'merchant.status', 'merchant.coy_phone', 'merchant.last_online', 'merchant.coy_url')
+            return \DB::table('merchant')->select('restaurant.id AS res_id', 'restaurant.res_name', 'restaurant.res_logo', 'restaurant.photo_location', 'merchant.id as mer_id', 'merchant.coy_name', 'merchant.email', 'merchant.status', 'merchant.coy_phone', 'merchant.last_online', 'merchant.coy_url')
                 ->leftJoin('restaurant', 'merchant.id', '=', 'restaurant.merchant_id')
-                ->where('merchant.email', 'LIKE', '%'.$search_word.'%')
+                ->where('merchant.email', 'LIKE', '%' . $search_word . '%')
                 ->orderBy('merchant.coy_name')
                 ->paginate(10);
 
         }
 
-        return [];
+        return abort(404);
     }
 
     /**

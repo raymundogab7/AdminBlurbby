@@ -2,6 +2,8 @@
 
 namespace Admin\Http\Controllers;
 
+use Admin\AppUserBlurb;
+use Admin\AppUserRestaurant;
 use Admin\Http\Requests\AppUserRequest;
 use Admin\Repositories\Interfaces\AppUserInterface;
 use Admin\Services\GenerateReport;
@@ -16,14 +18,20 @@ class AppUserController extends Controller
     protected $appUser;
 
     /**
+     * @var AppUserBlurb
+     */
+    protected $appUserBlurb;
+
+    /**
      * Create a new controller instance.
      *
      * @param AdminInterface $admin
      * @return void
      */
-    public function __construct(AppUserInterface $appUser)
+    public function __construct(AppUserInterface $appUser, AppUserBlurb $appUserBlurb)
     {
         $this->appUser = $appUser;
+        $this->appUserBlurb = $appUserBlurb;
     }
 
     /**
@@ -37,6 +45,7 @@ class AppUserController extends Controller
             'app_users' => $this->appUser->getAll(),
             'app_user_paginate' => $this->appUser->paginate(),
             'total_app_users' => $this->appUser->getCount(),
+            'total_app_users_used_blurb' => $this->appUser->getUsageCount(),
             'total_registered_last_thirty_days' => $this->appUser->getTotalMonth(),
             'total_last_online_thirty_days' => $this->appUser->getLastOnlineTotalMonth(),
             'total_last_thirty_days' => $this->appUser->getTotalMonth(),
@@ -65,8 +74,42 @@ class AppUserController extends Controller
      */
     public function edit($id)
     {
+        $app_user_blurb = \DB::table('app_user_blurb')
+            ->select('app_user_blurb.app_user_id', 'app_user_blurb.blurb_id', 'app_user_blurb.interaction_type', 'campaign.id', 'campaign.control_no as ccn', 'blurb.*', 'blurb_category.id as bid', 'blurb_category.blurb_cat_name')
+            ->leftJoin('blurb', 'app_user_blurb.blurb_id', '=', 'blurb.id')
+            ->leftJoin('blurb_category', 'app_user_blurb.blurb_id', '=', 'blurb_category.id')
+            ->leftJoin('campaign', 'blurb.campaign_id', '=', 'campaign.id')
+            ->where(['app_user_blurb.app_user_id' => $id, 'app_user_blurb.interaction_type' => 'store'])
+            ->orderByRaw("FIELD(blurb_status , 'Pending Admin Approval', 'Live', 'Approved', 'Rejected', 'Created', 'Expired') ASC")
+            ->get();
+
+        $bookmarked_merchants = AppUserRestaurant::with('restaurant')->where('app_user_id', $id)->orderBy('created_at')->get()->toArray();
+
+        $usage = $this->appUserBlurb
+            ->with(['blurb' => function ($query) {
+                $query->select('id', 'campaign_id', 'blurb_logo', 'photo_location', 'blurb_name', 'blurb_start', 'blurb_end', 'blurb_status', 'blurb_category_id');
+                $query->with('category');
+                $query->with(['campaign' => function ($query) {
+                    $query->select('id', 'control_no');
+                }]);
+            }])
+            ->where('app_user_id', $id)
+            ->orderBy('created_at')
+            ->get()
+            ->toArray();
+
+        $count_bookmarked_merchant = AppUserRestaurant::where('app_user_id', $id)->count();
+        $count_bookmarked_blurbs = $this->appUserBlurb->where(['app_user_id' => $id, 'interaction_type' => 'store'])->count();
+        $count_used_blurbs = $this->appUserBlurb->where(['app_user_id' => $id, 'interaction_type' => 'use'])->count();
+
         $data = array(
             'app_user' => $this->appUser->getById($id),
+            'app_user_blurb' => $app_user_blurb,
+            'bookmarked_merchants' => $bookmarked_merchants,
+            'usage' => $usage,
+            'count_bookmarked_merchant' => $count_bookmarked_merchant,
+            'count_bookmarked_blurbs' => $count_bookmarked_blurbs,
+            'count_used_blurbs' => $count_used_blurbs,
         );
 
         return view('app_user.edit', $data);

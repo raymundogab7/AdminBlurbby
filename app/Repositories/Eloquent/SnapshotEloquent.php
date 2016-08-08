@@ -86,7 +86,7 @@ class SnapShotEloquent implements SnapShotInterface
     {
         $last_sat = new Carbon('last saturday');
         $last_saturday = $last_sat->toDateString();
-        
+
         $last_sun = new Carbon('last sunday');
         $last_last_sunday = $last_sun->subWeek()->toDateString();
 
@@ -121,7 +121,7 @@ class SnapShotEloquent implements SnapShotInterface
     {
         $last_sat = new Carbon('last saturday');
         $last_saturday = $last_sat->toDateString();
-        
+
         $last_sun = new Carbon('last sunday');
         $last_last_sunday = $last_sun->subWeek()->toDateString();
 
@@ -137,8 +137,11 @@ class SnapShotEloquent implements SnapShotInterface
      */
     public function getByAttributesLastSevenDays(array $attributes, $field = '')
     {
-        $today = Carbon::now('Asia/Singapore')->toDateString();
-        $timezone = new Carbon('Asia/Singapore');
+        //$today = Carbon::now('Asia/Singapore')->toDateString();
+        //$timezone = new Carbon('Asia/Singapore');
+
+        $today = Carbon::now()->toDateString();
+        $timezone = new Carbon();
         $last_seventh = $timezone->subDays(6);
 
         $record = array();
@@ -153,9 +156,10 @@ class SnapShotEloquent implements SnapShotInterface
         foreach ($records as $key => $value) {
             $record[$value['snapshot_date']] = $value[$field];
         }
-        
-        for ($i=0; $i < 7 ; $i++) { 
-            $timezone = new Carbon('Asia/Singapore');
+
+        for ($i = 0; $i < 7; $i++) {
+            //$timezone = new Carbon('Asia/Singapore');
+            $timezone = new Carbon();
 
             $orig_date_format = $timezone->subDays(6)->addDays($i)->toDateString();
 

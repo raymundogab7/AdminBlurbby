@@ -5,13 +5,10 @@
     <div class="form-group">
         <label class="col-sm-2 control-label" style="text-align:left;">Merchant Name *</label>
         <div class="col-sm-8">
-        <input type="hidden" name="_method" value="PUT">
+            <input type="hidden" name="_method" value="PUT">
             <input type="hidden" value="{{csrf_token()}}" name="_token">
-            <select id="select_merchants" name="merchant_id" data-placeholder="Choose One" style="width:100%;" tabindex="-1" title="" class="select2-offscreen">
-                @foreach($merchants as $merchant)
-                <option <?php if ($merchant['id'] == $campaign['merchant_id']): ?> selected="selected" <?php endif;?> value="{{$merchant['id']}}">{{$merchant['coy_name']}}</option>
-                @endforeach
-            </select>
+            <input type="text" disabled="" value="{{$campaign['restaurants']['res_name']}}" class="form-control">
+            {!! Form::hidden('restaurant_id', $campaign['restaurant_id'], ['readonly' => 'readonly', 'class' => 'form-control']) !!}
         </div>
     </div>
     <div class="form-group">
@@ -19,7 +16,7 @@
         <div class="col-sm-8">
 
             <!-- <input type="text" value="" class="form-control" required /> -->
-            {!! Form::text('campaign_name', $campaign['campaign_name'], ['required' => 'required', 'class' => 'form-control']) !!}
+            {!! Form::text('campaign_name', $campaign['campaign_name'], ['readonly' => 'readonly','required' => 'required', 'class' => 'form-control']) !!}
         </div>
     </div><!-- form-group -->
 
@@ -102,11 +99,7 @@
             @foreach($blurbs as $blurb)
             <tr>
                  @if(!is_null($blurb['blurb_logo']))
-                @if($blurb['photo_location'] == 'merchant')
                 <td><img src="{{env('MERCHANT_URL').'/'.$blurb['blurb_logo']}}" style="width:20px"></td>
-                @else
-                <td><img src="{{asset($blurb['blurb_logo'])}}" style="width:20px"></td>
-                @endif
                 @else
                 <td><!-- <img src="{{asset('images/no-blurb.png')}}" style="width:20px">  -->No Image Available</td>
                 @endif
@@ -133,16 +126,8 @@
                 <td>{{date_format(date_create($blurb['blurb_start']), 'd-M-Y')}}</td>
                 <td>{{date_format(date_create($blurb['blurb_end']), 'd-M-Y')}}</td>
                 <td class="table-action">
-                @if($blurb['blurb_status'] == 'Rejected' || $blurb['blurb_status'] == 'Created')
-
                     <a href="{{url('blurb/'.$blurb['id'].'/'.$campaign['control_no'])}}" data-toggle="tooltip" title="Edit" class="tooltips"><i class="fa fa-pencil"></i></a>
                     <a href="#deleteBlurbModal" data-blurb-id="{{$blurb['id']}}" data-blurb-name="{{$blurb['blurb_name']}}" data-target="#deleteBlurbModal" data-toggle="modal" title="Delete" class="tooltips"><i class="fa fa-trash-o"></i></a>
-                @else
-
-                    <a href="{{url('blurb/'.$blurb['id'].'/'.$campaign->control_no)}}" data-toggle="tooltip" title="View" class="tooltips"><i class="fa fa-eye"></i></a>
-                @endif
-
-
                 </td>
             </tr>
             @endforeach

@@ -126,7 +126,7 @@
                                 </div>
 
                                 @endif
-                                @if($blurb->blurb_status == 'Rejected' || $blurb->blurb_status == 'Created')
+                                <!--($blurb->blurb_status == 'Rejected' || $blurb->blurb_status == 'Created')-->
 								<div class="col-sm-10">
 									<label style="padding-bottom: 10px;">Blurb Image *</label>
 									{!! Form::open(array('id'=>'blurb-photo', 'enctype' => 'multipart/form-data', 'url' => 'blurb/updateLogo/'.$blurb->id.'/'.$campaign->id, 'class' => 'dropzone form-horizontal form-bordered', 'method'=>'POST')) !!}
@@ -136,11 +136,11 @@
 									{!! Form::close() !!}
 									<span class="help-block">Must be a square size with at least 500px x 500px.</span>
 								</div>
-                                @endif
+                                <!--endif-->
 							</div>
                             @if($blurb->blurb_status == 'Approved')
 							@include('blurb._approved', ['blurb' => $blurb])
-                            @elseif($blurb->blurb_status == 'Pending Approval')
+                            @elseif($blurb->blurb_status == 'Pending Admin Approval')
                             @include('blurb._pending_approval', ['blurb' => $blurb])
                             @elseif($blurb->blurb_status == 'Created')
                             @include('blurb._draft', ['blurb' => $blurb])
@@ -196,6 +196,10 @@
     });
 
     jQuery('#select-search-hide').select2({
+        minimumResultsForSearch: -1
+    });
+
+    jQuery('#select_status').select2({
         minimumResultsForSearch: -1
     });
 

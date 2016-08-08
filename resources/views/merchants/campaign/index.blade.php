@@ -168,7 +168,11 @@
 	                                <div class="media">
 	                                    <div class="pull-left">
 	                                    	@if(!is_null($campaign['restaurant']['res_logo']))
-	                                    	<img class="img-roundedcircle img-online" src="{{env('MERCHANT_URL').'/'.$campaign['restaurant']['res_logo']}}/profile_picture.jpg" alt="...">
+	                                    	@if($campaign['restaurant']['photo_location'] == 'merchant')
+	                                    	<img class="img-roundedcircle img-online" src="{{env('MERCHANT_URL').'/'.$campaign['restaurant']['res_logo']}}" alt="...">
+	                                    	@else
+	                                    	<img class="img-roundedcircle img-online" src="{{env('APP_URL').'/'.$campaign['restaurant']['res_logo']}}" alt="...">
+	                                    	@endif
 	                                    	@else
 	                                        <img class="img-roundedcircle img-online" src="{{env('APP_URL')}}/images/photos/user1.png" alt="...">
 	                                        @endif

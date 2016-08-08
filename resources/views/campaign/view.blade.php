@@ -1,6 +1,6 @@
 @extends('layouts.admin')
 
-@section('page-title', $restaurant->res_name . ' Campaigns')
+@section('page-title','Campaigns Details')
 
 @section('custom-css')
 

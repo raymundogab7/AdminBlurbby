@@ -131,22 +131,22 @@
 	                                <div class="media">
 	                                    <div class="pull-left">
 
-	                                        @if(!is_null($merchant['restaurant']['res_logo']))
-	                                        @if($merchant['restaurant']['photo_location'] == 'merchant')
-			                                <img class="img-roundedcircle img-online" src="{{env('MERCHANT_URL').'/'.$merchant['restaurant']['res_logo']}}" alt="...">
+	                                        @if(!is_null($merchant->res_logo))
+	                                        @if($merchant->photo_location == 'merchant')
+			                                <img class="img-roundedcircle img-online" src="{{env('MERCHANT_URL').'/'.$merchant->res_logo}}" alt="...">
 			                                @else
-			                                <img class="img-roundedcircle img-online" src="{{asset($merchant['restaurant']['res_logo'])}}" alt="...">
+			                                <img class="img-roundedcircle img-online" src="{{asset($merchant->res_logo)}}" alt="...">
 			                                @endif
 	                                    	@else
 	                                        <img class="img-roundedcircle img-online" src="{{env('APP_URL')}}/images/photos/user1.png" alt="...">
 	                                        @endif
 	                                    </div>
 	                                    <div class="media-body">
-	                                        <h4 class="media-heading">{{$merchant->coy_name}}</h4>
+	                                        <h4 class="media-heading">{{$merchant->res_name}}</h4>
 	                                        <div class="media-content">
 	                                            <i class="fa fa-clock-o"></i> Last online at {{date_format(date_create($merchant->last_online), 'd-M-Y H:i:s')}}
 	                                            <ul class="list-unstyled">
-													<li><i class="fa fa-briefcase"></i> {{$merchant->res_name}}</li>
+													<li><i class="fa fa-briefcase"></i> {{$merchant->coy_name}}</li>
 													<li><i class="fa fa-toggle-on"></i>
 													@if($merchant->status == 1)
 					                            	<span class="text-success"><strong>Approved</strong>

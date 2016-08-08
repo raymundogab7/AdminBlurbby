@@ -49,8 +49,8 @@ class CampaignEloquent implements CampaignInterface
      */
     public function getTotalMonth()
     {
-        $today = Carbon::now('Asia/Singapore')->toDateString();
-        $timezone = new Carbon('Asia/Singapore');
+        $today = Carbon::now('UTC')->toDateString();
+        $timezone = new Carbon('UTC');
         $last_thirty_days = $timezone->subDays(30);
 
         return $this->campaign->whereBetween('date_created', array($last_thirty_days, $today))->count();
@@ -66,11 +66,11 @@ class CampaignEloquent implements CampaignInterface
     {
         if (!$paginate) {
 
-            return $this->campaign->with('restaurant')->with(['merchant' => function ($query) {$query->select('id', 'coy_name');}])->get()->toArray();
+            return $this->campaign->with('restaurants')->with(['merchant' => function ($query) {$query->select('id', 'coy_name');}])->get()->toArray();
 
         }
 
-        return $this->campaign->with('restaurant')->with(['merchant' => function ($query) {$query->select('id', 'coy_name');}])->orderBy('campaign_name')->paginate(10);
+        return $this->campaign->with('restaurants')->with(['merchant' => function ($query) {$query->select('id', 'coy_name');}])->orderByRaw("FIELD(cam_status , 'Pending Approval', 'Live', 'Approved', 'Rejected', 'Draft', 'Expired') ASC")->paginate(10);
     }
 
     /**
@@ -185,7 +185,7 @@ class CampaignEloquent implements CampaignInterface
      */
     public function getById($id)
     {
-        return $this->campaign->find($id);
+        return $this->campaign->with(['restaurants', 'merchant'])->find($id);
     }
 
     /**

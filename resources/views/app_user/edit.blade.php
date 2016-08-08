@@ -5,6 +5,8 @@
 @section('custom-css')
 
 <link href="{{asset('css/bootstrap-timepicker.min.css')}}" rel="stylesheet">
+<link href="{{asset('css/style.datatables.css')}}" rel="stylesheet">
+<link href="//cdn.datatables.net/responsive/2.1.0/css/responsive.dataTables.min.css" rel="stylesheet">
 @endsection
 
 @section('body-contents')
@@ -42,8 +44,8 @@
 
                                 </div><!-- text-center -->
                                 <div class="mb20"></div>
-                                <div style="text-align:center;padding:10px 0;"><i class="fa fa-tags"></i> Bookmarked 20 blurbs and 6 restaurants</div>
-                                <div style="text-align:center;padding:10px 0;"><i class="fa fa-tags"></i> Used 16 blurbs</div>
+                                <div style="text-align:center;padding:10px 0;"><i class="fa fa-tags"></i> Bookmarked {{$count_bookmarked_blurbs}} blurbs and {{$count_bookmarked_merchant}} restaurants</div>
+                                <div style="text-align:center;padding:10px 0;"><i class="fa fa-tags"></i> Used {{$count_used_blurbs}} blurbs</div>
                                 <div class="mb20"></div>
                                 <table style="width:100%;">
                                     <tbody>
@@ -208,7 +210,7 @@
 
                                     <div class="tab-pane" id="myblurbs">
                                         <div class="table-responsive">
-                                            <table class="table table-bordered">
+                                            <table class="table table-bordered" id="bookmarked_blurbs">
                                                 <thead>
                                                     <tr>
                                                         <th>Blurb Image</th>
@@ -220,100 +222,48 @@
                                                     </tr>
                                                 </thead>
                                                 <tbody>
+                                                    @foreach($app_user_blurb as $aub)
                                                     <tr>
-                                                        <td><img src="images/coupon-image.jpg" style="width:20px;"></td>
-                                                        <td><a href="admin-add-new-blurb.html">10% Off</a></td>
-                                                        <td><span class="text-success"><strong>Live</strong></span></td>
-                                                        <td>Discount</td>
-                                                        <td>25-Jan-2016</td>
-                                                        <td>24-Mar-2016</td>
+                                                        @if(!is_null($aub->blurb_logo))
+                                                        @if($aub->photo_location == 'merchant')
+                                                        <td><img src="{{env('MERCHANT_URL').'/'.$aub->blurb_logo}}" style="width:20px"></td>
+                                                        @else
+                                                        <td><img src="{{asset($aub->blurb_logo)}}" style="width:20px"></td>
+                                                        @endif
+                                                        @else
+                                                        <td>No Image Available</td>
+                                                        @endif
+                                                        <td><a href="{{url('blurb/'.$aub->id.'/'.$aub->ccn)}}">{{$aub->blurb_name}}</a></td>
+                                                        <td>
+                                                            @if($aub->blurb_status == 'Approved')
+                                                            <span class="text-success">
+                                                            @elseif($aub->blurb_status == 'Created')
+                                                            <span class="text-info">
+                                                            @elseif($aub->blurb_status == 'Live')
+                                                            <span class="text-success">
+                                                            @elseif($aub->blurb_status == 'Expired')
+                                                            <span class="text-muted">
+                                                            @elseif($aub->blurb_status == 'Rejected')
+                                                            <span class="text-danger">
+                                                            @else
+                                                            <span class="text-warning">
+                                                            @endif
+                                                            <strong>{{$aub->blurb_status}}</strong>
+                                                            </span>
+                                                        </td>
+                                                        <td>{{$aub->blurb_cat_name}}</td>
+                                                        <td><?php echo date_format(date_create($aub->blurb_start), 'M-d-Y'); ?></td>
+                                                        <td><?php echo date_format(date_create($aub->blurb_end), 'M-d-Y'); ?></td>
                                                     </tr>
-                                                    <tr>
-                                                        <td><img src="images/coupon-image.jpg" style="width:20px;"></td>
-                                                        <td><a href="admin-add-new-blurb.html">10% Off</a></td>
-                                                        <td><span class="text-success"><strong>Live</strong></span></td>
-                                                        <td>Discount</td>
-                                                        <td>25-Jan-2016</td>
-                                                        <td>24-Mar-2016</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td><img src="images/coupon-image.jpg" style="width:20px;"></td>
-                                                        <td><a href="admin-add-new-blurb.html">10% Off</a></td>
-                                                        <td><span class="text-success"><strong>Live</strong></span></td>
-                                                        <td>Discount</td>
-                                                        <td>25-Jan-2016</td>
-                                                        <td>24-Mar-2016</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td><img src="images/coupon-image.jpg" style="width:20px;"></td>
-                                                        <td><a href="admin-add-new-blurb.html">10% Off</a></td>
-                                                        <td><span class="text-success"><strong>Live</strong></span></td>
-                                                        <td>Discount</td>
-                                                        <td>25-Jan-2016</td>
-                                                        <td>24-Mar-2016</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td><img src="images/coupon-image.jpg" style="width:20px;"></td>
-                                                        <td><a href="admin-add-new-blurb.html">Free Latte with Purchase of at least $50</a></td>
-                                                        <td><span class="text-muted"><strong>Expired</strong></span></td>
-                                                        <td>Freebies</td>
-                                                        <td>25-Jan-2016</td>
-                                                        <td>24-Mar-2016</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td><img src="images/coupon-image.jpg" style="width:20px;"></td>
-                                                        <td><a href="admin-add-new-blurb.html">Free Latte with Purchase of at least $50</a></td>
-                                                        <td><span class="text-muted"><strong>Expired</strong></span></td>
-                                                        <td>Freebies</td>
-                                                        <td>25-Jan-2016</td>
-                                                        <td>24-Mar-2016</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td><img src="images/coupon-image.jpg" style="width:20px;"></td>
-                                                        <td><a href="admin-add-new-blurb.html">Free Latte with Purchase of at least $50</a></td>
-                                                        <td><span class="text-muted"><strong>Expired</strong></span></td>
-                                                        <td>Freebies</td>
-                                                        <td>25-Jan-2016</td>
-                                                        <td>24-Mar-2016</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td><img src="images/coupon-image.jpg" style="width:20px;"></td>
-                                                        <td><a href="admin-add-new-blurb.html">Free Latte with Purchase of at least $50</a></td>
-                                                        <td><span class="text-muted"><strong>Expired</strong></span></td>
-                                                        <td>Freebies</td>
-                                                        <td>25-Jan-2016</td>
-                                                        <td>24-Mar-2016</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td><img src="images/coupon-image.jpg" style="width:20px;"></td>
-                                                        <td><a href="admin-add-new-blurb.html">Free Latte with Purchase of at least $50</a></td>
-                                                        <td><span class="text-muted"><strong>Expired</strong></span></td>
-                                                        <td>Freebies</td>
-                                                        <td>25-Jan-2016</td>
-                                                        <td>24-Mar-2016</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td><img src="images/coupon-image.jpg" style="width:20px;"></td>
-                                                        <td><a href="admin-add-new-blurb.html">Free Latte with Purchase of at least $50</a></td>
-                                                        <td><span class="text-muted"><strong>Expired</strong></span></td>
-                                                        <td>Freebies</td>
-                                                        <td>25-Jan-2016</td>
-                                                        <td>24-Mar-2016</td>
-                                                    </tr>
+                                                    @endforeach
                                                 </tbody>
                                             </table>
                                         </div><!-- table-responsive -->
-                                        <ul class="pagination mt5">
-                                            <li class="disabled"><a href="#"><i class="fa fa-angle-left"></i></a></li>
-                                            <li class="active"><a href="#">1</a></li>
-                                            <li><a href="#">2</a></li>
-                                            <li><a href="#"><i class="fa fa-angle-right"></i></a></li>
-                                        </ul>
                                     </div><!-- tab-pane -->
 
                                     <div class="tab-pane" id="mymerchants">
                                         <div class="table-responsive">
-                                            <table class="table table-bordered">
+                                            <table class="table table-bordered" id="bookmarked_merchants">
                                                 <thead>
                                                     <tr>
                                                         <th>Merchant Logo</th>
@@ -322,70 +272,29 @@
                                                     </tr>
                                                 </thead>
                                                 <tbody>
+                                                    @foreach($bookmarked_merchants as $bm)
                                                     <tr>
-                                                        <td><img src="images/photos/profile-big.jpg" style="width:20px;"></td>
-                                                        <td><a href="merchant-profile-admin.html">Mcdonald's</a></td>
-                                                        <td>2</td>
+                                                        @if(!is_null($bm['restaurant']['res_logo']))
+                                                        @if($bm['restaurant']['photo_location'] == 'merchant')
+                                                        <td><img src="{{env('MERCHANT_URL').'/'.$bm['restaurant']['res_logo']}}" style="width:20px"></td>
+                                                        @else
+                                                        <td><img src="{{asset($bm['restaurant']['res_logo'])}}" style="width:20px"></td>
+                                                        @endif
+                                                        @else
+                                                        <td>No Image Available</td>
+                                                        @endif
+                                                        <td><a href="{{url('endifmerchants/'.$bm['restaurant']['merchant_id'].'/edit')}}">{{$bm['restaurant']['res_name']}}</a></td>
+                                                        <td>{{\Admin\Campaign::where(['restaurant_id' => $bm['restaurant_id'], 'cam_status' => 'Live'])->count()}}</td>
                                                     </tr>
-                                                    <tr>
-                                                        <td><img src="images/photos/profile-big.jpg" style="width:20px;"></td>
-                                                        <td><a href="merchant-profile-admin.html">Starbucks</a></td>
-                                                        <td>5</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td><img src="images/photos/profile-big.jpg" style="width:20px;"></td>
-                                                        <td><a href="merchant-profile-admin.html">Mcdonald's</a></td>
-                                                        <td>2</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td><img src="images/photos/profile-big.jpg" style="width:20px;"></td>
-                                                        <td><a href="merchant-profile-admin.html">Starbucks</a></td>
-                                                        <td>5</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td><img src="images/photos/profile-big.jpg" style="width:20px;"></td>
-                                                        <td><a href="merchant-profile-admin.html">Mcdonald's</a></td>
-                                                        <td>2</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td><img src="images/photos/profile-big.jpg" style="width:20px;"></td>
-                                                        <td><a href="merchant-profile-admin.html">Starbucks</a></td>
-                                                        <td>5</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td><img src="images/photos/profile-big.jpg" style="width:20px;"></td>
-                                                        <td><a href="merchant-profile-admin.html">Mcdonald's</a></td>
-                                                        <td>2</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td><img src="images/photos/profile-big.jpg" style="width:20px;"></td>
-                                                        <td><a href="merchant-profile-admin.html">Starbucks</a></td>
-                                                        <td>5</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td><img src="images/photos/profile-big.jpg" style="width:20px;"></td>
-                                                        <td><a href="merchant-profile-admin.html">Mcdonald's</a></td>
-                                                        <td>2</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td><img src="images/photos/profile-big.jpg" style="width:20px;"></td>
-                                                        <td><a href="merchant-profile-admin.html">Starbucks</a></td>
-                                                        <td>5</td>
-                                                    </tr>
+                                                    @endforeach
                                                 </tbody>
                                             </table>
                                         </div><!-- table-responsive -->
-                                        <ul class="pagination mt5">
-                                            <li class="disabled"><a href="#"><i class="fa fa-angle-left"></i></a></li>
-                                            <li class="active"><a href="#">1</a></li>
-                                            <li><a href="#">2</a></li>
-                                            <li><a href="#"><i class="fa fa-angle-right"></i></a></li>
-                                        </ul>
                                     </div><!-- tab-pane -->
 
                                     <div class="tab-pane" id="usage">
                                         <div class="table-responsive">
-                                            <table class="table table-bordered">
+                                            <table class="table table-bordered" id="usage_table">
                                                 <thead>
                                                     <tr>
                                                         <th>Blurb Image</th>
@@ -397,95 +306,43 @@
                                                     </tr>
                                                 </thead>
                                                 <tbody>
+                                                    @foreach($usage as $u)
                                                     <tr>
-                                                        <td><img src="images/coupon-image.jpg" style="width:20px;"></td>
-                                                        <td><a href="admin-add-new-blurb.html">10% Off</a></td>
-                                                        <td><span class="text-success"><strong>Live</strong></span></td>
-                                                        <td>Discount</td>
-                                                        <td>25-Jan-2016</td>
-                                                        <td>24-Mar-2016</td>
+                                                        @if(!is_null($u['blurb']['blurb_logo']))
+                                                        @if($u['blurb']['photo_location'] == 'merchant')
+                                                        <td><img src="{{env('MERCHANT_URL').'/'.$u['blurb']['blurb_logo']}}" style="width:20px;"></td>
+                                                        @else
+                                                        <td><img src="{{asset($u['blurb']['blurb_logo'])}}" style="width:20px;"></td>
+                                                        @endif
+                                                        @else
+                                                        <td><img src="{{env('APP_URL')}}/images/photos/user1.png" style="width:20px;"></td>
+                                                        @endif
+                                                        <td><a href="{{url('blurb/'.$u['blurb']['id'].'/'.$u['blurb']['campaign']['control_no'])}}">{{$u['blurb']['blurb_name']}}</a></td>
+                                                        <td>
+                                                        @if($u['blurb']['blurb_status'] == 'Approved')
+                                                        <span class="text-success">
+                                                        @elseif($u['blurb']['blurb_status'] == 'Created')
+                                                        <span class="text-info">
+                                                        @elseif($u['blurb']['blurb_status'] == 'Live')
+                                                        <span class="text-success">
+                                                        @elseif($u['blurb']['blurb_status'] == 'Expired')
+                                                        <span class="text-muted">
+                                                        @elseif($u['blurb']['blurb_status'] == 'Rejected')
+                                                        <span class="text-danger">
+                                                        @else
+                                                        <span class="text-warning">
+                                                        @endif
+                                                        <strong>{{$u['blurb']['blurb_status']}}</strong>
+                                                        </span>
+                                                    </td>
+                                                        <td>{{$u['blurb']['category']['blurb_cat_name']}}</td>
+                                                        <td>{{date_format(date_create($u['blurb']['blurb_start']), 'd-M-Y')}}</td>
+                                                        <td>{{date_format(date_create($u['blurb']['blurb_end']), 'd-M-Y')}}</td>
                                                     </tr>
-                                                    <tr>
-                                                        <td><img src="images/coupon-image.jpg" style="width:20px;"></td>
-                                                        <td><a href="admin-add-new-blurb.html">10% Off</a></td>
-                                                        <td><span class="text-success"><strong>Live</strong></span></td>
-                                                        <td>Discount</td>
-                                                        <td>25-Jan-2016</td>
-                                                        <td>24-Mar-2016</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td><img src="images/coupon-image.jpg" style="width:20px;"></td>
-                                                        <td><a href="admin-add-new-blurb.html">10% Off</a></td>
-                                                        <td><span class="text-success"><strong>Live</strong></span></td>
-                                                        <td>Discount</td>
-                                                        <td>25-Jan-2016</td>
-                                                        <td>24-Mar-2016</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td><img src="images/coupon-image.jpg" style="width:20px;"></td>
-                                                        <td><a href="admin-add-new-blurb.html">10% Off</a></td>
-                                                        <td><span class="text-success"><strong>Live</strong></span></td>
-                                                        <td>Discount</td>
-                                                        <td>25-Jan-2016</td>
-                                                        <td>24-Mar-2016</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td><img src="images/coupon-image.jpg" style="width:20px;"></td>
-                                                        <td><a href="admin-add-new-blurb.html">Free Latte with Purchase of at least $50</a></td>
-                                                        <td><span class="text-muted"><strong>Expired</strong></span></td>
-                                                        <td>Freebies</td>
-                                                        <td>25-Jan-2016</td>
-                                                        <td>24-Mar-2016</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td><img src="images/coupon-image.jpg" style="width:20px;"></td>
-                                                        <td><a href="admin-add-new-blurb.html">Free Latte with Purchase of at least $50</a></td>
-                                                        <td><span class="text-muted"><strong>Expired</strong></span></td>
-                                                        <td>Freebies</td>
-                                                        <td>25-Jan-2016</td>
-                                                        <td>24-Mar-2016</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td><img src="images/coupon-image.jpg" style="width:20px;"></td>
-                                                        <td><a href="admin-add-new-blurb.html">Free Latte with Purchase of at least $50</a></td>
-                                                        <td><span class="text-muted"><strong>Expired</strong></span></td>
-                                                        <td>Freebies</td>
-                                                        <td>25-Jan-2016</td>
-                                                        <td>24-Mar-2016</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td><img src="images/coupon-image.jpg" style="width:20px;"></td>
-                                                        <td><a href="admin-add-new-blurb.html">Free Latte with Purchase of at least $50</a></td>
-                                                        <td><span class="text-muted"><strong>Expired</strong></span></td>
-                                                        <td>Freebies</td>
-                                                        <td>25-Jan-2016</td>
-                                                        <td>24-Mar-2016</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td><img src="images/coupon-image.jpg" style="width:20px;"></td>
-                                                        <td><a href="admin-add-new-blurb.html">Free Latte with Purchase of at least $50</a></td>
-                                                        <td><span class="text-muted"><strong>Expired</strong></span></td>
-                                                        <td>Freebies</td>
-                                                        <td>25-Jan-2016</td>
-                                                        <td>24-Mar-2016</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td><img src="images/coupon-image.jpg" style="width:20px;"></td>
-                                                        <td><a href="admin-add-new-blurb.html">Free Latte with Purchase of at least $50</a></td>
-                                                        <td><span class="text-muted"><strong>Expired</strong></span></td>
-                                                        <td>Freebies</td>
-                                                        <td>25-Jan-2016</td>
-                                                        <td>24-Mar-2016</td>
-                                                    </tr>
+                                                    @endforeach
                                                 </tbody>
                                             </table>
                                         </div><!-- table-responsive -->
-                                        <ul class="pagination mt5">
-                                            <li class="disabled"><a href="#"><i class="fa fa-angle-left"></i></a></li>
-                                            <li class="active"><a href="#">1</a></li>
-                                            <li><a href="#">2</a></li>
-                                            <li><a href="#"><i class="fa fa-angle-right"></i></a></li>
-                                        </ul>
                                     </div><!-- tab-pane -->
                         </div><!-- tab-content -->
 
@@ -500,7 +357,34 @@
 @section('custom-js')
 <script type="text/javascript" src="{{asset('js/jquery-ui-1.10.3.min.js')}}"></script>
 <script type="text/javascript" src="{{asset('js/bootstrap-timepicker.min.js')}}"></script>
+<script type="text/javascript" src="{{asset('js/jquery.dataTables.min.js')}}"></script>
+<script type="text/javascript" src="//cdn.datatables.net/plug-ins/725b2a2115b/integration/bootstrap/3/dataTables.bootstrap.js"></script>
+<script type="text/javascript" src="//cdn.datatables.net/responsive/2.1.0/js/dataTables.responsive.min.js"></script>
 <script>
+    jQuery(document).ready(function(){
+
+        jQuery('#bookmarked_blurbs').DataTable({
+            responsive: true,
+            order: []
+        });
+
+        jQuery('#bookmarked_merchants').DataTable({
+            responsive: true,
+            order: []
+        });
+
+        jQuery('#usage_table').DataTable({
+            responsive: true,
+            order: []
+        });
+
+        var shTable = jQuery('#shTable').DataTable({
+            "fnDrawCallback": function(oSettings) {
+                jQuery('#shTable_paginate ul').addClass('pagination-active-dark');
+            },
+            responsive: true
+        });
+    });
 	// Select2
     jQuery('select').select2({
         minimumResultsForSearch: -1

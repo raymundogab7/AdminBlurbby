@@ -22,6 +22,13 @@ interface AppUserInterface
     public function getById($id);
 
     /**
+     * Get total app users who used blurb in last 30 days.
+     *
+     * @return integer
+     */
+    public function getUsageCount();
+
+    /**
      * Get total used blurb in last 30 days.
      *
      * @return integer

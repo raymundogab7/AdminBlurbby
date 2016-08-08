@@ -55,5 +55,7 @@ class Outlet extends Model
         'outlet_ph_active',
         'outlet_ph_start',
         'outlet_ph_end',
+        'latitude',
+        'longitude'
     ];
 }
