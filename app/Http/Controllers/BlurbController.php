@@ -165,7 +165,7 @@ class BlurbController extends Controller
                 $request->merge(['blurb_status' => 'Live']);
             }
 
-            if (date('Y-m-d') >= $request->blurb_end) {
+            if (date('Y-m-d') > $request->blurb_end) {
                 $request->merge(['blurb_status' => 'Expired']);
             }
         }

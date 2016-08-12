@@ -1,4 +1,5 @@
-<?php namespace Admin\Repositories\Eloquent;
+<?php
+namespace Admin\Repositories\Eloquent;
 
 use Admin\Repositories\Interfaces\SnapShotInterface;
 use Admin\SnapShot;
@@ -70,7 +71,7 @@ class SnapShotEloquent implements SnapShotInterface
     {
         $now = Carbon::today();
         $today = $now->toDateString();
-        $last_sun = new Carbon('last sunday');
+        $last_sun = new Carbon('last monday');
         $last_sunday = $last_sun->toDateString();
 
         return $this->snapshot->whereBetween('snapshot_date', array($last_sunday, $today))->sum($field);
@@ -84,10 +85,10 @@ class SnapShotEloquent implements SnapShotInterface
      */
     public function getAllLastWeek($field = '')
     {
-        $last_sat = new Carbon('last saturday');
+        $last_sat = new Carbon('last sunday');
         $last_saturday = $last_sat->toDateString();
 
-        $last_sun = new Carbon('last sunday');
+        $last_sun = new Carbon('last monday');
         $last_last_sunday = $last_sun->subWeek()->toDateString();
 
         return $this->snapshot->whereBetween('snapshot_date', array($last_last_sunday, $last_saturday))->sum($field);
@@ -104,7 +105,7 @@ class SnapShotEloquent implements SnapShotInterface
     {
         $now = Carbon::today();
         $today = $now->toDateString();
-        $last_sun = new Carbon('last sunday');
+        $last_sun = new Carbon('last monday');
         $last_sunday = $last_sun->toDateString();
 
         return $this->snapshot->where($attributes)->whereBetween('snapshot_date', array($last_sunday, $today))->sum($field);
@@ -119,10 +120,10 @@ class SnapShotEloquent implements SnapShotInterface
      */
     public function getByAttributesLastWeek(array $attributes, $field = '')
     {
-        $last_sat = new Carbon('last saturday');
+        $last_sat = new Carbon('last sunday');
         $last_saturday = $last_sat->toDateString();
 
-        $last_sun = new Carbon('last sunday');
+        $last_sun = new Carbon('last monday');
         $last_last_sunday = $last_sun->subWeek()->toDateString();
 
         return $this->snapshot->where($attributes)->whereBetween('snapshot_date', array($last_last_sunday, $last_saturday))->sum($field);
@@ -137,12 +138,13 @@ class SnapShotEloquent implements SnapShotInterface
      */
     public function getByAttributesLastSevenDays(array $attributes, $field = '')
     {
-        //$today = Carbon::now('Asia/Singapore')->toDateString();
-        //$timezone = new Carbon('Asia/Singapore');
-
         $today = Carbon::now()->toDateString();
         $timezone = new Carbon();
-        $last_seventh = $timezone->subDays(6);
+        $last_seventh = $timezone->subDays(7);
+
+        //$today = new Carbon('last monday');
+        //$timezone = new Carbon();
+        //$last_seventh = $timezone->parse('this sunday');
 
         $record = array();
 
@@ -158,10 +160,8 @@ class SnapShotEloquent implements SnapShotInterface
         }
 
         for ($i = 0; $i < 7; $i++) {
-            //$timezone = new Carbon('Asia/Singapore');
             $timezone = new Carbon();
-
-            $orig_date_format = $timezone->subDays(6)->addDays($i)->toDateString();
+            $orig_date_format = $timezone->subDays(7)->addDays($i)->toDateString();
 
             $ticks[] = [$i, date_format(date_create($orig_date_format), 'd-M-y')];
 

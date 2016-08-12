@@ -205,7 +205,7 @@
                                     <tbody>
                                     @foreach($campaigns as $c)
                                         <tr>
-                                        	<td><a href="{{url('merchants') . '/' . $c['id'].'/edit'}}">{{$c['restaurant']['res_name']}}</a></td>
+                                        	<td><a href="{{url('merchants') . '/' . $c['merchant_id'].'/edit'}}">{{$c['restaurant']['res_name']}}</a></td>
                                             <td><a href="{{url('campaigns') . '/' . $c['id']}}">{{$c['campaign_name']}}</a></td>
                                             <td>
                                                 @if($c['cam_status'] == 'Approved')

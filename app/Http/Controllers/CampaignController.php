@@ -290,20 +290,20 @@ class CampaignController extends Controller
                     $this->notification->create(['merchant_id' => $request->merchant_id, 'campaign_id' => $id, 'admin_id' => Auth::user()->id, 'status' => 'Approved', 'seen' => 0]);
 
                     $mailer->send('emails.campaign_approved', 'Your Campaign Has been Approved', $data[0]);
+                }
 
-                    if (date('Y-m-d') >= $campaign->cam_start || date('Y-m-d') >= $request->cam_start) {
+                if (date('Y-m-d') >= $campaign->cam_start || date('Y-m-d') >= $request->cam_start) {
 
-                        $this->campaign->updateById($id, ['cam_status' => 'Live']);
+                    $this->campaign->updateById($id, ['cam_status' => 'Live']);
 
-                        $mailer->send('emails.campaign_live', 'Your Campaign is Live', $data[0]);
-                    }
+                    $mailer->send('emails.campaign_live', 'Your Campaign is Live', $data[0]);
+                }
 
-                    if (date('Y-m-d') >= $campaign->cam_end || date('Y-m-d') >= $request->cam_end) {
+                if (date('Y-m-d') > $campaign->cam_end || date('Y-m-d') > $request->cam_end) {
 
-                        $this->campaign->updateById($id, ['cam_status' => 'Expired']);
+                    $this->campaign->updateById($id, ['cam_status' => 'Expired']);
 
-                        $mailer->send('emails.campaign_live', 'Your Campaign is Live', $data[0]);
-                    }
+                    $mailer->send('emails.campaign_live', 'Your Campaign is Live', $data[0]);
                 }
             }
 

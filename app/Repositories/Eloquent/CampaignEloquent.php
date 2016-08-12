@@ -1,4 +1,5 @@
-<?php namespace Admin\Repositories\Eloquent;
+<?php
+namespace Admin\Repositories\Eloquent;
 
 use Admin\Campaign;
 use Admin\Repositories\Interfaces\CampaignInterface;
@@ -49,8 +50,8 @@ class CampaignEloquent implements CampaignInterface
      */
     public function getTotalMonth()
     {
-        $today = Carbon::now('UTC')->toDateString();
-        $timezone = new Carbon('UTC');
+        $today = Carbon::now()->toDateString();
+        $timezone = new Carbon();
         $last_thirty_days = $timezone->subDays(30);
 
         return $this->campaign->whereBetween('date_created', array($last_thirty_days, $today))->count();
