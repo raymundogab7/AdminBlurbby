@@ -122,6 +122,53 @@ class MerchantController extends Controller
     }
 
     /**
+     * Display merchant page by status.
+     *
+     * @param string $status
+     * @return View
+     */
+    public function displayByStatus($status)
+    {
+
+        switch ($status) {
+            case 'pending-admin':
+                $status = 0;
+                break;
+            case 'approved':
+                $status = 1;
+                break;
+            case 'blocked':
+                $status = 2;
+                break;
+            case 'pending-email':
+                $status = 3;
+                break;
+            default:
+                $status = "month";
+                break;
+        }
+
+        $query = $this->merchant->getAllWithAttributes(['status' => $status], true);
+
+        if ($status === "month") {
+            $query = $this->merchant->getLastThirtyDays();
+        }
+
+        $data = array(
+            'merchants' => $query,
+            'total_merchants' => $this->merchant->getTotalCount(),
+            'total_last_thirty_days' => $this->merchant->getTotalMonth(),
+            'total_live_merchants' => $this->merchant->getCount(),
+            'total_pending_admin_approval_merchants' => $this->merchant->getCount(0),
+            'total_approved_merchants' => $this->merchant->getCount(1),
+            'total_blocked_merchants' => $this->merchant->getCount(2),
+            'total_pending_email_verification' => $this->merchant->getCount(3),
+        );
+
+        return view('merchants.index_by_status', $data);
+    }
+
+    /**
      * Get search result page.
      *
      * @return View

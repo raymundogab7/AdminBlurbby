@@ -67,6 +67,7 @@ Route::group(['middleware' => ['auth']], function () {
 
     Route::get('campaigns/search/{search_word}/{search_type}', 'CampaignController@getSearchResult');
     Route::get('campaigns/search/show/{search_word}/{search_type}', 'CampaignController@getSearchResult');
+    Route::get('campaigns/category/{status}', 'CampaignController@displayByStatus');
 
     /*
     |--------------------------------------------------------------------------
@@ -120,6 +121,8 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('merchants/{blurb_id}/{cam_control_no}/create-blurb', 'MerchantController@createBlurb');
     Route::get('merchants/{blurb_id}/{cam_control_no}/edit-blurb', 'MerchantController@editBlurb');
 
+    Route::get('merchants/category/{status}', 'MerchantController@displayByStatus');
+
     /*
     |--------------------------------------------------------------------------
     | Administrator Route
@@ -128,6 +131,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::resource('administrators', 'AdministratorController');
     Route::get('administrators/search/{search_word}/{search_type}', 'AdministratorController@getSearchResult');
     Route::post('administrators/generate', 'AdministratorController@generateReport');
+    Route::get('administrators/category/{status}', 'AdministratorController@displayByStatus');
 
     /*
     |--------------------------------------------------------------------------
@@ -137,6 +141,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::resource('app-users', 'AppUserController');
     Route::get('app-users/search/{search_word}/{search_type}', 'AppUserController@getSearchResult');
     Route::post('app-users/generate', 'AppUserController@generateReport');
+    Route::get('app-users/category/{status}', 'AppUserController@displayByStatus');
 
     /*
     |--------------------------------------------------------------------------

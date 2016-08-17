@@ -5,8 +5,8 @@ namespace Admin\Http\Controllers;
 use Admin\Http\Requests\OutletRequest;
 use Admin\Repositories\Interfaces\OutletInterface;
 use Admin\Repositories\Interfaces\RestaurantInterface;
-use Illuminate\Http\Request;
 use Admin\Services\LongLat;
+use Illuminate\Http\Request;
 
 class OutletController extends Controller
 {
@@ -55,12 +55,12 @@ class OutletController extends Controller
     public function store(OutletRequest $request, LongLat $longLat)
     {
         $data = $longLat->get($request);
-        
-        if(empty($data)){
-            return redirect('outlets/' . $request->merchant_id . '/create')->withInput()->with('error', 'Invalid address.');;
+
+        if (empty($data)) {
+            return redirect('outlets/' . $request->merchant_id . '/create')->withInput()->with('error', 'Invalid address.');
         }
 
-        $request->merge(array('outlet_no' => uniqid(), 'longitude' => $data['longitude'], 'latitude'=>$data['latitude']));
+        $request->merge(array('outlet_no' => uniqid(), 'longitude' => $data['longitude'], 'latitude' => $data['latitude']));
 
         if ($this->outlet->create($request->all())) {
 
@@ -94,10 +94,10 @@ class OutletController extends Controller
     public function update($id, OutletRequest $request, LongLat $longLat)
     {
         $data = $longLat->get($request);
-        
-        $request->merge(array('longitude' => $data['longitude'], 'latitude'=>$data['latitude']));
 
-        if(empty($data)){
+        $request->merge(array('longitude' => $data['longitude'], 'latitude' => $data['latitude']));
+
+        if (empty($data)) {
             return back()->withInput()->with('error', 'Invalid address.');
         }
 

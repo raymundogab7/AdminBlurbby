@@ -50,7 +50,7 @@
 	                                	@foreach($featured_sections as $featured_section)
 	                                	<tr>
 	                                    	<td>{{$featured_section['position']}}</td>
-											<td>{{$featured_section['merchant']['coy_name']}}</td>
+											<td>{{$featured_section['restaurant']['res_name']}}</td>
 											<td>{{$featured_section['status']}}</td>
 											<td class="table-action">&nbsp;&nbsp;&nbsp;&nbsp;
 												@if($featured_section['position'] < count($featured_sections))

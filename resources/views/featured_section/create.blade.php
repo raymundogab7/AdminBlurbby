@@ -43,7 +43,8 @@
                         </div>
 
                         @endif
-                        {!! Form::open(array('url' => 'featured-section', 'class' => 'form-horizontal form-bordered', 'files' => true, 'enctype' => 'multipart/form-data')) !!}
+                        <!-- {!! Form::open(array('url' => 'featured-section', 'class' => 'form-horizontal form-bordered', 'files' => true, 'enctype' => 'multipart/form-data')) !!} -->
+                        <form method="POST" action="{{url('featured-section')}}" class="form-horizontal form-bordered" files="true" enctype="multipart/form-data">
                             <div class="form-group">
                                 <label class="col-sm-2 control-label" style="text-align:left;">Position *</label>
                                 <div class="col-sm-8">
@@ -69,8 +70,8 @@
                                 <div class="col-sm-8">
                                     <select id="merchant" required="required" data-placeholder="Choose One" class="width300" name="merchant_id">
                                         <option value="">Choose One</option>
-                                        @foreach($merchant as $m)
-                                        <option value="{{$m['id']}}">{{$m['coy_name']}}</option>
+                                        @foreach($restaurants as $restaurant)
+                                        <option value="{{$restaurant['merchant_id']}}">{{$restaurant['res_name']}}</option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -97,7 +98,7 @@
                             <br>
                             <button style="margin-left:15px;" class="btn btn-primary">Create</button>
                             <a href="{{url('featured-section')}}"><button type="button" style="margin-left:15px;" class="btn btn-default">Back</button></a>
-                        {!! Form::close() !!}
+                        </form>
                     </div><!-- row -->
 
                 </div><!-- contentpanel -->

@@ -287,7 +287,15 @@
                                     <div class="bootstrap-timepicker">{!! Form::text('outlet_ph_end', $outlet->outlet_ph_end, ['id' => 'timepicker-ph-end-1', 'class' => 'toggle-timepicker form-control time-sched']) !!}</div>
                                 </div>
                             </div><!-- form-group -->
-
+                            <div class="form-group openinghours-form">
+                                <label class="col-xs-12 col-sm-2 control-label" style="text-align:left;"></label>
+                                <div class="col-xs-2">
+                                    <p>Additional Info</p>
+                                </div>
+                                <div class="col-xs-6 col-sm-6" >
+                                    {!! Form::textarea('additional_info', $outlet->additional_info, ['required' => 'required', 'class' => 'form-control', 'rows' => '5']) !!}
+                                </div>
+                            </div>
                             <button type="submit" class="btn btn-primary">Update</button>
                             <a href="{{url('merchants/'.$restaurant->merchant_id.'/edit')}}"><button type="button" style="margin-left:15px;" class="btn btn-default">Cancel</button></a>
                         </form>

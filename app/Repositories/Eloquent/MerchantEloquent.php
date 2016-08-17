@@ -1,4 +1,5 @@
-<?php namespace Admin\Repositories\Eloquent;
+<?php
+namespace Admin\Repositories\Eloquent;
 
 use Admin\Merchant;
 use Admin\Repositories\Interfaces\MerchantInterface;
@@ -57,6 +58,20 @@ class MerchantEloquent implements MerchantInterface
         $last_thirty_days = $timezone->subDays(30);
 
         return $this->merchant->whereBetween('date_created', array($last_thirty_days, $today))->count();
+    }
+
+    /**
+     * Get total merchants in last 30 days.
+     *
+     * @return integer
+     */
+    public function getLastThirtyDays()
+    {
+        $today = Carbon::now()->toDateString();
+        $timezone = new Carbon();
+        $last_thirty_days = $timezone->subDays(30);
+
+        return $this->merchant->with(['restaurant'])->whereBetween('date_created', array($last_thirty_days, $today))->orderByRaw("FIELD(status , 0, 1, 3, 2) ASC")->paginate(10);
     }
 
     /**

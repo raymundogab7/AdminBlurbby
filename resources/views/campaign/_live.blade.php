@@ -143,7 +143,8 @@
         </tbody>
     </table>
 </div>
-
+<input type="hidden" disabled="disabled" value="{{date_format(date_create($blurb_start_date), 'd-M-Y')}}" id="blurb_start_date">
+<input type="hidden" disabled="disabled" value="{{date_format(date_create($blurb_end_date), 'd-M-Y')}}" id="blurb_end_date">
 <div class="modal fade deleteBlurbModal" id="deleteBlurbModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
@@ -216,20 +217,19 @@
     // Date Picker
     jQuery('#datepicker').datepicker({
         dateFormat: 'dd-M-yy',
-        minDate: 0, // 0 days offset = today
+        maxDate: jQuery('#blurb_start_date').val(), // 0 days offset = today
         onSelect: function(dateText) {
-            $sD = new Date(dateText);
-            $("input#datepicker2").datepicker('option', 'minDate', dateText);
+            //$sD = new Date(dateText);
+            //$("input#datepicker2").datepicker('option', 'minDate', dateText);
         }
     });
     jQuery('#datepicker2').datepicker({
          dateFormat: 'dd-M-yy',
-         minDate: 0,//jQuery('#datepicker').val(),
+         minDate: jQuery('#blurb_end_date').val(),
          onSelect: function(dateText) {
-            $sD = new Date(dateText);
-            $("input#datepicker").datepicker('option', 'maxDate', dateText);
+            //$sD = new Date(dateText);
+            //$("input#datepicker").datepicker('option', 'maxDate', dateText);
         }
-
     });
     jQuery('#select_status').select2({
         minimumResultsForSearch: -1

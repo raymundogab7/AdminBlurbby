@@ -33,12 +33,12 @@
                             <div style="border: 1px solid #ccc;">
                                 <div class="text-center" style="background:url({{asset('images/profile-background.jpg')}});    background-size:cover;">
                                     <img src="{{asset('images/photos/profile-big.jpg')}}" class="img-circle img-offline img-responsive img-profile" style="max-width:80px;margin-top:45px;" alt="" />
-                                    <h4 class="profile-name mb5" style="color:#fff;padding-bottom:45px;font-size:16px;margin-top:5px;">Royce Cheng</h4>
+                                    <h4 class="profile-name mb5" style="color:#fff;padding-bottom:45px;font-size:16px;margin-top:5px;"></h4>
 
                                 </div><!-- text-center -->
                                 <div class="mb20"></div>
-                                <div style="text-align:center;padding:10px 0;"><i class="fa fa-tags"></i> Bookmarked 20 blurbs and 6 restaurants</div>
-                                <div style="text-align:center;padding:10px 0;"><i class="fa fa-tags"></i> Used 16 blurbs</div>
+                                <div style="text-align:center;padding:10px 0;"><i class="fa fa-tags"></i> Bookmarked 0 blurbs and 0 restaurants</div>
+                                <div style="text-align:center;padding:10px 0;"><i class="fa fa-tags"></i> Used 0 blurbs</div>
                                 <div class="mb20"></div>
                                 <table style="width:100%;">
                                     <tbody>
@@ -107,9 +107,6 @@
                              <!-- Nav tabs -->
                             <ul class="nav nav-tabs nav-line">
                                 <li class="active"><a href="#personal" data-toggle="tab"><strong>Personal</strong></a></li>
-                                <li><a href="#myblurbs" data-toggle="tab"><strong>Bookmarked Blurbs</strong></a></li>
-                                <li><a href="#mymerchants" data-toggle="tab"><strong>Bookmarked Merchants</strong></a></li>
-                                <li><a href="#usage" data-toggle="tab"><strong>Usage</strong></a></li>
                             </ul>
 
                             <!-- Tab panes -->
@@ -121,7 +118,7 @@
                                                 <label class="col-sm-2 control-label" style="text-align:left;">Status *</label>
                                                 <div class="col-sm-8">
                                                     <input type="hidden" name="_token" readonly="" value="{{csrf_token()}}">
-                                                    {!! Form::select('status', array('Approved' => 'Approved', 'Pending Email Approval' => 'Pending Email Approval', 'Blocked' => 'Blocked'), null, ['id' => 'type', 'required' => 'required', 'class' => 'width300', 'placeholder' => 'Choose One']) !!}
+                                                    {!! Form::select('status', array('Approved' => 'Approved', 'Pending Email Verification' => 'Pending Email Verification', 'Blocked' => 'Blocked'), null, ['id' => 'type', 'required' => 'required', 'class' => 'width300', 'placeholder' => 'Choose One']) !!}
                                                 </div>
                                             </div><!-- form-group -->
                                             <div class="form-group">
@@ -183,7 +180,7 @@
                                             <div class="form-group">
                                                 <label class="col-sm-2 control-label" style="text-align:left;">New Password</label>
                                                 <div class="col-sm-8">
-                                                    <input type="password" name="password" placeholder="" class="form-control" required="required" />
+                                                    <input type="password" id="saved_pass" autocomplete="off"  name="password" placeholder="" class="form-control" required="required" />
                                                 </div>
                                             </div><!-- form-group -->
 
@@ -199,288 +196,8 @@
                                         </form>
                                     </div><!-- tab-pane -->
 
-                                    <div class="tab-pane" id="myblurbs">
-                                        <div class="table-responsive">
-                                            <table class="table table-bordered">
-                                                <thead>
-                                                    <tr>
-                                                        <th>Blurb Image</th>
-                                                        <th>Blurb Title</th>
-                                                        <th>Status</th>
-                                                        <th>Category</th>
-                                                        <th>Start Date</th>
-                                                        <th>End Date</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    <tr>
-                                                        <td><img src="images/coupon-image.jpg" style="width:20px;"></td>
-                                                        <td><a href="admin-add-new-blurb.html">10% Off</a></td>
-                                                        <td><span class="text-success"><strong>Live</strong></span></td>
-                                                        <td>Discount</td>
-                                                        <td>25-Jan-2016</td>
-                                                        <td>24-Mar-2016</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td><img src="images/coupon-image.jpg" style="width:20px;"></td>
-                                                        <td><a href="admin-add-new-blurb.html">10% Off</a></td>
-                                                        <td><span class="text-success"><strong>Live</strong></span></td>
-                                                        <td>Discount</td>
-                                                        <td>25-Jan-2016</td>
-                                                        <td>24-Mar-2016</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td><img src="images/coupon-image.jpg" style="width:20px;"></td>
-                                                        <td><a href="admin-add-new-blurb.html">10% Off</a></td>
-                                                        <td><span class="text-success"><strong>Live</strong></span></td>
-                                                        <td>Discount</td>
-                                                        <td>25-Jan-2016</td>
-                                                        <td>24-Mar-2016</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td><img src="images/coupon-image.jpg" style="width:20px;"></td>
-                                                        <td><a href="admin-add-new-blurb.html">10% Off</a></td>
-                                                        <td><span class="text-success"><strong>Live</strong></span></td>
-                                                        <td>Discount</td>
-                                                        <td>25-Jan-2016</td>
-                                                        <td>24-Mar-2016</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td><img src="images/coupon-image.jpg" style="width:20px;"></td>
-                                                        <td><a href="admin-add-new-blurb.html">Free Latte with Purchase of at least $50</a></td>
-                                                        <td><span class="text-muted"><strong>Expired</strong></span></td>
-                                                        <td>Freebies</td>
-                                                        <td>25-Jan-2016</td>
-                                                        <td>24-Mar-2016</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td><img src="images/coupon-image.jpg" style="width:20px;"></td>
-                                                        <td><a href="admin-add-new-blurb.html">Free Latte with Purchase of at least $50</a></td>
-                                                        <td><span class="text-muted"><strong>Expired</strong></span></td>
-                                                        <td>Freebies</td>
-                                                        <td>25-Jan-2016</td>
-                                                        <td>24-Mar-2016</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td><img src="images/coupon-image.jpg" style="width:20px;"></td>
-                                                        <td><a href="admin-add-new-blurb.html">Free Latte with Purchase of at least $50</a></td>
-                                                        <td><span class="text-muted"><strong>Expired</strong></span></td>
-                                                        <td>Freebies</td>
-                                                        <td>25-Jan-2016</td>
-                                                        <td>24-Mar-2016</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td><img src="images/coupon-image.jpg" style="width:20px;"></td>
-                                                        <td><a href="admin-add-new-blurb.html">Free Latte with Purchase of at least $50</a></td>
-                                                        <td><span class="text-muted"><strong>Expired</strong></span></td>
-                                                        <td>Freebies</td>
-                                                        <td>25-Jan-2016</td>
-                                                        <td>24-Mar-2016</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td><img src="images/coupon-image.jpg" style="width:20px;"></td>
-                                                        <td><a href="admin-add-new-blurb.html">Free Latte with Purchase of at least $50</a></td>
-                                                        <td><span class="text-muted"><strong>Expired</strong></span></td>
-                                                        <td>Freebies</td>
-                                                        <td>25-Jan-2016</td>
-                                                        <td>24-Mar-2016</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td><img src="images/coupon-image.jpg" style="width:20px;"></td>
-                                                        <td><a href="admin-add-new-blurb.html">Free Latte with Purchase of at least $50</a></td>
-                                                        <td><span class="text-muted"><strong>Expired</strong></span></td>
-                                                        <td>Freebies</td>
-                                                        <td>25-Jan-2016</td>
-                                                        <td>24-Mar-2016</td>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
-                                        </div><!-- table-responsive -->
-                                        <ul class="pagination mt5">
-                                            <li class="disabled"><a href="#"><i class="fa fa-angle-left"></i></a></li>
-                                            <li class="active"><a href="#">1</a></li>
-                                            <li><a href="#">2</a></li>
-                                            <li><a href="#"><i class="fa fa-angle-right"></i></a></li>
-                                        </ul>
-                                    </div><!-- tab-pane -->
 
-                                    <div class="tab-pane" id="mymerchants">
-                                        <div class="table-responsive">
-                                            <table class="table table-bordered">
-                                                <thead>
-                                                    <tr>
-                                                        <th>Merchant Logo</th>
-                                                        <th>Merchant Name</th>
-                                                        <th>No. of Live Campaigns</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    <tr>
-                                                        <td><img src="images/photos/profile-big.jpg" style="width:20px;"></td>
-                                                        <td><a href="merchant-profile-admin.html">Mcdonald's</a></td>
-                                                        <td>2</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td><img src="images/photos/profile-big.jpg" style="width:20px;"></td>
-                                                        <td><a href="merchant-profile-admin.html">Starbucks</a></td>
-                                                        <td>5</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td><img src="images/photos/profile-big.jpg" style="width:20px;"></td>
-                                                        <td><a href="merchant-profile-admin.html">Mcdonald's</a></td>
-                                                        <td>2</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td><img src="images/photos/profile-big.jpg" style="width:20px;"></td>
-                                                        <td><a href="merchant-profile-admin.html">Starbucks</a></td>
-                                                        <td>5</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td><img src="images/photos/profile-big.jpg" style="width:20px;"></td>
-                                                        <td><a href="merchant-profile-admin.html">Mcdonald's</a></td>
-                                                        <td>2</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td><img src="images/photos/profile-big.jpg" style="width:20px;"></td>
-                                                        <td><a href="merchant-profile-admin.html">Starbucks</a></td>
-                                                        <td>5</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td><img src="images/photos/profile-big.jpg" style="width:20px;"></td>
-                                                        <td><a href="merchant-profile-admin.html">Mcdonald's</a></td>
-                                                        <td>2</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td><img src="images/photos/profile-big.jpg" style="width:20px;"></td>
-                                                        <td><a href="merchant-profile-admin.html">Starbucks</a></td>
-                                                        <td>5</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td><img src="images/photos/profile-big.jpg" style="width:20px;"></td>
-                                                        <td><a href="merchant-profile-admin.html">Mcdonald's</a></td>
-                                                        <td>2</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td><img src="images/photos/profile-big.jpg" style="width:20px;"></td>
-                                                        <td><a href="merchant-profile-admin.html">Starbucks</a></td>
-                                                        <td>5</td>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
-                                        </div><!-- table-responsive -->
-                                        <ul class="pagination mt5">
-                                            <li class="disabled"><a href="#"><i class="fa fa-angle-left"></i></a></li>
-                                            <li class="active"><a href="#">1</a></li>
-                                            <li><a href="#">2</a></li>
-                                            <li><a href="#"><i class="fa fa-angle-right"></i></a></li>
-                                        </ul>
-                                    </div><!-- tab-pane -->
-
-                                    <div class="tab-pane" id="usage">
-                                        <div class="table-responsive">
-                                            <table class="table table-bordered">
-                                                <thead>
-                                                    <tr>
-                                                        <th>Blurb Image</th>
-                                                        <th>Blurb Title</th>
-                                                        <th>Status</th>
-                                                        <th>Category</th>
-                                                        <th>Start Date</th>
-                                                        <th>End Date</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    <tr>
-                                                        <td><img src="images/coupon-image.jpg" style="width:20px;"></td>
-                                                        <td><a href="admin-add-new-blurb.html">10% Off</a></td>
-                                                        <td><span class="text-success"><strong>Live</strong></span></td>
-                                                        <td>Discount</td>
-                                                        <td>25-Jan-2016</td>
-                                                        <td>24-Mar-2016</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td><img src="images/coupon-image.jpg" style="width:20px;"></td>
-                                                        <td><a href="admin-add-new-blurb.html">10% Off</a></td>
-                                                        <td><span class="text-success"><strong>Live</strong></span></td>
-                                                        <td>Discount</td>
-                                                        <td>25-Jan-2016</td>
-                                                        <td>24-Mar-2016</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td><img src="images/coupon-image.jpg" style="width:20px;"></td>
-                                                        <td><a href="admin-add-new-blurb.html">10% Off</a></td>
-                                                        <td><span class="text-success"><strong>Live</strong></span></td>
-                                                        <td>Discount</td>
-                                                        <td>25-Jan-2016</td>
-                                                        <td>24-Mar-2016</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td><img src="images/coupon-image.jpg" style="width:20px;"></td>
-                                                        <td><a href="admin-add-new-blurb.html">10% Off</a></td>
-                                                        <td><span class="text-success"><strong>Live</strong></span></td>
-                                                        <td>Discount</td>
-                                                        <td>25-Jan-2016</td>
-                                                        <td>24-Mar-2016</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td><img src="images/coupon-image.jpg" style="width:20px;"></td>
-                                                        <td><a href="admin-add-new-blurb.html">Free Latte with Purchase of at least $50</a></td>
-                                                        <td><span class="text-muted"><strong>Expired</strong></span></td>
-                                                        <td>Freebies</td>
-                                                        <td>25-Jan-2016</td>
-                                                        <td>24-Mar-2016</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td><img src="images/coupon-image.jpg" style="width:20px;"></td>
-                                                        <td><a href="admin-add-new-blurb.html">Free Latte with Purchase of at least $50</a></td>
-                                                        <td><span class="text-muted"><strong>Expired</strong></span></td>
-                                                        <td>Freebies</td>
-                                                        <td>25-Jan-2016</td>
-                                                        <td>24-Mar-2016</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td><img src="images/coupon-image.jpg" style="width:20px;"></td>
-                                                        <td><a href="admin-add-new-blurb.html">Free Latte with Purchase of at least $50</a></td>
-                                                        <td><span class="text-muted"><strong>Expired</strong></span></td>
-                                                        <td>Freebies</td>
-                                                        <td>25-Jan-2016</td>
-                                                        <td>24-Mar-2016</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td><img src="images/coupon-image.jpg" style="width:20px;"></td>
-                                                        <td><a href="admin-add-new-blurb.html">Free Latte with Purchase of at least $50</a></td>
-                                                        <td><span class="text-muted"><strong>Expired</strong></span></td>
-                                                        <td>Freebies</td>
-                                                        <td>25-Jan-2016</td>
-                                                        <td>24-Mar-2016</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td><img src="images/coupon-image.jpg" style="width:20px;"></td>
-                                                        <td><a href="admin-add-new-blurb.html">Free Latte with Purchase of at least $50</a></td>
-                                                        <td><span class="text-muted"><strong>Expired</strong></span></td>
-                                                        <td>Freebies</td>
-                                                        <td>25-Jan-2016</td>
-                                                        <td>24-Mar-2016</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td><img src="images/coupon-image.jpg" style="width:20px;"></td>
-                                                        <td><a href="admin-add-new-blurb.html">Free Latte with Purchase of at least $50</a></td>
-                                                        <td><span class="text-muted"><strong>Expired</strong></span></td>
-                                                        <td>Freebies</td>
-                                                        <td>25-Jan-2016</td>
-                                                        <td>24-Mar-2016</td>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
-                                        </div><!-- table-responsive -->
-                                        <ul class="pagination mt5">
-                                            <li class="disabled"><a href="#"><i class="fa fa-angle-left"></i></a></li>
-                                            <li class="active"><a href="#">1</a></li>
-                                            <li><a href="#">2</a></li>
-                                            <li><a href="#"><i class="fa fa-angle-right"></i></a></li>
-                                        </ul>
-                                    </div><!-- tab-pane -->
-                        </div><!-- tab-content -->
+                            </div><!-- tab-content -->
 
                         </div><!-- col-sm-9 -->
                     </div><!-- row -->
@@ -493,7 +210,10 @@
 @section('custom-js')
 <script type="text/javascript" src="{{asset('js/jquery-ui-1.10.3.min.js')}}"></script>
 <script type="text/javascript" src="{{asset('js/bootstrap-timepicker.min.js')}}"></script>
+<script type="text/javascript" src="http://www.datejs.com/build/date.js"></script>
 <script>
+    jQuery('#saved_pass').val('');
+    jQuery('#datepicker').val('');
 	// Select2
     jQuery('select').select2({
         minimumResultsForSearch: -1
@@ -504,7 +224,10 @@
         dateFormat: 'dd-M-yy',
         maxDate: 0,
         onSelect: function(dateText) {
-            $('#keyup_date_of_birth').html($.datepicker.formatDate('dd-M-yy', new Date($(this).val())));
+            //$('#keyup_date_of_birth').html($.datepicker.formatDate('dd-M-yy', new Date($(this).val())));
+            var date = $(this).val().toString().replace(/-/g,'/');
+            var sD = new Date(date);
+            $('#keyup_date_of_birth').html(sD.toString('dd MMM yyyy').toUpperCase());
         }
     });
 

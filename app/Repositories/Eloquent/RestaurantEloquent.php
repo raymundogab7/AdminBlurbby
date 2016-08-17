@@ -1,4 +1,5 @@
-<?php namespace Admin\Repositories\Eloquent;
+<?php
+namespace Admin\Repositories\Eloquent;
 
 use Admin\Repositories\Interfaces\RestaurantInterface;
 use Admin\Restaurant;
@@ -18,6 +19,16 @@ class RestaurantEloquent implements RestaurantInterface
     public function __construct(Restaurant $restaurant)
     {
         $this->restaurant = $restaurant;
+    }
+
+    /**
+     * Get All Restaurant.
+     *
+     * @return Restaurant
+     */
+    public function getAll()
+    {
+        return $this->restaurant->orderBy('res_name')->get()->toArray();
     }
 
     /**

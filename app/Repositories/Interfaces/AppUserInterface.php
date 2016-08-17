@@ -29,6 +29,13 @@ interface AppUserInterface
     public function getUsageCount();
 
     /**
+     * Get total app users who used blurb in last 30 days - paginate.
+     *
+     * @return AppUser
+     */
+    public function getUsageCountPaginate();
+
+    /**
      * Get total used blurb in last 30 days.
      *
      * @return integer
@@ -36,11 +43,25 @@ interface AppUserInterface
     public function getTotalMonth();
 
     /**
+     * Get total used blurb in last 30 days - paginate.
+     *
+     * @return AppUser
+     */
+    public function getTotalMonthPaginate();
+
+    /**
      * Get total online users in last 30 days.
      *
      * @return integer
      */
     public function getLastOnlineTotalMonth();
+
+    /**
+     * Get total online users in last 30 days - paginate.
+     *
+     * @return integer
+     */
+    public function getLastOnlineTotalMonthPaginate();
 
     /**
      * Get all AppUser this week.

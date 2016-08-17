@@ -1,9 +1,17 @@
-<?php namespace Admin\Repositories\Interfaces;
+<?php
+namespace Admin\Repositories\Interfaces;
 
 use Admin\Restaurant;
 
 interface RestaurantInterface
 {
+    /**
+     * Get All Restaurant.
+     *
+     * @return Restaurant
+     */
+    public function getAll();
+
     /**
      * Get restaurant by id.
      *

@@ -95,6 +95,43 @@ class CampaignController extends Controller
     }
 
     /**
+     * Display campaign page by status.
+     *
+     * @param string $status
+     * @return View
+     */
+    public function displayByStatus($status)
+    {
+        $this->blurb->deleteByAttributes(['blurb_name' => null]);
+        $status = ucfirst($status);
+
+        if ($status == 'Pending-approval') {
+            $status = 'Pending Approval';
+        }
+
+        $query = $this->campaign->getAllWithAttributes(['cam_status' => $status], true);
+
+        if ($status == 'Month') {
+            $status = 'Pending Approval';
+            $query = $this->campaign->getLastThirtyDays();
+        }
+
+        $data = array(
+            'campaigns' => $query,
+            'total_campaigns' => $this->campaign->getTotalCount(),
+            'total_last_thirty_days' => $this->campaign->getTotalMonth(),
+            'total_live_campaigns' => $this->campaign->getCount(),
+            'total_approved_campaigns' => $this->campaign->getCount('Approved'),
+            'total_rejected_campaigns' => $this->campaign->getCount('Rejected'),
+            'total_pending_approval_campaigns' => $this->campaign->getCount('Pending Approval'),
+            'total_draft_campaigns' => $this->campaign->getCount('Draft'),
+            'total_expired_campaigns' => $this->campaign->getCount('Expired'),
+        );
+
+        return view('campaign.index_by_status', $data);
+    }
+
+    /**
      * Get search result page.
      *
      * @param string $search_word
@@ -156,6 +193,10 @@ class CampaignController extends Controller
     {
         $campaign = $this->campaign->getById($id);
 
+        $blurb_start_date = $this->blurb->getByAttributesWithMin(['campaign_id' => $id], 'blurb_start');
+
+        $blurb_end_date = $this->blurb->getByAttributesWithMax(['campaign_id' => $id], 'blurb_end');
+
         $this->blurb->deleteByAttributes(['merchant_id' => $campaign->merchant_id, 'blurb_name' => null]);
 
         if (!$campaign) {
@@ -168,6 +209,8 @@ class CampaignController extends Controller
             'blurbs' => $this->blurb->getAllByAttributes(['campaign_id' => $id], 'created_at', 'DESC'),
             'merchants' => Merchant::where('status', 1)->orderBy('coy_name')->get()->toArray(),
             'restaurants' => Restaurant::orderBy('res_name')->get()->toArray(),
+            'blurb_start_date' => $blurb_start_date,
+            'blurb_end_date' => $blurb_end_date,
         );
 
         return view('campaign.view', $data);

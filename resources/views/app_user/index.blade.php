@@ -43,37 +43,37 @@
                                         </a>
                                     </li>
                                     <li>
-                                        <a href="#">
+                                        <a href="{{url('app-users/category/used-blurb')}}">
                                             <table><tr><td style="width:100%;">Used at least a blurb in the last 30 days</td>
                                             <td><span class="badge pull-right">{{$total_app_users_used_blurb}}</span></td></tr></table>
                                         </a>
                                     </li>
                                     <li>
-                                        <a href="#">
+                                        <a href="{{url('app-users/category/last-online')}}">
                                             <table><tr><td style="width:100%;">Online in the last 30 days</td>
                                             <td><span class="badge pull-right">{{$total_last_online_thirty_days}}</span></td></tr></table>
                                         </a>
                                     </li>
                                     <li>
-                                        <a href="#">
+                                        <a href="{{url('app-users/category/registered')}}">
                                             <table><tr><td style="width:100%;">Registered in the last 30 days</td>
                                             <td><span class="badge pull-right">{{$total_registered_last_thirty_days}}</span></td></tr></table>
                                         </a>
                                     </li>
                                     <li>
-                                        <a href="#">
+                                        <a href="{{url('app-users/category/approved')}}">
                                             <table><tr><td style="width:100%;">Approved</td>
                                             <td><span class="badge pull-right">{{$total_approved_app_users}}</span></td></tr></table>
                                         </a>
                                     </li>
                                     <li>
-                                        <a href="#">
+                                        <a href="{{url('app-users/category/blocked')}}">
                                             <table><tr><td style="width:100%;">Blocked</td>
                                             <td><span class="badge pull-right">{{$total_blocked_app_users}}</span></td></tr></table>
                                         </a>
                                     </li>
                                     <li>
-                                        <a href="#">
+                                        <a href="{{url('app-users/category/pending-email')}}">
                                             <table><tr><td style="width:100%;">Pending Email Verification</td>
                                             <td><span class="badge pull-right">{{$total_pending_app_users}}</span></td></tr></table>
                                         </a>

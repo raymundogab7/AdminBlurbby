@@ -1,4 +1,5 @@
-<?php namespace Admin\Repositories\Interfaces;
+<?php
+namespace Admin\Repositories\Interfaces;
 
 use Admin\Blurb;
 
@@ -106,4 +107,22 @@ interface BlurbInterface
      * @return Blurb
      */
     public function deleteByAttributes(array $attributes);
+
+    /**
+     * Get data with max value
+     *
+     * @param array $attributes
+     * @param string $field
+     * @return Blurb
+     */
+    public function getByAttributesWithMax(array $attributes, $field);
+
+    /**
+     * Get data with min value
+     *
+     * @param array $attributes
+     * @param string $field
+     * @return Blurb
+     */
+    public function getByAttributesWithMin(array $attributes, $field);
 }

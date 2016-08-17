@@ -34,7 +34,7 @@
                                 <div class="text-center" style="background:url({{asset('images/profile-background.jpg')}});    background-size:cover;">
                                     <img src="{{asset('images/photos/profile-big.jpg')}}" class="img-circle img-offline img-responsive img-profile" style="max-width:80px;margin-top:45px;" alt="" />
                                     <h4 class="profile-name mb5" style="color:#fff;padding-bottom:45px;font-size:16px;margin-top:5px;">Royce Cheng</h4>
-                                    
+
                                 </div><!-- text-center -->
                                 <div class="mb20"></div>
                                 <div style="text-align:center;padding:10px 0;"><span id="keyup_title"></span></div>
@@ -65,7 +65,7 @@
                                 </table>
                             </div>
                         </div><!-- col-sm-4 col-md-3 -->
-                    
+
                         <div class="col-sm-12 col-md-9 col-xs-12">
                             @if(session('message'))
 
@@ -114,7 +114,7 @@
                                         </select>
                                     </div>
                                 </div>--><!-- form-group -->
-                                
+
                                 <div class="form-group">
                                     <label class="col-sm-2 control-label" style="text-align:left;">Type *</label>
                                     <div class="col-sm-8">
@@ -127,14 +127,14 @@
                                         {!! Form::select('role_id', array('1' => 'Super Administrator', '2' => 'Administrator'), null, ['id' => 'type', 'required' => 'required', 'class' => 'width300', 'placeholder' => 'Choose One']) !!}
                                     </div>
                                 </div><!-- form-group -->
-                                
+
                                 <div class="form-group">
                                     <label class="col-sm-2 control-label" style="text-align:left;">Title *</label>
                                     <div class="col-sm-8">
                                         {!! Form::text('title', null, ['id' => 'title', 'required' => 'required', 'class' => 'form-control']) !!}
                                     </div>
                                 </div><!-- form-group -->
-                                
+
                                 <div class="form-group">
                                     <label class="col-sm-2 control-label" style="text-align:left;">Profile Photo</label>
                                     <div class="col-sm-5">
@@ -143,7 +143,7 @@
                                         <span class="help-block">Must be at least 500px x 500px.</span>
                                     </div>
                                 </div>
-                            
+
                                 <div class="form-group">
                                     <label class="col-sm-2 control-label" style="text-align:left;">First Name *</label>
                                     <div class="col-sm-8">
@@ -151,7 +151,7 @@
                                         {!! Form::text('first_name', null, ['id' => 'first_name', 'required' => 'required', 'class' => 'form-control']) !!}
                                     </div>
                                 </div><!-- form-group -->
-                                
+
                                 <div class="form-group">
                                     <label class="col-sm-2 control-label" style="text-align:left;">Last Name *</label>
                                     <div class="col-sm-8">
@@ -159,7 +159,7 @@
                                         {!! Form::text('last_name', null, ['id' => 'last_name', 'required' => 'required', 'class' => 'form-control']) !!}
                                     </div>
                                 </div><!-- form-group -->
-        
+
                                 <div class="form-group">
                                     <label class="col-sm-2 control-label" style="text-align:left;">Email *</label>
                                     <div class="col-sm-8">
@@ -167,7 +167,7 @@
                                         {!! Form::email('email', null, ['id' => 'email', 'required' => 'required', 'class' => 'form-control']) !!}
                                     </div>
                                 </div><!-- form-group -->
-                                
+
                                 <div class="form-group">
                                     <label class="col-sm-2 control-label" style="text-align:left;">Date Of Birth *</label>
                                     <div class="col-sm-2">
@@ -178,7 +178,7 @@
                                         </div><!-- input-group -->
                                     </div>
                                 </div><!-- form-group -->
-                                
+
                                 <div class="form-group">
                                     <label class="col-sm-2 control-label" style="text-align:left;">Gender *</label>
                                     <div class="col-sm-8">
@@ -190,14 +190,14 @@
                                         {!! Form::select('gender', array('Female' => 'Female', 'Male' => 'Male'), null, ['onchange' => 'changeGender(this)', 'id' => 'gender', 'required' => 'required', 'class' => 'width300', 'placeholder' => 'Choose One']) !!}
                                     </div>
                                 </div><!-- form-group -->
-                                
+
                                 <div class="form-group">
                                     <label class="col-sm-2 control-label" style="text-align:left;">New Password</label>
                                     <div class="col-sm-8">
-                                        <input type="password" name="password" placeholder="" class="form-control" required="required" />
+                                        <input type="password" id="saved_pass" autocomplete="off" name="password" placeholder="" class="form-control" required="required" />
                                     </div>
                                 </div><!-- form-group -->
-                                
+
                                 <div class="form-group">
                                     <label class="col-sm-2 control-label" style="text-align:left;">Confirm Password Again</label>
                                     <div class="col-sm-8">
@@ -209,30 +209,36 @@
                                 <a href="{{url('administrators')}}"><button type="button" style="margin-left:15px;" class="btn btn-default">Back</button></a>
                             </form>
                         </div><!-- tab-content -->
-                          
+
                         </div><!-- col-sm-9 -->
-                    </div><!-- row -->  
-                
+                    </div><!-- row -->
+
                 </div><!-- contentpanel -->
-                
+
             <input type="hidden" id="search_url" value="{{url('')}}">
 @endsection
 
 @section('custom-js')
 <script type="text/javascript" src="{{asset('js/jquery-ui-1.10.3.min.js')}}"></script>
 <script type="text/javascript" src="{{asset('js/bootstrap-timepicker.min.js')}}"></script>
+<script type="text/javascript" src="http://www.datejs.com/build/date.js"></script>
 <script>
+    jQuery('#saved_pass').val('');
+    jQuery('#datepicker').val('');
 	// Select2
     jQuery('select').select2({
         minimumResultsForSearch: -1
     });
-    
+
     // Date Picker
-    jQuery('#datepicker').datepicker({ 
+    jQuery('#datepicker').datepicker({
         dateFormat: 'dd-M-yy',
         maxDate: 0,
         onSelect: function(dateText) {
-            $('#keyup_date_of_birth').html($.datepicker.formatDate('dd-M-yy', new Date($(this).val())));
+            //$('#keyup_date_of_birth').html($.datepicker.formatDate('dd-M-yy', new Date($(this).val())));
+            var date = $(this).val().toString().replace(/-/g,'/');
+            var sD = new Date(date);
+            $('#keyup_date_of_birth').html(sD.toString('dd MMM yyyy').toUpperCase());
         }
     });
 

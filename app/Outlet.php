@@ -23,7 +23,7 @@ class Outlet extends Model
         'outlet_country',
         'outlet_phone',
         'outlet_timezone',
-        
+
         'outlet_mon_active',
         'outlet_mon_start',
         'outlet_mon_end',
@@ -56,6 +56,7 @@ class Outlet extends Model
         'outlet_ph_start',
         'outlet_ph_end',
         'latitude',
-        'longitude'
+        'longitude',
+        'additional_info',
     ];
 }

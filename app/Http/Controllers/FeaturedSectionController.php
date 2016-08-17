@@ -75,7 +75,7 @@ class FeaturedSectionController extends Controller
     public function index()
     {
         $data = array(
-            'featured_sections' => $this->featuredSection->getAll(['merchant'], 'position'),
+            'featured_sections' => $this->featuredSection->getAll(['restaurant'], 'position'),
         );
 
         return view('featured_section.index', $data);
@@ -89,7 +89,7 @@ class FeaturedSectionController extends Controller
     public function create()
     {
         $data = array(
-            'merchant' => $this->merchant->getAll(),
+            'restaurants' => $this->restaurant->getAll(),
             'slides_count' => $this->featuredSection->getCount(),
         );
 
@@ -166,7 +166,7 @@ class FeaturedSectionController extends Controller
     {
         $data = array(
             'featured_section' => $this->featuredSection->getByIdWithRelations($id, ['merchant']),
-            'merchant' => $this->merchant->getAll(),
+            'restaurants' => $this->restaurant->getAll(),
             'featured_sections' => $this->featuredSection->getAll(['merchant'], 'position'),
         );
 
@@ -183,6 +183,7 @@ class FeaturedSectionController extends Controller
      */
     public function update($id, FeaturedSectionRequest $request, ImageUploader $imageUploader)
     {
+
         $this->featuredSection->updateById($id, ['status' => $request->status]);
 
         $file = $request->file('slide_image_temp');
@@ -201,26 +202,12 @@ class FeaturedSectionController extends Controller
 
         $request->merge(['slide_image' => $findSelected->slide_image]);
 
-        if ($this->featuredSection->updateById($to_update->id, ['position' => $findSelected->position])) {
+        if ($this->featuredSection->updateById($to_update->id, ['position' => $findSelected->position, 'slide_image' => $findSelected->slide_image, 'status' => $request->status, 'merchant_id' => $request->merchant_id])) {
 
             $this->featuredSection->updateById($id, ['position' => $to_update->position]);
 
             return redirect('featured-section')->with('message', 'Updated Successfully.');
         }
-
-        /*$to_update = $this->featuredSection->getByAttributes(['position' => $request->position], false);
-
-        $findSelected = $this->featuredSection->getById($id);
-
-        $request->merge(['slide_image' => $findSelected->slide_image]);
-
-        if ($this->featuredSection->updateById($to_update->id, $request->except(['_token', '_method', 'featured_section_id', 'position', 'slide_image_temp']))) {
-        //if ($request->position != $findSelected->position) {
-        $this->featuredSection->updateById($id, ['merchant_id' => $to_update->merchant_id, 'slide_image' => $to_update->slide_image, 'status' => $to_update->status, 'created_at' => $to_update->created_at, 'updated_at' => $request->updated_at]);
-        //}
-
-        return redirect('featured-section')->with('message', 'Updated Successfully.');
-        }*/
 
         return redirect('featured-section');
     }

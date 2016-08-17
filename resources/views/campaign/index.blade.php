@@ -37,49 +37,49 @@
 	                        <h5 class="md-title">Campaigns</h5>
 	                        <ul class="nav nav-pills nav-stacked nav-contacts">
 	                            <li class="active">
-	                                <a href="#">
+	                                <a href="{{url('campaigns')}}">
 	                                    <table><tr><td style="width:100%;">All Campaigns</td>
 	                                    <td><span class="badge pull-right">{{$total_campaigns}}</span></td></tr></table>
 	                                </a>
 	                            </li>
 	                            <li>
-	                                <a href="#">
+	                                <a href="{{url('campaigns/category/month')}}">
 	                                    <table><tr><td style="width:100%;">Created in the last 30 days</td>
 	                                    <td><span class="badge pull-right">{{$total_last_thirty_days}}</span></td></tr></table>
 	                                </a>
 	                            </li>
 	                            <li>
-	                                <a href="#">
+	                                <a href="{{url('campaigns/category/live')}}">
 	                                    <table><tr><td style="width:100%;">Live</td>
 	                                    <td><span class="badge pull-right">{{$total_live_campaigns}}</span></td></tr></table>
 	                                </a>
 	                            </li>
 	                            <li>
-	                                <a href="#">
+	                                <a href="{{url('campaigns/category/approved')}}">
 	                                    <table><tr><td style="width:100%;">Approved</td>
 	                                    <td><span class="badge pull-right">{{$total_approved_campaigns}}</span></td></tr></table>
 	                                </a>
 	                            </li>
 	                            <li>
-	                                <a href="#">
+	                                <a href="{{url('campaigns/category/rejected')}}">
 	                                    <table><tr><td style="width:100%;">Rejected</td>
 	                                    <td><span class="badge pull-right">{{$total_rejected_campaigns}}</span></td></tr></table>
 	                                </a>
 	                            </li>
 	                            <li>
-	                                <a href="#">
+	                                <a href="{{url('campaigns/category/pending-approval')}}">
 	                                    <table><tr><td style="width:100%;">Pending Approval</td>
 	                                    <td><span class="badge pull-right">{{$total_pending_approval_campaigns}}</span></td></tr></table>
 	                                </a>
 	                            </li>
 	                            <li>
-	                                <a href="#">
+	                                <a href="{{url('campaigns/category/draft')}}">
 	                                    <table><tr><td style="width:100%;">Draft</td>
 	                                    <td><span class="badge pull-right">{{$total_draft_campaigns}}</span></td></tr></table>
 	                                </a>
 	                            </li>
 	                            <li>
-	                                <a href="#">
+	                                <a href="{{url('campaigns/category/expired')}}">
 	                                    <table><tr><td style="width:100%;">Expired</td>
 	                                    <td><span class="badge pull-right">{{$total_expired_campaigns}}</span></td></tr></table>
 	                                </a>

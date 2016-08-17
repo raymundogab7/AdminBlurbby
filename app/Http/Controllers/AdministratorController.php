@@ -44,6 +44,31 @@ class AdministratorController extends Controller
     }
 
     /**
+     * Display administrators page by status.
+     *
+     * @param string $status
+     * @return View
+     */
+    public function displayByStatus($role)
+    {
+
+        $role_id = 1;
+
+        if ($role == 'admins') {
+            $role_id = 2;
+        }
+
+        $data = array(
+            'admins' => $this->admin->getAll(),
+            'administrators' => $this->admin->paginate(['role_id' => $role_id], true),
+            'admin_count' => $this->admin->getAllByAttributes(['role_id' => 1], 'first_name'),
+            'super_admin_count' => $this->admin->getAllByAttributes(['role_id' => 2], 'first_name'),
+        );
+
+        return view('administrators.index_by_status', $data);
+    }
+
+    /**
      * Get search result page.
      *
      * @return View

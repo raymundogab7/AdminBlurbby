@@ -1,4 +1,5 @@
-<?php namespace Admin\Repositories\Eloquent;
+<?php
+namespace Admin\Repositories\Eloquent;
 
 use Admin\Blurb;
 use Admin\Repositories\Interfaces\BlurbInterface;
@@ -170,5 +171,29 @@ class BlurbEloquent implements BlurbInterface
     public function deleteByAttributes(array $attributes)
     {
         return $this->blurb->where($attributes)->delete();
+    }
+
+    /**
+     * Get data with max value
+     *
+     * @param array $attributes
+     * @param string $field
+     * @return Blurb
+     */
+    public function getByAttributesWithMax(array $attributes, $field)
+    {
+        return $this->blurb->where($attributes)->max($field);
+    }
+
+    /**
+     * Get data with min value
+     *
+     * @param array $attributes
+     * @param string $field
+     * @return Blurb
+     */
+    public function getByAttributesWithMin(array $attributes, $field)
+    {
+        return $this->blurb->where($attributes)->min($field);
     }
 }

@@ -1,4 +1,5 @@
-<?php namespace Admin\Repositories\Interfaces;
+<?php
+namespace Admin\Repositories\Interfaces;
 
 use Admin\Campaign;
 
@@ -17,6 +18,13 @@ interface CampaignInterface
      * @return integer
      */
     public function getTotalMonth();
+
+    /**
+     * Get total campaigns in last 30 days.
+     *
+     * @return integer
+     */
+    public function getLastThirtyDays();
 
     /**
      * Get total status campaigns.

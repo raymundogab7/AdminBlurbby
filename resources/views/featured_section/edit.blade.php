@@ -62,8 +62,8 @@
                                 <div class="col-sm-8">
                                     <select id="merchant" required="required" data-placeholder="Choose One" class="width300" name="merchant_id">
                                         <option value="">Choose One</option>
-                                        @foreach($merchant as $m)
-                                        <option value="{{$m['id']}}" <?php if ($featured_section->merchant->id == $m['id']): ?> selected="selected" <?php endif;?> >{{$m['coy_name']}}</option>
+                                        @foreach($restaurants as $restaurant)
+                                        <option value="{{$restaurant['merchant_id']}}" <?php if ($featured_section->merchant->id == $restaurant['merchant_id']): ?> selected="selected" <?php endif;?> >{{$restaurant['res_name']}}</option>
                                         @endforeach
                                     </select>
                                 </div>

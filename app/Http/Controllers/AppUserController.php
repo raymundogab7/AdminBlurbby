@@ -58,6 +58,51 @@ class AppUserController extends Controller
     }
 
     /**
+     * Display administrators page by status.
+     *
+     * @param string $status
+     * @return View
+     */
+    public function displayByStatus($status)
+    {
+        switch ($status) {
+            case 'used-blurb':
+                $query = $this->appUser->getUsageCountPaginate();
+                break;
+            case 'last-online':
+                $query = $this->appUser->getLastOnlineTotalMonthPaginate();
+                break;
+            case 'registered':
+                $query = $this->appUser->getTotalMonthPaginate();
+                break;
+            default:
+                $status = ucfirst($status);
+
+                if ($status == 'Pending-email') {
+                    $status = 'Pending Email Verification';
+                }
+
+                $query = $this->appUser->paginate(['status' => $status]);
+                break;
+        }
+
+        $data = array(
+            'app_users' => $this->appUser->getAll(),
+            'app_user_paginate' => $query,
+            'total_app_users' => $this->appUser->getCount(),
+            'total_app_users_used_blurb' => $this->appUser->getUsageCount(),
+            'total_registered_last_thirty_days' => $this->appUser->getTotalMonth(),
+            'total_last_online_thirty_days' => $this->appUser->getLastOnlineTotalMonth(),
+            'total_last_thirty_days' => $this->appUser->getTotalMonth(),
+            'total_approved_app_users' => $this->appUser->getCountByStatus('Approved'),
+            'total_pending_app_users' => $this->appUser->getCountByStatus('Pending Email Verification'),
+            'total_blocked_app_users' => $this->appUser->getCountByStatus('Blocked'),
+        );
+
+        return view('app_user.index_by_status', $data);
+    }
+
+    /**
      * Display create app user page.
      *
      * @return View
@@ -80,7 +125,7 @@ class AppUserController extends Controller
             ->leftJoin('blurb_category', 'app_user_blurb.blurb_id', '=', 'blurb_category.id')
             ->leftJoin('campaign', 'blurb.campaign_id', '=', 'campaign.id')
             ->where(['app_user_blurb.app_user_id' => $id, 'app_user_blurb.interaction_type' => 'store'])
-            ->orderByRaw("FIELD(blurb_status , 'Pending Admin Approval', 'Live', 'Approved', 'Rejected', 'Created', 'Expired') ASC")
+            ->orderByRaw("FIELD(blurb.blurb_status , 'Pending Admin Approval', 'Live', 'Approved', 'Rejected', 'Created', 'Expired') ASC")
             ->get();
 
         $bookmarked_merchants = AppUserRestaurant::with('restaurant')->where('app_user_id', $id)->orderBy('created_at')->get()->toArray();
@@ -138,7 +183,7 @@ class AppUserController extends Controller
             return redirect('app-users/create')->with('error', 'Invalid Format')->withInput();
         }
 
-        $request->merge(['password' => bcrypt($request->password), 'date_created' => 'Y-m-d', 'status' => 'Pending Email Approval', 'date_of_birth' => date_format(date_create($request->date_of_birth), 'Y-m-d')]);
+        $request->merge(['password' => bcrypt($request->password), 'date_created' => 'Y-m-d', 'status' => 'Pending Email Verification', 'date_of_birth' => date_format(date_create($request->date_of_birth), 'Y-m-d')]);
 
         $new_app_user = $this->appUser->create($request->except('_token'));
 

@@ -113,7 +113,8 @@
                                 </div>
                             </div><!-- form-group -->
 
-                            <div class="form-group openinghours-form">
+                            <div class="form-group" style="padding-bottom:5px!important;">
+                                <label class="col-xs-12 col-sm-12 control-label" style="text-align:left;padding-bottom:5px;">Outlet's Opening Hours *</label>
                                 <label class="col-xs-12 col-sm-2 control-label" style="text-align:left;"></label>
                                 <div class="col-xs-1" style="width:50px;padding-top:12px;">
                                     <p>Mon</p>
@@ -286,7 +287,15 @@
                                     <div class="bootstrap-timepicker">{!! Form::text('outlet_ph_end', date('21:00', time()+28800), ['id' => 'timepicker-ph-end-1', 'class' => 'toggle-timepicker form-control time-sched']) !!}</div>
                                 </div>
                             </div><!-- form-group -->
-
+                            <div class="form-group openinghours-form">
+                                <label class="col-xs-12 col-sm-2 control-label" style="text-align:left;"></label>
+                                <div class="col-xs-2">
+                                    <p>Additional Info</p>
+                                </div>
+                                <div class="col-xs-6 col-sm-6" >
+                                    {!! Form::textarea('additional_info', null, ['required' => 'required', 'class' => 'form-control', 'rows' => '5']) !!}
+                                </div>
+                            </div>
                             <button type="submit" class="btn btn-primary">Add</button>
                             <a href="{{url('merchants/'.$restaurant->merchant_id.'/edit')}}"><button type="button" style="margin-left:15px;" class="btn btn-default">Cancel</button></a>
                         </form>

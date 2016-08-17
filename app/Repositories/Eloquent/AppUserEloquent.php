@@ -65,19 +65,52 @@ class AppUserEloquent implements AppUserInterface
     }
 
     /**
+     * Get total app users who used blurb in last 30 days - paginate.
+     *
+     * @return AppUser
+     */
+    public function getUsageCountPaginate()
+    {
+        $today = Carbon::now()->toDateString();
+        $timezone = new Carbon();
+        $last_thirty_days = $timezone->subDays(30);
+
+        $appUserBlurb = $this->appUserBlurb->where('interaction_type', 'use')->whereBetween('created_at', array($last_thirty_days, $today))->groupBy('app_user_id')->get()->toArray();
+
+        $app_user_ids = array_map(function ($structure) {
+            return $structure['app_user_id'];
+
+        }, $appUserBlurb);
+
+        return $this->appUser->whereIn('id', $app_user_ids)->paginate(10);
+    }
+
+    /**
      * Get total used blurb in last 30 days.
      *
      * @return integer
      */
     public function getTotalMonth()
     {
-        //$today = Carbon::now('Asia/Singapore')->toDateString();
         $today = Carbon::now()->toDateString();
-        //$timezone = new Carbon('Asia/Singapore');
         $timezone = new Carbon();
         $last_thirty_days = $timezone->subDays(30);
 
         return $this->appUser->whereBetween('date_created', array($last_thirty_days, $today))->count();
+    }
+
+    /**
+     * Get total used blurb in last 30 days - paginate.
+     *
+     * @return AppUser
+     */
+    public function getTotalMonthPaginate()
+    {
+        $today = Carbon::now()->toDateString();
+        $timezone = new Carbon();
+        $last_thirty_days = $timezone->subDays(30);
+
+        return $this->appUser->whereBetween('date_created', array($last_thirty_days, $today))->paginate(10);
     }
 
     /**
@@ -94,6 +127,20 @@ class AppUserEloquent implements AppUserInterface
         $last_thirty_days = $timezone->subDays(30);
 
         return $this->appUser->whereBetween('last_online_date', array($last_thirty_days, $today))->count();
+    }
+
+    /**
+     * Get total online users in last 30 days - paginate.
+     *
+     * @return AppUser
+     */
+    public function getLastOnlineTotalMonthPaginate()
+    {
+        $today = Carbon::now()->toDateString();
+        $timezone = new Carbon();
+        $last_thirty_days = $timezone->subDays(30);
+
+        return $this->appUser->whereBetween('last_online_date', array($last_thirty_days, $today))->paginate();
     }
 
     /**
@@ -132,9 +179,14 @@ class AppUserEloquent implements AppUserInterface
      *
      * @return Admin
      */
-    public function paginate()
+    public function paginate($attributes = null)
     {
-        return $this->appUser->orderBy('first_name')->paginate(10);
+        if (is_null($attributes)) {
+            return $this->appUser->orderBy('first_name')->paginate(10);
+        }
+
+        return $this->appUser->where($attributes)->orderBy('first_name')->paginate(10);
+
     }
 
     /**

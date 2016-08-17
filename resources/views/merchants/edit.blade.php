@@ -146,7 +146,7 @@ echo ($outlet->outlet_ph_active == 0) ? 'PH : Close' : 'PH : ' . date_format(dat
 										<tr style="border-top:1px solid #eee;">
 											<td style="width:25%;padding-left:25px;"><i class="fa fa-tag fa-lg"></i></td>
 											<td style="padding:15px 0;">
-                                                <?php $ctr = 1?>
+                                                <?php $ctr = 1;?>
 												@foreach($restaurant_cuisine as $rc)
 
 													{{ $rc['cuisine']['cuisine_name'] }}@if($ctr != count($restaurant_cuisine)),@endif
@@ -479,7 +479,7 @@ echo ($outlet->outlet_ph_active == 0) ? 'PH : Close' : 'PH : ' . date_format(dat
                                         </div>
                                     </div><!-- form-group -->
 
-                                    <div class="form-group openinghours-form">
+                                    <div class="form-group">
                                         <label class="col-xs-12 col-sm-12 control-label" style="text-align:left;padding-bottom:5px;">Outlet's Opening Hours *</label>
                                         <label class="col-xs-12 col-sm-2 control-label" style="text-align:left;"></label>
                                         <div class="col-xs-1" style="width:50px;padding-top:12px;">
@@ -653,6 +653,15 @@ echo ($outlet->outlet_ph_active == 0) ? 'PH : Close' : 'PH : ' . date_format(dat
                                             <div class="bootstrap-timepicker">{!! Form::text('outlet_ph_end', date_format(date_create($outlet->outlet_ph_end), 'H:i'), ['id' => 'timepicker-ph-end-1', 'class' => 'toggle-timepicker form-control time-sched']) !!}</div>
                                         </div>
                                     </div><!-- form-group -->
+                                    <div class="form-group openinghours-form">
+                                        <label class="col-xs-12 col-sm-2 control-label" style="text-align:left;"></label>
+                                        <div class="col-xs-2">
+                                            <p>Additional Info</p>
+                                        </div>
+                                        <div class="col-xs-6 col-sm-6" >
+                                            {!! Form::textarea('additional_info', $outlet->additional_info, ['required' => 'required', 'class' => 'form-control', 'rows' => '5']) !!}
+                                        </div>
+                                    </div>
                                     <button type="submit" class="btn btn-primary">Update</button>
                                 </form>
 								<hr>

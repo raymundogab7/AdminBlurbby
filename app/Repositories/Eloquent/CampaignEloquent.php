@@ -58,6 +58,20 @@ class CampaignEloquent implements CampaignInterface
     }
 
     /**
+     * Get total campaigns in last 30 days.
+     *
+     * @return integer
+     */
+    public function getLastThirtyDays()
+    {
+        $today = Carbon::now()->toDateString();
+        $timezone = new Carbon();
+        $last_thirty_days = $timezone->subDays(30);
+
+        return $this->campaign->with(['restaurants', 'merchant'])->whereBetween('date_created', array($last_thirty_days, $today))->orderByRaw("FIELD(cam_status , 'Pending Approval', 'Live', 'Approved', 'Rejected', 'Draft', 'Expired') ASC")->paginate(10);
+    }
+
+    /**
      * Get All Campaign.
      *
      * @param boolean $paginate
@@ -89,7 +103,7 @@ class CampaignEloquent implements CampaignInterface
 
         }
 
-        return $this->campaign->with('restaurant')->where($attributes)->orderBy('campaign_name')->paginate(10);
+        return $this->campaign->with(['restaurants', 'merchant'])->where($attributes)->orderBy('campaign_name')->paginate(10);
     }
 
     /**

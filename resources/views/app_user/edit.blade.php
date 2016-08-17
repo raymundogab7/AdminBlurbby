@@ -130,7 +130,7 @@
                                                     <input type="hidden" name="_token" readonly="" value="{{csrf_token()}}">
                                                     <input type="hidden" name="_method" readonly="" value="PUT">
                                                     <input type="hidden" name="app_user_id" readonly="" value="{{$app_user->id}}">
-                                                    {!! Form::select('status', array('Approved' => 'Approved', 'Pending Email Approval' => 'Pending Email Approval', 'Blocked' => 'Blocked'), $app_user->status, ['id' => 'type', 'required' => 'required', 'class' => 'width300', 'placeholder' => 'Choose One']) !!}
+                                                    {!! Form::select('status', array('Approved' => 'Approved', 'Pending Email Verification' => 'Pending Email Verification', 'Blocked' => 'Blocked'), $app_user->status, ['id' => 'type', 'required' => 'required', 'class' => 'width300', 'placeholder' => 'Choose One']) !!}
                                                 </div>
                                             </div><!-- form-group -->
                                             <div class="form-group">

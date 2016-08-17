@@ -66,14 +66,15 @@
 							<span style="margin:20px;font-size:15px;font-weight:bold;"><span id="keyup_blurb_name"></span></span>
 							<div style="margin:20px;"><span id="keyup_blurb_desc"></span></div>
 							<div class="mb20"></div>
-							<table style="width:100%;margin: 30px 0;">
+							<!-- <table style="width:100%;margin: 30px 0;">
 								<tbody>
 									<tr style="border-top:1px solid #ccc;border-bottom:1px solid #ccc;">
 										<td style="width:60%;padding:20px;font-weight:bold;">VALID TILL</td>
 										<td style="width:40%;text-align:right;padding:20px;"><span id="keyup_blurb_end"></span></td>
 									</tr>
 								</tbody>
-							</table>
+							</table> -->
+							<hr style="border-top:.5px solid #ccc;">
 							<div style="margin:20px;text-align:center;"><u>TERMS & CONDITIONS</u></div>
 							<div style="margin:20px;text-align:justify;"><span id="keyup_blurb_terms"></span></div>
 							<div class="mb20"></div>
@@ -179,7 +180,7 @@
 								<div class="form-group">
                                     <label class="col-sm-2 control-label" style="text-align:left;">Terms & Conditions *</label>
                                     <div class="col-sm-8">
-                                        {!! Form::textarea('blurb_terms', "Blurb cannot be used with any other offers and is valid for one redemption per transaction. Offer only valid from 12nn to 3pm. Applicable for featured offer only, while stocks last. Restaurants' operating hours may vary. Not applicable for delivery. Forwarded mail and screenshots are not accepted. The privilege may be changed at the discretion of the outlet.", ['id' => 'blurb_terms_keyup', 'required' => 'required', 'class' => 'form-control', 'maxlength' => 2000]) !!}
+                                        {!! Form::textarea('blurb_terms', "E.g. Blurb cannot be used with any other offers and is valid for one redemption per transaction. Offer only valid from 12nn to 3pm. Applicable for featured offer only, while stocks last. Restaurants' operating hours may vary. Not applicable for delivery. Forwarded mail and screenshots are not accepted. The privilege may be changed at the discretion of the outlet.", ['id' => 'blurb_terms_keyup', 'required' => 'required', 'class' => 'form-control', 'maxlength' => 2000]) !!}
                                     </div>
                                 </div><!-- form-group -->
 								<br>

@@ -1,4 +1,5 @@
-<?php namespace Admin\Repositories\Eloquent;
+<?php
+namespace Admin\Repositories\Eloquent;
 
 use Admin\Admin;
 use Admin\Repositories\Interfaces\AdminInterface;
@@ -49,9 +50,14 @@ class AdminEloquent implements AdminInterface
      *
      * @return Admin
      */
-    public function paginate()
+    public function paginate($attributes = null)
     {
-        return $this->admin->orderBy('first_name')->paginate(10);
+        if (is_null($attributes)) {
+            return $this->admin->orderBy('first_name')->paginate(10);
+        }
+
+        return $this->admin->where($attributes)->orderBy('first_name')->paginate(10);
+
     }
 
     /**
@@ -65,19 +71,19 @@ class AdminEloquent implements AdminInterface
     public function search($search_word, $search_type)
     {
         if ($search_type == 'First Name') {
-            return $this->admin->where('first_name', 'LIKE', '%'.$search_word.'%')->orderBy('first_name')->paginate(10);
+            return $this->admin->where('first_name', 'LIKE', '%' . $search_word . '%')->orderBy('first_name')->paginate(10);
         }
 
         if ($search_type == 'Last Name') {
-            return $this->admin->where('last_name', 'LIKE', '%'.$search_word.'%')->orderBy('first_name')->paginate(10);
+            return $this->admin->where('last_name', 'LIKE', '%' . $search_word . '%')->orderBy('first_name')->paginate(10);
         }
 
         if ($search_type == 'Position') {
-             return $this->admin->where('title', 'LIKE', '%'.$search_word.'%')->orderBy('first_name')->paginate(10);
+            return $this->admin->where('title', 'LIKE', '%' . $search_word . '%')->orderBy('first_name')->paginate(10);
         }
 
         if ($search_type == 'Email') {
-            return $this->admin->where('email', 'LIKE', '%'.$search_word.'%')->orderBy('first_name')->paginate(10);
+            return $this->admin->where('email', 'LIKE', '%' . $search_word . '%')->orderBy('first_name')->paginate(10);
         }
 
         return [];
