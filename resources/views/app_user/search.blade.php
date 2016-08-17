@@ -35,45 +35,45 @@
                         <div class="col-sm-3">
 
                             <h5 class="md-title">Users</h5>
-                            <ul class="nav nav-pills nav-stacked nav-contacts">
-                                    <li class="active">
-                                        <a href="#">
+                                <ul class="nav nav-pills nav-stacked nav-contacts">
+                                    <li class="@if(strpos(url()->current(), 'search')) active @endif">
+                                        <a href="{{url('app-users')}}">
                                             <table><tr><td style="width:100%;">All App Users</td>
                                             <td><span class="badge pull-right">{{$total_app_users}}</span></td></tr></table>
                                         </a>
                                     </li>
-                                    <li>
-                                        <a href="#">
+                                    <li class="@if(strpos(url()->current(), 'used-blurb')) active @endif">
+                                        <a href="{{url('app-users/category/used-blurb')}}">
                                             <table><tr><td style="width:100%;">Used at least a blurb in the last 30 days</td>
-                                            <td><span class="badge pull-right">1</span></td></tr></table>
+                                            <td><span class="badge pull-right">{{$total_app_users_used_blurb}}</span></td></tr></table>
                                         </a>
                                     </li>
-                                    <li>
-                                        <a href="#">
+                                    <li class="@if(strpos(url()->current(), 'last-online')) active @endif">
+                                        <a href="{{url('app-users/category/last-online')}}">
                                             <table><tr><td style="width:100%;">Online in the last 30 days</td>
                                             <td><span class="badge pull-right">{{$total_last_online_thirty_days}}</span></td></tr></table>
                                         </a>
                                     </li>
-                                    <li>
-                                        <a href="#">
+                                    <li class="@if(strpos(url()->current(), 'registered')) active @endif">
+                                        <a href="{{url('app-users/category/registered')}}">
                                             <table><tr><td style="width:100%;">Registered in the last 30 days</td>
                                             <td><span class="badge pull-right">{{$total_registered_last_thirty_days}}</span></td></tr></table>
                                         </a>
                                     </li>
-                                    <li>
-                                        <a href="#">
+                                    <li class="@if(strpos(url()->current(), 'approved')) active @endif">
+                                        <a href="{{url('app-users/category/approved')}}">
                                             <table><tr><td style="width:100%;">Approved</td>
                                             <td><span class="badge pull-right">{{$total_approved_app_users}}</span></td></tr></table>
                                         </a>
                                     </li>
-                                    <li>
-                                        <a href="#">
+                                    <li class="@if(strpos(url()->current(), 'blocked')) active @endif">
+                                        <a href="{{url('app-users/category/blocked')}}">
                                             <table><tr><td style="width:100%;">Blocked</td>
                                             <td><span class="badge pull-right">{{$total_blocked_app_users}}</span></td></tr></table>
                                         </a>
                                     </li>
-                                    <li>
-                                        <a href="#">
+                                    <li class="@if(strpos(url()->current(), 'pending-email')) active @endif">
+                                        <a href="{{url('app-users/category/pending-email')}}">
                                             <table><tr><td style="width:100%;">Pending Email Verification</td>
                                             <td><span class="badge pull-right">{{$total_pending_app_users}}</span></td></tr></table>
                                         </a>
@@ -135,10 +135,10 @@
                                 <a href="{{url('app-users/'.$user['id'].'/edit')}}" class="list-group-item">
                                     <div class="media">
                                         <div class="pull-left">
-                                        	@if($user['profile_photo'] == null)
+                                        	@if($user['profile_photo'] == null || $user['profile_photo'] == '')
                                             <img class="img-circle img-online" src="{{asset('images/photos/user1.png')}}" alt="...">
                                             @else
-                                            <img class="img-circle img-online" src="{{asset('profile_photo/'.$user['id'].'/'.$user['id']. '.jpg')}}" alt="...">
+                                            <img class="img-circle img-online" src="{{asset($user['profile_photo'])}}" alt="...">
                                             @endif
                                         </div>
                                         <div class="media-body">

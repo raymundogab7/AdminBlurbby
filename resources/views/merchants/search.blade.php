@@ -36,38 +36,38 @@
 
 	                        <h5 class="md-title">Merchants</h5>
 	                        <ul class="nav nav-pills nav-stacked nav-contacts">
-	                            <li class="active">
-	                                <a href="#">
+	                            <li class="@if(strpos(url()->current(), 'search')) active @endif">
+	                                <a href="{{url('merchants')}}">
 	                                    <table><tr><td style="width:100%;">All Merchants</td>
 	                                    <td><span class="badge pull-right">{{$total_merchants}}</span></td></tr></table>
 	                                </a>
 	                            </li>
-	                            <li>
-	                                <a href="#">
+	                            <li class="@if(strpos(url()->current(), 'month')) active @endif">
+	                                <a href="{{url('merchants/category/month')}}">
 	                                    <table><tr><td style="width:100%;">Created in the last 30 days</td>
 	                                    <td><span class="badge pull-right">{{$total_last_thirty_days}}</span></td></tr></table>
 	                                </a>
 	                            </li>
-	                            <li>
-	                                <a href="#">
+	                            <li class="@if(strpos(url()->current(), 'approved')) active @endif">
+	                                <a href="{{url('merchants/category/approved')}}">
 	                                    <table><tr><td style="width:100%;">Approved</td>
 	                                    <td><span class="badge pull-right">{{$total_approved_merchants}}</span></td></tr></table>
 	                                </a>
 	                            </li>
-	                            <li>
-	                                <a href="#">
+	                            <li class="@if(strpos(url()->current(), 'blocked')) active @endif">
+	                                <a href="{{url('merchants/category/blocked')}}">
 	                                    <table><tr><td style="width:100%;">Blocked</td>
 	                                    <td><span class="badge pull-right">{{$total_blocked_merchants}}</span></td></tr></table>
 	                                </a>
 	                            </li>
-	                            <li>
-	                                <a href="#">
+	                            <li class="@if(strpos(url()->current(), 'pending-admin')) active @endif">
+	                                <a href="{{url('merchants/category/pending-admin')}}">
 	                                    <table><tr><td style="width:100%;">Pending Admin Approval</td>
 	                                    <td><span class="badge pull-right">{{$total_pending_admin_approval_merchants}}</span></td></tr></table>
 	                                </a>
 	                            </li>
-	                            <li>
-	                                <a href="#">
+	                            <li class="@if(strpos(url()->current(), 'pending-email')) active @endif">
+	                                <a href="{{url('merchants/category/pending-email')}}">
 	                                    <table><tr><td style="width:100%;">Pending Email Verification</td>
 	                                    <td><span class="badge pull-right">{{$total_pending_email_verification}}</span></td></tr></table>
 	                                </a>

@@ -36,20 +36,20 @@
 
                             <h5 class="md-title">Administrators</h5>
                             <ul class="nav nav-pills nav-stacked nav-contacts">
-                                <li class="active">
-                                    <a href="#">
+                                <li class="@if(strpos(url()->current(), 'search')) active @endif">
+                                    <a href="{{url('administrators')}}">
                                         <table><tr><td style="width:100%;">All Admin</td>
                                         <td><span class="badge pull-right">{{count($admins)}}</span></td></tr></table>
                                     </a>
                                 </li>
-                                <li>
-                                    <a href="#">
+                                <li class="@if(strpos(url()->current(), 'super-admin')) active @endif">
+                                    <a href="{{url('administrators/category/super-admin')}}">
                                         <table><tr><td style="width:100%;">Super Admin</td>
                                         <td><span class="badge pull-right">{{count($admin_count)}}</span></td></tr></table>
                                     </a>
                                 </li>
-                                <li>
-                                    <a href="#">
+                                <li class="@if(strpos(url()->current(), 'admins')) active @endif">
+                                    <a href="{{url('administrators/category/admins')}}">
                                         <table><tr><td style="width:100%;">Admin</td>
                                         <td><span class="badge pull-right">{{count($super_admin_count)}}</span></td></tr></table>
                                     </a>
@@ -113,9 +113,9 @@
                                     <div class="media">
                                         <div class="pull-left">
                                         	@if($admin['profile_photo'] == null)
-                                            <img class="img-circle img-online" src="{{asset('images/photos/user1.png')}}" alt="...">
+                                            <img class="img-circle img-online" src="{{asset('images/photos/profile-big.jpg')}}" alt="...">
                                             @else
-                                            <img class="img-circle img-online" src="{{asset('images/profile_photos/'.$admin['id'].'/profile_photo.jpg')}}" alt="...">
+                                            <img class="img-circle img-online" src="{{asset($admin['profile_photo'])}}" alt="...">
                                             @endif
                                         </div>
                                         <div class="media-body">

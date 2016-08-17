@@ -247,6 +247,7 @@ class AppUserController extends Controller
             'app_users' => $this->appUser->getAll(),
             'app_user_paginate' => $this->appUser->search($search_word, $search_type),
             'total_app_users' => $this->appUser->getCount(),
+            'total_app_users_used_blurb' => $this->appUser->getUsageCount(),
             'total_registered_last_thirty_days' => $this->appUser->getTotalMonth(),
             'total_last_online_thirty_days' => $this->appUser->getLastOnlineTotalMonth(),
             'total_last_thirty_days' => $this->appUser->getTotalMonth(),

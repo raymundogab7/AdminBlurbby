@@ -3,8 +3,11 @@
 namespace Admin\Http\Controllers;
 
 use Admin\Repositories\Interfaces\BlurbReportInterface;
+use Admin\Repositories\Interfaces\CampaignInterface;
 use Admin\Repositories\Interfaces\MerchantInterface;
+use Admin\Repositories\Interfaces\NotificationInterface;
 use Admin\Services\Mailer;
+use Auth;
 
 class BlurbReportController extends Controller
 {
@@ -19,16 +22,30 @@ class BlurbReportController extends Controller
     protected $merchant;
 
     /**
+     * @var NotificationInterface
+     */
+    protected $notification;
+
+    /**
+     * @var CampaignInterface
+     */
+    protected $campaign;
+
+    /**
      * Create a new controller instance.
      *
      * @param BlurbReportInterface $blurbReport
      * @param MerchantInterface $merchant
+     * @param NotificationInterface $notification
+     * @param CampaignInterface $campaign
      * @return void
      */
-    public function __construct(BlurbReportInterface $blurbReport, MerchantInterface $merchant)
+    public function __construct(BlurbReportInterface $blurbReport, MerchantInterface $merchant, NotificationInterface $notification, CampaignInterface $campaign)
     {
         $this->blurbReport = $blurbReport;
         $this->merchant = $merchant;
+        $this->notification = $notification;
+        $this->campaign = $campaign;
     }
 
     /**
@@ -57,7 +74,12 @@ class BlurbReportController extends Controller
 
         $data = $this->merchant->getByAttributes(['id' => $blurb_report->merchant_id]);
 
+        $campaign = $this->campaign->getById($blurb_report->campaign_id);
+
         if ($this->blurbReport->update($id, ['notified' => 1])) {
+
+            $notif = $this->notification->create(['merchant_id' => $blurb_report->merchant_id, 'campaign_id' => $blurb_report->campaign_id, 'admin_id' => Auth::user()->id, 'status' => $campaign->cam_status, 'seen' => 0, 'blurb_report' => $blurb_report->blurb_id]);
+
             $send = $mailer->send('emails.blurb_report', 'Your Blurb Has Been Reported', $data[0]);
 
             return response()->json(['result' => true, 'message' => 'Merchant has been notified.']);

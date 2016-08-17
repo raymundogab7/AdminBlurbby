@@ -44,11 +44,6 @@ $notif_count = $blurb_reports->count() - 1;
                                 @else
                                 Showing 0 - 0 of {{$blurb_reports->total()}} reports
                                 @endif
-                                <!-- @if($blurb_reports->count() > 0)
-                                Showing 1 - {{$notif_total}} of {{$notif_total}} reports
-                                @else
-                                Showing {{$blurb_reports->count()}} - {{$notif_total}} of {{$notif_total}} reports
-                                @endif -->
                                 @if(array_key_exists('page', $_GET))
                                 <a href="{{ $blurb_reports->url($_GET['page'] - 1) }}"><button class="btn btn-white btn-navi btn-navi-left ml5" type="button"><i class="fa fa-chevron-left"></i></button></a>
                                 <a href="<?php echo ($blurb_reports->currentPage() != $blurb_reports->lastPage() && $blurb_reports->total() > 0) ? $blurb_reports->nextPageUrl() : '#'; ?>" style="<?php echo ($blurb_reports->currentPage() != $blurb_reports->lastPage() && $blurb_reports->total() > 0) ? '' : 'cursor:default'; ?>"><button <?php echo ($blurb_reports->currentPage() != $blurb_reports->lastPage() && $blurb_reports->total() > 0) ? '' : 'disabled'; ?> class="btn btn-white btn-navi btn-navi-right" type="button"><i class="fa fa-chevron-right"></i></button></a>
@@ -100,6 +95,8 @@ $notif_count = $blurb_reports->count() - 1;
                                 </div>
                                 <div class="media-body">
                                     <div class="pull-right media-option">
+
+
                                         <small><i class="fa fa-clock-o"></i> <?php echo \Carbon\Carbon::createFromTimeStamp(strtotime($br['created_at']))->diffForHumans(); ?></small>
                                         <div class="btn-group">
                                             <i class="fa fa-send tooltips" data-toggle="tooltip" title="Not yet notify"></i>
