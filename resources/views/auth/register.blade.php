@@ -140,13 +140,13 @@
                     </div>
                 </div><!-- row -->
                 <br />
-                <h4>Restaurant & Main Outlet Details</h4>
+                <h4>Eatery & Main Outlet Details</h4>
                 <div class="row">
                     <div class="col-sm-12">
                         <div class="input-group mb15">
                             <span class="input-group-addon"><i class="glyphicon glyphicon-cutlery"></i></span>
                             <!-- <input type="text" name="res_name" class="form-control" placeholder="Restaurant Name *"  /> -->
-                            {!! Form::text('res_name', null, ['placeholder'=>'Restaurant Name *', 'required' => 'required', 'class' => 'form-control'])!!}
+                            {!! Form::text('res_name', null, ['placeholder'=>'Eatery Name *', 'required' => 'required', 'class' => 'form-control'])!!}
                         </div><!-- input-group -->
                     </div>
                     <div class="col-sm-12">
@@ -178,7 +178,7 @@
                         <div class="input-group mb15">
                             <span class="input-group-addon"><i class="glyphicon glyphicon-globe"></i></span>
                             <!-- <input type="text" name="res_url" class="form-control" placeholder="Restaurant Website URL"> -->
-                            {!! Form::text('res_url', null, ['placeholder'=>'Restaurant Website URL', 'class' => 'form-control'])!!}
+                            {!! Form::text('res_url', null, ['placeholder'=>'Eatery Website URL', 'class' => 'form-control'])!!}
                         </div><!-- input-group -->
                     </div>
                 </div><!-- row -->
@@ -187,7 +187,7 @@
                         <div class="input-group mb15">
                             <span class="input-group-addon"><i class="glyphicon glyphicon-tags"></i></span>
 
-                            {!! Form::select('cuisine_id[]', $cuisines, null, ['id' => 'select-multi', 'multiple'=>'multiple', 'required' => 'required',  'class' => 'width300', 'style' => 'width:100%', 'data-placeholder' => 'Restaurant Cuisine *']) !!}
+                            {!! Form::select('cuisine_id[]', $cuisines, null, ['id' => 'select-multi', 'multiple'=>'multiple', 'required' => 'required',  'class' => 'width300', 'style' => 'width:100%', 'data-placeholder' => 'Eatery Cuisine *']) !!}
 
                         </div>
                     </div>

@@ -1,4 +1,5 @@
-<?php namespace Admin\Repositories\Eloquent;
+<?php
+namespace Admin\Repositories\Eloquent;
 
 use Admin\BlurbReport;
 use Admin\Repositories\Interfaces\BlurbReportInterface;
@@ -41,8 +42,12 @@ class BlurbReportEloquent implements BlurbReportInterface
      * @param array $attributes
      * @return BlurbReport
      */
-    public function getAll(array $attributes)
+    public function getAll(array $attributes = [])
     {
+        if (empty($attributes)) {
+            return $this->blurbReport->with(['merchant', 'blurb', 'appUser', 'restaurant', 'campaign'])->orderBy('created_at', 'DESC')->paginate(10);
+        }
+
         return $this->blurbReport->with(['merchant', 'blurb', 'appUser', 'restaurant', 'campaign'])->where($attributes)->orderBy('created_at', 'DESC')->paginate(10);
     }
 

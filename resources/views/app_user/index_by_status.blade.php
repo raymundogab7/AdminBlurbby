@@ -72,10 +72,10 @@
                                             <td><span class="badge pull-right">{{$total_blocked_app_users}}</span></td></tr></table>
                                         </a>
                                     </li>
-                                    <li class="@if(strpos(url()->current(), 'pending-email')) active @endif">
-                                        <a href="{{url('app-users/category/pending-email')}}">
-                                            <table><tr><td style="width:100%;">Pending Email Verification</td>
-                                            <td><span class="badge pull-right">{{$total_pending_app_users}}</span></td></tr></table>
+                                    <li class="@if(strpos(url()->current(), 'disabled')) active @endif">
+                                        <a href="{{url('app-users/category/disabled')}}">
+                                            <table><tr><td style="width:100%;">Disabled</td>
+                                            <td><span class="badge pull-right">{{$total_disabled}}</span></td></tr></table>
                                         </a>
                                     </li>
                                 </ul>
@@ -124,8 +124,12 @@
                                 </ul>
                                 @endif
                             </div>
-                            <h3 class="xlg-title">All App Users</h3>
-
+                            <h3 class="xlg-title">{{$title}}</h3>
+                            @if(count($app_user_paginate) == 0)<br>
+                            <div class="alert alert-default">
+                                <strong>No data available.</strong>
+                            </div>
+                            @endif
                             <div class="list-group contact-group">
                             	@foreach($app_user_paginate as $user)
                                 <a href="{{url('app-users/'.$user['id'].'/edit')}}" class="list-group-item">
@@ -134,7 +138,7 @@
                                         	@if($user['profile_photo'] == null || $user['profile_photo'] == '')
                                             <img class="img-circle img-online" src="{{asset('images/photos/user1.png')}}" alt="...">
                                             @else
-                                            <img class="img-circle img-online" src="{{asset($user['profile_photo'])}}" alt="...">
+                                            <img class="img-circle img-online" src="{{asset($user['profile_photo'])}}" style="width:80px;height:80px;" alt="...">
                                             @endif
                                         </div>
                                         <div class="media-body">
@@ -148,7 +152,7 @@
                                                     @elseif($user['status'] == 'Blocked')
                                                     <span class="text-muted">
                                                     @else
-                                                    <span class="text-warning">
+                                                    <span class="text-muted">
                                                     @endif
                                                     <strong>{{$user['status']}}</strong>
                                                     </span></small></li>

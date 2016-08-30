@@ -60,7 +60,20 @@
 
                         </div><!-- col-sm-3 -->
                         <div class="col-sm-9">
+                            @if(session('error'))
 
+                            <div class="alert alert-danger">
+                               <strong>{{session('error')}}</strong>
+                            </div>
+
+                            @endif
+                            @if(session('message'))
+
+                            <div class="alert alert-success">
+                                <strong>{{session('message')}}</strong>
+                            </div>
+
+                            @endif
                             <div class="well mt10">
                                 <div class="row">
                                     <div class="col-sm-9">
@@ -83,6 +96,7 @@
                             <a href="{{url('administrators/create')}}">
                                 <button class="btn btn-primary"><i class="fa fa-plus"></i> Add New Admin</button>
                             </a>
+
                             <hr />
                             <div class="pull-right">
                                 @if ($administrators->lastPage() > 1)

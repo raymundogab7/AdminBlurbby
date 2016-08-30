@@ -93,8 +93,8 @@
                     </span>
                 </td>
                 <td>{{$blurb['category']['blurb_cat_name']}}</td>
-                <td>{{date_format(date_create($blurb['blurb_start']), 'd-M-Y')}}</td>
-                <td>{{date_format(date_create($blurb['blurb_end']), 'd-M-Y')}}</td>
+                <td>{{(is_null($blurb['blurb_start'])) ? '' : date_format(date_create($blurb['blurb_start']), 'd-M-Y')}}</td>
+                <td>{{(is_null($blurb['blurb_end'])) ? '' : date_format(date_create($blurb['blurb_end']), 'd-M-Y')}}</td>
                 <td class="table-action">
                     <a href="{{url('merchants/'.$blurb['id'].'/'.$campaign['control_no'].'/edit-blurb')}}" data-toggle="tooltip" title="View" class="tooltips"><i class="fa fa-eye"></i></a>
                 </td>

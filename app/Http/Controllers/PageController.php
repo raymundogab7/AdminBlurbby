@@ -52,10 +52,37 @@ class PageController extends Controller
     public function update($id, Request $request)
     {
         if ($this->page->updateById($id, $request->except('_token', '_method'))) {
-            return redirect('pages/'.$id.'/edit')->with('message', 'Successfully updated.');
+            return redirect('pages/' . $id . '/edit')->with('message', 'Successfully updated.');
         }
 
-        return redirect('pages/'.$id.'/edit')->with('error', 'Error while updating.');
+        return redirect('pages/' . $id . '/edit')->with('error', 'Error while updating.');
+    }
+
+    /**
+     * Upload image to server.
+     *
+     * @return Response
+     */
+    public function upload(Request $request)
+    {
+
+        $target_dir = "ckfinder/userfiles/images/";
+
+        $target_file = $target_dir . basename($_FILES["upload"]["name"]);
+        $uploadOk = 1;
+        $imageFileType = pathinfo($target_file, PATHINFO_EXTENSION);
+
+        $check = getimagesize($_FILES["upload"]["tmp_name"]);
+        if ($check !== false) {
+            if (move_uploaded_file($_FILES["upload"]["tmp_name"], $target_file)) {
+                echo "Image successfully uploaded.";
+            }
+
+            $uploadOk = 1;
+        } else {
+            echo "File is not an image.";
+            $uploadOk = 0;
+        }
     }
 
     /**

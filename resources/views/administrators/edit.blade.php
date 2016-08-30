@@ -118,7 +118,7 @@
                                             <option value="Pending Email Approval">Pending Email Approval</option>
                                             <option value="Blocked">Blocked</option>
                                         </select> -->
-                                        {!! Form::select('status', array('Approved' => 'Approved', 'Pending Email Approval' => 'Pending Email Approval', 'Blocked' => 'Blocked'), $admin->status, ['id' => 'type', 'required' => 'required', 'class' => 'width300']) !!}
+                                        {!! Form::select('status', array('Approved' => 'Approved', 'Disabled' => 'Disabled', 'Blocked' => 'Blocked'), $admin->status, ['id' => 'type', 'required' => 'required', 'class' => 'width300']) !!}
                                     </div>
                                 </div><!-- form-group -->
 

@@ -26,7 +26,7 @@
 //->where('notification.admin_id', Auth::user()->id)
 //->orderBy('notification.updated_at', 'DESC')
 //->get()
-//->toArray();, ['camps'=> $camps] ?>
+//->toArray();, ['camps'=> $camps] ;?>
         @include('layouts.nav-admin')
 
         @yield('body-contents')

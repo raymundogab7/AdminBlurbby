@@ -34,7 +34,7 @@ class MerchantRequest extends Request
                 'coy_name' => 'required|unique:merchant',
                 'coy_add' => 'required',
                 'coy_zip' => 'required|min:6|max:6',
-                'coy_phone' => 'required',
+                'coy_phone' => 'required|min:8|max:8',
                 'res_name' => 'required|unique:restaurant',
                 'outlet_add' => 'required',
                 'outlet_zip' => 'required|min:6|max:6',
@@ -45,8 +45,8 @@ class MerchantRequest extends Request
         return [
             'first_name' => 'required',
             'last_name' => 'required',
-            'email' => 'email|unique:merchant,email,' . $this->merchant_id,
-            'coy_phone' => 'required',
+            'email' => 'email|required', //|unique:merchant,email,' . $this->merchant_id
+            'coy_phone' => 'required|min:8|max:8',
             'password' => 'min:6|confirmed',
             'password_confirmation' => 'min:6',
         ];
@@ -67,6 +67,8 @@ class MerchantRequest extends Request
             'coy_zip.max' => 'Company postal code maxlength is 6',
             'coy_zip.min' => 'Company postal code minimum is 6.',
             'coy_phone.required' => 'The company phone field is required.',
+            'coy_phone.min' => 'The contact number field may not be less than 8 characters.',
+            'coy_phone.max' => 'The contact number field may not be less than 8 characters.',
             'outlet_add.required' => 'The outlet address field is required.',
             'outlet_zip.required' => 'The outlet postal zip field is required.',
             'outlet_zip.max' => 'Outlet postal code maxlength is 6',
@@ -91,7 +93,7 @@ class MerchantRequest extends Request
                 ->with(['errors' => $errors]);
         }
 
-        return $this->redirector->to('merchants/'.$this->merchant_id.'/edit')
+        return $this->redirector->to('merchants/' . $this->merchant_id . '/edit')
             ->withInput()
             ->with(['errors' => $errors]);
     }

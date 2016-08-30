@@ -73,9 +73,9 @@
                                         </a>
                                     </li>
                                     <li>
-                                        <a href="{{url('app-users/category/pending-email')}}">
-                                            <table><tr><td style="width:100%;">Pending Email Verification</td>
-                                            <td><span class="badge pull-right">{{$total_pending_app_users}}</span></td></tr></table>
+                                        <a href="{{url('app-users/category/disabled')}}">
+                                            <table><tr><td style="width:100%;">Disabled</td>
+                                            <td><span class="badge pull-right">{{$total_disabled}}</span></td></tr></table>
                                         </a>
                                     </li>
                                 </ul>
@@ -134,7 +134,7 @@
                                         	@if($user['profile_photo'] == null || $user['profile_photo'] == '')
                                             <img class="img-circle img-online" src="{{asset('images/photos/user1.png')}}" alt="...">
                                             @else
-                                            <img class="img-circle img-online" src="{{asset($user['profile_photo'])}}" alt="...">
+                                            <img class="img-circle img-online" src="{{asset($user['profile_photo'])}}" style="width:80px;height:80px;" alt="...">
                                             @endif
                                         </div>
                                         <div class="media-body">
@@ -148,7 +148,7 @@
                                                     @elseif($user['status'] == 'Blocked')
                                                     <span class="text-muted">
                                                     @else
-                                                    <span class="text-warning">
+                                                    <span class="text-muted">
                                                     @endif
                                                     <strong>{{$user['status']}}</strong>
                                                     </span></small></li>

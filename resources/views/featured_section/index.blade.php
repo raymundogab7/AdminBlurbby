@@ -40,7 +40,7 @@
 	                                <thead class="" style="background-color:#00B0ED">
 	                                  <tr>
 										<th>Position</th>
-	                                    <th>Merchant Name</th>
+	                                    <th>Eatery Name</th>
 										<th>Status</th>
 										<th></th>
 										<th></th>

@@ -66,10 +66,10 @@
 	                                    <td><span class="badge pull-right">{{$total_pending_admin_approval_merchants}}</span></td></tr></table>
 	                                </a>
 	                            </li>
-	                            <li class="@if(strpos(url()->current(), 'pending-email')) active @endif">
-	                                <a href="{{url('merchants/category/pending-email')}}">
-	                                    <table><tr><td style="width:100%;">Pending Email Verification</td>
-	                                    <td><span class="badge pull-right">{{$total_pending_email_verification}}</span></td></tr></table>
+	                            <li class="@if(strpos(url()->current(), 'disabled')) active @endif">
+	                                <a href="{{url('merchants/category/disabled')}}">
+	                                    <table><tr><td style="width:100%;">Disabled</td>
+	                                    <td><span class="badge pull-right">{{$total_disabled}}</span></td></tr></table>
 	                                </a>
 	                            </li>
 	                        </ul>
@@ -88,7 +88,7 @@
 	                                    <select id="search-type" class="width100p" data-placeholder="Search Type">
 	                                        <option value="">Choose One</option>
 	                                        <option value="Company" <?php if ($search_type == 'Company'): ?> selected <?php endif;?>>Company Name</option>
-	                                        <option value="Restaurant" <?php if ($search_type == 'Restaurant'): ?> selected <?php endif;?>>Restaurant Name</option>
+	                                        <option value="Restaurant" <?php if ($search_type == 'Restaurant'): ?> selected <?php endif;?>>Eatery Name</option>
 	                                        <option value="Email" <?php if ($search_type == 'Email'): ?> selected <?php endif;?>>Email</option>
 	                                    </select>
 	                                </div>
@@ -152,6 +152,8 @@
 					                            	<span class="text-success"><strong>Approved</strong>
 					                            	@elseif($merchant->status == 2)
 					                            	<span class="text-muted"><strong>Blocked</strong>
+					                            	@elseif($merchant['status'] == 3)
+					                            	<span class="text-muted"><strong>Disabled</strong>
 					                            	@elseif($merchant->status == 0)
 					                            	<span class="text-warning"><strong>Pending Admin Approval</strong>
 

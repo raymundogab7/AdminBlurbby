@@ -126,13 +126,14 @@
 								</div>
 							</div>
 
-							<form method="POST" action="{{url('blurb')}}" accept-charset="UTF-8" class="form-horizontal form-bordered">
+							<form method="POST" id="create-blurb-form" action="{{url('blurb/store')}}" accept-charset="UTF-8" class="form-horizontal form-bordered">
 							<!-- {!! Form::open(array('url' => 'blurb', 'class' => 'form-horizontal form-bordered')) !!} -->
 
                                 <div class="form-group">
                                     <label class="col-sm-2 control-label" style="text-align:left;">Blurb Title *</label>
                                     <div class="col-sm-8">
                                     <input type="hidden" value="{{csrf_token()}}" name="_token">
+                                    <input type="hidden" value="{{$campaign->control_no}}" name="control_no_temp">
                                     	{!! Form::hidden('merchant_id', $campaign->merchant_id, ['required' => 'required', 'class' => 'form-control', 'readonly' => 'readonly']) !!}
                                     	{!! Form::hidden('campaign_id', $campaign->id, ['required' => 'required', 'class' => 'form-control', 'readonly' => 'readonly']) !!}
                                     	{!! Form::hidden('control_no', null, ['readonly' => 'readonly', 'id' => 'control_no', 'class' => 'form-control blurb']) !!}
@@ -185,7 +186,7 @@
                                     </div>
                                 </div><!-- form-group -->
 								<br>
-                                <button style="margin-left:15px;" type="submit" class="btn btn-primary">Submit</button>
+                                <button style="margin-left:15px;" type="submit" class="btn btn-primary" id="create-blurb-btn">Submit</button>
                                 <a href="{{url('campaigns/'.$campaign->id)}}"><button type="button" style="margin-left:15px;" class="btn btn-default">Back</button></a>
                             {!! Form::close() !!}
 
@@ -228,7 +229,18 @@
 	$('#keyup_blurb_terms').html($('#blurb_terms_keyup').val());
 
 	Dropzone.options.blurbPhoto = {
-	  init: function() {
+	  	init: function() {
+	  		var myDropzone = this;
+
+            $('#create-blurb-btn').on("click", function(e) {
+                if(myDropzone.files.length == 0) {
+                 	alert('Blurb Image is required.');
+                 	e.preventDefault();
+            	}
+
+                e.stopPropagation();
+
+            });
 	        this.on("success", function(file) {
 	            var file = jQuery.parseJSON(file.xhr.responseText);
 

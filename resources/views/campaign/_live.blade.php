@@ -132,8 +132,8 @@
                     </span>
                 </td>
                 <td>{{$blurb['category']['blurb_cat_name']}}</td>
-                <td>{{date_format(date_create($blurb['blurb_start']), 'd-M-Y')}}</td>
-                <td>{{date_format(date_create($blurb['blurb_end']), 'd-M-Y')}}</td>
+                <td>{{(is_null($blurb['blurb_start'])) ? '' : date_format(date_create($blurb['blurb_start']), 'd-M-Y')}}</td>
+                <td>{{(is_null($blurb['blurb_end'])) ? '' : date_format(date_create($blurb['blurb_end']), 'd-M-Y')}}</td>
                 <td class="table-action">
                     <a href="{{url('blurb/'.$blurb['id'].'/'.$campaign['control_no'])}}" data-toggle="tooltip" title="Edit" class="tooltips"><i class="fa fa-pencil"></i></a>
                     <a href="#deleteBlurbModal" data-blurb-id="{{$blurb['id']}}" data-blurb-name="{{$blurb['blurb_name']}}" data-target="#deleteBlurbModal" data-toggle="modal" title="Delete" class="tooltips"><i class="fa fa-trash-o"></i></a>
@@ -162,6 +162,7 @@
         <input name="_method" type="hidden" value="DELETE">
         <input type="hidden" id="blurbId" name="blurb_id">
         <input type="hidden" class="controlNo" value="{{$campaign['id']}}">
+        <button type="button" class="btn btn-default" data-dismiss="modal" style="visibility:hidden">No</button>
         <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
         <button class="btn btn-primary delete-blurb-yes">Yes</button>
 

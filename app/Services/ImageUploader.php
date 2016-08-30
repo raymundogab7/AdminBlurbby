@@ -1,4 +1,5 @@
-<?php namespace Admin\Services;
+<?php
+namespace Admin\Services;
 
 use Auth;
 use Image;
@@ -12,7 +13,7 @@ use Image;
 class ImageUploader
 {
     /**
-     * Send mail to guest for password reset
+     * Upload images.
      *
      * @param file $view
      * @param integer $user_id

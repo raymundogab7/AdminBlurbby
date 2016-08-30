@@ -100,7 +100,7 @@
 	                                    <select id="search-type" class="width100p" data-placeholder="Search Type">
 	                                        <option value="">Choose One</option>
 	                                        <option value="Campaign">Campaign Name</option>
-	                                        <option value="Restaurant">Restaurant Name</option>
+	                                        <option value="Restaurant">Eatery Name</option>
 	                                        <option value="Company">Company Name</option>
 	                                    </select>
 	                                </div>
@@ -160,8 +160,12 @@
 								</ul>
 								@endif
 	                        </div>
-	                        <h3 class="xlg-title">All Campaigns</h3>
-
+	                        <h3 class="xlg-title">{{$title}}</h3>
+	                        @if(count($campaigns) == 0)<br>
+		                    <div class="alert alert-default">
+		                        <strong>No data available.</strong>
+		                    </div>
+		                    @endif
 	                        <div class="list-group contact-group">
 	                        	@foreach($campaigns as $campaign)
 	                            <a href="{{url('campaigns/'.$campaign['id'])}}" class="list-group-item">

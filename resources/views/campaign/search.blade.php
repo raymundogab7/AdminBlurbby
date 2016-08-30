@@ -100,7 +100,7 @@
 	                                    <select id="search-type" class="width100p" data-placeholder="Search Type">
 	                                        <option value="">Choose One</option>
 	                                        <option value="Campaign" <?php if ($search_type == 'Campaign'): ?> selected <?php endif;?>>Campaign Name</option>
-	                                        <option value="Restaurant" <?php if ($search_type == 'Restaurant'): ?> selected <?php endif;?>>Restaurant Name</option>
+	                                        <option value="Restaurant" <?php if ($search_type == 'Restaurant'): ?> selected <?php endif;?>>Eatery Name</option>
 	                                        <option value="Company" <?php if ($search_type == 'Company'): ?> selected <?php endif;?>>Company Name</option>
 	                                    </select>
 	                                </div>

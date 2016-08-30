@@ -67,7 +67,7 @@ p {padding: 0!important; margin-top: 0!important; margin-right: 0!important; mar
 </head>
 <body leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
 
-<table width="100%" border="0" cellpadding="0" cellspacing="0" align="center" class="full2"  bgcolor="#303030"style="background-color: rgb(48, 48, 48); height: 100%;">
+<table width="100%" border="0" cellpadding="0" cellspacing="0" align="center" class="full2" style="height: 100%;">
 	<tr>
 		<td align="center" style="background-color:#eee;" id="not6">
 
@@ -103,7 +103,7 @@ p {padding: 0!important; margin-top: 0!important; margin-right: 0!important; mar
 											<td width="100%" height="30"></td>
 										</tr>
 										<tr>
-											<td width="100%"><span ><img src="http://puzzlehive.com/project/blurbby/edm/logo.png" alt="" border="0" ></span></td>
+											<td width="100%"><span ><img style="width: 251px;" src="http://puzzlehive.com/project/blurbby/edm/logo.png" alt="" border="0" ></span></td>
 										</tr>
 										<tr>
 											<td width="100%" height="30"></td>
@@ -134,13 +134,12 @@ p {padding: 0!important; margin-top: 0!important; margin-right: 0!important; mar
 															<br><br>
 															We are happy to inform you that your account with Blurbes has been approved.
 															<br><br>
-															<!-- <a href="#" style="color: rgb(255, 255, 255); font-size: 15px; text-decoration: none; line-height: 34px; width: 100%; padding: 15px 30px; background-color: rgb(0, 176, 237); border-radius: 5px; font-weight: bold;">Reset Password</a> -->
-															<b style="color:red;">Your restaurant profile will be visible on our Blurbes mobile application when it is available to the public on the 1st of October 2016.</b>
+															<b style="color:red;">Your restaurant profile will be visible on our Blurbes mobile application when it is available to the public on the 18th of October 2016.</b>
 															<br><br>
 															Click <a href="http://merchant.blurbby.bilinear.ph/dashboard">here</a> to access Blurbes dashboard.
 															<br><br>
-															Thank you!<br>
-															Blurbes Management
+															Thank you for using Blurbes,<br>
+															The Blurbes Team
 														</td>
 													</tr>
 												</table>

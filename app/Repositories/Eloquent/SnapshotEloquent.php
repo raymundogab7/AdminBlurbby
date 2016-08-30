@@ -73,6 +73,11 @@ class SnapShotEloquent implements SnapShotInterface
         $today = $now->toDateString();
         $last_sun = new Carbon('last monday');
         $last_sunday = $last_sun->toDateString();
+        $monday = new Carbon('monday');
+
+        if ($monday->toDateString() == date('Y-m-d')) {
+            return $this->snapshot->whereBetween('snapshot_date', array($today, $today))->sum($field);
+        }
 
         return $this->snapshot->whereBetween('snapshot_date', array($last_sunday, $today))->sum($field);
     }

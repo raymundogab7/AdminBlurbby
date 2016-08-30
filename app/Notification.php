@@ -8,7 +8,7 @@ class Notification extends Model
 {
     protected $table = 'notification';
 
-    protected $fillable = ['merchant_id', 'campaign_id', 'restaurant_id', 'admin_id', 'status', 'seen', 'blurb_notif', 'blurb_report'];
+    protected $fillable = ['merchant_id', 'campaign_id', 'restaurant_id', 'admin_id', 'status', 'seen', 'blurb_notif', 'blurb_report', 'web_notified', 'app_notified'];
 
     public function campaign()
     {

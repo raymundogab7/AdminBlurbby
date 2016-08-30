@@ -55,13 +55,11 @@ class AppUserEloquent implements AppUserInterface
      */
     public function getUsageCount()
     {
-        //$today = Carbon::now('Asia/Singapore')->toDateString();
-        $today = Carbon::now()->toDateString();
-        //$timezone = new Carbon('Asia/Singapore');
-        $timezone = new Carbon();
+        $today = Carbon::now('Asia/Singapore')->toDateTimeString();
+        $timezone = new Carbon('Asia/Singapore');
         $last_thirty_days = $timezone->subDays(30);
 
-        return $this->appUserBlurb->where('interaction_type', 'use')->whereBetween('created_at', array($last_thirty_days, $today))->count();
+        return $this->appUserBlurb->where('interaction_type', 'use')->whereBetween('created_at', array($last_thirty_days->toDateTimeString(), $today))->count();
     }
 
     /**
@@ -71,18 +69,18 @@ class AppUserEloquent implements AppUserInterface
      */
     public function getUsageCountPaginate()
     {
-        $today = Carbon::now()->toDateString();
-        $timezone = new Carbon();
+        $today = Carbon::now('Asia/Singapore')->toDateTimeString();
+        $timezone = new Carbon('Asia/Singapore');
         $last_thirty_days = $timezone->subDays(30);
 
-        $appUserBlurb = $this->appUserBlurb->where('interaction_type', 'use')->whereBetween('created_at', array($last_thirty_days, $today))->groupBy('app_user_id')->get()->toArray();
+        $appUserBlurb = $this->appUserBlurb->where('interaction_type', 'use')->whereBetween('created_at', array($last_thirty_days->toDateTimeString(), $today))->groupBy('app_user_id')->get()->toArray();
 
         $app_user_ids = array_map(function ($structure) {
             return $structure['app_user_id'];
 
         }, $appUserBlurb);
 
-        return $this->appUser->whereIn('id', $app_user_ids)->paginate(10);
+        return $this->appUser->whereIn('id', $app_user_ids)->orderByRaw("FIELD(status , 'Approved', 'Disabled', 'Blocked') ASC")->paginate(10);
     }
 
     /**
@@ -110,7 +108,7 @@ class AppUserEloquent implements AppUserInterface
         $timezone = new Carbon();
         $last_thirty_days = $timezone->subDays(30);
 
-        return $this->appUser->whereBetween('date_created', array($last_thirty_days, $today))->paginate(10);
+        return $this->appUser->whereBetween('date_created', array($last_thirty_days, $today))->orderByRaw("FIELD(status , 'Approved', 'Disabled', 'Blocked') ASC")->paginate(10);
     }
 
     /**
@@ -140,7 +138,7 @@ class AppUserEloquent implements AppUserInterface
         $timezone = new Carbon();
         $last_thirty_days = $timezone->subDays(30);
 
-        return $this->appUser->whereBetween('last_online_date', array($last_thirty_days, $today))->paginate();
+        return $this->appUser->whereBetween('last_online_date', array($last_thirty_days, $today))->orderByRaw("FIELD(status , 'Approved', 'Disabled', 'Blocked') ASC")->paginate();
     }
 
     /**
@@ -185,7 +183,7 @@ class AppUserEloquent implements AppUserInterface
             return $this->appUser->orderBy('first_name')->paginate(10);
         }
 
-        return $this->appUser->where($attributes)->orderBy('first_name')->paginate(10);
+        return $this->appUser->where($attributes)->orderByRaw("FIELD(status , 'Approved', 'Disabled', 'Blocked') ASC")->paginate(10);
 
     }
 
@@ -221,15 +219,15 @@ class AppUserEloquent implements AppUserInterface
     public function search($search_word, $search_type)
     {
         if ($search_type == 'First Name') {
-            return $this->appUser->where('first_name', 'LIKE', '%' . $search_word . '%')->orderBy('first_name')->paginate(10);
+            return $this->appUser->where('first_name', 'LIKE', '%' . $search_word . '%')->orderByRaw("FIELD(status , 'Approved', 'Disabled', 'Blocked') ASC")->paginate(10);
         }
 
         if ($search_type == 'Last Name') {
-            return $this->appUser->where('last_name', 'LIKE', '%' . $search_word . '%')->orderBy('first_name')->paginate(10);
+            return $this->appUser->where('last_name', 'LIKE', '%' . $search_word . '%')->orderByRaw("FIELD(status , 'Approved', 'Disabled', 'Blocked') ASC")->paginate(10);
         }
 
         if ($search_type == 'Email') {
-            return $this->appUser->where('email', 'LIKE', '%' . $search_word . '%')->orderBy('first_name')->paginate(10);
+            return $this->appUser->where('email', 'LIKE', '%' . $search_word . '%')->orderByRaw("FIELD(status , 'Approved', 'Disabled', 'Blocked') ASC")->paginate(10);
         }
 
         return [];

@@ -7,8 +7,9 @@
 		<div class="col-sm-8">
             <input type="hidden" name="_method" value="PUT">
             <input type="hidden" name="_token" value="{{csrf_token()}}">
+            <input type="hidden" name="restaurant_id" value="{{$restaurant->id}}">
 			<!-- <input type="text" value="" class="form-control" required /> -->
-			{!! Form::text('campaign_name', $campaign['campaign_name'], ['required' => 'required', 'class' => 'form-control']) !!}
+			{!! Form::text('campaign_name', $campaign['campaign_name'], ['id' => 'campaign-name', 'required' => 'required', 'class' => 'form-control']) !!}
 		</div>
 	</div><!-- form-group -->
 
@@ -25,7 +26,7 @@
 		<div class="col-sm-8">
 			<div class="input-group">
                 <!-- <input type="text" class="form-control" placeholder="DD-MMM-YYYY" id="datepicker" required> -->
-                {!! Form::text('cam_start', date_format(date_create($campaign['cam_start']), 'Y-m-d'), ['required' => 'required', 'id' => 'datepicker', 'placeholder' => 'YYYY-MM-DD', 'class' => 'form-control']) !!}
+                {!! Form::text('cam_start', (is_null($campaign['cam_start'])) ? '' : date_format(date_create($campaign['cam_start']), 'd-M-Y'), ['required' => 'required', 'id' => 'datepicker', 'placeholder' => 'YYYY-MM-DD', 'class' => 'form-control']) !!}
                 <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
             </div><!-- input-group -->
 		</div>
@@ -36,7 +37,7 @@
 		<div class="col-sm-8">
 			<div class="input-group">
                 <!-- <input type="text" class="form-control" placeholder="DD-MMM-YYYY" id="datepicker2" required> -->
-                {!! Form::text('cam_end', date_format(date_create($campaign['cam_end']), 'Y-m-d'), ['required' => 'required' ,'id' => 'datepicker2', 'placeholder' => 'YYYY-MM-DD', 'class' => 'form-control']) !!}
+                {!! Form::text('cam_end', (is_null($campaign['cam_end'])) ? '' : date_format(date_create($campaign['cam_end']), 'd-M-Y'), ['required' => 'required' ,'id' => 'datepicker2', 'placeholder' => 'YYYY-MM-DD', 'class' => 'form-control']) !!}
                 <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
             </div><!-- input-group -->
 		</div>
@@ -52,11 +53,11 @@
 
 	</form>
 
-	{!! Form::open(array('url' => 'campaigns/updateStatus/'.$campaign['id'], 'style' => 'display:inline;', 'class' => 'form-horizontal form-bordered', 'method' => 'PUT')) !!}
+	{!! Form::open(array('url' => 'campaigns/updateStatus/'.$campaign['id'], 'style' => 'display:inline;', 'id' => 'submit-campaign-form', 'class' => 'form-horizontal form-bordered', 'method' => 'PUT')) !!}
 
 	<input type="hidden" name="cam_status" value="Pending Approval">
 	<a href="">
-		<button class="btn btn-success" style="margin-left:15px;">Submit Campaign</button>
+		<button type="button" class="btn btn-success" id="submit-campaign-btn" style="margin-left:15px;">Submit Campaign</button>
 	</a>
 
 	{!! Form::close() !!}
@@ -123,8 +124,8 @@
 	                </span>
                 </td>
                 <td>{{$blurb['category']['blurb_cat_name']}}</td>
-                <td>{{date_format(date_create($blurb['blurb_start']), 'd-M-Y')}}</td>
-                <td>{{date_format(date_create($blurb['blurb_end']), 'd-M-Y')}}</td>
+                <td>{{(is_null($blurb['blurb_start'])) ? '' : date_format(date_create($blurb['blurb_start']), 'd-M-Y')}}</td>
+                <td>{{(is_null($blurb['blurb_end'])) ? '' : date_format(date_create($blurb['blurb_end']), 'd-M-Y')}}</td>
                 <td class="table-action">
                 @if($blurb['blurb_status'] == 'Rejected' || $blurb['blurb_status'] == 'Created')
                     <a href="{{url('merchants/'.$blurb['id'].'/'.$campaign['control_no'].'/edit-blurb')}}" data-toggle="tooltip" title="Edit" class="tooltips"><i class="fa fa-pencil"></i></a>
@@ -156,6 +157,7 @@
         <input name="_method" type="hidden" value="DELETE">
         <input type="hidden" id="blurbId" name="blurb_id">
         <input type="hidden" class="controlNo" value="{{$campaign['id']}}">
+        <button type="button" class="btn btn-default" data-dismiss="modal" style="visibility:hidden">No</button>
         <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
         <button class="btn btn-primary delete-blurb-yes">Yes</button>
 
@@ -212,13 +214,33 @@
             $("input#datepicker2").datepicker('option', 'minDate', dateText);
         }
     });
+
+    var datepicker2MaxDate = 0;
+
+    if(jQuery('#blurb_start_date').val() == null) {
+        datepicker2MaxDate == jQuery('#blurb_start_date').val();
+    }
+
     jQuery('#datepicker2').datepicker({
          dateFormat: 'yy-mm-dd',
-         minDate: jQuery('#datepicker').val(),
+         minDate: datepicker2MaxDate,
          onSelect: function(dateText) {
             $sD = new Date(dateText);
             $("input#datepicker").datepicker('option', 'maxDate', dateText);
         }
+
+    });
+
+    jQuery('#submit-campaign-btn').on('click', function(e){
+        e.preventDefault();
+
+        if(jQuery('#campaign-name').val() == '' || jQuery('#datepicker').val() == '' || jQuery('#datepicker2').val() == ''){
+            alert('All fields are required.');
+        }
+        else{
+            jQuery('#submit-campaign-form').submit();
+        }
+
 
     });
 

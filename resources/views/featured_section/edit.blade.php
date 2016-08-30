@@ -58,7 +58,7 @@
                             </div><!-- form-group -->
 
                             <div class="form-group">
-                                <label class="col-sm-2 control-label" style="text-align:left;">Merchant Name *</label>
+                                <label class="col-sm-2 control-label" style="text-align:left;">Eatery Name *</label>
                                 <div class="col-sm-8">
                                     <select id="merchant" required="required" data-placeholder="Choose One" class="width300" name="merchant_id">
                                         <option value="">Choose One</option>

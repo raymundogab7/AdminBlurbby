@@ -67,7 +67,7 @@
                             </div>
                         </div><!-- col-sm-4 col-md-3 -->
 
-                        <div class="col-sm-12 col-md-9 col-xs-12">
+                        <div class="col-sm-12 col-md-8 col-xs-12">
                             @if(session('message'))
 
                             <div class="alert alert-success">
@@ -118,7 +118,7 @@
                                                 <label class="col-sm-2 control-label" style="text-align:left;">Status *</label>
                                                 <div class="col-sm-8">
                                                     <input type="hidden" name="_token" readonly="" value="{{csrf_token()}}">
-                                                    {!! Form::select('status', array('Approved' => 'Approved', 'Pending Email Verification' => 'Pending Email Verification', 'Blocked' => 'Blocked'), null, ['id' => 'type', 'required' => 'required', 'class' => 'width300', 'placeholder' => 'Choose One']) !!}
+                                                    {!! Form::select('status', array('Approved' => 'Approved', 'Disabled' => 'Disabled', 'Blocked' => 'Blocked'), null, ['id' => 'type', 'required' => 'required', 'class' => 'width300', 'placeholder' => 'Choose One']) !!}
                                                 </div>
                                             </div><!-- form-group -->
                                             <div class="form-group">

@@ -27,7 +27,7 @@ class AppUserRequest extends Request
 
             return [
                 'status' => 'required',
-                'email' => 'required|email|unique:app_user',
+                'email' => 'required|email', //|unique:app_user',
                 'first_name' => 'required',
                 'last_name' => 'required',
                 'date_of_birth' => 'required',
@@ -39,7 +39,7 @@ class AppUserRequest extends Request
 
         return [
             'status' => 'required',
-            'email' => 'required|email|unique:app_user,email,' . $this->app_user_id,
+            'email' => 'required|email', //|unique:app_user,email,' . $this->app_user_id,
             'first_name' => 'required',
             'last_name' => 'required',
             'date_of_birth' => 'required',

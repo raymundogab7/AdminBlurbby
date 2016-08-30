@@ -2,6 +2,7 @@
 
 namespace Admin\Http\Controllers;
 
+use Admin\AppUser;
 use Admin\AppUserBlurb;
 use Admin\AppUserRestaurant;
 use Admin\Http\Requests\AppUserRequest;
@@ -50,7 +51,7 @@ class AppUserController extends Controller
             'total_last_online_thirty_days' => $this->appUser->getLastOnlineTotalMonth(),
             'total_last_thirty_days' => $this->appUser->getTotalMonth(),
             'total_approved_app_users' => $this->appUser->getCountByStatus('Approved'),
-            'total_pending_app_users' => $this->appUser->getCountByStatus('Pending Email Verification'),
+            'total_disabled' => $this->appUser->getCountByStatus('Disabled'),
             'total_blocked_app_users' => $this->appUser->getCountByStatus('Blocked'),
         );
 
@@ -68,25 +69,25 @@ class AppUserController extends Controller
         switch ($status) {
             case 'used-blurb':
                 $query = $this->appUser->getUsageCountPaginate();
+                $title = 'Used at least a blurb in the last 30 days';
                 break;
             case 'last-online':
                 $query = $this->appUser->getLastOnlineTotalMonthPaginate();
+                $title = 'Online in the last 30 days';
                 break;
             case 'registered':
                 $query = $this->appUser->getTotalMonthPaginate();
+                $title = 'Registered in the last 30 days';
                 break;
             default:
                 $status = ucfirst($status);
-
-                if ($status == 'Pending-email') {
-                    $status = 'Pending Email Verification';
-                }
-
+                $title = $status;
                 $query = $this->appUser->paginate(['status' => $status]);
                 break;
         }
 
         $data = array(
+            'title' => $title,
             'app_users' => $this->appUser->getAll(),
             'app_user_paginate' => $query,
             'total_app_users' => $this->appUser->getCount(),
@@ -95,7 +96,7 @@ class AppUserController extends Controller
             'total_last_online_thirty_days' => $this->appUser->getLastOnlineTotalMonth(),
             'total_last_thirty_days' => $this->appUser->getTotalMonth(),
             'total_approved_app_users' => $this->appUser->getCountByStatus('Approved'),
-            'total_pending_app_users' => $this->appUser->getCountByStatus('Pending Email Verification'),
+            'total_disabled' => $this->appUser->getCountByStatus('Disabled'),
             'total_blocked_app_users' => $this->appUser->getCountByStatus('Blocked'),
         );
 
@@ -122,7 +123,7 @@ class AppUserController extends Controller
         $app_user_blurb = \DB::table('app_user_blurb')
             ->select('app_user_blurb.app_user_id', 'app_user_blurb.blurb_id', 'app_user_blurb.interaction_type', 'campaign.id', 'campaign.control_no as ccn', 'blurb.*', 'blurb_category.id as bid', 'blurb_category.blurb_cat_name')
             ->leftJoin('blurb', 'app_user_blurb.blurb_id', '=', 'blurb.id')
-            ->leftJoin('blurb_category', 'app_user_blurb.blurb_id', '=', 'blurb_category.id')
+            ->leftJoin('blurb_category', 'blurb.blurb_category_id', '=', 'blurb_category.id')
             ->leftJoin('campaign', 'blurb.campaign_id', '=', 'campaign.id')
             ->where(['app_user_blurb.app_user_id' => $id, 'app_user_blurb.interaction_type' => 'store'])
             ->orderByRaw("FIELD(blurb.blurb_status , 'Pending Admin Approval', 'Live', 'Approved', 'Rejected', 'Created', 'Expired') ASC")
@@ -169,6 +170,14 @@ class AppUserController extends Controller
      */
     public function store(AppUserRequest $request, ImageUploader $imageUploader)
     {
+        $app_user_check = AppUser::where(['email' => $request->email])->whereIn('status', ['Approved', 'Blocked'])->get()->toArray();
+
+        if (!empty($app_user_check)) {
+            return redirect('app-users/create')
+                ->withInput()
+                ->with('error', 'The email has been already taken');
+        }
+
         if (is_null($request->file('profile_photo'))) {
             return redirect('app-users/create')->with('error', 'The profile photo is required.')->withInput();
         }
@@ -183,7 +192,7 @@ class AppUserController extends Controller
             return redirect('app-users/create')->with('error', 'Invalid Format')->withInput();
         }
 
-        $request->merge(['password' => bcrypt($request->password), 'date_created' => 'Y-m-d', 'status' => 'Pending Email Verification', 'date_of_birth' => date_format(date_create($request->date_of_birth), 'Y-m-d')]);
+        $request->merge(['password' => bcrypt($request->password), 'date_created' => date('Y-m-d'), 'date_of_birth' => date_format(date_create($request->date_of_birth), 'Y-m-d')]);
 
         $new_app_user = $this->appUser->create($request->except('_token'));
 
@@ -252,7 +261,7 @@ class AppUserController extends Controller
             'total_last_online_thirty_days' => $this->appUser->getLastOnlineTotalMonth(),
             'total_last_thirty_days' => $this->appUser->getTotalMonth(),
             'total_approved_app_users' => $this->appUser->getCountByStatus('Approved'),
-            'total_pending_app_users' => $this->appUser->getCountByStatus('Pending Email Verification'),
+            'total_disabled' => $this->appUser->getCountByStatus('Disabled'),
             'total_blocked_app_users' => $this->appUser->getCountByStatus('Blocked'),
             'search_word' => $search_word,
             'search_type' => $search_type,

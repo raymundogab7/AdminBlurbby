@@ -25,6 +25,9 @@ class Authenticate
             }
         }
 
+        date_default_timezone_set('Asia/Singapore');
+        //\Config::set('app.timezone', 'Asia/Singapore');
+
         return $next($request);
     }
 }

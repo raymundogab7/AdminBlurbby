@@ -88,7 +88,7 @@ class MerchantEloquent implements MerchantInterface
 
         }
 
-        return $this->merchant->with('restaurant')->orderBy('coy_name')->paginate(10);
+        return $this->merchant->with('restaurant')->orderByRaw("FIELD(status , 0, 1, 3, 2) ASC")->paginate(10);
     }
 
     /**

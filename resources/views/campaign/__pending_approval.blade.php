@@ -9,7 +9,7 @@
             <input type="hidden" value="{{csrf_token()}}" name="_token">
             <!-- <select id="select_merchants" name="merchant_id" data-placeholder="Choose One" style="width:100%;" tabindex="-1" title="" class="select2-offscreen">
                 @foreach($merchants as $merchant)
-                <option <?php //if ($merchant['id'] == $campaign['merchant_id']): ?> selected="selected" <?php// endif;?> value="{{$merchant['id']}}">{{$merchant['coy_name']}}</option>
+                <option <?php //if ($merchant['id'] == $campaign['merchant_id']): ;?> selected="selected" <?php php; // endif;?> value="{{$merchant['id']}}">{{$merchant['coy_name']}}</option>
                 @endforeach
             </select> -->
             <input type="text" disabled="disabled" value="{{$campaign['restaurant']['res_name']}}" class="form-control">
@@ -169,6 +169,7 @@
         <input name="_method" type="hidden" value="DELETE">
         <input type="hidden" id="blurbId" name="blurb_id">
         <input type="hidden" class="controlNo" value="{{$campaign['id']}}">
+        <button type="button" class="btn btn-default" data-dismiss="modal" style="visibility:hidden">No</button>
         <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
         <button class="btn btn-primary delete-blurb-yes">Yes</button>
 

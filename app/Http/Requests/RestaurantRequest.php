@@ -24,8 +24,8 @@ class RestaurantRequest extends Request
     public function rules()
     {
         return [
-            'res_name' => 'unique:restaurant,res_name,' . $this->res_id,
-            'res_url' => 'unique:restaurant,res_url,' . $this->res_id,
+            'res_name' => 'required',
+            //'res_url' => 'unique:restaurant,res_url,' . $this->res_id,
             'res_cuisine' => 'required',
         ];
     }
@@ -38,9 +38,9 @@ class RestaurantRequest extends Request
     public function messages()
     {
         return [
-            'res_name.required' => 'The restaurant name field is required.',
-            'res_url.required' => 'The restaurant website url field is required.',
-            'res_cuisine.required' => 'The restaurant cuisine is required.',
+            'res_name.required' => 'The eatery name field is required.',
+            //'res_url.required' => 'The restaurant website url field is required.',
+            'res_cuisine.required' => 'The eatery cuisine is required.',
         ];
     }
 
@@ -53,7 +53,7 @@ class RestaurantRequest extends Request
     public function response(array $errors)
     {
 
-        return $this->redirector->to('merchants/'.$this->merchant_id.'/edit')
+        return $this->redirector->to('merchants/' . $this->merchant_id . '/edit')
             ->withInput()
             ->with(['errors' => $errors]);
 

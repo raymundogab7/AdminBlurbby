@@ -27,7 +27,7 @@ class OutletRequest extends Request
             'outlet_add' => 'required',
             'outlet_country' => 'required',
             'outlet_zip' => 'required|min:6|max:6',
-            'outlet_phone' => 'required',
+            'outlet_phone' => 'required|min:8|max:8',
             'outlet_timezone' => 'required',
         ];
     }
@@ -46,6 +46,8 @@ class OutletRequest extends Request
             'outlet_zip.max' => 'Outlet postal code maxlength is 6',
             'outlet_zip.min' => 'Outlet postal code minimum is 6.',
             'outlet_phone.required' => 'The outlet phone number field is required.',
+            'outlet_phone.min' => 'The outlet phone number field may not be less than 8 characters.',
+            'outlet_phone.max' => 'The outlet phone number field may not be less than 8 characters.',
             'outlet_timezone.required' => 'The timezone field is required.',
         ];
     }
@@ -59,13 +61,13 @@ class OutletRequest extends Request
     public function response(array $errors)
     {
         if (!is_null($this->from_main)) {
-            return $this->redirector->to('merchants/'.$this->merchant_id.'/edit')
+            return $this->redirector->to('merchants/' . $this->merchant_id . '/edit')
                 ->withInput()
                 ->with(['errors' => $errors]);
         }
 
         if (is_null($this->outlet_id)) {
-            return $this->redirector->to('outlets/'.$this->merchant_id.'/create')
+            return $this->redirector->to('outlets/' . $this->merchant_id . '/create')
                 ->withInput()
                 ->with(['errors' => $errors]);
         }

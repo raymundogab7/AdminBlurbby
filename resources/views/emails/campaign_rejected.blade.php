@@ -67,7 +67,7 @@ p {padding: 0!important; margin-top: 0!important; margin-right: 0!important; mar
 </head>
 <body leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
 
-<table width="100%" border="0" cellpadding="0" cellspacing="0" align="center" class="full2"  bgcolor="#303030"style="background-color: rgb(48, 48, 48); height: 100%;">
+<table width="100%" border="0" cellpadding="0" cellspacing="0" align="center" class="full2" style="height: 100%;">
 	<tr>
 		<td align="center" style="background-color:#eee;" id="not6">
 
@@ -103,7 +103,7 @@ p {padding: 0!important; margin-top: 0!important; margin-right: 0!important; mar
 											<td width="100%" height="30"></td>
 										</tr>
 										<tr>
-											<td width="100%"><span ><img src="http://puzzlehive.com/project/blurbby/edm/logo.png" alt="" border="0" ></span></td>
+											<td width="100%"><span ><img style="width: 251px;" src="http://puzzlehive.com/project/blurbby/edm/logo.png" alt="" border="0" ></span></td>
 										</tr>
 										<tr>
 											<td width="100%" height="30"></td>
@@ -132,9 +132,8 @@ p {padding: 0!important; margin-top: 0!important; margin-right: 0!important; mar
 															<br><br>
 															<span style="font-size: 20px;">Hi {{$data['first_name']}} {{$data['last_name']}},</span>
 															<br><br>
-															We have reviewed your campaign and realized that it requires some revision(s) before we can approve it.
+															We have reviewed your campaign {{$data['campaign_name']}} and realized that it requires some revision(s) before we can approve it.
 															<br><br>
-															<!-- <a href="#" style="color: rgb(255, 255, 255); font-size: 15px; text-decoration: none; line-height: 34px; width: 100%; padding: 15px 30px; background-color: rgb(0, 176, 237); border-radius: 5px; font-weight: bold;">Reset Password</a> -->
 															We have left our remarks on the concerned Blurb(s) in the campaign and after you have made the necessary revisions, you can resubmit your campaign for approval. This time, if the campaign has a target live date that is coming soon, we will prioritize it as an urgent campaign for review and approval.
 															<br><br>
 															Should you require further assistance, please contact us at <a href="mailto:info@blurbes.com." target="_top">info@blurbes.com</a>

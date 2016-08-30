@@ -40,7 +40,7 @@
                     <div class="col-sm-12 col-md-4 col-xs-12" style="padding-bottom:30px;max-width:417px;min-width:300px;">
 						<div style="border: 1px solid #ccc;">
 							<div class="text-center cover-photo" data-src="{{(! is_null($restaurant->res_logo_background)) ? ($restaurant->bg_photo_location == 'merchant') ? env('MERCHANT_URL').'/'.$restaurant->res_logo_background : asset($restaurant->res_logo_background) : asset('images/nobg.jpg')}}" style="background:url('{{(! is_null($restaurant->res_logo_background)) ? ($restaurant->bg_photo_location == 'merchant') ? env('MERCHANT_URL').'/'.$restaurant->res_logo_background : asset($restaurant->res_logo_background) : asset('images/profile-background.jpg')}}');background-size:cover;">
-								<!-- <img src="{{(! is_null($restaurant->res_logo)) ? asset('profile_pictures/'.$restaurant->merchant_id.'/profile_picture.jpg') : asset('images/nopp.jpg')}}" class="img-roundedcircle img-offline img-responsive img-profile" style="max-width:80px;margin-top:45px;" alt="" /> -->
+
                                 @if(!is_null($restaurant->res_logo))
                                 @if($restaurant->photo_location == 'merchant')
                                 <img src="{{(! is_null($restaurant->res_logo)) ? env('MERCHANT_URL').'/'.$restaurant->res_logo : asset('images/nopp.jpg')}}" class="img-roundedcircle img-offline img-responsive img-profile profile-pic" style="max-width:80px;margin-top:45px;" alt="" />
@@ -49,9 +49,7 @@
                                 @endif
 
                                 @else
-                                <!-- <span class="square-profile img-roundedcircle img-offline img-responsive img-profile" style="max-width:80px;margin-top:45px;padding-top:10px">
-                                    <p>@if(!is_null($restaurant->res_name)) {{strtoupper($restaurant->res_name[0])}} @endif</p>
-                                </span> -->
+
                                 <img src="{{asset('images/photos/profile.png')}}" class="profile-pic img-roundedcircle img-offline img-responsive img-profile" style="max-width:80px;margin-top:45px;" alt="">
                                 @endif
 								<h4 class="profile-name mb5" style="color:#fff;padding-bottom:45px;font-size:16px;margin-top:5px;">{{$merchant->coy_name}}</h4>
@@ -59,19 +57,14 @@
 							<div class="mb20"></div>
                             @if(array_key_exists('snapshot_views', $snapshot))
 
-                            <div style="text-align:center;padding:10px 0;"><i class="fa fa-user"></i> {{$snapshot['snapshot_views']}} users bookmarked your restaurant</div>
+                            <div style="text-align:center;padding:10px 0;"><i class="fa fa-user"></i> {{$snapshot['snapshot_views']}} users bookmarked your eatery</div>
 
                             @else
 
-                            <div style="text-align:center;padding:10px 0;"><i class="fa fa-user"></i> 0 users bookmarked your restaurant</div>
+                            <div style="text-align:center;padding:10px 0;"><i class="fa fa-user"></i> 0 users bookmarked your eatery</div>
 
                             @endif
                             <div class="mb20"></div>
-
-								<!--<div class="btn-group">
-									<button class="btn btn-primary btn-bordered">48 Blurbs Available</button>
-								</div>
-							<br />-->
 							<div style="margin:0px 25px 35px 25px;padding:20px 20px 10px 20px;border:1px solid #ddd;">
 								<h5 class="md-title">Details</h5>
 								<div class="mb20"></div>
@@ -134,11 +127,15 @@ foreach ($close_days as $key => $value) {
 }
 if (count($close_days) > 0) {echo ' : Close' . "<br>";}
 
-echo ($outlet->outlet_ph_active == 0) ? 'PH : Close' : 'PH : ' . date_format(date_create($outlet->outlet_ph_start), "H:i") . ' - ' . date_format(date_create($outlet->outlet_ph_end), "H:i") . "<br>";
+echo ($outlet->outlet_ph_active == 0) ? 'PH : Close' . "<br>" : 'PH : ' . date_format(date_create($outlet->outlet_ph_start), "H:i") . ' - ' . date_format(date_create($outlet->outlet_ph_end), "H:i") . "<br>";
 ?>
 
                                             </td>
 										</tr>
+                                        <tr style="border-top:1px solid #eee;">
+                                            <td style="width:25%;padding-left:25px;"><i class="fa fa-info-circle fa-lg"></i></td>
+                                            <td style="padding:15px 0;">{{$outlet->additional_info}}</td>
+                                        </tr>
 										<tr style="border-top:1px solid #eee;">
 											<td style="width:25%;padding-left:25px;"><i class="fa fa-link fa-lg"></i></td>
 											<td style="padding:15px 0;">{{$restaurant->res_url}}</td>
@@ -169,7 +166,7 @@ echo ($outlet->outlet_ph_active == 0) ? 'PH : Close' : 'PH : ' . date_format(dat
                         <ul class="nav nav-tabs nav-line">
                             <li class="active"><a href="#personal" data-toggle="tab"><strong>Personal</strong></a></li>
                             <li><a href="#company" data-toggle="tab"><strong>Company</strong></a></li>
-                            <li><a href="#restaurant" data-toggle="tab"><strong>Restaurant</strong></a></li>
+                            <li><a href="#restaurant" data-toggle="tab"><strong>Eatery</strong></a></li>
                             <li><a href="#outlets" data-toggle="tab"><strong>Outlets</strong></a></li>
                             <li><a href="#campaigns" data-toggle="tab"><strong>Campaigns</strong></a></li>
                         </ul>
@@ -181,7 +178,13 @@ echo ($outlet->outlet_ph_active == 0) ? 'PH : Close' : 'PH : ' . date_format(dat
 	                    </div>
 
 		                @endif
+                        @if(session('error'))
 
+                        <div class="alert alert-danger">
+                            <strong>{{session('error')}}</strong>
+                        </div>
+
+                        @endif
 		                @if(count($errors) > 0)
 
 	                    <div class="alert alert-danger">
@@ -230,6 +233,7 @@ echo ($outlet->outlet_ph_active == 0) ? 'PH : Close' : 'PH : ' . date_format(dat
                                                 <option value="1" <?php if ($merchant->status == 1): ?> selected="selected" <?php endif;?>>Approved</option>
                                                 <option value="0" <?php if ($merchant->status == 0): ?> selected="selected" <?php endif;?>>Pending Admin Approval</option>
                                                 <option value="2" <?php if ($merchant->status == 2): ?> selected="selected" <?php endif;?>>Blocked</option>
+                                                <option value="3" <?php if ($merchant->status == 3): ?> selected="selected" <?php endif;?>>Disabled</option>
                                             </select>
                                         </div>
                                     </div><!-- form-group -->
@@ -265,7 +269,7 @@ echo ($outlet->outlet_ph_active == 0) ? 'PH : Close' : 'PH : ' . date_format(dat
 									<div class="form-group">
                                         <label class="col-sm-2 control-label" style="text-align:left;">Contact Number *</label>
                                         <div class="col-sm-8">
-                                            {!! Form::number('coy_phone', $merchant->coy_phone, ['required' => 'required', 'class' => 'form-control'])!!}
+                                            {!! Form::text('coy_phone', str_replace(' ', '', str_replace('+65', '', $merchant->coy_phone)), ['onkeyup' => "this.value=this.value.replace(/[^\d+]/,'')", 'required' => 'required', 'class' => 'form-control'])!!}
                                         </div>
                                     </div><!-- form-group -->
 
@@ -326,7 +330,7 @@ echo ($outlet->outlet_ph_active == 0) ? 'PH : Close' : 'PH : ' . date_format(dat
 									<div class="form-group">
                                         <label class="col-sm-2 control-label" style="text-align:left;">Company Phone Number *</label>
                                         <div class="col-sm-8">
-                                            {!! Form::number('coy_phone', $merchant->coy_phone, ['required' => 'required', 'class' => 'form-control']) !!}
+                                            {!! Form::text('coy_phone', str_replace(' ', '', str_replace('+65', '', $merchant->coy_phone)), ['onkeyup' => "this.value=this.value.replace(/[^\d+]/,'')", 'required' => 'required', 'class' => 'form-control']) !!}
                                         </div>
                                     </div><!-- form-group -->
 
@@ -347,7 +351,7 @@ echo ($outlet->outlet_ph_active == 0) ? 'PH : Close' : 'PH : ' . date_format(dat
                             <div class="tab-pane" id="restaurant">
 								<div class="col-sm-12" style="padding-bottom:30px;">
 									<div class="col-sm-5">
-										<h4 class="md-title">Restaurant Logo *</h4>
+										<h4 class="md-title">Eatery Logo *</h4>
 										<!-- <form action="files" class="dropzone"> -->
                                         {!! Form::open(array('id'=>'profile-picture', 'enctype' => 'multipart/form-data', 'url' => 'merchants/restaurant/upload-pp/'.$restaurant->id, 'class' => 'dropzone form-horizontal form-bordered', 'method'=>'POST')) !!}
                                             {!! Form::hidden('merchant_id', $merchant->id, ['required' => 'required', 'class' => 'form-control'])!!}
@@ -378,7 +382,7 @@ echo ($outlet->outlet_ph_active == 0) ? 'PH : Close' : 'PH : ' . date_format(dat
                                 <form method="POST" id="restaurant_form" action="{{url('merchants/restaurant/'.$restaurant->id)}}" class="form-horizontal form-bordered" >
 
                                     <div class="form-group">
-                                        <label class="col-sm-2 control-label" style="text-align:left;">Restaurant Name *</label>
+                                        <label class="col-sm-2 control-label" style="text-align:left;">Eatery Name *</label>
                                         <div class="col-sm-8">
                                             <input type="hidden" name="_method" value="PUT">
                                             <input type="hidden" name="_token" value="{{csrf_token()}}">
@@ -389,7 +393,7 @@ echo ($outlet->outlet_ph_active == 0) ? 'PH : Close' : 'PH : ' . date_format(dat
                                     </div><!-- form-group -->
 
 									<div class="form-group">
-                                        <label class="col-sm-2 control-label" style="text-align:left;">Restaurant Website URL *</label>
+                                        <label class="col-sm-2 control-label" style="text-align:left;">Eatery Website URL *</label>
                                         <div class="col-sm-8">
                                             <!-- <input type="text" value="www.starbucks.com.sg" class="form-control" /> -->
                                             {!! Form::text('res_url', $restaurant->res_url, ['class' => 'form-control']) !!}
@@ -397,7 +401,7 @@ echo ($outlet->outlet_ph_active == 0) ? 'PH : Close' : 'PH : ' . date_format(dat
                                     </div><!-- form-group -->
 
 									<div class="form-group">
-                                        <label class="col-sm-2 control-label" style="text-align:left;">Restaurant Cuisine *</label>
+                                        <label class="col-sm-2 control-label" style="text-align:left;">Eatery Cuisine *</label>
                                         <div class="col-sm-8">
                                             <select name="res_cuisine[]" id="select-multi" data-placeholder="Choose At Least One" multiple class="width300" style="width:100%;">
 												<optgroup label="Choose At Least One"></optgroup>
@@ -467,7 +471,7 @@ echo ($outlet->outlet_ph_active == 0) ? 'PH : Close' : 'PH : ' . date_format(dat
                                         <label class="col-sm-2 control-label" style="text-align:left;">Outlet's Phone Number *</label>
                                         <div class="col-sm-8">
                                             <!-- <input type="text" value="+6564620097" class="form-control" /> -->
-                                            {!! Form::number('outlet_phone', $outlet->outlet_phone, ['class' => 'form-control']) !!}
+                                            {!! Form::text('outlet_phone', str_replace(' ', '', str_replace('+65', '', $outlet->outlet_phone)), ['onkeyup' => "this.value=this.value.replace(/[^\d+]/,'')", 'class' => 'form-control']) !!}
                                         </div>
                                     </div><!-- form-group -->
 
@@ -633,7 +637,7 @@ echo ($outlet->outlet_ph_active == 0) ? 'PH : Close' : 'PH : ' . date_format(dat
 										</div>
                                     </div><!-- form-group -->
 
-                                    <div class="form-group openinghours-form">
+                                    <div class="form-group openinghours-form" style="padding-bottom: 25px!important;">
                                         <label class="col-xs-12 col-sm-2 control-label" style="text-align:left;"></label>
 
                                         <div class="col-xs-1" style="width:50px;padding-top:12px;">
@@ -653,15 +657,13 @@ echo ($outlet->outlet_ph_active == 0) ? 'PH : Close' : 'PH : ' . date_format(dat
                                             <div class="bootstrap-timepicker">{!! Form::text('outlet_ph_end', date_format(date_create($outlet->outlet_ph_end), 'H:i'), ['id' => 'timepicker-ph-end-1', 'class' => 'toggle-timepicker form-control time-sched']) !!}</div>
                                         </div>
                                     </div><!-- form-group -->
-                                    <div class="form-group openinghours-form">
-                                        <label class="col-xs-12 col-sm-2 control-label" style="text-align:left;"></label>
-                                        <div class="col-xs-2">
-                                            <p>Additional Info</p>
+
+                                    <div class="form-group">
+                                        <label class="col-sm-2 control-label" style="text-align:left;">Additional Info</label>
+                                        <div class="col-sm-8">
+                                            {!! Form::textarea('additional_info', $outlet->additional_info, ['class' => 'form-control', 'rows' => '5']) !!}
                                         </div>
-                                        <div class="col-xs-6 col-sm-6" >
-                                            {!! Form::textarea('additional_info', $outlet->additional_info, ['required' => 'required', 'class' => 'form-control', 'rows' => '5']) !!}
-                                        </div>
-                                    </div>
+                                    </div><!-- form-group -->
                                     <button type="submit" class="btn btn-primary">Update</button>
                                 </form>
 								<hr>
@@ -728,7 +730,7 @@ foreach ($close_days as $key => $value) {
 }
 if (count($close_days) > 0) {echo ' : Close' . "<br>";}
 
-echo ($outlet->outlet_ph_active == 0) ? 'PH : Close' : 'PH : ' . date_format(date_create($outlet->outlet_ph_start), "H:i") . ' - ' . date_format(date_create($outlet->outlet_ph_end), "H:i") . "<br>";
+echo ($o['outlet_ph_active'] == 0) ? 'PH : Close' : 'PH : ' . date_format(date_create($o['outlet_ph_start']), "H:i") . ' - ' . date_format(date_create($o['outlet_ph_end']), "H:i") . "<br>";
 ?>
                                             </td>
 											<td class="table-action">
@@ -826,6 +828,7 @@ echo ($outlet->outlet_ph_active == 0) ? 'PH : Close' : 'PH : ' . date_format(dat
   </div>
 </div>
 <input type="hidden" id="asset_path" value="{{asset('')}}">
+<input type="hidden" id="has_cover_photo" value="false" disabled="">
 @endsection
 
 @section('custom-js')

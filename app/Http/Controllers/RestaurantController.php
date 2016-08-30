@@ -43,6 +43,10 @@ class RestaurantController extends Controller
      */
     public function update($id, RestaurantRequest $request)
     {
+        if (substr($request->res_url, 0, 4) == 'http') {
+            return redirect('merchants/' . $request->merchant_id . '/edit')->withInput()->with('error', 'Please remove "http://" from your URL.');
+        }
+
         $this->restaurantCuisine->deleteByAttributes(['restaurant_id' => $request->restaurant_id], $request->res_cuisine);
 
         if ($this->restaurant->updateById($id, $request->all())) {

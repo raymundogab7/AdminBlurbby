@@ -6,10 +6,12 @@ use Admin\Http\Requests\AdministratorRequest;
 use Admin\Repositories\Interfaces\AdminInterface;
 use Admin\Services\GenerateReport;
 use Admin\Services\ImageUploader;
+use Auth;
 use Illuminate\Http\Request;
 
 class AdministratorController extends Controller
 {
+    const UNAUTHORIZED = "Unauthorized.";
     /**
      * @var AdminInterface
      */
@@ -53,12 +55,15 @@ class AdministratorController extends Controller
     {
 
         $role_id = 1;
+        $title = 'Super Admin';
 
         if ($role == 'admins') {
             $role_id = 2;
+            $title = 'Admin';
         }
 
         $data = array(
+            'title' => $title,
             'admins' => $this->admin->getAll(),
             'administrators' => $this->admin->paginate(['role_id' => $role_id], true),
             'admin_count' => $this->admin->getAllByAttributes(['role_id' => 1], 'first_name'),
@@ -93,7 +98,12 @@ class AdministratorController extends Controller
      */
     public function create()
     {
-        return view('administrators.create');
+        if (Auth::user()->role_id == 1) {
+            return view('administrators.create');
+        }
+
+        return redirect('administrators')->with('error', self::UNAUTHORIZED);
+
     }
 
     /**
@@ -104,6 +114,10 @@ class AdministratorController extends Controller
      */
     public function store(AdministratorRequest $request, ImageUploader $imageUploader)
     {
+        if (Auth::user()->role_id == 2) {
+            return redirect('administrators')->with('error', self::UNAUTHORIZED);
+        }
+
         if (is_null($request->file('profile_photo'))) {
             return redirect('administrators/create')->with('error', 'The profile photo is required.')->withInput();
         }
@@ -126,7 +140,7 @@ class AdministratorController extends Controller
 
         $imageUploader->upload($file, $new_admin->id, 60, 60, 'admin_profile_photo/', '/' . $new_admin->id . '.' . $file->getClientOriginalExtension());
 
-        return redirect('administrators/create')->with('messsage', 'Successfully Created.');
+        return redirect('administrators')->with('messsage', 'Successfully Created.');
     }
 
     /**
@@ -136,6 +150,13 @@ class AdministratorController extends Controller
      */
     public function edit($id)
     {
+        if (Auth::user()->role_id == 2) {
+            if (Auth::user()->id == $id) {
+                return view('administrators.edit', ['admin' => $this->admin->getById($id)]);
+            }
+            return redirect('administrators')->with('error', self::UNAUTHORIZED);
+        }
+
         return view('administrators.edit', ['admin' => $this->admin->getById($id)]);
     }
 
@@ -147,6 +168,13 @@ class AdministratorController extends Controller
      */
     public function update($id, AdministratorRequest $request, ImageUploader $imageUploader)
     {
+        if (Auth::user()->role_id == 2) {
+            if (Auth::user()->id != $id) {
+                return redirect('administrators')->with('error', self::UNAUTHORIZED);
+            }
+
+        }
+
         $file = $request->file('profile_photo_temp');
 
         if (!is_null($file)) {

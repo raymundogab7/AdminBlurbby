@@ -100,7 +100,7 @@
 	                                    <select id="search-type" class="width100p" data-placeholder="Search Type">
 	                                        <option value="">Choose One</option>
 	                                        <option value="Campaign">Campaign Name</option>
-	                                        <option value="Restaurant">Restaurant Name</option>
+	                                        <option value="Restaurant">Eatery Name</option>
 	                                        <option value="Company">Company Name</option>
 	                                    </select>
 	                                </div>

@@ -21,9 +21,11 @@ Dropzone.options.profilePicture = {
     init: function() {
         var myDropzone = this;
         $('#res_update_btn').on("click", function(e) {
-          e.preventDefault();
-          e.stopPropagation();
-          myDropzone.processQueue();
+            myDropzone.processQueue();
+            if(myDropzone.files.length != 0) {
+              e.preventDefault();
+              e.stopPropagation();
+            }
         });
 
         this.on("thumbnail", function(file){
@@ -35,7 +37,14 @@ Dropzone.options.profilePicture = {
             }
         });
         this.on("success", function(file) { 
-            $('#restaurant_form').submit();
+            //$('#restaurant_form').submit();
+        });
+
+        this.on("complete", function(file) {
+            if($('#has_cover_photo').val() == "false"){
+
+                $('#restaurant_form').submit();
+            }
         });
 
         this.on("error", function(file) { 
@@ -50,10 +59,14 @@ Dropzone.options.coverPhoto = {
     init: function() {
         var myDropzone = this;
         $('#res_update_btn').on("click", function(e) {
-          e.preventDefault();
-          e.stopPropagation();
-          myDropzone.processQueue();
+            myDropzone.processQueue();
+            if(myDropzone.files.length != 0) {
+              e.preventDefault();
+              e.stopPropagation();
+            }
         });
+
+        this.on("addedfile", function(file) { $('#has_cover_photo').val('true') });
 
         this.on("thumbnail", function(file){
             if (file.height < 500 && file.width < 500) {
@@ -64,9 +77,13 @@ Dropzone.options.coverPhoto = {
             }
         });
         this.on("success", function(file) { 
-            $('#restaurant_form').submit();
+            //$('#restaurant_form').submit();
         });
 
+        this.on("complete", function(file) {
+            $('#restaurant_form').submit();
+        });
+        
         this.on("error", function(file) { 
             alert('Invalid format or Image size is too big.');
             window.location.reload();

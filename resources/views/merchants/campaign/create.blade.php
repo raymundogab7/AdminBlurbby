@@ -69,6 +69,7 @@
                                 <input type="hidden" value="{{csrf_token()}}" name="_token">
                                 <input type="text" readonly="" value="{{$merchant->coy_name}}" class="form-control">
                                 {!! Form::hidden('merchant_id', $merchant->id, ['required' => 'required', 'class' => 'form-control']) !!}
+                                {!! Form::hidden('restaurant_id', $restaurant->id, ['required' => 'required', 'class' => 'form-control']) !!}
                             </div>
                         </div>
 						<div class="form-group">

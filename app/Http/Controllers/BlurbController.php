@@ -106,7 +106,7 @@ class BlurbController extends Controller
         $request->merge(array('blurb_start' => date_format(date_create($request->blurb_start), 'Y-m-d'), 'blurb_end' => date_format(date_create($request->blurb_end), 'Y-m-d'), 'merchant_id' => $request->merchant_id, 'campaign_id' => $request->campaign_id));
 
         if ($request->control_no != "") {
-            $this->blurb->updateByAttributes(['control_no' => $request->control_no], $request->except('_token'));
+            $this->blurb->updateByAttributes(['control_no' => $request->control_no], $request->except('_token', 'control_no_temp'));
 
             return redirect('campaigns/' . $request->campaign_id);
         }
@@ -160,15 +160,15 @@ class BlurbController extends Controller
     {
         $request->merge(array('blurb_start' => date_format(date_create($request->blurb_start), 'Y-m-d'), 'blurb_end' => date_format(date_create($request->blurb_end), 'Y-m-d')));
 
-        if ($request->blurb_status == 'Approved') {
-            if (date('Y-m-d') >= $request->blurb_start) {
-                $request->merge(['blurb_status' => 'Live']);
-            }
-
-            if (date('Y-m-d') > $request->blurb_end) {
-                $request->merge(['blurb_status' => 'Expired']);
-            }
+        /*if ($request->blurb_status == 'Approved') {
+        if (date('Y-m-d') >= $request->blurb_start) {
+        // $request->merge(['blurb_status' => 'Live']);
         }
+
+        if (date('Y-m-d') > $request->blurb_end) {
+        $request->merge(['blurb_status' => 'Expired']);
+        }
+        }*/
 
         if ($this->blurb->updateById($id, $request->all())) {
             return redirect('blurb/' . $id . '/' . $request->control_no)->with('message', 'Successfully updated.');
@@ -217,7 +217,7 @@ class BlurbController extends Controller
             ), 404);
         }
 
-        $this->blurb->updateByAttributes(['merchant_id' => $user_id, 'campaign_id' => $campaign_id], ['photo_location' => 'admin', 'blurb_logo' => 'campaign/' . $campaign_id . '/' . $result->id . '.' . $file->getClientOriginalExtension()]);
+        $this->blurb->updateByAttributes(['id' => $result->id, 'merchant_id' => $user_id, 'campaign_id' => $campaign_id], ['photo_location' => 'admin', 'blurb_logo' => 'campaign/' . $campaign_id . '/' . $result->id . '.' . $file->getClientOriginalExtension()]);
 
         $imageUploader->upload($file, $campaign_id, 500, 500, 'campaign/', '/' . $result->id . '.' . $file->getClientOriginalExtension());
 

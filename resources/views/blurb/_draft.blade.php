@@ -30,7 +30,7 @@
                                     <label class="col-sm-2 control-label" style="text-align:left;">Start Date *</label>
                                     <div class="col-sm-8">
                                         <div class="input-group">
-                                            {!! Form::text('blurb_start', date_format(date_create($blurb->blurb_start), 'd-M-Y'), ['required' => 'required', 'id' => 'datepicker', 'placeholder' => 'DD-MMM-YYYY', 'class' => 'form-control']) !!}
+                                            {!! Form::text('blurb_start', (is_null($blurb->blurb_start)) ? '' : date_format(date_create($blurb->blurb_start), 'd-M-Y'), ['required' => 'required', 'id' => 'datepicker', 'placeholder' => 'DD-MMM-YYYY', 'class' => 'form-control']) !!}
                                             <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
                                         </div><!-- input-group -->
                                     </div>
@@ -40,7 +40,7 @@
                                     <label class="col-sm-2 control-label" style="text-align:left;">End Date *</label>
                                     <div class="col-sm-8">
                                         <div class="input-group">
-                                            {!! Form::text('blurb_end', date_format(date_create($blurb->blurb_end), 'd-M-Y'), ['required' => 'required' ,'id' => 'datepicker2', 'placeholder' => 'DD-MMM-YYYY', 'class' => 'form-control']) !!}
+                                            {!! Form::text('blurb_end', (is_null($blurb->blurb_end)) ? '' : date_format(date_create($blurb->blurb_end), 'd-M-Y'), ['required' => 'required' ,'id' => 'datepicker2', 'placeholder' => 'DD-MMM-YYYY', 'class' => 'form-control']) !!}
                                             <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
                                         </div><!-- input-group -->
                                     </div>

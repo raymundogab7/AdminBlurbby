@@ -101,7 +101,7 @@
                                 <label class="col-sm-2 control-label" style="text-align:left;">Outlet's Phone Number *</label>
                                 <div class="col-sm-8">
                                     <!-- <input type="text" value="+6564620097" class="form-control" /> -->
-                                    {!! Form::text('outlet_phone', null, ['required' => 'required', 'class' => 'form-control']) !!}
+                                    {!! Form::text('outlet_phone', null, ['onkeyup' => "this.value=this.value.replace(/[^\d+]/,'')", 'required' => 'required', 'class' => 'form-control']) !!}
                                 </div>
                             </div><!-- form-group -->
 
@@ -267,7 +267,7 @@
 								</div>
                             </div><!-- form-group -->
 
-							<div class="form-group openinghours-form">
+							<div class="form-group openinghours-form" style="padding-bottom: 25px!important;">
                                 <label class="col-xs-12 col-sm-2 control-label" style="text-align:left;"></label>
 
                                 <div class="col-xs-1" style="width:50px;padding-top:12px;">
@@ -287,15 +287,12 @@
                                     <div class="bootstrap-timepicker">{!! Form::text('outlet_ph_end', date('21:00', time()+28800), ['id' => 'timepicker-ph-end-1', 'class' => 'toggle-timepicker form-control time-sched']) !!}</div>
                                 </div>
                             </div><!-- form-group -->
-                            <div class="form-group openinghours-form">
-                                <label class="col-xs-12 col-sm-2 control-label" style="text-align:left;"></label>
-                                <div class="col-xs-2">
-                                    <p>Additional Info</p>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label" style="text-align:left;">Additional Info</label>
+                                <div class="col-sm-8">
+                                    {!! Form::textarea('additional_info', null, ['class' => 'form-control', 'rows' => '5']) !!}
                                 </div>
-                                <div class="col-xs-6 col-sm-6" >
-                                    {!! Form::textarea('additional_info', null, ['required' => 'required', 'class' => 'form-control', 'rows' => '5']) !!}
-                                </div>
-                            </div>
+                            </div><!-- form-group -->
                             <button type="submit" class="btn btn-primary">Add</button>
                             <a href="{{url('merchants/'.$restaurant->merchant_id.'/edit')}}"><button type="button" style="margin-left:15px;" class="btn btn-default">Cancel</button></a>
                         </form>

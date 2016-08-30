@@ -101,8 +101,12 @@
                                 </ul>
                                 @endif
                             </div>
-                            <h3 class="xlg-title">All Admin</h3>
-
+                            <h3 class="xlg-title">{{$title}}</h3>
+                            @if(count($administrators) == 0)<br>
+                            <div class="alert alert-default">
+                                <strong>No data available.</strong>
+                            </div>
+                            @endif
                             <div class="list-group contact-group">
                             	@foreach($administrators as $admin)
                                 <a href="{{url('administrators/'.$admin['id'].'/edit')}}" class="list-group-item">

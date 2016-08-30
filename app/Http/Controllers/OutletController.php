@@ -54,6 +54,8 @@ class OutletController extends Controller
      */
     public function store(OutletRequest $request, LongLat $longLat)
     {
+        $request->merge(['outlet_phone' => '+65 ' . substr($request->outlet_phone, 0, 4) . ' ' . substr($request->outlet_phone, 4, 7)]);
+
         $data = $longLat->get($request);
 
         if (empty($data)) {
@@ -93,6 +95,8 @@ class OutletController extends Controller
      */
     public function update($id, OutletRequest $request, LongLat $longLat)
     {
+        $request->merge(['outlet_phone' => '+65 ' . substr($request->outlet_phone, 0, 4) . ' ' . substr($request->outlet_phone, 4, 7)]);
+
         $data = $longLat->get($request);
 
         $request->merge(array('longitude' => $data['longitude'], 'latitude' => $data['latitude']));

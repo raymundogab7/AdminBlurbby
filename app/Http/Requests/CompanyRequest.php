@@ -26,13 +26,13 @@ class CompanyRequest extends Request
         return [
             'coy_name' => 'required',
             'coy_add' => 'required',
-            'coy_country' => 'required', 
+            'coy_country' => 'required',
             'coy_zip' => 'required|min:6|max:6',
-            'coy_phone' => 'required',
+            'coy_phone' => 'required|min:8|max:8',
             'coy_url' => 'required',
         ];
     }
-    
+
     /**
      * Get the proper failed validation response for the request.
      *
@@ -41,10 +41,10 @@ class CompanyRequest extends Request
      */
     public function response(array $errors)
     {
-        return $this->redirector->to('merchants/'.$this->merchant_id.'/edit')
+        return $this->redirector->to('merchants/' . $this->merchant_id . '/edit')
             ->withInput()
             ->with(['errors' => $errors]);
-        
+
     }
 
     /**
@@ -62,6 +62,8 @@ class CompanyRequest extends Request
             'coy_zip.max' => 'Postal code maxlength is 6',
             'coy_zip.min' => 'Postal code minimum is 6.',
             'coy_phone.required' => 'The Company Phone Number is required.',
+            'coy_phone.min' => 'The Company Phone Number may not be less than 8 characters.',
+            'coy_phone.max' => 'The Company Phone Number may not be less than 8 characters.',
             'coy_url.required' => 'The Company Website URL is required.',
 
         ];

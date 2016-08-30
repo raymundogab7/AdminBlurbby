@@ -190,7 +190,7 @@
                                 <table class="table table-primary" id="live_campaigns_table">
                                     <thead class="" style="background-color:#00B0ED">
                                         <tr>
-                                        	<th>Restaurant Name</th>
+                                        	<th>Eatery Name</th>
                                             <th>Campaign Name</th>
                                             <th>Status</th>
                                             <th>Start Date</th>

@@ -39,7 +39,7 @@
                                 <?php $pp_url = $app_user->profile_photo;?>
                                 @endif
                                 <div class="text-center" style="background:url({{asset('images/profile-background.jpg')}});    background-size:cover;">
-                                    <img src="{{asset($pp_url)}}" class="img-circle img-offline img-responsive img-profile" style="max-width:80px;margin-top:45px;" alt="" />
+                                    <img src="{{asset($pp_url)}}" class="img-circle img-offline img-responsive img-profile" style="width:80px;height:80px;margin-top:45px;" alt="" />
                                     <h4 class="profile-name mb5" style="color:#fff;padding-bottom:45px;font-size:16px;margin-top:5px;">{{$app_user->first_name. ' ' . $app_user->last_name}}</h4>
 
                                 </div><!-- text-center -->
@@ -74,7 +74,7 @@
                             </div>
                         </div><!-- col-sm-4 col-md-3 -->
 
-                        <div class="col-sm-12 col-md-9 col-xs-12">
+                        <div class="col-sm-12 col-md-8 col-xs-12">
                             @if(session('message'))
 
                             <div class="alert alert-success">
@@ -130,7 +130,7 @@
                                                     <input type="hidden" name="_token" readonly="" value="{{csrf_token()}}">
                                                     <input type="hidden" name="_method" readonly="" value="PUT">
                                                     <input type="hidden" name="app_user_id" readonly="" value="{{$app_user->id}}">
-                                                    {!! Form::select('status', array('Approved' => 'Approved', 'Pending Email Verification' => 'Pending Email Verification', 'Blocked' => 'Blocked'), $app_user->status, ['id' => 'type', 'required' => 'required', 'class' => 'width300', 'placeholder' => 'Choose One']) !!}
+                                                    {!! Form::select('status', array('Approved' => 'Approved', 'Disabled' => 'Disabled', 'Blocked' => 'Blocked'), $app_user->status, ['id' => 'type', 'required' => 'required', 'class' => 'width300', 'placeholder' => 'Choose One']) !!}
                                                 </div>
                                             </div><!-- form-group -->
                                             <div class="form-group">
@@ -204,7 +204,7 @@
                                             </div><!-- form-group -->
                                             <br>
                                             <button style="margin-left:15px;" class="btn btn-primary">Update</button>
-                                            <a href="{{url('administrators')}}"><button type="button" style="margin-left:15px;" class="btn btn-default">Back</button></a>
+                                            <a href="{{url('app-users')}}"><button type="button" style="margin-left:15px;" class="btn btn-default">Back</button></a>
                                         </form>
                                     </div><!-- tab-pane -->
 

@@ -67,9 +67,9 @@
 	                                </a>
 	                            </li>
 	                            <li>
-	                                <a href="{{url('merchants/category/pending-email')}}">
-	                                    <table><tr><td style="width:100%;">Pending Email Verification</td>
-	                                    <td><span class="badge pull-right">{{$total_pending_email_verification}}</span></td></tr></table>
+	                                <a href="{{url('merchants/category/disabled')}}">
+	                                    <table><tr><td style="width:100%;">Disabled</td>
+	                                    <td><span class="badge pull-right">{{$total_disabled}}</span></td></tr></table>
 	                                </a>
 	                            </li>
 	                        </ul>
@@ -88,7 +88,7 @@
 	                                    <select id="search-type" class="width100p" data-placeholder="Search Type">
 	                                        <option value="">Choose One</option>
 	                                        <option value="Company">Company Name</option>
-	                                        <option value="Restaurant">Restaurant Name</option>
+	                                        <option value="Restaurant">Eatery Name</option>
 	                                        <option value="Email">Email</option>
 	                                    </select>
 	                                </div>
@@ -98,8 +98,8 @@
 							{!! Form::open(array('url' => '/merchants/report/generate', 'style' => 'display:inline;', 'class' => 'form-horizontal form-bordered')) !!}
 								<button class="btn btn-info"><i class="fa fa-file-excel-o"></i>&nbsp;Download List (.csv)</button>
 							{!! Form::close() !!}
-							<a href="{{url('campaigns/create')}}">
-								<button class="btn btn-primary"><i class="fa fa-plus"></i> Add New Campaign</button>
+							<a href="{{url('merchants/create')}}">
+								<button class="btn btn-primary"><i class="fa fa-plus"></i> Add New Merchant</button>
 							</a>
 
 	                        <hr />
@@ -151,6 +151,8 @@
 					                            	<span class="text-success"><strong>Approved</strong>
 					                            	@elseif($merchant['status'] == 2)
 					                            	<span class="text-muted"><strong>Blocked</strong>
+					                            	@elseif($merchant['status'] == 3)
+					                            	<span class="text-muted"><strong>Disabled</strong>
 					                            	@elseif($merchant['status'] == 0)
 					                            	<span class="text-warning"><strong>Pending Admin Approval</strong>
 

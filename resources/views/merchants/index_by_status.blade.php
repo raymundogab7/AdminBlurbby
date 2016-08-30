@@ -66,10 +66,10 @@
 	                                    <td><span class="badge pull-right">{{$total_pending_admin_approval_merchants}}</span></td></tr></table>
 	                                </a>
 	                            </li>
-	                            <li class="@if(strpos(url()->current(), 'pending-email')) active @endif">
-	                                <a href="{{url('merchants/category/pending-email')}}">
-	                                    <table><tr><td style="width:100%;">Pending Email Verification</td>
-	                                    <td><span class="badge pull-right">{{$total_pending_email_verification}}</span></td></tr></table>
+	                            <li class="@if(strpos(url()->current(), 'disabled')) active @endif">
+	                                <a href="{{url('merchants/category/disabled')}}">
+	                                    <table><tr><td style="width:100%;">Disabled</td>
+	                                    <td><span class="badge pull-right">{{$total_disabled}}</span></td></tr></table>
 	                                </a>
 	                            </li>
 	                        </ul>
@@ -88,7 +88,7 @@
 	                                    <select id="search-type" class="width100p" data-placeholder="Search Type">
 	                                        <option value="">Choose One</option>
 	                                        <option value="Company">Company Name</option>
-	                                        <option value="Restaurant">Restaurant Name</option>
+	                                        <option value="Restaurant">Eatery Name</option>
 	                                        <option value="Email">Email</option>
 	                                    </select>
 	                                </div>
@@ -122,8 +122,12 @@
 								</ul>
 								@endif
 	                        </div>
-	                        <h3 class="xlg-title">All Merchants</h3>
-
+	                        <h3 class="xlg-title">{{$title}}</h3>
+	                        @if(count($merchants) == 0)<br>
+		                    <div class="alert alert-default">
+		                        <strong>No data available.</strong>
+		                    </div>
+		                    @endif
 	                        <div class="list-group contact-group">
 	                        	@foreach($merchants as $merchant)
 	                            <a href="{{url('merchants/'.$merchant['id'].'/edit')}}" class="list-group-item">
@@ -151,6 +155,8 @@
 					                            	<span class="text-success"><strong>Approved</strong>
 					                            	@elseif($merchant['status'] == 2)
 					                            	<span class="text-muted"><strong>Blocked</strong>
+					                            	@elseif($merchant['status'] == 3)
+					                            	<span class="text-muted"><strong>Disabled</strong>
 					                            	@elseif($merchant['status'] == 0)
 					                            	<span class="text-warning"><strong>Pending Admin Approval</strong>
 

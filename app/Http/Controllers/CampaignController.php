@@ -112,11 +112,19 @@ class CampaignController extends Controller
         $query = $this->campaign->getAllWithAttributes(['cam_status' => $status], true);
 
         if ($status == 'Month') {
-            $status = 'Pending Approval';
             $query = $this->campaign->getLastThirtyDays();
         }
 
+        switch ($status) {
+            case 'Month':
+                $title = "Created in the last 30 days";
+                break;
+            default:
+                $title = $status;
+                break;
+        }
         $data = array(
+            'title' => $title,
             'campaigns' => $query,
             'total_campaigns' => $this->campaign->getTotalCount(),
             'total_last_thirty_days' => $this->campaign->getTotalMonth(),
@@ -216,7 +224,7 @@ class CampaignController extends Controller
         return view('campaign.view', $data);
     }
 
-    /**dd
+    /**
      * Edit a campaign campaign.
      *
      * @return View
@@ -267,6 +275,10 @@ class CampaignController extends Controller
         $campaign = $this->campaign->getById($id)->toArray();
 
         $campaign['cam_status'] = 'Draft';
+        $campaign['control_no'] = uniqid();
+        $campaign['campaign_name'] = $campaign['campaign_name'] . ' (Duplicate)';
+        $campaign['cam_start'] = null;
+        $campaign['cam_end'] = null;
 
         if ($duplicated_campaign = $this->campaign->create($campaign)) {
 
@@ -275,6 +287,8 @@ class CampaignController extends Controller
             foreach ($duplicate_blurbs as $key => $value) {
                 $value['campaign_id'] = $duplicated_campaign->id;
                 $value['blurb_status'] = 'Created';
+                $value['blurb_start'] = null;
+                $value['blurb_end'] = null;
 
                 if ($value['control_no'] != null || $value['control_no'] != '') {
                     $value['control_no'] = uniqid();
@@ -286,7 +300,7 @@ class CampaignController extends Controller
 
             }
 
-            return redirect('campaigns/' . $id)->with('message', 'Successfully duplicated.');
+            return redirect('merchants/' . $duplicated_campaign->id . '/edit-campaign')->with('message', 'Successfully duplicated.');
         }
 
         return redirect('campaigns/' . $id)->withInput()->with('message_error', 'Error while duplicating campaign. Please try again.');
@@ -320,6 +334,7 @@ class CampaignController extends Controller
         $restaurant = $this->restaurant->getByAttributes(['id' => $request->restaurant_id], false);
 
         $campaign = $this->campaign->getById($id);
+
         $request->merge(array('merchant_id' => $restaurant->merchant_id, 'cam_start' => date_format(date_create($request->cam_start), 'Y-m-d'), 'cam_end' => date_format(date_create($request->cam_end), 'Y-m-d')));
 
         if ($this->campaign->updateById($id, $request->all())) {
@@ -327,38 +342,42 @@ class CampaignController extends Controller
             if ($request->cam_status == "Approved") {
 
                 $data = $this->merchant->getByAttributes(['id' => $request->merchant_id]);
-
+                $data[0]['campaign_name'] = $campaign->campaign_name;
                 if ($campaign->cam_status != "Approved") {
-
+                    date_default_timezone_set('UTC');
                     $this->notification->create(['merchant_id' => $request->merchant_id, 'campaign_id' => $id, 'admin_id' => Auth::user()->id, 'status' => 'Approved', 'seen' => 0]);
 
-                    $mailer->send('emails.campaign_approved', 'Your Campaign Has been Approved', $data[0]);
+                    $mailer->send('emails.campaign_approved', 'Your Campaign ' . $campaign->campaign_name . ' Has been Approved', $data[0]);
                 }
 
-                if (date('Y-m-d') >= $campaign->cam_start || date('Y-m-d') >= $request->cam_start) {
+                /*if (date('Y-m-d') >= $campaign->cam_start || date('Y-m-d') >= $request->cam_start) {
 
-                    $this->campaign->updateById($id, ['cam_status' => 'Live']);
+            $this->campaign->updateById($id, ['cam_status' => 'Live']);
 
-                    $mailer->send('emails.campaign_live', 'Your Campaign is Live', $data[0]);
-                }
+            $this->notification->create(['merchant_id' => $request->merchant_id, 'campaign_id' => $id, 'admin_id' => Auth::user()->id, 'status' => 'Live', 'seen' => 0]);
 
-                if (date('Y-m-d') > $campaign->cam_end || date('Y-m-d') > $request->cam_end) {
+            $mailer->send('emails.campaign_live', 'Your Campaign is Live', $data[0]);
+            }
 
-                    $this->campaign->updateById($id, ['cam_status' => 'Expired']);
+            if (date('Y-m-d') > $campaign->cam_end || date('Y-m-d') > $request->cam_end) {
 
-                    $mailer->send('emails.campaign_live', 'Your Campaign is Live', $data[0]);
-                }
+            $this->campaign->updateById($id, ['cam_status' => 'Expired']);
+
+            $this->notification->create(['merchant_id' => $request->merchant_id, 'campaign_id' => $id, 'admin_id' => Auth::user()->id, 'status' => 'Expired', 'seen' => 0]);
+
+            $mailer->send('emails.campaign_live', 'Your Campaign Ends Today', $data[0]);
+            }*/
             }
 
             if ($request->cam_status == "Rejected") {
 
                 $data = $this->merchant->getByAttributes(['id' => $request->merchant_id]);
-
+                $data[0]['campaign_name'] = $campaign->campaign_name;
                 if ($campaign->cam_status != "Rejected") {
-
+                    date_default_timezone_set('UTC');
                     $this->notification->create(['merchant_id' => $request->merchant_id, 'campaign_id' => $id, 'admin_id' => Auth::user()->id, 'status' => 'Rejected', 'seen' => 0]);
 
-                    $mailer->send('emails.campaign_rejected', 'Your Campaign Needs Some Revision(s)', $data[0]);
+                    $mailer->send('emails.campaign_rejected', 'Your Campaign ' . $campaign->campaign_name . ' Needs Some Revision(s)', $data[0]);
                 }
             }
 
@@ -415,6 +434,12 @@ class CampaignController extends Controller
             return redirect('campaigns/' . $id)->withInput()->with('message_error', 'There are no blurbs in this campaign.');
         }
 
+        $campaign = $this->campaign->getById($id);
+
+        if (is_null($campaign->cam_start) && is_null($campaign->cam_end)) {
+            return redirect('merchants/' . $id . '/edit-campaign')->withInput()->with('message_error', 'Please update first the campaign before you submit.');
+        }
+
         if (!$this->campaign->updateById($id, $request->all())) {
             return redirect('campaigns/' . $id)->withInput()->with('message_error', 'Error while updating campaign. Please try again.');
         }
@@ -432,7 +457,7 @@ class CampaignController extends Controller
             $request->cam_status = 'Created';
         }
 
-        $test = $this->blurb->updateByAttributesWithCondition(['campaign_id' => $id], ['blurb_status' => $request->cam_status]);
+        $this->blurb->updateByAttributesWithCondition(['campaign_id' => $id], ['blurb_status' => $request->cam_status]);
 
         return redirect('campaigns/' . $id)->with('message', 'Successfully updated.');
     }

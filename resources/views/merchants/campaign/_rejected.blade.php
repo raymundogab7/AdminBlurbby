@@ -123,8 +123,8 @@
 		                </span>
 	                </td>
 	                <td>{{$blurb['category']['blurb_cat_name']}}</td>
-	                <td>{{date_format(date_create($blurb['blurb_start']), 'd-M-Y')}}</td>
-                	<td>{{date_format(date_create($blurb['blurb_end']), 'd-M-Y')}}</td>
+	                <td>{{(is_null($blurb['blurb_start'])) ? '' : date_format(date_create($blurb['blurb_start']), 'd-M-Y')}}</td>
+                	<td>{{(is_null($blurb['blurb_end'])) ? '' : date_format(date_create($blurb['blurb_end']), 'd-M-Y')}}</td>
 	                <td class="table-action">
 	                @if($blurb['blurb_status'] == 'Rejected' || $blurb['blurb_status'] == 'Created')
 	                    <a href="{{url('merchants/'.$blurb['id'].'/'.$campaign['control_no'].'/edit-blurb')}}" data-toggle="tooltip" title="Edit" class="tooltips"><i class="fa fa-pencil"></i></a>
@@ -155,6 +155,7 @@
 	        <input name="_method" type="hidden" value="DELETE">
 	        <input type="hidden" id="blurbId" name="blurb_id">
 	        <input type="hidden" class="controlNo" value="{{$campaign['id']}}">
+	        <button type="button" class="btn btn-default" data-dismiss="modal" style="visibility:hidden">No</button>
 	        <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
 	        <button class="btn btn-primary delete-blurb-yes">Yes</button>
 
@@ -211,9 +212,16 @@
 	            $("input#datepicker2").datepicker('option', 'minDate', dateText);
 	        }
 	    });
+
+	    var datepicker2MaxDate = 0;
+
+	    if(jQuery('#blurb_start_date').val() == null) {
+	        datepicker2MaxDate == jQuery('#blurb_start_date').val();
+	    }
+
 	    jQuery('#datepicker2').datepicker({
 	         dateFormat: 'yy-mm-dd',
-	         minDate: jQuery('#datepicker').val(),
+	         minDate: datepicker2MaxDate,//jQuery('#datepicker').val(),
 	         onSelect: function(dateText) {
 	            $sD = new Date(dateText);
 	            $("input#datepicker").datepicker('option', 'maxDate', dateText);

@@ -1,5 +1,9 @@
 <?php
+Route::get('static_image', function () {
+    return view('pages.ckfinder');
+});
 
+Route::post('static_image/upload', 'PageController@upload');
 Route::group(['middleware' => ['guest']], function () {
     /*
     |--------------------------------------------------------------------------
@@ -76,6 +80,7 @@ Route::group(['middleware' => ['auth']], function () {
      */
     Route::get('blurb/create/{control_no}', 'BlurbController@create');
     Route::post('blurb', 'BlurbController@store');
+    Route::post('blurb/store', 'BlurbController@store');
     Route::get('blurb/edit/{blurb_id}/{control_no}', 'BlurbController@edit');
     Route::get('blurb/{blurb_id}/{control_no}', 'BlurbController@show');
     Route::put('blurb/{blurb_id}', 'BlurbController@update');

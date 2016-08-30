@@ -9,7 +9,7 @@ class BlurbReport extends Model
     protected $table = 'blurb_report';
 
     protected $fillable = [
-        'merchant_id', 'app_user_id', 'blurb_id', 'reason', 'comment', 'seen',
+        'merchant_id', 'app_user_id', 'blurb_id', 'restaurant_id', 'campaign_id', 'reason', 'comment', 'notified',
     ];
 
     public function merchant()

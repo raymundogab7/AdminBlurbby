@@ -89,6 +89,7 @@
 <script type="text/javascript" src="{{asset('js/wysihtml5-0.3.0.min.js')}}"></script>
 <script type="text/javascript" src="{{asset('js/bootstrap-wysihtml5.js')}}"></script>
 <script type="text/javascript" src="{{asset('js/ckeditor/ckeditor.js')}}"></script>
+<script type="text/javascript" src="{{asset('js/ckeditor/plugins/uploadimage/plugin.js')}}"></script>
 <script type="text/javascript" src="{{asset('js/ckeditor/adapters/jquery.js')}}"></script>
 
 <script type="text/javascript">
@@ -99,13 +100,26 @@
 
 	jQuery(document).ready(function(){
       // CKEditor
-      jQuery('#ckeditor').ckeditor();
+      jQuery('#ckeditor').ckeditor({
+			height: 300,
+
+			// Configure your file manager integration. This example uses CKFinder 3 for PHP.
+			filebrowserBrowseUrl: 'http://blurbby.admin.loc/static_image?command=QuickUpload&type=Images',
+			filebrowserImageBrowseUrl: 'http://blurbby.admin.loc/static_image?command=QuickUpload&type=Images',
+			filebrowserUploadUrl: 'http://blurbby.admin.loc/static_image/upload?command=QuickUpload&type=Images',
+			filebrowserImageUploadUrl: 'http://blurbby.admin.loc/static_image/upload?command=QuickUpload&type=Images'
+		});
+
 
     });
 
 	jQuery('#pagename').select2({
         minimumResultsForSearch: -1
     });
-</script>
 
+
+</script>
+<script>
+
+	</script>
 @endsection
