@@ -81,7 +81,7 @@ class BlurbReportController extends Controller
             date_default_timezone_set('UTC');
             $notif = $this->notification->create(['merchant_id' => $blurb_report->merchant_id, 'campaign_id' => $blurb_report->campaign_id, 'admin_id' => Auth::user()->id, 'status' => $campaign->cam_status, 'seen' => 0, 'blurb_report' => $blurb_report->blurb_id]);
             $data[0]['blurb_name'] = $blurb_report->blurb_name;
-            $send = $mailer->send('emails.blurb_report', 'Your Blurb ' . $blurb_report->blurb_name . ' Has Been Reported', $data[0]);
+            $send = $mailer->send('emails.blurb_report', 'Your Blurb <' . $blurb_report->blurb_name . '> Has Been Reported', $data[0]);
 
             return response()->json(['result' => true, 'message' => 'Merchant has been notified.']);
         }

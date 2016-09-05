@@ -228,9 +228,9 @@
                                             <td>{{date_format(date_create($c['cam_start']), "M-d-Y")}}</td>
                                             <td>{{date_format(date_create($c['cam_end']), "M-d-Y")}}</td>
                                             <td>{{count($c['blurb'])}}</td>
-                                            <td>{{ \Admin\SnapShot::where(['campaign_id' => $c['id'], 'merchant_id' => \Auth::user()->id])->sum('snapshot_likes')}}</td>
-                                            <td>{{ \Admin\SnapShot::where(['campaign_id' => $c['id'], 'merchant_id' => \Auth::user()->id])->sum('snapshot_uviews')}}</td>
-                                            <td>{{ \Admin\SnapShot::where(['campaign_id' => $c['id'], 'merchant_id' => \Auth::user()->id])->sum('snapshot_usage')}}</td>
+                                            <td>{{ \Admin\SnapShot::where(['campaign_id' => $c['id'], 'merchant_id' => $c['merchant_id']])->sum('snapshot_likes')}}</td>
+                                            <td>{{ \Admin\SnapShot::where(['campaign_id' => $c['id'], 'merchant_id' => $c['merchant_id']])->sum('snapshot_uviews')}}</td>
+                                            <td>{{ \Admin\SnapShot::where(['campaign_id' => $c['id'], 'merchant_id' => $c['merchant_id']])->sum('snapshot_usage')}}</td>
                                             <td class="table-action">
 
                                                 @if($c['cam_status'] == 'Rejected' || $c['cam_status'] == 'Draft')

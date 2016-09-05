@@ -172,33 +172,37 @@ class AppUserController extends Controller
     {
         $app_user_check = AppUser::where(['email' => $request->email])->whereIn('status', ['Approved', 'Blocked'])->get()->toArray();
 
+        if (!is_null($request->file('profile_photo'))) {
+            $file = $request->file('profile_photo');
+            if (!in_array($file->getClientOriginalExtension(), array('gif', 'png', 'jpg', 'jpeg', 'PNG', 'JPG'))) {
+                return redirect('app-users/create')->with('error', 'Image invalid Format.')->withInput();
+            }
+
+            if (!$file->isValid()) {
+                return redirect('app-users/create')->with('error', 'Profile photo file size is too large.')->withInput();
+            }
+        }
         if (!empty($app_user_check)) {
             return redirect('app-users/create')
                 ->withInput()
-                ->with('error', 'The email has been already taken');
-        }
-
-        if (is_null($request->file('profile_photo'))) {
-            return redirect('app-users/create')->with('error', 'The profile photo is required.')->withInput();
-        }
-
-        $file = $request->file('profile_photo');
-
-        if (!$file->isValid()) {
-            return redirect('app-users/create')->with('error', 'Profile photo file size is too large.')->withInput();
-        }
-
-        if (!in_array($file->getClientOriginalExtension(), array('gif', 'png', 'jpg', 'jpeg', 'PNG', 'JPG'))) {
-            return redirect('app-users/create')->with('error', 'Invalid Format')->withInput();
+                ->with('error', 'The email has been already taken.');
         }
 
         $request->merge(['password' => bcrypt($request->password), 'date_created' => date('Y-m-d'), 'date_of_birth' => date_format(date_create($request->date_of_birth), 'Y-m-d')]);
 
         $new_app_user = $this->appUser->create($request->except('_token'));
 
-        $this->appUser->updateByAttributes(['id' => $new_app_user->id], ['profile_photo' => 'app_user_profile_photo/' . $new_app_user->id . '/' . $new_app_user->id . '.' . $file->getClientOriginalExtension()]);
+        $jetMail = new \Admin\Services\JetMailAppUser;
+        $jetMail->send(['email' => $new_app_user->email, 'first_name' => $new_app_user->first_name, 'last_name' => $new_app_user->last_name]);
 
-        $imageUploader->upload($file, $new_app_user->id, 128, 128, 'app_user_profile_photo/', '/' . $new_app_user->id . '.' . $file->getClientOriginalExtension());
+        if (!is_null($request->file('profile_photo'))) {
+
+            $file = $request->file('profile_photo');
+
+            $this->appUser->updateByAttributes(['id' => $new_app_user->id], ['profile_photo' => 'app_user_profile_photo/' . $new_app_user->id . '/' . $new_app_user->id . '.' . $file->getClientOriginalExtension()]);
+
+            $imageUploader->upload($file, $new_app_user->id, 128, 128, 'app_user_profile_photo/', '/' . $new_app_user->id . '.' . $file->getClientOriginalExtension());
+        }
 
         return redirect('app-users')->with('message', 'Successfully Created.');
     }

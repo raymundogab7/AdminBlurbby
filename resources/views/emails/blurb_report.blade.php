@@ -132,7 +132,7 @@ p {padding: 0!important; margin-top: 0!important; margin-right: 0!important; mar
 															<br><br>
 															<span style="font-size: 20px;">Hi {{$data['first_name']}} {{$data['last_name']}},</span>
 															<br><br>
-															We have received a problem reported on your Blurb {{$data['blurb_name']}} by a user. The details of the problem have been forwarded to your Notifications inbox in our Blurbes dashboard.
+															We have received a problem reported on your Blurb <{{$data['blurb_name']}}> by a user. The details of the problem have been forwarded to your Notifications inbox in our Blurbes dashboard.
 															<br><br>
 															Should you require further assistance, please contact us at <a href="mailto:info@blurbes.com." target="_top">info@blurbes.com</a>
 															<br><br>

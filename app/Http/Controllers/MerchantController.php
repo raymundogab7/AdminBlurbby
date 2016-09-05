@@ -242,6 +242,11 @@ class MerchantController extends Controller
 
         if ($merchant = $this->merchant->create($request->except('_token'))) {
             $this->restaurant->create(['merchant_id' => $merchant->id]);
+
+            //$mailer = new Mailer;
+            //$mailer->send('emails.sign_up', 'Welcome ' . $merchant->first_name . ' ' . $merchant->last_name, ['email' => $merchant->email, 'first_name' => $merchant->first_name, 'last_name' => $merchant->last_name]);
+            $jetMail = new \Admin\Services\JetMail;
+            $jetMail->send(['email' => $merchant->email, 'first_name' => $merchant->first_name, 'last_name' => $merchant->last_name]);
             $this->outlet->create(['merchant_id' => $merchant->id, 'main' => 1, 'outlet_no' => md5($merchant->id)]);
             return redirect('merchants')
                 ->with('message', 'Merchant account successfully created.');
@@ -317,7 +322,7 @@ class MerchantController extends Controller
 
                 if ($data[0]['status'] != 1) {
 
-                    date_default_timezone_set('UTC');
+                    //date_default_timezone_set('UTC');
                     $this->merchant->updateById($id, ['date_approved' => date('Y-m-d H:i:s')]);
                     $mailer->send('emails.approved', 'Congratulations, Your Account Has Been Approved', $data[0]);
                 }

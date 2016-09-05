@@ -57,7 +57,7 @@ class AppUserRequest extends Request
     public function messages()
     {
         return [
-            'password.confirmed' => 'Email entered do not match.',
+            'password.confirmed' => 'Password entered do not match.',
         ];
     }
 

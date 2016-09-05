@@ -347,7 +347,7 @@ class CampaignController extends Controller
                     date_default_timezone_set('UTC');
                     $this->notification->create(['merchant_id' => $request->merchant_id, 'campaign_id' => $id, 'admin_id' => Auth::user()->id, 'status' => 'Approved', 'seen' => 0]);
 
-                    $mailer->send('emails.campaign_approved', 'Your Campaign ' . $campaign->campaign_name . ' Has been Approved', $data[0]);
+                    $mailer->send('emails.campaign_approved', 'Your Campaign <' . $campaign->campaign_name . '> Has been Approved', $data[0]);
                 }
 
                 /*if (date('Y-m-d') >= $campaign->cam_start || date('Y-m-d') >= $request->cam_start) {
@@ -377,7 +377,7 @@ class CampaignController extends Controller
                     date_default_timezone_set('UTC');
                     $this->notification->create(['merchant_id' => $request->merchant_id, 'campaign_id' => $id, 'admin_id' => Auth::user()->id, 'status' => 'Rejected', 'seen' => 0]);
 
-                    $mailer->send('emails.campaign_rejected', 'Your Campaign ' . $campaign->campaign_name . ' Needs Some Revision(s)', $data[0]);
+                    $mailer->send('emails.campaign_rejected', 'Your Campaign <' . $campaign->campaign_name . '> Needs Some Revision(s)', $data[0]);
                 }
             }
 

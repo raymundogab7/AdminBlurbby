@@ -15,7 +15,7 @@
                 <div class="pageheader">
                     <div class="media">
                         <div class="pageicon pull-left">
-                            <i class="fa fa-user-secret"></i>
+                            <i class="fa fa-plus-square"></i>
                         </div>
                         <div class="media-body">
                             <ul class="breadcrumb">
@@ -32,7 +32,7 @@
                         <div class="col-sm-12 col-md-3 col-xs-12" style="padding-bottom:30px;max-width:417px;min-width:300px;">
                             <div style="border: 1px solid #ccc;">
                                 <div class="text-center" style="background:url({{asset('images/profile-background.jpg')}});    background-size:cover;">
-                                    <img src="{{asset('images/photos/profile-big.jpg')}}" class="img-circle img-offline img-responsive img-profile" style="max-width:80px;margin-top:45px;" alt="" />
+                                    <img src="{{asset('images/photos/user1.png')}}" class="img-circle img-offline img-responsive img-profile" style="max-width:80px;margin-top:45px;" alt="" />
                                     <h4 class="profile-name mb5" style="color:#fff;padding-bottom:45px;font-size:16px;margin-top:5px;"></h4>
 
                                 </div><!-- text-center -->
@@ -145,7 +145,13 @@
                                                     {!! Form::text('last_name', null, ['id' => 'last_name', 'required' => 'required', 'class' => 'form-control']) !!}
                                                 </div>
                                             </div><!-- form-group -->
-
+                                            <div class="form-group">
+                                                <label class="col-sm-2 control-label" style="text-align:left;">Country *</label>
+                                                <div class="col-sm-8">
+                                                    <!-- <input type="text" id="last_name" name="last_name" class="form-control" required="required" /> -->
+                                                    {!! Form::text('country', 'Singapore', ['id' => 'country', 'required' => 'required', 'class' => 'form-control', 'readonly' => 'readonly']) !!}
+                                                </div>
+                                            </div><!-- form-group -->
                                             <div class="form-group">
                                                 <label class="col-sm-2 control-label" style="text-align:left;">Email *</label>
                                                 <div class="col-sm-8">

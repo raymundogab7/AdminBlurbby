@@ -4,6 +4,7 @@
 
 @section('custom-css')
 <link href="{{asset('css/toggles.css')}}" rel="stylesheet">
+<link href="{{asset('css/dropzone.css')}}" rel="stylesheet">
 @endsection
 
 @section('body-contents')
@@ -28,6 +29,27 @@
                 </div><!-- pageheader -->
                 <div class="contentpanel">
                     <div class="row">
+                        <div class="col-sm-12 col-md-4 col-xs-12" style="padding-bottom:30px;max-width:417px;min-width:300px;">
+                            <div style="border: 1px solid #ccc;">
+                                <img src="{{asset('images/featured-placeholder.jpg')}}" style="width: 100%;">
+                                <div style="padding:10px 15px 15px 15px;">
+                                    <span style="float:left;">Popular Blurbs</span><span style="float:right;">See All ></span>
+                                </div>
+                                <div class="mb10"></div>
+                                <div style="padding:0 15px;">
+                                    <img src="{{asset('images/featured-placeholder.jpg')}}" style="width:85px;padding-right:10px;"><img src="{{asset('images/featured-placeholder.jpg')}}" style="width:85px;padding-right:10px;"><img src="{{asset('images/featured-placeholder.jpg')}}" style="width:85px;padding-right:10px;"><img src="{{asset('images/featured-placeholder.jpg')}}" style="width:85px;padding-right:10px;">
+                                </div>
+                                <div class="mb10"></div>
+                                <div style="padding:5px 15px;border-top:1px solid #ddd;background-color:#f5f5f5;">
+                                    <span style="color:#888888;font-size:12px;">TOP BLURBS BY CUISINE</span>
+                                </div>
+                                @foreach($featured_sections as $fs)
+                                <div style="padding:12px 15px;border-top:1px solid #ddd;">
+                                    <span style="font-size:12px;">CUISINE</span>
+                                </div>
+                                @endforeach
+                            </div>
+                        </div><!-- col-sm-4 col-md-3 -->
                         @if(session('message'))
 
                         <div class="alert alert-success">
@@ -43,59 +65,74 @@
                         </div>
 
                         @endif
-                        {!! Form::open(array('method' => 'PUT', 'url' => 'featured-section/'.$featured_section->id, 'class' => 'form-horizontal form-bordered', 'files' => true, 'enctype' => 'multipart/form-data')) !!}
-                            <div class="form-group">
-                                <label class="col-sm-2 control-label" style="text-align:left;">Position *</label>
+                        <div class="col-sm-12 col-md-7 col-xs-12">
+                            <div class="col-sm-12" style="padding-bottom:30px;">
                                 <div class="col-sm-8">
+                                    <h4 class="md-title">Slide Image *</h4>
+                                    {!! Form::open(array('id'=>'featured-update', 'files' => true, 'enctype' => 'multipart/form-data', 'url' => 'featured-section/updateImage/'.$featured_section->position, 'class' => 'single-dropzone dropzone', 'method'=>'POST')) !!}
 
-                                    <select id="position" required="required" data-placeholder="Choose One" class="width300" name="position">
-                                        <option value="" selected="">Choose One</option>
-                                        @foreach($featured_sections as $fs)
-                                        <option <?php if ($fs['position'] == $featured_section->position): ?> selected="selected" <?php endif;?> value="{{$fs['position']}}">Position {{$fs['position']}}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                            </div><!-- form-group -->
+                                        <div class="fallback">
+                                            <input name="file" type="file" />
+                                        </div>
 
-                            <div class="form-group">
-                                <label class="col-sm-2 control-label" style="text-align:left;">Eatery Name *</label>
-                                <div class="col-sm-8">
-                                    <select id="merchant" required="required" data-placeholder="Choose One" class="width300" name="merchant_id">
-                                        <option value="">Choose One</option>
-                                        @foreach($restaurants as $restaurant)
-                                        <option value="{{$restaurant['merchant_id']}}" <?php if ($featured_section->merchant->id == $restaurant['merchant_id']): ?> selected="selected" <?php endif;?> >{{$restaurant['res_name']}}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                            </div><!-- form-group -->
-
-                            <div class="form-group">
-                                <label class="col-sm-2 control-label" style="text-align:left;">Slide Image *</label>
-                                <div class="col-sm-5">
-                                    <input name="slide_image_temp" type="file" />
-                                    <span class="help-block">Must be at least 800px x 400px.</span>
+                                    {!! Form::close() !!}
+                                    <span class="help-block">Must be 2:1 ratio with at least 800px x 400px.</span>
                                 </div>
                             </div>
+                            {!! Form::open(array('id' => 'featured-section-form', 'method' => 'PUT', 'url' => 'featured-section/'.$featured_section->id, 'class' => 'form-horizontal form-bordered', 'files' => true, 'enctype' => 'multipart/form-data')) !!}
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label" style="text-align:left;">Position *</label>
+                                    <div class="col-sm-8">
 
-                            <div class="form-group">
-                                <label class="col-sm-2 control-label" style="text-align:left;">Status *</label>
-                                <div class="col-sm-8">
-                                    <select id="status" name="status" required="required" data-placeholder="Choose One" class="width300">
-                                        <option value="">Choose One</option>
-                                        <option <?php if ($featured_section->status == "Published"): ?> selected="selected" <?php endif;?> value="Published">Published</option>
-                                        <option <?php if ($featured_section->status == "Unpublished"): ?> selected="selected" <?php endif;?> value="Unpublished">Unpublished</option>
-                                    </select>
-                                </div>
-                            </div><!-- form-group -->
-                            <input name="featured_section_id" value="{{$featured_section->id}}" required="required" readonly="readonly" type="hidden" />
-                            <br>
-                            <button style="margin-left:15px;" class="btn btn-primary">Update</button>
-                            <a href="{{url('featured-section/'.$featured_section->id)}}">
-                                <button style="margin-left:15px;" class="btn btn-danger" type="button">Delete</button>
-                            </a>
-                        {!! Form::close() !!}
+                                        <select id="position" required="required" data-placeholder="Choose One" class="width300" name="position">
+                                            <option value="" selected="">Choose One</option>
+                                            @foreach($featured_sections as $fs)
+                                            <option <?php if ($fs['position'] == $featured_section->position): ?> selected="selected" <?php endif;?> value="{{$fs['position']}}">Position {{$fs['position']}}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div><!-- form-group -->
+
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label" style="text-align:left;">Eatery Name *</label>
+                                    <div class="col-sm-8">
+                                        <select id="merchant" required="required" data-placeholder="Choose One" class="width300" name="merchant_id">
+                                            <option value="">Choose One</option>
+                                            @foreach($restaurants as $restaurant)
+                                            <option value="{{$restaurant['merchant_id']}}" <?php if ($featured_section->merchant->id == $restaurant['merchant_id']): ?> selected="selected" <?php endif;?> >{{$restaurant['res_name']}}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div><!-- form-group -->
+
+                                <!-- <div class="form-group">
+                                    <label class="col-sm-2 control-label" style="text-align:left;">Slide Image *</label>
+                                    <div class="col-sm-5">
+                                        <input name="slide_image_temp" type="file" />
+                                        <span class="help-block">Must be at least 800px x 400px.</span>
+                                    </div>
+                                </div> -->
+
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label" style="text-align:left;">Status *</label>
+                                    <div class="col-sm-8">
+                                        <select id="status" name="status" required="required" data-placeholder="Choose One" class="width300">
+                                            <option value="">Choose One</option>
+                                            <option <?php if ($featured_section->status == "Published"): ?> selected="selected" <?php endif;?> value="Published">Published</option>
+                                            <option <?php if ($featured_section->status == "Unpublished"): ?> selected="selected" <?php endif;?> value="Unpublished">Unpublished</option>
+                                        </select>
+                                    </div>
+                                </div><!-- form-group -->
+                                <input name="featured_section_id" value="{{$featured_section->id}}" required="required" readonly="readonly" type="hidden" />
+                                <br>
+                                <button style="margin-left:15px;" type="submit" id="btn-featured-section-update" class="btn btn-primary">Update</button>
+                                <a href="{{url('featured-section/'.$featured_section->id)}}">
+                                    <button style="margin-left:15px;" class="btn btn-danger" type="button">Delete</button>
+                                </a>
+                            {!! Form::close() !!}
+
+                        </div>
                     </div><!-- row -->
-
                 </div><!-- contentpanel -->
             </div><!-- mainpanel -->
         </div><!-- mainwrapper -->
@@ -103,12 +140,45 @@
 @endsection
 
 @section('custom-js')
+<script type="text/javascript" src="{{asset('js/dropzone.min.js')}}"></script>
 <script>
 
-    // Select2
+    Dropzone.options.featuredUpdate = {
+        autoProcessQueue: false,
+        init: function() {
+            var myDropzone = this;
+            $('#btn-featured-section-update').on("click", function(e) {
+                myDropzone.processQueue();
+                if(myDropzone.files.length != 0) {
+                  e.preventDefault();
+                  e.stopPropagation();
+                }
+            });
+            this.on("thumbnail", function(file){
+
+            if (file.height < 800 && file.width < 400) {
+                    alert("Image should be at least 800px x 400px");
+                    myDropzone.removeFile(file);
+                    return false;
+                }
+            });
+
+            this.on("success", function(file) {
+                $('#featured-section-form').submit();
+            });
+
+            this.on("error", function(file) {
+                alert('Invalid format');
+                myDropzone.removeFile(file);
+            });
+        }
+    };
+// Select2
     jQuery('#position, #merchant, #status').select2({
         minimumResultsForSearch: -1
     });
 </script>
+
+
 <script type="text/javascript" src="{{asset('js/toggles.min.js')}}"></script>
 @endsection

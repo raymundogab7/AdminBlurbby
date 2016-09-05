@@ -121,7 +121,7 @@
 
                 </div>
                 <div class="col-sm-12 col-md-12 col-xs-12" style="padding-bottom:20px;">
-                    <a href="{{url('campaigns/'.$campaign->id)}}"><button class="btn btn-default">Back</button></a>
+                    <a href="{{url('merchants/'.$campaign->merchant_id.'/edit')}}"><button class="btn btn-default">Back</button></a>
                 </div>
 
             </div><!-- contentpanel -->

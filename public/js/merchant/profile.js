@@ -32,7 +32,7 @@ Dropzone.options.profilePicture = {
             
             if (file.height < 128 && file.width < 128) {
                 alert("Image should be at least 128px x 128px");
-                window.location.reload();
+                myDropzone.removeFile(file);
                 return false;
             }
         });
@@ -49,7 +49,7 @@ Dropzone.options.profilePicture = {
 
         this.on("error", function(file) { 
             alert('Invalid format or Image size is too big.');
-            window.location.reload();
+            myDropzone.removeFile(file);
         });
     }
 };
@@ -72,7 +72,7 @@ Dropzone.options.coverPhoto = {
             if (file.height < 500 && file.width < 500) {
                 
                 alert("Image should be at least 500px x 500px");
-                window.location.reload();
+                myDropzone.removeFile(file);
                 return false;
             }
         });
@@ -86,7 +86,7 @@ Dropzone.options.coverPhoto = {
         
         this.on("error", function(file) { 
             alert('Invalid format or Image size is too big.');
-            window.location.reload();
+            myDropzone.removeFile(file);
         });
     }
 };

@@ -59,7 +59,7 @@ class AppUserEloquent implements AppUserInterface
         $timezone = new Carbon('Asia/Singapore');
         $last_thirty_days = $timezone->subDays(30);
 
-        return $this->appUserBlurb->where('interaction_type', 'use')->whereBetween('created_at', array($last_thirty_days->toDateTimeString(), $today))->count();
+        return count($this->appUserBlurb->where('interaction_type', 'use')->whereBetween('created_at', array($last_thirty_days->toDateTimeString(), $today))->groupBy('app_user_id')->get());
     }
 
     /**

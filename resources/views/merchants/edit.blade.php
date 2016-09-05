@@ -260,9 +260,7 @@ echo ($outlet->outlet_ph_active == 0) ? 'PH : Close' . "<br>" : 'PH : ' . date_f
                                         <div class="col-sm-8">
                                             <!-- <input type="email" value="" id="disabledinput" class="form-control" disabled="" /> -->
 
-                                            {!! Form::email('email', $merchant->email, ['required' => 'required', 'class' => 'form-control', 'readonly' => ''])!!}
-
-                                            <span class="help-block"><a href="">Contact us</a> to change your email address.</span>
+                                            {!! Form::email('email', $merchant->email, ['required' => 'required', 'class' => 'form-control'])!!}
                                         </div>
                                     </div><!-- form-group -->
 

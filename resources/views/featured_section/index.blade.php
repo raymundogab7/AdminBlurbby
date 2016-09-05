@@ -40,6 +40,7 @@
 	                                <thead class="" style="background-color:#00B0ED">
 	                                  <tr>
 										<th>Position</th>
+										<th>Image</th>
 	                                    <th>Eatery Name</th>
 										<th>Status</th>
 										<th></th>
@@ -50,6 +51,7 @@
 	                                	@foreach($featured_sections as $featured_section)
 	                                	<tr>
 	                                    	<td>{{$featured_section['position']}}</td>
+	                                    	<td><img src="{{url($featured_section['slide_image'])}}" height="20px"></td>
 											<td>{{$featured_section['restaurant']['res_name']}}</td>
 											<td>{{$featured_section['status']}}</td>
 											<td class="table-action">&nbsp;&nbsp;&nbsp;&nbsp;

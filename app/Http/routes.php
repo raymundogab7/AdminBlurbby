@@ -1,8 +1,4 @@
 <?php
-Route::get('static_image', function () {
-    return view('pages.ckfinder');
-});
-
 Route::post('static_image/upload', 'PageController@upload');
 Route::group(['middleware' => ['guest']], function () {
     /*
@@ -49,6 +45,8 @@ Route::group(['middleware' => ['auth']], function () {
     Route::resource('featured-section', 'FeaturedSectionController', ['except' => ['show', ' destroy']]);
     Route::get('featured-section/{featured_section_id}', 'FeaturedSectionController@destroy');
     Route::get('featured-section/move/{merchant_id}/{featured_section_id}/{direction}', 'FeaturedSectionController@move');
+    Route::post('featured-section/uploadImage', 'FeaturedSectionController@uploadImage');
+    Route::post('featured-section/updateImage/{position_id}', 'FeaturedSectionController@updateImage');
 
     /*
     |--------------------------------------------------------------------------

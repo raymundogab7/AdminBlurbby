@@ -12,6 +12,7 @@ use Admin\Repositories\Interfaces\SnapShotInterface;
 use Admin\Services\ImageUploader;
 use Admin\SnapShot;
 use Illuminate\Http\Request;
+use Response;
 
 class FeaturedSectionController extends Controller
 {
@@ -91,6 +92,7 @@ class FeaturedSectionController extends Controller
         $data = array(
             'restaurants' => $this->restaurant->getAll(),
             'slides_count' => $this->featuredSection->getCount(),
+            'featured_sections' => $this->featuredSection->getAll(['restaurant'], 'position'),
         );
 
         return view('featured_section.create', $data);
@@ -103,19 +105,8 @@ class FeaturedSectionController extends Controller
      * @param ImageUploader $imageUploader
      * @return Redirect
      */
-    public function store(FeaturedSectionRequest $request, ImageUploader $imageUploader)
+    public function store(FeaturedSectionRequest $request)
     {
-
-        $file = $request->file('slide_image_temp');
-
-        if (!in_array($file->getClientOriginalExtension(), array('gif', 'png', 'jpg', 'jpeg', 'PNG', 'JPG'))) {
-            return Response::json(array(
-                'code' => 404,
-                'message' => 'Invalid format',
-            ), 404);
-
-        }
-
         $featured_sections = $this->featuredSection->all();
 
         if (empty($featured_sections)) {
@@ -145,8 +136,6 @@ class FeaturedSectionController extends Controller
         }
 
         $this->featuredSection->deleteAll();
-
-        $imageUploader->upload($file, count($new_featured_sections), 800, 400, 'image_slides/', '/' . count($new_featured_sections) . '.jpg');
 
         foreach ($new_featured_sections as $key => $value) {
 
@@ -202,9 +191,9 @@ class FeaturedSectionController extends Controller
 
         $request->merge(['slide_image' => $findSelected->slide_image]);
 
-        if ($this->featuredSection->updateById($to_update->id, ['position' => $findSelected->position, 'slide_image' => $findSelected->slide_image, 'status' => $request->status, 'merchant_id' => $request->merchant_id])) {
+        if ($this->featuredSection->updateById($to_update->id, [/*'position' => $findSelected->position,*/'slide_image' => $findSelected->slide_image, 'status' => $request->status, 'merchant_id' => $request->merchant_id])) {
 
-            $this->featuredSection->updateById($id, ['position' => $to_update->position]);
+            $this->featuredSection->updateById($id, [/*'position' => $to_update->position,*/'slide_image' => $to_update->slide_image, 'status' => $to_update->status, 'merchant_id' => $to_update->merchant_id]);
 
             return redirect('featured-section')->with('message', 'Updated Successfully.');
         }
@@ -270,5 +259,56 @@ class FeaturedSectionController extends Controller
         }
 
         return redirect('featured-section')->with('message', 'Updated Successfully.');
+    }
+
+    /**
+     * Upload photo for featured section.
+     *
+     * @param integer $position_id
+     * @param Request $request
+     * @param ImageUploader $imageUploader
+     * @return Redirect
+     */
+    public function uploadImage(Request $request, ImageUploader $imageUploader)
+    {
+
+        $file = $request->file('file');
+
+        if (!in_array($file->getClientOriginalExtension(), array('gif', 'png', 'jpg', 'jpeg', 'PNG', 'JPG'))) {
+            return Response::json(array(
+                'code' => 404,
+                'message' => 'Invalid format',
+            ), 404);
+        }
+
+        $position_id = $this->featuredSection->getCount() + 1;
+
+        $imageUploader->upload($file, $position_id, 800, 400, 'image_slides/', '/' . $position_id . '.jpg');
+
+        return ['featured_section' => 'image_slides/' . $position_id . '/' . $position_id . '.jpg'];
+    }
+
+    /**
+     * Update photo for featured section.
+     *
+     * @param integer $position
+     * @param Request $request
+     * @param ImageUploader $imageUploader
+     * @return Redirect
+     */
+    public function updateImage($position_id, Request $request, ImageUploader $imageUploader)
+    {
+        $file = $request->file('file');
+
+        if (!in_array($file->getClientOriginalExtension(), array('gif', 'png', 'jpg', 'jpeg', 'PNG', 'JPG'))) {
+            return Response::json(array(
+                'code' => 404,
+                'message' => 'Invalid format',
+            ), 404);
+        }
+
+        $imageUploader->upload($file, $position_id, 800, 400, 'image_slides/', '/' . $position_id . '.jpg');
+
+        return ['featured_section' => 'image_slides/' . $position_id . '/' . $position_id . '.jpg'];
     }
 }

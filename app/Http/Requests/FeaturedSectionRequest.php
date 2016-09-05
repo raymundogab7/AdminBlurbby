@@ -27,7 +27,7 @@ class FeaturedSectionRequest extends Request
             return [
                 'position' => 'required',
                 'merchant_id' => 'required',
-                'slide_image_temp' => 'required',
+                //'slide_image_temp' => 'required',
                 'status' => 'required',
             ];
         }

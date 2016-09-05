@@ -18,7 +18,7 @@
                       <i class="fa fa-caret-down"></i>
                     </button>
                     <ul class="dropdown-menu pull-right" role="menu">
-                      <li><a href="{{url('merchant-profile')}}"><i class="glyphicon glyphicon-cutlery"></i> My Profile</a></li>
+                      <li><a href="{{url('settings')}}"><i class="glyphicon glyphicon-cog"></i>  Settings</a></li>
                       <li><a href="{{url('logout')}}"><i class="glyphicon glyphicon-log-out"></i>Log Out</a></li>
                     </ul>
                 </div><!-- btn-group -->

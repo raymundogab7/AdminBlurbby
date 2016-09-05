@@ -17,7 +17,7 @@
                 <div class="pageheader">
                     <div class="media">
                         <div class="pageicon pull-left">
-                            <i class="fa fa-user-secret"></i>
+                            <i class="fa fa-user"></i>
                         </div>
                         <div class="media-body">
                             <ul class="breadcrumb">
