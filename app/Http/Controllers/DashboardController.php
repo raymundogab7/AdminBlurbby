@@ -82,7 +82,7 @@ class DashboardController extends Controller
             'totalLiveCampaigns' => $this->campaign->getCount(),
             'thisWeekTotalLiveCampaignLikes' => $this->campaign->getAllThisWeek(['cam_status' => 'Live']),
             'lastWeekTotalLiveCampaignLikes' => $this->campaign->getAllLastWeek(['cam_status' => 'Live']),
-            'totalMerchants' => $this->merchant->getCount(),
+            'totalMerchants' => $this->merchant->getTotalCount(),
             'lastWeekMerchants' => $this->merchant->getAllLastWeek(),
             'thisWeekMerchants' => $this->merchant->getAllThisWeek(),
             'totalAppUser' => $this->appUser->getCount(),
