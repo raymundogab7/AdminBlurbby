@@ -39,7 +39,7 @@
                                     @endif
 
                                     <img src="{{$pp_url}}" class="img-circle img-offline img-responsive img-profile" style="max-width:80px;margin-top:45px;" alt="" />
-                                    <h4 class="profile-name mb5" style="color:#fff;padding-bottom:45px;font-size:16px;margin-top:5px;">Royce Cheng</h4>
+                                    <h4 class="profile-name mb5" style="color:#fff;padding-bottom:45px;font-size:16px;margin-top:5px;">{{$admin->first_name}} {{$admin->last_name}}</h4>
 
                                 </div><!-- text-center -->
                                 <div class="mb20"></div>

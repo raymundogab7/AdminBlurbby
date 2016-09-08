@@ -2,6 +2,7 @@
 
 namespace Admin\Http\Controllers;
 
+use Admin\AppUserBlurb;
 use Admin\Http\Requests\FeaturedSectionRequest;
 use Admin\Repositories\Interfaces\BlurbInterface;
 use Admin\Repositories\Interfaces\CampaignInterface;
@@ -89,10 +90,19 @@ class FeaturedSectionController extends Controller
      */
     public function create()
     {
+        $app_user_blurb = AppUserBlurb::with('blurb')
+            ->select('blurb_id', \DB::raw('COUNT(blurb_id) as count'))
+            ->groupBy('blurb_id')
+            ->orderBy('count', 'desc')
+            ->limit(4)
+            ->get()
+            ->toArray();
+
         $data = array(
             'restaurants' => $this->restaurant->getAll(),
             'slides_count' => $this->featuredSection->getCount(),
             'featured_sections' => $this->featuredSection->getAll(['restaurant'], 'position'),
+            'app_user_blurb_popular' => $app_user_blurb,
         );
 
         return view('featured_section.create', $data);
@@ -153,10 +163,18 @@ class FeaturedSectionController extends Controller
      */
     public function edit($id)
     {
+        $featured_section = $this->featuredSection->getByIdWithRelations($id, ['merchant']);
+
+        $keys = parse_url($featured_section->slide_image);
+        $path = explode("/", $keys['path']);
+
+        $slide_image_number = intval(preg_replace('/[^0-9]+/', '', end($path)), 10);
+
         $data = array(
-            'featured_section' => $this->featuredSection->getByIdWithRelations($id, ['merchant']),
+            'featured_section' => $featured_section,
             'restaurants' => $this->restaurant->getAll(),
             'featured_sections' => $this->featuredSection->getAll(['merchant'], 'position'),
+            'slide_image_number' => $slide_image_number,
         );
 
         return view('featured_section.edit', $data);
@@ -191,14 +209,18 @@ class FeaturedSectionController extends Controller
 
         $request->merge(['slide_image' => $findSelected->slide_image]);
 
-        if ($this->featuredSection->updateById($to_update->id, [/*'position' => $findSelected->position,*/'slide_image' => $findSelected->slide_image, 'status' => $request->status, 'merchant_id' => $request->merchant_id])) {
+        if ($this->featuredSection->updateById($to_update->id, ['slide_image' => $findSelected->slide_image, 'status' => $request->status, 'merchant_id' => $request->merchant_id])) {
 
-            $this->featuredSection->updateById($id, [/*'position' => $to_update->position,*/'slide_image' => $to_update->slide_image, 'status' => $to_update->status, 'merchant_id' => $to_update->merchant_id]);
+            $to_update_result = $this->featuredSection->updateById($id, ['slide_image' => $to_update->slide_image, 'status' => $to_update->status, 'merchant_id' => $to_update->merchant_id]);
 
-            return redirect('featured-section')->with('message', 'Updated Successfully.');
+            if ($request->position == $findSelected->position) {
+                $this->featuredSection->updateById($id, ['slide_image' => $findSelected->slide_image, 'status' => $request->status, 'merchant_id' => $request->merchant_id]);
+            }
+
+            return redirect('featured-section/' . $id . '/edit')->with('message', 'Updated Successfully.');
         }
 
-        return redirect('featured-section');
+        return redirect('featured-section/' . $id . '/edit');
     }
 
     /**

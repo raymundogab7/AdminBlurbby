@@ -132,7 +132,7 @@ p {padding: 0!important; margin-top: 0!important; margin-right: 0!important; mar
 															<br><br>
 															<span style="font-size: 20px;">Hi {{$data['first_name']}} {{$data['last_name']}},</span>
 															<br><br>
-															We are pleased to inform you that your campaign, <{{$data['campaign_name']}}>, has been approved.
+															We are pleased to inform you that your campaign, {{"<".$data['campaign_name'].">"}}, has been approved.
 															<br><br>
 															When your campaign turns live, you can monitor your campaign performance using our Blurbes dashboard.
 															<br><br>

@@ -132,7 +132,7 @@ p {padding: 0!important; margin-top: 0!important; margin-right: 0!important; mar
 															<br><br>
 															<span style="font-size: 20px;">Hi {{$data['first_name']}} {{$data['last_name']}},</span>
 															<br><br>
-															We have reviewed your campaign <{{$data['campaign_name']}}> and realized that it requires some revision(s) before we can approve it.
+															We have reviewed your campaign {{"<".$data['campaign_name'].">"}} and realized that it requires some revision(s) before we can approve it.
 															<br><br>
 															We have left our remarks on the concerned Blurb(s) in the campaign and after you have made the necessary revisions, you can resubmit your campaign for approval. This time, if the campaign has a target live date that is coming soon, we will prioritize it as an urgent campaign for review and approval.
 															<br><br>

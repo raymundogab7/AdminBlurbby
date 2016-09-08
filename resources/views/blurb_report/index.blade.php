@@ -145,7 +145,7 @@ $('#btn-delete-blurb-reports').on('click', function(){
             method: 'DELETE',
             complete: function(data){
                 if(!data.result) {
-                    window.location.reload();
+                    myDropzone.removeFile(file);
                 }
             }
         });

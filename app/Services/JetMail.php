@@ -335,9 +335,9 @@ class JetMail
 </body>  <style>body{ background: none !important; } </style>
 ';
         $body = [
-            'FromEmail' => "gabriel@bilinear.ph",
+            'FromEmail' => "Minyi.ang@blurbes.com",
             'FromName' => "Blurbes",
-            'Subject' => "Welcome to Blurbes " . $first_name . " " . $last_name . "!",
+            'Subject' => "Welcome to Blurbes, " . $first_name . " " . $last_name . "!",
             'Html-part' => $html,
             'Recipients' => [['Email' => $data['email']]],
         ];

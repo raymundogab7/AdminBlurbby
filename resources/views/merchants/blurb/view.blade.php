@@ -209,7 +209,7 @@
 
             this.on("error", function(file) {
                 alert('Invalid format');
-                window.location.reload();
+                myDropzone.removeFile(file);
             });
         }
     };

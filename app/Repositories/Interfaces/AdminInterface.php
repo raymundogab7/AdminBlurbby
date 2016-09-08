@@ -1,4 +1,5 @@
-<?php namespace Admin\Repositories\Interfaces;
+<?php
+namespace Admin\Repositories\Interfaces;
 
 use Admin\Admin;
 
@@ -57,6 +58,14 @@ interface AdminInterface
      * @return integer
      */
     public function getCount();
+
+    /**
+     * Get Admin by attributes.
+     *
+     * @param array $attributes
+     * @return Admin
+     */
+    public function getByAttributes(array $attributes);
 
     /**
      * Update a admin by id.

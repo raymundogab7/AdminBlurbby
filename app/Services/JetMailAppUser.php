@@ -309,7 +309,7 @@ p {padding: 0!important; margin-top: 0!important; margin-right: 0!important; mar
 </body> <style>body{ background: none !important; } </style>
 ';
         $body = [
-            'FromEmail' => "gabriel@bilinear.ph",
+            'FromEmail' => "Minyi.ang@blurbes.com",
             'FromName' => "Blurbes",
             'Subject' => "Welcome to Blurbes, " . $first_name . " " . $last_name . "!",
             'Html-part' => $html,

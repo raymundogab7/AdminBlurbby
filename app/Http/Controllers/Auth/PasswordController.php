@@ -61,9 +61,11 @@ class PasswordController extends Controller
 
         if ($this->admin->updateByAttributes(['email' => $request->email], ['password' => bcrypt($temp_password)])) {
 
-            $request->merge(['temp_password' => $temp_password]);
+            $data = $this->admin->getByAttributes(['email' => $request->email]);
 
-            $mailer->send('auth.emails.password', 'Reset Password', $request->all());
+            $data[0]['temp_password'] = $temp_password;
+
+            $mailer->send('auth.emails.password', 'Reset Password', $data[0]);
 
             return redirect('password')
                 ->with('message', 'Your request to reset password is successful. Please check your email.');

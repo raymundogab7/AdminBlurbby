@@ -48,6 +48,7 @@
 				<label class="text-danger control-label" style="text-align:left;"><strong>{{$campaign->cam_status}}</strong></label>
 			</div>
 		</div><!-- form-group -->
+
 		<button class="btn btn-primary" style="margin-left:15px;">Update Campaign</button>
 
 		</form>

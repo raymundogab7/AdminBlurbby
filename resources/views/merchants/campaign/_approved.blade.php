@@ -49,9 +49,7 @@
 </div>
 <div class="col-sm-12 col-md-12 col-xs-12" style="padding-bottom:50px;">
 	<hr style="margin-top:0;">
-     <a href="{{url('blurb/view/'.$campaign->control_no.'/approved')}}">
-		<button class="btn btn-primary">View Blurbs</button>
-	</a>
+
 	{!! Form::open(array('url' => 'campaigns/duplicate/'.$campaign->id, 'style' => 'display:inline;', 'class' => 'form-horizontal form-bordered', 'method' => 'POST')) !!}
 	<button class="btn btn-warning">Duplicate Campaign</button>
 	{!! Form::close() !!}

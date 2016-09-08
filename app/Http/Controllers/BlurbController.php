@@ -79,6 +79,24 @@ class BlurbController extends Controller
     /**
      * Display blurb page.
      *
+     * @return View
+     */
+    public function viewPerformance($control_no, $cam_status)
+    {
+        $campaign = $this->campaign->getByAttributes(['control_no' => $control_no], false);
+        $data = array(
+            'restaurant' => $this->restaurant->getByAttributes(['merchant_id' => $campaign->merchant_id], false),
+            'campaign' => $campaign,
+            'blurbs' => $this->blurb->getAllByAttributes(['merchant_id' => $campaign->merchant_id, 'campaign_id' => $campaign->id/*, 'blurb_status' => ucfirst($cam_status)*/], 'created_at', 'DESC'),
+            'blurb_category' => $this->blurbCategory->getAll(),
+        );
+
+        return view('merchants.blurb.view_blurbs', $data);
+    }
+
+    /**
+     * Display blurb page.
+     *
      * @return \Illuminate\Http\Response
      */
     public function create($control_no)
@@ -132,6 +150,24 @@ class BlurbController extends Controller
         $data['blurb_category'] = $this->blurbCategory->getAll();
 
         return view('blurb.view', $data);
+    }
+
+    /**
+     * Display view blurb page.
+     *
+     * @param integer $id
+     * @return View
+     */
+    public function showPerformance($id, $control_no)
+    {
+        $campaign = $this->campaign->getByAttributes(['control_no' => $control_no], false);
+
+        $data['restaurant'] = $this->restaurant->getByAttributes(['merchant_id' => $campaign->merchant_id], false);
+        $data['campaign'] = $this->campaign->getById($campaign->id);
+        $data['blurb'] = $this->blurb->getById($id);
+        $data['blurb_category'] = $this->blurbCategory->getAll();
+
+        return view('merchants.blurb.view', $data);
     }
 
     /**

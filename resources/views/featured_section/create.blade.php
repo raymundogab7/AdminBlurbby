@@ -5,9 +5,42 @@
 @section('custom-css')
 <link href="{{asset('css/toggles.css')}}" rel="stylesheet">
 <link href="{{asset('css/dropzone.css')}}" rel="stylesheet">
+<style type="text/css">
+#loading {
+   width: 100%;
+   height: 100%;
+   top: 0;
+   left: 0;
+   position: fixed;
+   display: block;
+   opacity: 0.7;
+   background-color: #000;
+   z-index: 99;
+   text-align: center;
+   vertical-align: top;
+}
+
+#loading-image {
+    position: relative;
+    top: 50%;
+    transform: translate(0%, -50%);
+    z-index: 100;
+    margin: 0;
+}
+
+.caption {
+    /* Make the caption a block so it occupies its own line. */
+    color: #fff;
+    display: block;
+}
+</style>
 @endsection
 
 @section('body-contents')
+<div id="loading">
+  <img id="loading-image" src="{{asset('images/loaders/loadingIcon.GIF')}}" style="width:150px;" alt="Loading..." />
+  <span class="caption"><b style="font-size:20px;">Preparing image...</b></span>
+</div>
 	<section>
         <div class="mainwrapper">
             @include('layouts.sidebar-admin')
@@ -15,7 +48,7 @@
                 <div class="pageheader">
                     <div class="media">
                         <div class="pageicon pull-left">
-                            <i class="fa fa-star"></i>
+                            <i class="fa fa-plus-square"></i>
                         </div>
                         <div class="media-body">
                             <ul class="breadcrumb">
@@ -29,25 +62,39 @@
                 </div><!-- pageheader -->
                 <div class="contentpanel">
                     <div class="row">
-                        <div class="col-sm-12 col-md-4 col-xs-12" style="padding-bottom:30px;max-width:417px;min-width:300px;">
+                        <div class="col-sm-12 col-md-4 col-xs-12" style="padding-bottom:30px;width:350px;">
                             <div style="border: 1px solid #ccc;">
                                 <img src="{{asset('images/featured-placeholder.jpg')}}" style="width: 100%;">
                                 <div style="padding:10px 15px 15px 15px;">
                                     <span style="float:left;">Popular Blurbs</span><span style="float:right;">See All ></span>
                                 </div>
                                 <div class="mb10"></div>
-                                <div style="padding:0 15px;">
-                                    <img src="{{asset('images/featured-placeholder.jpg')}}" style="width:85px;padding-right:10px;"><img src="{{asset('images/featured-placeholder.jpg')}}" style="width:85px;padding-right:10px;"><img src="{{asset('images/featured-placeholder.jpg')}}" style="width:85px;padding-right:10px;"><img src="{{asset('images/featured-placeholder.jpg')}}" style="width:85px;padding-right:10px;">
+                                <div style="padding-left: 15px;">
+                                    <img src="{{asset('images/box-featured-section-placeholder.jpg')}}" style="width:75px;padding-right:10px;"><img src="{{asset('images/box-featured-section-placeholder.jpg')}}" style="width:75px;padding-right:10px;"><img src="{{asset('images/box-featured-section-placeholder.jpg')}}" style="width:75px;padding-right:10px;"><img src="{{asset('images/box-featured-section-placeholder.jpg')}}" style="width:75px;padding-right:10px;">
                                 </div>
                                 <div class="mb10"></div>
                                 <div style="padding:5px 15px;border-top:1px solid #ddd;background-color:#f5f5f5;">
                                     <span style="color:#888888;font-size:12px;">TOP BLURBS BY CUISINE</span>
                                 </div>
-                                @foreach($featured_sections as $featured_section)
+
                                 <div style="padding:12px 15px;border-top:1px solid #ddd;">
                                     <span style="font-size:12px;">CUISINE</span>
                                 </div>
-                                @endforeach
+                                <div style="padding:12px 15px;border-top:1px solid #ddd;">
+                                    <span style="font-size:12px;">CUISINE</span>
+                                </div>
+                                <div style="padding:12px 15px;border-top:1px solid #ddd;">
+                                    <span style="font-size:12px;">CUISINE</span>
+                                </div>
+                                <div style="padding:12px 15px;border-top:1px solid #ddd;">
+                                    <span style="font-size:12px;">CUISINE</span>
+                                </div>
+                                <div style="padding:12px 15px;border-top:1px solid #ddd;">
+                                    <span style="font-size:12px;">CUISINE</span>
+                                </div>
+                                <div style="padding:12px 15px;border-top:1px solid #ddd;">
+                                    <span style="font-size:12px;">CUISINE</span>
+                                </div>
                             </div>
                         </div><!-- col-sm-4 col-md-3 -->
                         @if(session('message'))
@@ -148,7 +195,7 @@
     jQuery('#position, #merchant, #status').select2({
         minimumResultsForSearch: -1
     });
-
+    jQuery('#loading').hide();
     Dropzone.options.featuredPhoto = {
         //autoProcessQueue: false,
         init: function() {
@@ -174,14 +221,27 @@
             });
 
             this.on("success", function(file) {
+
+            });
+
+            this.on("sending", function(file) {
+                jQuery('#loading').fadeIn();
             });
 
             this.on("error", function(file) {
+                jQuery('#loading').fadeOut();
                 alert('Invalid format');
                 myDropzone.removeFile(file);
             });
+
+            this.on("complete", function(file) {
+                jQuery('#loading').fadeOut();
+            });
+
         }
     };
+
+
 </script>
 <script type="text/javascript" src="{{asset('js/toggles.min.js')}}"></script>
 @endsection

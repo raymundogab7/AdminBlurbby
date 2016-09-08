@@ -9,10 +9,53 @@
 <link href="{{asset('css/bootstrap-timepicker.min.css')}}" rel="stylesheet">
 <link href="{{asset('css/style.datatables.css')}}" rel="stylesheet">
 <link href="//cdn.datatables.net/responsive/2.1.0/css/responsive.dataTables.min.css" rel="stylesheet">
+<style type="text/css">
+#loading {
+   width: 100%;
+   height: 100%;
+   top: 0;
+   left: 0;
+   position: fixed;
+   display: block;
+   opacity: 0.7;
+   background-color: #000;
+   z-index: 99;
+   text-align: center;
+   vertical-align: top;
+}
 
+#loading-image {
+    position: relative;
+    top: 50%;
+    transform: translate(0%, -50%);
+    z-index: 100;
+    margin: 0;
+    width:150px;
+}
+
+.caption {
+    /* Make the caption a block so it occupies its own line. */
+    color: #fff;
+    display: block;
+}
+div.transbox {
+ background: rgba(0, 0, 0, 0.5);
+  opacity: 0.8;
+  filter: alpha(opacity=60); /* For IE8 and earlier */
+}
+
+div.transbox h4 {
+  margin: 5%;
+  color: #000000;
+}
+</style>
 @endsection
 
 @section('body-contents')
+<div id="loading" style="visibility:hidden">
+  <img id="loading-image" src="{{asset('images/loaders/loadingIcon.GIF')}}"  alt="Loading..." />
+  <span class="caption"><b style="font-size:20px;">Uploading image...</b></span>
+</div>
 <section>
     <div class="mainwrapper">
 
@@ -39,7 +82,7 @@
                 <div class="row">
                     <div class="col-sm-12 col-md-4 col-xs-12" style="padding-bottom:30px;max-width:417px;min-width:300px;">
 						<div style="border: 1px solid #ccc;">
-							<div class="text-center cover-photo" data-src="{{(! is_null($restaurant->res_logo_background)) ? ($restaurant->bg_photo_location == 'merchant') ? env('MERCHANT_URL').'/'.$restaurant->res_logo_background : asset($restaurant->res_logo_background) : asset('images/nobg.jpg')}}" style="background:url('{{(! is_null($restaurant->res_logo_background)) ? ($restaurant->bg_photo_location == 'merchant') ? env('MERCHANT_URL').'/'.$restaurant->res_logo_background : asset($restaurant->res_logo_background) : asset('images/profile-background.jpg')}}');background-size:cover;">
+							<div class="text-center cover-photo" data-src="{{(! is_null($restaurant->res_logo_background)) ? ($restaurant->bg_photo_location == 'merchant') ? env('MERCHANT_URL').'/'.$restaurant->res_logo_background : asset($restaurant->res_logo_background) : asset('images/nobg.jpg')}}" style="background:linear-gradient(rgba(0,0,0,0.3),rgba(0,0,0,0.3)),url('{{(! is_null($restaurant->res_logo_background)) ? ($restaurant->bg_photo_location == 'merchant') ? env('MERCHANT_URL').'/'.$restaurant->res_logo_background : asset($restaurant->res_logo_background) : asset('images/profile-background.jpg')}}');background-size:cover;">
 
                                 @if(!is_null($restaurant->res_logo))
                                 @if($restaurant->photo_location == 'merchant')
@@ -52,8 +95,10 @@
 
                                 <img src="{{asset('images/photos/profile.png')}}" class="profile-pic img-roundedcircle img-offline img-responsive img-profile" style="max-width:80px;margin-top:45px;" alt="">
                                 @endif
-								<h4 class="profile-name mb5" style="color:#fff;padding-bottom:45px;font-size:16px;margin-top:5px;">{{$merchant->coy_name}}</h4>
-							</div><!-- text-center -->
+
+								    <h4 class="profile-name mb5" style="padding-bottom:45px;color:#fff;font-size:16px;margin-top:5px;">{{$merchant->coy_name}}</h4>
+
+                            </div><!-- text-center -->
 							<div class="mb20"></div>
                             @if(array_key_exists('snapshot_views', $snapshot))
 
@@ -373,7 +418,7 @@ echo ($outlet->outlet_ph_active == 0) ? 'PH : Close' . "<br>" : 'PH : ' . date_f
 
 										{!! Form::close() !!}
 
-										<span class="help-block">Must be at least 500px x 500px.</span>
+										<span class="help-block">Must be 2:1 ratio with at least 900px x 600px.</span>
 									</div>
 								</div>
 
@@ -832,6 +877,8 @@ echo ($o['outlet_ph_active'] == 0) ? 'PH : Close' : 'PH : ' . date_format(date_c
 @section('custom-js')
 
 <script type="text/javascript">
+jQuery('#loading').hide();
+
 jQuery('#status').select2({
         minimumResultsForSearch: -1
     });

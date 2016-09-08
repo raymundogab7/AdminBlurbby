@@ -132,7 +132,7 @@ p {padding: 0!important; margin-top: 0!important; margin-right: 0!important; mar
 															<br><br>
 															<span style="font-size: 20px;">Hi {{$data['first_name']}} {{$data['last_name']}},</span>
 															<br><br>
-															We are excited to inform you that your campaign is now live. You can monitor your campaign performance using our Blurbes dashboard.
+															We are excited to inform you that your campaign {{"<".$data['campaign_name'].">"}} is now live. You can monitor your campaign performance using our Blurbes dashboard.
 															<br><br>
 															Should you require further assistance, please contact us at <a href="mailto:info@blurbes.com." target="_top">info@blurbes.com</a>
 															<br><br>

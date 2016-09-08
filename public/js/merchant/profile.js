@@ -37,18 +37,25 @@ Dropzone.options.profilePicture = {
             }
         });
         this.on("success", function(file) { 
-            //$('#restaurant_form').submit();
-        });
-
-        this.on("complete", function(file) {
             if($('#has_cover_photo').val() == "false"){
-
+                
                 $('#restaurant_form').submit();
             }
         });
 
+        this.on("sending", function(file) {
+            if($('#has_cover_photo').val() == "false"){
+                jQuery('#loading').fadeIn();
+            }
+        });
+
+        this.on("complete", function(file) {
+            jQuery('#loading').fadeOut();
+        });
+
         this.on("error", function(file) { 
-            alert('Invalid format or Image size is too big.');
+            jQuery('#loading').fadeOut();
+            alert('Eatery Logo invalid format or Image size is too big.');
             myDropzone.removeFile(file);
         });
     }
@@ -69,23 +76,30 @@ Dropzone.options.coverPhoto = {
         this.on("addedfile", function(file) { $('#has_cover_photo').val('true') });
 
         this.on("thumbnail", function(file){
-            if (file.height < 500 && file.width < 500) {
+            if (file.height < 900 && file.width < 600) {
                 
-                alert("Image should be at least 500px x 500px");
+                alert("Logo Bacakground must be 2:1 ratio with at least 900px x 600px.");
                 myDropzone.removeFile(file);
                 return false;
             }
         });
+
+        this.on("sending", function(file) {
+            jQuery('#loading').removeAttr('style');
+        });
+
         this.on("success", function(file) { 
-            //$('#restaurant_form').submit();
+            
+            $('#restaurant_form').submit();
         });
 
         this.on("complete", function(file) {
-            $('#restaurant_form').submit();
+            jQuery('#loading').attr('style', 'visibility:hidden');
         });
         
         this.on("error", function(file) { 
-            alert('Invalid format or Image size is too big.');
+            jQuery('#loading').attr('style', 'visibility:hidden');
+            alert('Logo Background invalid format or Image size is too big.');
             myDropzone.removeFile(file);
         });
     }

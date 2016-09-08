@@ -81,11 +81,13 @@ Route::group(['middleware' => ['auth']], function () {
     Route::post('blurb/store', 'BlurbController@store');
     Route::get('blurb/edit/{blurb_id}/{control_no}', 'BlurbController@edit');
     Route::get('blurb/{blurb_id}/{control_no}', 'BlurbController@show');
+    Route::get('blurb/{blurb_id}/{control_no}/result', 'BlurbController@showPerformance');
     Route::put('blurb/{blurb_id}', 'BlurbController@update');
     Route::delete('blurb/{blurb_id}/{control_no}', 'BlurbController@destroy');
     Route::post('blurb/upload/{campaign_id}', 'BlurbController@uploadLogo');
     Route::post('blurb/updateLogo/{blurb_id}/{campaign_id}', 'BlurbController@updateLogo');
     Route::get('blurb/view/{control_no}/{cam_status}', 'BlurbController@view');
+    Route::get('blurb/merchant/view/{control_no}/{cam_status}', 'BlurbController@viewPerformance');
     Route::get('blurb/getLastSevenDays/{blurb_id}/{field}', 'BlurbController@getLastSevenDays');
     Route::post('blurb/report/generate', 'BlurbController@generateReport');
     Route::post('blurb/report/generate/{blurb_id}', 'BlurbController@generateBlurbReport');

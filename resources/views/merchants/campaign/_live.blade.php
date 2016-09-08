@@ -6,14 +6,14 @@
 				<input type="text" value="{{$campaign->campaign_name}}" class="form-control" id="disabledinput" disabled="" />
 			</div>
 		</div><!-- form-group -->
-		
+
 		<div class="form-group">
 			<label class="col-sm-2 control-label" style="text-align:left;">Timezone *</label>
 			<div class="col-sm-8">
 				<input type="text" value="GMT +08:00 (Singapore)" id="disabledinput" class="form-control" disabled="" />
 			</div>
 		</div><!-- form-group -->
-		
+
 		<div class="form-group">
 			<label class="col-sm-2 control-label" style="text-align:left;">Start Date *</label>
 			<div class="col-sm-8">
@@ -23,7 +23,7 @@
 				</div><!-- input-group -->
 			</div>
 		</div><!-- form-group -->
-		
+
 		<div class="form-group">
 			<label class="col-sm-2 control-label" style="text-align:left;">End Date *</label>
 			<div class="col-sm-8">
@@ -33,7 +33,7 @@
 				</div><!-- input-group -->
 			</div>
 		</div><!-- form-group -->
-		
+
 		<div class="form-group">
 			<label class="col-sm-2 control-label" style="text-align:left;">Status</label>
 			<div class="col-sm-8">
@@ -42,7 +42,7 @@
 		</div><!-- form-group -->
 	</form>
 	<hr style="margin-top:0;">
-	<a href="{{url('blurb/view/'.$campaign->control_no.'/live')}}">	
+	<a href="{{url('blurb/merchant/view/'.$campaign->control_no.'/live')}}">
 		<button class="btn btn-primary">View Blurbs</button>
 	</a>
 	{!! Form::open(array('url' => 'campaigns/duplicate/'.$campaign->id, 'style' => 'display:inline;', 'class' => 'form-horizontal form-bordered', 'method' => 'POST')) !!}
@@ -64,7 +64,7 @@
 </div>
 
 <div class="col-sm-12 col-md-12 col-xs-12" style="padding-bottom:20px;">
-	
+
 	<div class="col-md-4">
 		<div class="panel panel-default">
 			<div class="panel-body padding15">
@@ -81,7 +81,7 @@
 			</div><!-- panel-body -->
 		</div><!-- panel -->
 	</div>
-	
+
 	<div class="col-md-4">
 		<div class="panel panel-default">
 			<div class="panel-body padding15">

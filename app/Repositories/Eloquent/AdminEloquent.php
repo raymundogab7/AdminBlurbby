@@ -144,6 +144,19 @@ class AdminEloquent implements AdminInterface
     }
 
     /**
+     * Get Admin by attributes.
+     *
+     * @param array $attributes
+     * @return Admin
+     */
+    public function getByAttributes(array $attributes)
+    {
+
+        return $this->admin->where($attributes)->get()->toArray();
+
+    }
+
+    /**
      * Update a admin by id.
      *
      * @param integer $id
