@@ -87,7 +87,7 @@ class RestaurantController extends Controller
 
         $this->restaurant->updateByAttributes(['merchant_id' => $user_id], ['photo_location' => 'admin', 'res_logo' => 'uploads/' . $user_id . '/profile_picture.' . $file->getClientOriginalExtension()]);
 
-        $imageUploader->upload($file, $user_id, 128, 128, 'uploads/', '/profile_picture.' . $file->getClientOriginalExtension());
+        $imageUploader->upload($file, $user_id, 500, 500, 'uploads/', '/profile_picture.' . $file->getClientOriginalExtension());
 
         $result['image_path'] = 'uploads/' . $user_id . '/profile_picture.' . $file->getClientOriginalExtension();
 

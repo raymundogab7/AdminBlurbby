@@ -31,7 +31,7 @@ Dropzone.options.profilePicture = {
         this.on("thumbnail", function(file){
             
             if (file.height < 128 && file.width < 128) {
-                alert("Image should be at least 128px x 128px");
+                alert("Eatery Logo must be a square size with at least 500px x 500px.");
                 myDropzone.removeFile(file);
                 return false;
             }

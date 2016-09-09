@@ -405,7 +405,7 @@ echo ($outlet->outlet_ph_active == 0) ? 'PH : Close' . "<br>" : 'PH : ' . date_f
 										{!! Form::close() !!}
 
 
-										<span class="help-block">Must be a square size with at least 128px x 128px.</span>
+										<span class="help-block">Must be a square size with at least 500px x 500px.</span>
 									</div>
 									<div class="col-sm-5">
 										<h4 class="md-title">Logo Background *</h4>
