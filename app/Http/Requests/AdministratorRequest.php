@@ -40,7 +40,7 @@ class AdministratorRequest extends Request
         }
 
         return [
-            'role_id' => 'required',
+            //'role_id' => 'required',
             'email' => 'required|email|unique:admin,email,' . $this->admin_id,
             'first_name' => 'required',
             'last_name' => 'required',

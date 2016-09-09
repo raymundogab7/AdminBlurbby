@@ -133,7 +133,11 @@
                                             <option value="1">Super Administrator</option>
                                             <option value="2">Administrator</option>
                                         </select> -->
+                                        @if($admin->role_id == 1)
                                         {!! Form::select('role_id', array('1' => 'Super Administrator', '2' => 'Administrator'), $admin->role_id, ['id' => 'type', 'required' => 'required', 'class' => 'width300', 'placeholder' => 'Choose One']) !!}
+                                        @else
+                                        {!! Form::select('role_id', array('1' => 'Super Administrator', '2' => 'Administrator'), $admin->role_id, ['id' => 'type', 'disabled' => 'disabled', 'required' => 'required', 'class' => 'width300', 'placeholder' => 'Choose One']) !!}
+                                        @endif
                                     </div>
                                 </div><!-- form-group -->
 
