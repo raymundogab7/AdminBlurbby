@@ -27,7 +27,7 @@
 #loading-image {
     position: relative;
     top: 50%;
-    transform: translate(0%, -50%);
+    transform: translate(0%, 100%);
     z-index: 100;
     margin: 0;
     width:150px;
@@ -418,7 +418,7 @@ echo ($outlet->outlet_ph_active == 0) ? 'PH : Close' . "<br>" : 'PH : ' . date_f
 
 										{!! Form::close() !!}
 
-										<span class="help-block">Must be 2:1 ratio with at least 900px x 600px.</span>
+										<span class="help-block">Must be 3:2 ratio with at least 900px x 600px.</span>
 									</div>
 								</div>
 
@@ -877,7 +877,7 @@ echo ($o['outlet_ph_active'] == 0) ? 'PH : Close' : 'PH : ' . date_format(date_c
 @section('custom-js')
 
 <script type="text/javascript">
-jQuery('#loading').hide();
+//jQuery('#loading').hide();
 
 jQuery('#status').select2({
         minimumResultsForSearch: -1

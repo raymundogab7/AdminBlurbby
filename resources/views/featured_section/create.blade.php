@@ -23,9 +23,10 @@
 #loading-image {
     position: relative;
     top: 50%;
-    transform: translate(0%, -50%);
+    transform: translate(0%, 100%);
     z-index: 100;
     margin: 0;
+    width:150px;
 }
 
 .caption {
@@ -37,8 +38,8 @@
 @endsection
 
 @section('body-contents')
-<div id="loading">
-  <img id="loading-image" src="{{asset('images/loaders/loadingIcon.GIF')}}" style="width:150px;" alt="Loading..." />
+<div id="loading" style="visibility:hidden">
+  <img id="loading-image" src="{{asset('images/loaders/loadingIcon.GIF')}}" alt="Loading..." />
   <span class="caption"><b style="font-size:20px;">Preparing image...</b></span>
 </div>
 	<section>
@@ -225,17 +226,17 @@
             });
 
             this.on("sending", function(file) {
-                jQuery('#loading').fadeIn();
+                jQuery('#loading').removeAttr('style');
             });
 
             this.on("error", function(file) {
-                jQuery('#loading').fadeOut();
+                jQuery('#loading').attr('style', 'visibility:hidden');
                 alert('Invalid format');
                 myDropzone.removeFile(file);
             });
 
             this.on("complete", function(file) {
-                jQuery('#loading').fadeOut();
+                jQuery('#loading').attr('style', 'visibility:hidden');
             });
 
         }

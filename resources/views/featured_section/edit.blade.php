@@ -5,9 +5,43 @@
 @section('custom-css')
 <link href="{{asset('css/toggles.css')}}" rel="stylesheet">
 <link href="{{asset('css/dropzone.css')}}" rel="stylesheet">
+<style type="text/css">
+#loading {
+   width: 100%;
+   height: 100%;
+   top: 0;
+   left: 0;
+   position: fixed;
+   display: block;
+   opacity: 0.7;
+   background-color: #000;
+   z-index: 99;
+   text-align: center;
+   vertical-align: top;
+}
+
+#loading-image {
+    position: relative;
+    top: 50%;
+    transform: translate(0%, 100%);
+    z-index: 100;
+    margin: 0;
+    width:150px;
+}
+
+.caption {
+    /* Make the caption a block so it occupies its own line. */
+    color: #fff;
+    display: block;
+}
+</style>
 @endsection
 
 @section('body-contents')
+<div id="loading" style="visibility:hidden">
+  <img id="loading-image" src="{{asset('images/loaders/loadingIcon.GIF')}}" alt="Loading..." />
+  <span class="caption"><b style="font-size:20px;">Preparing image...</b></span>
+</div>
     <section>
         <div class="mainwrapper">
             @include('layouts.sidebar-admin')
@@ -183,9 +217,18 @@
                $('#featured-section-form').submit();
             });
 
+            this.on("sending", function(file) {
+                jQuery('#loading').removeAttr('style');
+            });
+
             this.on("error", function(file) {
+                jQuery('#loading').attr('style', 'visibility:hidden');
                 alert('Invalid format');
                 myDropzone.removeFile(file);
+            });
+
+            this.on("complete", function(file) {
+                jQuery('#loading').attr('style', 'visibility:hidden');
             });
         }
     };

@@ -30,7 +30,7 @@ Dropzone.options.profilePicture = {
 
         this.on("thumbnail", function(file){
             
-            if (file.height < 128 && file.width < 128) {
+            if (file.height < 500 && file.width < 500) {
                 alert("Eatery Logo must be a square size with at least 500px x 500px.");
                 myDropzone.removeFile(file);
                 return false;
@@ -45,16 +45,16 @@ Dropzone.options.profilePicture = {
 
         this.on("sending", function(file) {
             if($('#has_cover_photo').val() == "false"){
-                jQuery('#loading').fadeIn();
+                jQuery('#loading').removeAttr('style');
             }
         });
 
         this.on("complete", function(file) {
-            jQuery('#loading').fadeOut();
+            jQuery('#loading').attr('style', 'visibility:hidden');
         });
 
         this.on("error", function(file) { 
-            jQuery('#loading').fadeOut();
+            jQuery('#loading').attr('style', 'visibility:hidden');
             alert('Eatery Logo invalid format or Image size is too big.');
             myDropzone.removeFile(file);
         });
@@ -78,7 +78,7 @@ Dropzone.options.coverPhoto = {
         this.on("thumbnail", function(file){
             if (file.height < 900 && file.width < 600) {
                 
-                alert("Logo Bacakground must be 2:1 ratio with at least 900px x 600px.");
+                alert("Logo Bacakground must be 3:2 ratio with at least 900px x 600px.");
                 myDropzone.removeFile(file);
                 return false;
             }
